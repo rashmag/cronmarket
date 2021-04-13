@@ -3,6 +3,7 @@ package ooo.cron.delivery.di
 import android.content.Context
 import dagger.BindsInstance
 import dagger.Component
+import ooo.cron.delivery.screens.base_error_screen.BaseErrorComponent
 import ooo.cron.delivery.screens.main_screen.MainComponent
 import javax.inject.Singleton
 
@@ -15,6 +16,7 @@ import javax.inject.Singleton
 interface AppComponent {
 
     fun mainComponentBuilder(): MainComponent.Builder
+    fun baseErrorComponentBuilder(): BaseErrorComponent.Builder
 
     @Component.Builder
     interface Builder {

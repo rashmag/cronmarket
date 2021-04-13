@@ -7,4 +7,7 @@
     <string name="any_error_message">В работе приложения произошла ошибка.\nПопробуйте снова, и при повторной ошибке \n обратитесь в техподдержку.</string>
     <string name="any_error_submit_text">На главную</string>
 
+    <string name="connection_error_title">Отсутствует интернет соединение</string>
+    <string name="connection_error_message">Приложение не может связаться с \n сервером. Возможно у вас остутствует \n интернет соединение.</string>
+    <string name="connection_error_submit_text">Попробовать снова</string>
 </resources>

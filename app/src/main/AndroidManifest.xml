@@ -11,14 +11,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".screens.any_error_screen.AnyErrorActivity" />
-
         <activity android:name=".screens.main_screen.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".screens.any_error_screen.AnyErrorActivity" />
+
+        <activity android:name=".screens.base_mvp.ConnectionErrorActivity" />
 
     </application>
 

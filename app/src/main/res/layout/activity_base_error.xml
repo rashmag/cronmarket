@@ -53,7 +53,7 @@
     <FrameLayout
         android:id="@+id/view_bottom_bar"
         android:layout_width="match_parent"
-        android:layout_height="89dp"
+        android:layout_height="49dp"
         android:background="@color/white"
         android:elevation="3dp"
         app:layout_constraintStart_toStartOf="parent"

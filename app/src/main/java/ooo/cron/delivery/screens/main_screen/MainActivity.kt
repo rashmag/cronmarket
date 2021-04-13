@@ -1,12 +1,12 @@
 package ooo.cron.delivery.screens.main_screen
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
+import ooo.cron.delivery.screens.BaseActivity
 import javax.inject.Inject
 
-class MainActivity : AppCompatActivity(), MainContract.View {
+class MainActivity : BaseActivity(), MainContract.View {
 
     @Inject
     lateinit var presenter: MainContract.Presenter

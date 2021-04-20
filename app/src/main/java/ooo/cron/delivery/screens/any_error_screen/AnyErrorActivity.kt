@@ -29,14 +29,14 @@ class AnyErrorActivity : BaseErrorActivity() {
     }
 
     override fun onSubmitClicked(view: View) {
-        TODO("Not yet implemented")
+        finish()
     }
 
     override fun onSubmitTitleCreated() = getString(R.string.any_error_submit_text)
 
     private fun clickableSpan() = object : ClickableSpan() {
         override fun onClick(widget: View) {
-            TODO("Not yet implemented")
+            TODO()
         }
     }
 

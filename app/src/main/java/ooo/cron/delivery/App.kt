@@ -15,6 +15,8 @@ class App : Application() {
     }
 
     companion object {
+        const val LOCATION_PERMISSION_REQUEST_CODE: Int = 83
+
         lateinit var appComponent: AppComponent
     }
 }

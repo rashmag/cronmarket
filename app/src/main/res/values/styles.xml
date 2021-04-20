@@ -2,6 +2,7 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
+        <item name="android:windowBackground">@color/grey2</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/white</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -9,4 +10,13 @@
         <item name="fontFamily">@font/sf_pro_text_regular</item>
     </style>
 
+    <style name="TextHeader">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/grey90</item>
+    </style>
+
+    <style name="FirstAddressSelectionCityPopUp">
+        <item name="android:overlapAnchor">false</item>
+        <item name="android:dropDownVerticalOffset">8dp</item>
+    </style>
 </resources>

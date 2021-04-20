@@ -1,19 +1,39 @@
 package ooo.cron.delivery.screens
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.os.PersistableBundle
 import androidx.appcompat.app.AppCompatActivity
+import ooo.cron.delivery.screens.any_error_screen.AnyErrorActivity
+import ooo.cron.delivery.screens.base_mvp.ConnectionErrorActivity
 
 /**
  * Created by Ramazan Gadzhikadiev on 13.04.2021.
  */
 abstract class BaseActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
             window.statusBarColor = Color.BLACK
+    }
+
+    fun showAnyErrorScreen() {
+        startActivity(
+            Intent(
+                this,
+                AnyErrorActivity::class.java
+            )
+        )
+    }
+
+    fun showConnectionErrorScreen() {
+        startActivity(
+            Intent(
+                this,
+                ConnectionErrorActivity::class.java
+            )
+        )
     }
 }

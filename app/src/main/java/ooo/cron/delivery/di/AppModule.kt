@@ -7,6 +7,8 @@ import dagger.Provides
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import ooo.cron.delivery.BuildConfig
+import ooo.cron.delivery.data.DataManager
+import ooo.cron.delivery.data.network.RestService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -38,6 +40,16 @@ class AppModule {
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+
+    @Provides
+    @Singleton
+    fun provideRestService(retrofit: Retrofit): RestService =
+        retrofit.create(RestService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideDataManager(restService: RestService) =
+        DataManager(restService)
 
     @Provides
     @Singleton

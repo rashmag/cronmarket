@@ -1,13 +1,30 @@
 <resources>
     <string name="app_name">Delivery</string>
 
+    <string name="common_gps_disabled">Похоже, что GPS выключен. Вы хотите включить GPS</string>
+    <string name="common_yes">Да</string>
+    <string name="common_no">Нет</string>
+
     <string name="base_error_icon_description">Иконка ошибки</string>
 
     <string name="any_error_title">Что-то пошло не так</string>
     <string name="any_error_message">В работе приложения произошла ошибка.\nПопробуйте снова, и при повторной ошибке \n обратитесь в техподдержку.</string>
-    <string name="any_error_submit_text">На главную</string>
+    <string name="any_error_submit_text">Попробовать снова</string>
 
     <string name="connection_error_title">Отсутствует интернет соединение</string>
     <string name="connection_error_message">Приложение не может связаться с \n сервером. Возможно у вас остутствует \n интернет соединение.</string>
     <string name="connection_error_submit_text">Попробовать снова</string>
+
+    <string name="first_address_selection_title">Укажите адрес доставки</string>
+    <string name="first_address_selection_address_title">Адрес доставки</string>
+    <string name="first_address_selection_info_message">Укажите адрес доставки, чтобы мы были уверенны, что можем доставить до вас заказ</string>
+    <string name="first_address_selection_success_message">Отлично! Давайте приступим к покупкам.</string>
+    <string name="first_address_selection_error_message">К сожалению в городе %1$s пока нет нашей доставки. Выберите город из списка выше</string>
+    <string name="first_address_selection_warning_message">К сожалению по данному адресу мы пока не можем доставить заказ. Но вы можете посмотреть наше приложение и заказать по другому адресу</string>
+    <string name="first_address_selection_info_description">Информационное сообщение</string>
+    <string name="first_address_selection_find_location">Определить моё местоположение</string>
+    <string name="first_address_selection_start_shopping">Перейти к покупкам</string>
+    <string name="first_address_selection_access_location_permission_title">Местоположение пользователя</string>
+    <string name="first_address_selection_access_location_permission_description">Доступ к местоположению пользователя необходим для определения адреса доставки</string>
+    <string name="first_address_selection_access_location_permission_ok">Ок</string>
 </resources>

@@ -295,6 +295,14 @@ class FirstAddressSelectionActivity :
 
             override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) =
                 log("location status changed: $status")
+
+            override fun onProviderDisabled(provider: String) {
+                showAlertNoGps()
+            }
+
+            override fun onProviderEnabled(provider: String) {
+                log("location provider enabled")
+            }
         }
 
     @SuppressLint("MissingPermission")

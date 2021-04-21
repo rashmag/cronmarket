@@ -27,4 +27,5 @@
     <string name="first_address_selection_access_location_permission_title">Местоположение пользователя</string>
     <string name="first_address_selection_access_location_permission_description">Доступ к местоположению пользователя необходим для определения адреса доставки</string>
     <string name="first_address_selection_access_location_permission_ok">Ок</string>
+    <string name="main_special_offers_title">Акции от крон доставки</string>
 </resources>

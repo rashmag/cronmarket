@@ -136,7 +136,7 @@
         android:text="@string/first_address_selection_find_location"
         android:textColor="@color/brand"
         android:textSize="12sp"
-        app:layout_constraintBottom_toTopOf="@id/btn_first_address_selection_start_shopping"
+        app:layout_constraintBottom_toTopOf="@id/btn_first_address_selection_submit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/vg_first_address_selection_message"
@@ -154,7 +154,7 @@
         app:layout_constraintTop_toTopOf="@id/tv_first_address_selection_find_location" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_first_address_selection_start_shopping"
+        android:id="@+id/btn_first_address_selection_submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"

@@ -48,11 +48,11 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideDataManager(restService: RestService) =
-        DataManager(restService)
+    fun providePreferences(context: Context): SharedPreferences =
+        context.getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE)
 
     @Provides
     @Singleton
-    fun providePreferences(context: Context): SharedPreferences =
-        context.getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE)
+    fun provideDataManager(restService: RestService, sharedPreferences: SharedPreferences) =
+        DataManager(restService, sharedPreferences)
 }

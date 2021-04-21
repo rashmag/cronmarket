@@ -1,5 +1,6 @@
 package ooo.cron.delivery.screens.main_screen
 
+import ooo.cron.delivery.data.network.models.MarketCategory
 import ooo.cron.delivery.screens.base_mvp.MvpPresenter
 import ooo.cron.delivery.screens.base_mvp.MvpView
 
@@ -8,7 +9,17 @@ import ooo.cron.delivery.screens.base_mvp.MvpView
  */
 interface MainContract {
 
-    interface View : MvpView
+    interface View : MvpView {
+        fun showAnyErrorScreen()
+        fun showConnectionErrorScreen()
 
-    interface Presenter : MvpPresenter<View>
+        fun showSavedAddress()
+        fun showMarketCategories(categories: List<MarketCategory>)
+
+        fun removeMarketCategoriesProgress()
+    }
+
+    interface Presenter : MvpPresenter<View> {
+        fun onStartView()
+    }
 }

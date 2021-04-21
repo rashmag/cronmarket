@@ -19,10 +19,16 @@ interface FirstAddressSelectionContract {
         fun fillAddressField(address: String)
         fun getAddress(): String
         fun showAddressesPopup(suggestAddresses: List<SuggestAddress>)
-        fun dismissAddressPopup()
+        fun disableAddressPopup()
 
         fun startLocationProgress()
         fun stopLocationProgress()
+
+        fun disableCitySelection()
+        fun disableAddressField()
+        fun disableSubmitButton()
+
+        fun navigateMainScreen()
 
         fun showInfoMessage()
         fun showWarningMessage()
@@ -42,5 +48,7 @@ interface FirstAddressSelectionContract {
         fun onAddressChanged(typedAddress: String)
         fun onLocationUpdated(latitude: Double, longitude: Double)
         fun addressItemSelected(pos: Int)
+
+        fun onSubmitClicked()
     }
 }

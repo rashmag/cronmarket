@@ -26,6 +26,7 @@ import ooo.cron.delivery.data.network.models.City
 import ooo.cron.delivery.data.network.models.SuggestAddress
 import ooo.cron.delivery.databinding.ActivityFirstAddressSelectionBinding
 import ooo.cron.delivery.screens.BaseActivity
+import ooo.cron.delivery.screens.main_screen.MainActivity
 import javax.inject.Inject
 
 
@@ -57,6 +58,7 @@ class FirstAddressSelectionActivity :
         configureAddressField()
         configureAddressPopup()
         configureFindLocation()
+        configureSubmit()
     }
 
     override fun onStart() {
@@ -88,8 +90,8 @@ class FirstAddressSelectionActivity :
     }
 
     override fun showStartShopping() {
-        if (binding.btnFirstAddressSelectionStartShopping.isVisible.not())
-            binding.btnFirstAddressSelectionStartShopping.visibility = View.VISIBLE
+        if (binding.btnFirstAddressSelectionSubmit.isVisible.not())
+            binding.btnFirstAddressSelectionSubmit.visibility = View.VISIBLE
     }
 
     override fun fillAddressField(address: String) {
@@ -109,7 +111,7 @@ class FirstAddressSelectionActivity :
         addressesPopupWindow.show()
     }
 
-    override fun dismissAddressPopup() {
+    override fun disableAddressPopup() {
         addressesPopupWindow.dismiss()
     }
 
@@ -121,6 +123,23 @@ class FirstAddressSelectionActivity :
     override fun stopLocationProgress() {
         binding.tvFirstAddressSelectionFindLocation.visibility = View.INVISIBLE
         binding.pbFirstAddressSelectionLocationProgress.visibility = View.VISIBLE
+    }
+
+    override fun disableCitySelection() {
+        binding.spinnerFirstAddressSelectionCity.isEnabled = false
+    }
+
+    override fun disableAddressField() {
+        binding.etFirstAddressSelectionAddress.isEnabled = false
+    }
+
+    override fun disableSubmitButton() {
+        binding.btnFirstAddressSelectionSubmit.isEnabled = false
+    }
+
+    override fun navigateMainScreen() {
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
     }
 
     override fun showInfoMessage() {
@@ -179,6 +198,10 @@ class FirstAddressSelectionActivity :
     private fun configureFindLocation() =
         binding.tvFirstAddressSelectionFindLocation
             .setOnClickListener { checkLocationPermission() }
+
+    private fun configureSubmit() =
+        binding.btnFirstAddressSelectionSubmit
+            .setOnClickListener { presenter.onSubmitClicked() }
 
     private fun createSelectionCityListener(
         onItemSelected: (position: Int) -> Unit,

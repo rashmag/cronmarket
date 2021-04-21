@@ -1,5 +1,6 @@
 package ooo.cron.delivery.screens.first_address_selection_screen
 
+import android.util.Log
 import kotlinx.coroutines.*
 import ooo.cron.delivery.data.DataManager
 import ooo.cron.delivery.data.network.models.SuggestAddress
@@ -14,7 +15,8 @@ import javax.inject.Inject
 class FirstAddressSelectionPresenter @Inject constructor(
     private val dataManager: DataManager,
     private val citiesScope: CoroutineScope,
-    private val addressScope: CoroutineScope
+    private val addressScope: CoroutineScope,
+    private val submitScope: CoroutineScope
 ) :
     BaseMvpPresenter<FirstAddressSelectionContract.View>(),
     FirstAddressSelectionContract.Presenter {
@@ -41,12 +43,27 @@ class FirstAddressSelectionPresenter @Inject constructor(
     }
 
     override fun onAddressChanged(typedAddress: String) {
-        view?.dismissAddressPopup()
+        view?.disableAddressPopup()
 
         if (typedAddress.length > MIN_ADDRESS_LETTERS) {
             loadAddresses(typedAddress)
         } else if (typedAddress.isEmpty())
             view?.showInfoMessage()
+    }
+
+    override fun addressItemSelected(pos: Int) {
+        view?.fillAddressField(suggestedAddresses[pos].toString())
+        view?.disableAddressPopup()
+    }
+
+    override fun onSubmitClicked(): Unit {
+        disableInteractiveViews()
+        stopUpdateView()
+
+        submitScope.launch {
+            writeData()
+            view?.navigateMainScreen()
+        }
     }
 
     override fun onLocationUpdated(latitude: Double, longitude: Double) {
@@ -58,11 +75,6 @@ class FirstAddressSelectionPresenter @Inject constructor(
                 { view?.showAnyErrorScreen() }
             )
         }
-    }
-
-    override fun addressItemSelected(pos: Int) {
-        view?.fillAddressField(suggestedAddresses[pos].toString())
-        view?.dismissAddressPopup()
     }
 
     private fun loadCities() {
@@ -99,24 +111,46 @@ class FirstAddressSelectionPresenter @Inject constructor(
         if (isSuccessful && body() != null) {
             if (body()!!.isNotEmpty()) {
                 suggestedAddresses = body()!!.weedOutNullAddresses()
-                    view?.showAddressesPopup(suggestedAddresses)
+                view?.showAddressesPopup(suggestedAddresses)
             }
 
             view?.let {
-                if (suggestedAddresses.firstOrNull { address ->
-                        it.getAddress().contains(address.streetWithType)
-                    } == null) {
-                    it.showWarningMessage()
-                } else
+                if (it.getAddress().isValidAddress()) {
                     it.showSuccessMessage()
+                } else
+                    it.showWarningMessage()
             }
         } else {
             view?.showAnyErrorScreen()
         }
     }
 
+    private fun disableInteractiveViews() = view?.let {
+        it.disableCitySelection()
+        it.disableAddressField()
+        it.disableSubmitButton()
+    }
+
+    private fun stopUpdateView() {
+        citiesScope.cancel()
+        addressScope.cancel()
+    }
+
+    private suspend fun writeData() {
+        dataManager.writeChosenCity(selectedCity!!)
+        view?.let {
+            if (it.getAddress().isValidAddress())
+                dataManager.writeBuildingAddress(it.getAddress())
+        }
+    }
+
     private fun List<SuggestAddress>.weedOutNullAddresses() =
         filter { address -> address.streetWithType.isNullOrBlank().not() }
+
+    private fun String.isValidAddress() =
+        suggestedAddresses.firstOrNull { address ->
+            contains(address.streetWithType)
+        } != null
 
     companion object {
         const val MIN_ADDRESS_LETTERS = 2

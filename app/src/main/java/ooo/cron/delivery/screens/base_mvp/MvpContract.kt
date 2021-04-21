@@ -30,7 +30,7 @@ abstract class BaseMvpPresenter<V : MvpView> : MvpPresenter<V> {
 
     protected suspend fun withErrorsHandle(
         action: suspend () -> Unit,
-        onConnectionError: () -> Unit,
+        onConnectionError: (() -> Unit)? = null,
         onAnyError: () -> Unit
     ) {
         try {
@@ -38,7 +38,7 @@ abstract class BaseMvpPresenter<V : MvpView> : MvpPresenter<V> {
         } catch (e: Exception) {
             when (e) {
                 is UnknownHostException, is SocketTimeoutException ->
-                    onConnectionError()
+                    onConnectionError?.invoke()
                 is CancellationException -> showJobCancellationLogMessage(e)
                 else ->
                     onAnyError()

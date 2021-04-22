@@ -1,7 +1,7 @@
 package ooo.cron.delivery.screens.main_screen
 
-import android.util.Log
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import ooo.cron.delivery.data.DataManager
 import ooo.cron.delivery.data.network.models.MarketCategory
@@ -16,19 +16,39 @@ import javax.inject.Inject
 @MainScope
 class MainPresenter @Inject constructor(
     private val dataManager: DataManager,
-    private val marketCategoriesScope: CoroutineScope
+    private val mainScope: CoroutineScope,
 ) :
     BaseMvpPresenter<MainContract.View>(), MainContract.Presenter {
 
     private var marketCategories: List<MarketCategory>? = null
 
+    override fun detachView() {
+        super.detachView()
+        mainScope.cancel()
+    }
+
     override fun onStartView() {
         if (marketCategories != null)
             return
-        
-        marketCategoriesScope.launch {
+
+        mainScope.launch {
             val chosenCity = dataManager.readChosenCity()
             loadMarketCategories(chosenCity.id)
+        }
+
+        mainScope.launch {
+            val address = dataManager.readBuildingAddress()
+            if (address.isNullOrBlank().not())
+                view?.showSavedAddress(address!!)
+        }
+    }
+
+    override fun onClickAddress() {
+        mainScope.launch {
+            if (dataManager.readBuildingAddress().isNullOrBlank())
+                view?.navigateFirstAddressSelection()
+            else
+                view?.navigateAddressSelection()
         }
     }
 

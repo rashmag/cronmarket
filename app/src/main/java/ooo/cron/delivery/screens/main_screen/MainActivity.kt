@@ -1,11 +1,14 @@
 package ooo.cron.delivery.screens.main_screen
 
+import android.content.Intent
 import android.os.Bundle
 import com.google.android.material.tabs.TabLayout
 import ooo.cron.delivery.App
+import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.MarketCategory
 import ooo.cron.delivery.databinding.ActivityMainBinding
 import ooo.cron.delivery.screens.BaseActivity
+import ooo.cron.delivery.screens.first_address_selection_screen.FirstAddressSelectionActivity
 import javax.inject.Inject
 
 class MainActivity : BaseActivity(), MainContract.View {
@@ -21,6 +24,8 @@ class MainActivity : BaseActivity(), MainContract.View {
         presenter.attachView(this)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        configureAppBar()
     }
 
     override fun onStart() {
@@ -33,8 +38,9 @@ class MainActivity : BaseActivity(), MainContract.View {
         presenter.detachView()
     }
 
-    override fun showSavedAddress() {
-        TODO("Not yet implemented")
+    override fun showSavedAddress(address: String) {
+        binding.tvMainUserAddress.setBackgroundResource(R.drawable.bg_main_address_correct)
+        binding.tvMainUserAddress.text = address
     }
 
     override fun removeMarketCategoriesProgress() =
@@ -47,11 +53,28 @@ class MainActivity : BaseActivity(), MainContract.View {
         }
     }
 
+    override fun navigateFirstAddressSelection() {
+        startActivity(Intent(this, FirstAddressSelectionActivity::class.java))
+    }
+
+    override fun navigateAddressSelection() {
+        TODO("Not yet implemented")
+    }
+
     private fun injectDependencies() =
         App.appComponent.mainComponentBuilder()
             .bindInflater(layoutInflater)
             .build()
             .inject(this)
+
+    private fun configureAppBar() {
+        binding.abMain.outlineProvider = null
+        onAddressClick()
+    }
+
+    private fun onAddressClick() = binding.tvMainUserAddress.setOnClickListener {
+        presenter.onClickAddress()
+    }
 
     private fun TabLayout.clear() {
         if (tabCount > 0)

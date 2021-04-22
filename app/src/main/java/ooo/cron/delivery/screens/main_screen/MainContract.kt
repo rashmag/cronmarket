@@ -13,13 +13,18 @@ interface MainContract {
         fun showAnyErrorScreen()
         fun showConnectionErrorScreen()
 
-        fun showSavedAddress()
+        fun showSavedAddress(address: String)
         fun showMarketCategories(categories: List<MarketCategory>)
 
         fun removeMarketCategoriesProgress()
+
+        fun navigateFirstAddressSelection()
+        fun navigateAddressSelection()
     }
 
     interface Presenter : MvpPresenter<View> {
         fun onStartView()
+
+        fun onClickAddress()
     }
 }

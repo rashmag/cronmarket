@@ -23,6 +23,7 @@ class MarketCategoryPresenter @Inject constructor(
 
     private lateinit var marketCategory: MarketCategory
     private lateinit var city: City
+    private lateinit var tags: TagsResult
 
     override fun onStartView() {
         mainScope.launch {
@@ -30,92 +31,40 @@ class MarketCategoryPresenter @Inject constructor(
             initCity()
 
             withErrorsHandle(
-                { dataManager.getTagsResponse(city.id, marketCategory.id).handleTags() },
+                {
+                    initTags()
+                    onAllTagsClick()
+                },
                 { view?.showConnectionErrorScreen() },
                 { view?.showAnyErrorScreen() })
         }
     }
 
     override fun onTagClick(tag: Tag) {
-        mainScope.cancel()
         view?.showPartners(
-            PartnersDataSource(
-                onLoadInitial = { callback ->
-                    mainScope.launch {
-                        withErrorsHandle(
-                            {
-                                dataManager.getPartnersByTag(
-                                    city.id,
-                                    marketCategory.id,
-                                    tag.id,
-                                    0
-                                ).handlePartners(callback, 0)
-                            },
-                            { view?.showConnectionErrorScreen() },
-                            { view?.showAnyErrorScreen() }
-                        )
-                    }
-                },
-                onLoadAfter = { params, callback ->
-                    val startOffset = params.key
-                    mainScope.launch {
-                        withErrorsHandle(
-                            {
-                                dataManager.getPartnersByTag(
-                                    city.id,
-                                    marketCategory.id,
-                                    tag.id,
-                                    startOffset
-                                ).handlePartners(callback, startOffset)
-                            },
-                            { view?.showConnectionErrorScreen() },
-                            { view?.showAnyErrorScreen() }
-                        )
-                    }
-                }
-            ),
+            createDataSource { offset ->
+                dataManager.getPartnersByTag(
+                    city.id,
+                    marketCategory.id,
+                    tag.id,
+                    offset
+                )
+            },
             PREFETCH_DISTANCE,
             PARTNER_OFFSET_STEP
         )
     }
 
     override fun onAllTagsClick() {
-        mainScope.cancel()
         //TODO(MOVE DATASOURCE INSTANTIATION INTO VIEW)
         view?.showPartners(
-            PartnersDataSource(
-                onLoadInitial = { callback ->
-                    mainScope.launch {
-                        withErrorsHandle(
-                            {
-                                dataManager.getAllPartners(
-                                    city.id,
-                                    marketCategory.id,
-                                    0
-                                ).handlePartners(callback, 0)
-                            },
-                            { view?.showConnectionErrorScreen() },
-                            { view?.showAnyErrorScreen() }
-                        )
-                    }
-                },
-                onLoadAfter = { params, callback ->
-                    val startOffset = params.key
-                    mainScope.launch {
-                        withErrorsHandle(
-                            {
-                                dataManager.getAllPartners(
-                                    city.id,
-                                    marketCategory.id,
-                                    startOffset
-                                ).handlePartners(callback, startOffset)
-                            },
-                            { view?.showConnectionErrorScreen() },
-                            { view?.showAnyErrorScreen() }
-                        )
-                    }
-                }
-            ),
+            createDataSource { offset ->
+                dataManager.getAllPartners(
+                    city.id,
+                    marketCategory.id,
+                    offset
+                )
+            },
             PREFETCH_DISTANCE,
             PARTNER_OFFSET_STEP
         )
@@ -127,27 +76,64 @@ class MarketCategoryPresenter @Inject constructor(
 
     private fun initMarketCategory() {
         view?.let {
-            try {
-                marketCategory = MarketCategory(
-                    it.getMarketCategoryId()!!,
-                    it.getMarketCategoryName()!!
-                )
-            } catch (e: Exception) {
-                it.showAnyErrorScreen()
-            }
+            if (this::marketCategory.isInitialized.not())
+                try {
+                    marketCategory = MarketCategory(
+                        it.getMarketCategoryId()!!,
+                        it.getMarketCategoryName()!!
+                    )
+                } catch (e: Exception) {
+                    it.showAnyErrorScreen()
+                }
         }
     }
 
     private suspend fun initCity() {
-        city = dataManager.readChosenCity()
+        if (this::city.isInitialized.not())
+            city = dataManager.readChosenCity()
     }
+
+    private suspend fun initTags() {
+        if (this::tags.isInitialized.not())
+            dataManager.getTagsResponse(city.id, marketCategory.id).handleTags()
+    }
+
+    private fun createDataSource(request: suspend (offset: Int) -> Response<PartnerResult>) =
+        PartnersDataSource(
+            onLoadInitial = { callback ->
+                mainScope.launch {
+                    withErrorsHandle(
+                        {
+                            request(0)
+                                .handlePartners(callback, 0)
+                        },
+                        { view?.showConnectionErrorScreen() },
+                        { view?.showAnyErrorScreen() }
+                    )
+                }
+            },
+            onLoadAfter = { params, callback ->
+                val startOffset = params.key
+                mainScope.launch {
+                    withErrorsHandle(
+                        {
+                            request(startOffset)
+                                .handlePartners(callback, startOffset)
+                        },
+                        { view?.showConnectionErrorScreen() },
+                        { view?.showAnyErrorScreen() }
+                    )
+                }
+            }
+        )
 
     private fun Response<TagsResult>.handleTags() {
         view?.let {
             if (!isSuccessful)
                 return@handleTags it.showAnyErrorScreen()
 
-            it.showTags(this.body()!!)
+            tags = this.body()!!
+            it.showTags(tags)
         }
     }
 

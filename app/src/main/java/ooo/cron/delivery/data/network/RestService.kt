@@ -1,8 +1,6 @@
 package ooo.cron.delivery.data.network
 
-import ooo.cron.delivery.data.network.models.SuggestAddress
-import ooo.cron.delivery.data.network.models.City
-import ooo.cron.delivery.data.network.models.MarketCategory
+import ooo.cron.delivery.data.network.models.*
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -32,4 +30,31 @@ interface RestService {
     suspend fun getMarketCategories(
         @Query("CityId") cityId: String
     ): Response<List<MarketCategory>>
+
+    @GET("/api/v1/MainWindow/tags")
+    suspend fun getTags(
+        @Query("CityId") cityId: String,
+        @Query("MarketCategoryId") marketCategoryId: Int
+    ): Response<TagsResult>
+
+    @GET("/api/v1/MainWindow/partners")
+    suspend fun getPartners(
+        @Query("CityId") cityId: String,
+        @Query("MarketCategoryId") marketCategoryId: Int,
+        @Query("Offset") offset: Int,
+        @Query("Limit") limit: Int = PARTNERS_PAGINATION_LIMIT
+    ): Response<PartnerResult>
+
+    @GET("/api/v1/MainWindow/partners_by_tag")
+    suspend fun getPartnersByTag(
+        @Query("CityId") cityId: String,
+        @Query("MarketCategoryId") marketCategoryId: Int,
+        @Query("TagId") tagId: String,
+        @Query("Offset") offset: Int,
+        @Query("Limit") limit: Int = PARTNERS_PAGINATION_LIMIT
+    ): Response<PartnerResult>
+
+    companion object {
+        const val PARTNERS_PAGINATION_LIMIT = 15
+    }
 }

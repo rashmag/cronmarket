@@ -20,20 +20,10 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     fun showAnyErrorScreen() {
-        startActivity(
-            Intent(
-                this,
-                AnyErrorActivity::class.java
-            )
-        )
+        AnyErrorActivity.show(this)
     }
 
     fun showConnectionErrorScreen() {
-        startActivity(
-            Intent(
-                this,
-                ConnectionErrorActivity::class.java
-            )
-        )
+        ConnectionErrorActivity.show(this)
     }
 }

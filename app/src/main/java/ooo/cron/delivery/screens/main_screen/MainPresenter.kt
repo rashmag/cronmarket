@@ -63,8 +63,10 @@ class MainPresenter @Inject constructor(
             view?.showAnyErrorScreen()
             return
         }
+
         marketCategories = body()!!
         view?.showMarketCategories(marketCategories!!)
+        view?.startMarketCategoryFragment(marketCategories!!.first())
         view?.removeMarketCategoriesProgress()
     }
 }

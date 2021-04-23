@@ -18,6 +18,8 @@ interface MainContract {
 
         fun removeMarketCategoriesProgress()
 
+        fun startMarketCategoryFragment(category: MarketCategory)
+
         fun navigateFirstAddressSelection()
         fun navigateAddressSelection()
     }

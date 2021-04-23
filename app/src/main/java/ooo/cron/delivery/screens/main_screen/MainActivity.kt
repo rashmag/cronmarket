@@ -9,6 +9,7 @@ import ooo.cron.delivery.data.network.models.MarketCategory
 import ooo.cron.delivery.databinding.ActivityMainBinding
 import ooo.cron.delivery.screens.BaseActivity
 import ooo.cron.delivery.screens.first_address_selection_screen.FirstAddressSelectionActivity
+import ooo.cron.delivery.screens.market_category_screen.MarketCategoryFragment
 import javax.inject.Inject
 
 class MainActivity : BaseActivity(), MainContract.View {
@@ -44,13 +45,22 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
     override fun removeMarketCategoriesProgress() =
-        binding.root.removeView(binding.vgMainMarketCategoriesProgress.root)
+        binding.vgMainContent.removeView(binding.vgMainMarketCategoriesProgress.root)
 
     override fun showMarketCategories(categories: List<MarketCategory>) {
         binding.tlMainMarketCategories.apply {
             clear()
             fillTabs(categories)
         }
+    }
+
+    override fun startMarketCategoryFragment(category: MarketCategory) {
+        supportFragmentManager.beginTransaction().replace(
+            R.id.container_main,
+            MarketCategoryFragment().apply {
+                arguments = marketCategoryArguments(category)
+            }
+        ).commit()
     }
 
     override fun navigateFirstAddressSelection() {
@@ -85,4 +95,15 @@ class MainActivity : BaseActivity(), MainContract.View {
         categories.forEach { category ->
             addTab(newTab().setText(category.categoryName))
         }
+
+    private fun marketCategoryArguments(category: MarketCategory) = Bundle().apply {
+        putString(
+            MarketCategoryFragment.ARGUMENT_MARKET_CATEGORY_NAME,
+            category.categoryName
+        )
+        putInt(
+            MarketCategoryFragment.ARGUMENT_MARKET_CATEGORY_ID,
+            category.id
+        )
+    }
 }

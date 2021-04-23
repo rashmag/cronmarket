@@ -1,8 +1,11 @@
 package ooo.cron.delivery.screens.base_mvp
 
+import android.content.Context
+import android.content.Intent
 import android.view.View
 import android.widget.TextView
 import ooo.cron.delivery.R
+import ooo.cron.delivery.screens.any_error_screen.AnyErrorActivity
 import ooo.cron.delivery.screens.base_error_screen.BaseErrorActivity
 
 /**
@@ -23,5 +26,16 @@ class ConnectionErrorActivity : BaseErrorActivity() {
 
     override fun onSubmitClicked(view: View) {
         finish()
+    }
+
+    companion object {
+        fun show(context: Context) {
+            context.startActivity(
+                Intent(
+                    context,
+                    AnyErrorActivity::class.java
+                )
+            )
+        }
     }
 }

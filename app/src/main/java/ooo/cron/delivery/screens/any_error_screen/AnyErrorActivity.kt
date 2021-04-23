@@ -1,5 +1,7 @@
 package ooo.cron.delivery.screens.any_error_screen
 
+import android.content.Context
+import android.content.Intent
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.method.LinkMovementMethod
@@ -22,8 +24,18 @@ class AnyErrorActivity : BaseErrorActivity() {
     ).apply {
         val startClickableIndex = 94
         val endClickableIndex = 106
-        setSpan(clickableSpan(), startClickableIndex, endClickableIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        setSpan(foregroundSpan(), startClickableIndex, endClickableIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        setSpan(
+            clickableSpan(),
+            startClickableIndex,
+            endClickableIndex,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        setSpan(
+            foregroundSpan(),
+            startClickableIndex,
+            endClickableIndex,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
 
         tvErrorMessage.movementMethod = LinkMovementMethod.getInstance()
     }
@@ -43,4 +55,15 @@ class AnyErrorActivity : BaseErrorActivity() {
     private fun foregroundSpan() = ForegroundColorSpan(
         ContextCompat.getColor(this@AnyErrorActivity, R.color.brand)
     )
+
+    companion object {
+        fun show(context: Context) {
+            context.startActivity(
+                Intent(
+                    context,
+                    AnyErrorActivity::class.java
+                )
+            )
+        }
+    }
 }

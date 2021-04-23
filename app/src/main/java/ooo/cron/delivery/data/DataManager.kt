@@ -5,6 +5,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ooo.cron.delivery.data.network.RestService
 import ooo.cron.delivery.data.network.models.City
+import retrofit2.http.Query
 import javax.inject.Inject
 
 /**
@@ -19,17 +20,48 @@ class DataManager @Inject constructor(
         restService.getCities()
     }
 
-    suspend fun getSuggestAddress(kladrId: String, city: String) = withContext(Dispatchers.IO) {
+    suspend fun getSuggestAddress(
+        kladrId: String,
+        city: String
+    ) = withContext(Dispatchers.IO) {
         restService.getSuggestAddress(kladrId, city)
     }
 
-    suspend fun getSuggestAddress(latitude: Double, longitude: Double) =
+    suspend fun getSuggestAddress(
+        latitude: Double,
+        longitude: Double
+    ) =
         withContext(Dispatchers.IO) {
             restService.getSuggestAddress(latitude, longitude)
         }
 
     suspend fun getMarketCategories(cityId: String) = withContext(Dispatchers.IO) {
         restService.getMarketCategories(cityId)
+    }
+
+    suspend fun getTagsResponse(
+        cityId: String,
+        marketCategoryId: Int
+    ) =
+        withContext(Dispatchers.IO) {
+            restService.getTags(cityId, marketCategoryId)
+        }
+
+    suspend fun getAllPartners(
+        cityId: String,
+        marketCategoryId: Int,
+        offset: Int
+    ) = withContext(Dispatchers.IO) {
+        restService.getPartners(cityId, marketCategoryId, offset)
+    }
+
+    suspend fun getPartnersByTag(
+        cityId: String,
+        marketCategoryId: Int,
+        tagId: String,
+        offset: Int
+    ) = withContext(Dispatchers.IO) {
+        restService.getPartnersByTag(cityId, marketCategoryId, tagId, offset)
     }
 
     suspend fun writeChosenCity(city: City) = withContext(Dispatchers.IO) {
@@ -55,7 +87,7 @@ class DataManager @Inject constructor(
     }
 
     suspend fun readBuildingAddress() = withContext(Dispatchers.IO) {
-         sharedPreferences.getString(STREET_WITH_BUILDING,"")
+        sharedPreferences.getString(STREET_WITH_BUILDING, "")
     }
 
     companion object {

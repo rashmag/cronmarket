@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".screens.main_screen.MainActivity">
+    android:layout_height="match_parent">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/ab_main"
@@ -18,7 +18,9 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/tb_main"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize">
+            android:layout_height="?attr/actionBarSize"
+            app:layout_scrollFlags="scroll|enterAlways|snap"
+            >
 
             <TextView
                 android:id="@+id/tv_main_user_address"
@@ -26,46 +28,52 @@
                 android:layout_height="32dp"
                 android:layout_marginStart="18dp"
                 android:layout_marginEnd="18dp"
-                android:paddingStart="12dp"
-                android:paddingEnd="12sp"
+                android:background="@drawable/bg_main_address_incorrect"
                 android:drawableStart="@drawable/ic_main_address"
                 android:gravity="center"
+                android:paddingStart="12dp"
+                android:paddingEnd="12sp"
                 android:text="@string/main_address_incorrect"
                 android:textColor="@color/grey90"
-                android:textSize="14sp"
-                android:background="@drawable/bg_main_address_incorrect"
-                />
+                android:textSize="14sp" />
 
         </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tl_main_market_categories"
-        style="@style/Widget.App.TabLayout.MarketCategories"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/vg_main_content"
         android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:layout_marginTop="8dp"
-        android:background="@color/main_market_categories_background"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ab_main"
-        app:tabBackground="@drawable/bg_main_market_categories"
-        app:tabContentStart="@dimen/main_market_categories_left_space"
-        app:tabMode="scrollable" />
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context=".screens.main_screen.MainActivity">
 
-    <FrameLayout
-        android:id="@+id/container_main"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tl_main_market_categories" />
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tl_main_market_categories"
+            style="@style/Widget.App.TabLayout.MarketCategories"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/main_market_categories_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tabBackground="@drawable/bg_main_market_categories"
+            app:tabContentStart="@dimen/main_market_categories_left_space"
+            app:tabMode="scrollable" />
+
+        <FrameLayout
+            android:id="@+id/container_main"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tl_main_market_categories" />
 
         <include
-            layout="@layout/layout_progress"
             android:id="@+id/vg_main_market_categories_progress"
+            layout="@layout/layout_progress"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -73,4 +81,5 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

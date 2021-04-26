@@ -30,7 +30,7 @@ class FirstAddressSelectionPresenter @Inject constructor(
     }
 
     override fun onDestroyView() {
-        citiesScope.cancel()
+        citiesScope.coroutineContext.cancelChildren()
         view?.removeLocationUpdates()
     }
 
@@ -61,6 +61,7 @@ class FirstAddressSelectionPresenter @Inject constructor(
     }
 
     override fun onFindLocationClicked() {
+        view?.clearAddressField()
         view?.checkLocationPermission()
     }
 
@@ -79,6 +80,7 @@ class FirstAddressSelectionPresenter @Inject constructor(
     override fun onLocationProviderEnabled() {
         view?.startLocationProgress()
         view?.requestUserLocation()
+        view?.startLocationUpdateTimer()
     }
 
     override fun onLocationProviderDisabled() {
@@ -88,12 +90,15 @@ class FirstAddressSelectionPresenter @Inject constructor(
     override fun onLocationUpdated(latitude: Double, longitude: Double) {
         view?.stopLocationProgress()
         view?.removeLocationUpdates()
-        addressScope.launch {
-            withErrorsHandle(
-                { dataManager.getSuggestAddress(latitude, longitude).handleAddresses() },
-                { view?.showConnectionErrorScreen() },
-                { view?.showAnyErrorScreen() }
-            )
+        view?.stopLocationUpdateTimer()
+        loadAddresses(latitude, longitude)
+    }
+
+    override fun onLocationProviderUpdateTimerFinished() {
+        view?.removeLocationUpdates()
+        view?.stopLocationProgress()
+        view?.getLastKnownLocation()?.let { location ->
+            loadAddresses(location.latitude, location.longitude)
         }
     }
 
@@ -117,10 +122,24 @@ class FirstAddressSelectionPresenter @Inject constructor(
         }
     }
 
-    private fun loadAddresses(addressPart: String) = addressScope.launch {
-        selectedCity?.let {
+    private fun loadAddresses(addressPart: String) {
+        addressScope.coroutineContext.cancelChildren()
+        addressScope.launch {
+            selectedCity?.let {
+                withErrorsHandle(
+                    { dataManager.getSuggestAddress(it.kladrId, addressPart).handleAddresses() },
+                    { view?.showConnectionErrorScreen() },
+                    { view?.showAnyErrorScreen() }
+                )
+            }
+        }
+    }
+
+    private fun loadAddresses(latitude: Double, longitude: Double) {
+        addressScope.coroutineContext.cancelChildren()
+        addressScope.launch {
             withErrorsHandle(
-                { dataManager.getSuggestAddress(it.kladrId, addressPart).handleAddresses() },
+                { dataManager.getSuggestAddress(latitude, longitude).handleAddresses() },
                 { view?.showConnectionErrorScreen() },
                 { view?.showAnyErrorScreen() }
             )
@@ -141,7 +160,14 @@ class FirstAddressSelectionPresenter @Inject constructor(
         if (isSuccessful && body() != null) {
             if (body()!!.isNotEmpty()) {
                 suggestedAddresses = body()!!.weedOutNullAddresses()
-                view?.showAddressesPopup(suggestedAddresses)
+                if (suggestedAddresses.isNotEmpty()) {
+                    if (suggestedAddresses.firstOrNull { it.city == selectedCity?.city } != null) {
+                        view?.showAddressesPopup(suggestedAddresses)
+                    } else {
+                        view?.showWarningMessage()
+                    }
+                } else
+                    view?.showLocationNotFoundMessage()
             }
 
             view?.let {
@@ -162,8 +188,8 @@ class FirstAddressSelectionPresenter @Inject constructor(
     }
 
     private fun stopUpdateView() {
-        citiesScope.cancel()
-        addressScope.cancel()
+        citiesScope.coroutineContext.cancelChildren()
+        addressScope.coroutineContext.cancelChildren()
     }
 
     private suspend fun writeData() {

@@ -37,18 +37,16 @@ class FirstAddressSelectionActivity :
 
     @Inject
     lateinit var presenter: FirstAddressSelectionContract.Presenter
-
     @Inject
     lateinit var binding: ActivityFirstAddressSelectionBinding
-
     @Inject
     lateinit var addressesPopupWindow: ListPopupWindow
-
     @Inject
     lateinit var locationManager: LocationManager
-
     @Inject
     lateinit var locationListener: LocationListener
+    @Inject
+    lateinit var locationUpdateTimer: CountDownTimer
 
     private var updateAddressesPopupTimer: CountDownTimer? = null
 
@@ -171,6 +169,24 @@ class FirstAddressSelectionActivity :
     override fun requestUserLocation() {
         locationManager.requestGpsLocation(locationListener)
         locationManager.requestNetworkLocation(locationListener)
+        locationUpdateTimer.start()
+    }
+
+    override fun removeLocationUpdates() {
+        locationManager.removeUpdates(locationListener)
+    }
+
+    @SuppressLint("MissingPermission")
+    override fun getLastKnownLocation() =
+        locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)?:
+        locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
+
+    override fun startLocationUpdateTimer() {
+        locationUpdateTimer.start()
+    }
+
+    override fun stopLocationUpdateTimer() {
+        locationUpdateTimer.cancel()
     }
 
     override fun stopLocationProgress() {
@@ -181,10 +197,6 @@ class FirstAddressSelectionActivity :
     override fun startLocationProgress() {
         binding.tvFirstAddressSelectionFindLocation.visibility = View.INVISIBLE
         binding.pbFirstAddressSelectionLocationProgress.visibility = View.VISIBLE
-    }
-
-    override fun removeLocationUpdates() {
-        locationManager.removeUpdates(locationListener)
     }
 
     override fun showAlertGpsDisabled() {
@@ -223,6 +235,13 @@ class FirstAddressSelectionActivity :
         binding.tvFirstAddressSelectionMessage.text =
             getString(R.string.first_address_selection_warning_message)
     }
+
+    override fun showLocationNotFoundMessage() {
+        binding.vgFirstAddressSelectionMessage.setBackgroundResource(R.color.false_light)
+        binding.ivFirstAddressSelectionMessage.setImageResource(R.drawable.ic_first_address_selection_error)
+        binding.tvFirstAddressSelectionMessage.setTextColor(color(R.color.grey90))
+        binding.tvFirstAddressSelectionMessage.text =
+            getString(R.string.first_address_selection_location_error_message)    }
 
     override fun showSuccessMessage() {
         binding.vgFirstAddressSelectionMessage.setBackgroundResource(R.color.true_light)

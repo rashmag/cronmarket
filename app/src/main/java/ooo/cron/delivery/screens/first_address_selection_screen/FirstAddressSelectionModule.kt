@@ -5,6 +5,7 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.util.Log
 import androidx.appcompat.widget.ListPopupWindow
 import androidx.core.content.ContextCompat
@@ -46,6 +47,22 @@ interface FirstAddressSelectionModule {
 
             override fun onProviderEnabled(provider: String) {
                 Log.d(this::javaClass.name, "location provider enabled")
+            }
+        }
+
+        @Provides
+        @FirstAddressSelectionScope
+        fun provideLocationUpdateTimer(presenter: FirstAddressSelectionContract.Presenter): CountDownTimer {
+            val timerDoneTime = 10_000L
+            return object : CountDownTimer(timerDoneTime, timerDoneTime) {
+                override fun onTick(millisUntilFinished: Long) {
+                    Log.d(this::javaClass.name, "location update timer tick")
+                }
+
+                override fun onFinish() {
+                    presenter.onLocationProviderUpdateTimerFinished()
+                }
+
             }
         }
 

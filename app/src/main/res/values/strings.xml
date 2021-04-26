@@ -20,6 +20,7 @@
     <string name="first_address_selection_info_message">Укажите адрес доставки, чтобы мы были уверенны, что можем доставить до вас заказ</string>
     <string name="first_address_selection_success_message">Отлично! Давайте приступим к покупкам.</string>
     <string name="first_address_selection_error_message">К сожалению в городе %1$s пока нет нашей доставки. Выберите город из списка выше</string>
+    <string name="first_address_selection_location_error_message">К сожалению ваш адрес не был определен, введите пожалуйста адрес вручную</string>
     <string name="first_address_selection_warning_message">К сожалению по данному адресу мы пока не можем доставить заказ. Но вы можете посмотреть наше приложение и заказать по другому адресу</string>
     <string name="first_address_selection_info_description">Информационное сообщение</string>
     <string name="first_address_selection_find_location">Определить моё местоположение</string>

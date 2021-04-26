@@ -20,6 +20,7 @@ interface FirstAddressSelectionContract {
         fun getAddress(): String
         fun showAddressesPopup(suggestAddresses: List<SuggestAddress>)
         fun disableAddressPopup()
+        fun clearAddressField()
 
         fun startLocationProgress()
         fun stopLocationProgress()

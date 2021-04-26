@@ -115,6 +115,11 @@ class FirstAddressSelectionActivity :
         addressesPopupWindow.dismiss()
     }
 
+    override fun clearAddressField() {
+        binding.etFirstAddressSelectionAddress.text?.clear()
+        addressesPopupWindow.dismiss()
+    }
+
     override fun startLocationProgress() {
         binding.tvFirstAddressSelectionFindLocation.visibility = View.VISIBLE
         binding.pbFirstAddressSelectionLocationProgress.visibility = View.GONE
@@ -368,6 +373,6 @@ class FirstAddressSelectionActivity :
     }
 
     companion object {
-        const val ADDRESS_TYPE_WAITING_IN_MILLIS = 1000L
+        const val ADDRESS_TYPE_WAITING_IN_MILLIS = 300L
     }
 }

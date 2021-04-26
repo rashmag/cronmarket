@@ -1,6 +1,5 @@
 package ooo.cron.delivery.screens.first_address_selection_screen
 
-import android.util.Log
 import kotlinx.coroutines.*
 import ooo.cron.delivery.data.DataManager
 import ooo.cron.delivery.data.network.models.SuggestAddress
@@ -35,7 +34,11 @@ class FirstAddressSelectionPresenter @Inject constructor(
     }
 
     override fun onCitySelected(pos: Int) {
-        selectedCity = cities[pos]
+        if (selectedCity != cities[pos]) {
+            selectedCity = cities[pos]
+            suggestedAddresses = listOf()
+            view?.clearAddressField()
+        }
     }
 
     override fun onNoCitySelected() {

@@ -22,7 +22,7 @@ interface MarketCategoryContract {
     }
 
     interface Presenter: MvpPresenter<View> {
-        fun onStartView()
+        fun onViewCreated()
         fun onTagClick(tag: Tag)
         fun onAllTagsClick()
         fun onOtherTagsClick()

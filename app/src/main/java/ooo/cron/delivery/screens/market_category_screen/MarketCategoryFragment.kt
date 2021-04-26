@@ -46,9 +46,9 @@ class MarketCategoryFragment : BaseFragment(),
         configurePartnersList()
     }
 
-    override fun onStart() {
-        super.onStart()
-        presenter.onStartView()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        presenter.onViewCreated()
     }
 
     override fun onDestroy() {

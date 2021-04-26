@@ -25,7 +25,7 @@ class MarketCategoryPresenter @Inject constructor(
     private lateinit var city: City
     private lateinit var tags: TagsResult
 
-    override fun onStartView() {
+    override fun onViewCreated() {
         mainScope.launch {
             initMarketCategory()
             initCity()

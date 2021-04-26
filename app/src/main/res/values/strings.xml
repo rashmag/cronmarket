@@ -32,4 +32,5 @@
     <string name="market_category_special_offers">Акции от CronДоставки</string>
     <string name="market_category_all_tags">Все</string>
     <string name="market_category_partner_common_rating">0.0</string>
+    <string name="main_search">Поиск</string>
 </resources>

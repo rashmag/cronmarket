@@ -2,7 +2,6 @@ package ooo.cron.delivery.screens.market_category_screen
 
 import androidx.paging.PageKeyedDataSource
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import ooo.cron.delivery.data.DataManager
 import ooo.cron.delivery.data.network.RestService

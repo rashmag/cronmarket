@@ -27,10 +27,12 @@
     <string name="first_address_selection_access_location_permission_title">Местоположение пользователя</string>
     <string name="first_address_selection_access_location_permission_description">Доступ к местоположению пользователя необходим для определения адреса доставки</string>
     <string name="first_address_selection_access_location_permission_ok">Ок</string>
+
     <string name="main_special_offers_title">Акции от крон доставки</string>
     <string name="main_address_incorrect">Укажите адрес доставки</string>
+    <string name="main_search">Поиск</string>
+
     <string name="market_category_special_offers">Акции от CronДоставки</string>
     <string name="market_category_all_tags">Все</string>
     <string name="market_category_partner_common_rating">0.0</string>
-    <string name="main_search">Поиск</string>
 </resources>

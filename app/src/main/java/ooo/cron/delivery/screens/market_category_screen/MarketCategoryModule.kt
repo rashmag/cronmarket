@@ -16,6 +16,7 @@ import ooo.cron.delivery.databinding.FragmentMarketCategoryBinding
 interface MarketCategoryModule {
 
     @Binds
+    @MarketCategoryScope
     fun bindPresenter(presenter: MarketCategoryPresenter): MarketCategoryContract.Presenter
 
     @Module
@@ -26,6 +27,14 @@ interface MarketCategoryModule {
             .inflate(inflater)
 
         @Provides
-        fun mainScope() = CoroutineScope(Dispatchers.Main)
+        fun provideTagsAdapter(presenter: MarketCategoryContract.Presenter) =
+            TagsAdapter(
+                presenter::onTagClick,
+                presenter::onAllTagsClick,
+                presenter::onOtherTagsClick
+            )
+
+        @Provides
+        fun provideMainScope() = CoroutineScope(Dispatchers.Main)
     }
 }

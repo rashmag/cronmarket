@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import ooo.cron.delivery.App
 import ooo.cron.delivery.data.network.models.Partner
 import ooo.cron.delivery.data.network.models.TagsResult
@@ -28,6 +29,9 @@ class MarketCategoryFragment : BaseFragment(),
     @Inject
     lateinit var binding: FragmentMarketCategoryBinding
 
+    @Inject
+    lateinit var tagsAdapter: TagsAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         injectDependencies()
         presenter.attachView(this)
@@ -39,7 +43,6 @@ class MarketCategoryFragment : BaseFragment(),
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? = binding.root.apply {
-        configureTagsList()
         configurePartnersList()
     }
 
@@ -66,18 +69,16 @@ class MarketCategoryFragment : BaseFragment(),
         }
 
     override fun showTags(tags: TagsResult) {
-        (binding.rvMarketCategoryTags.adapter as TagsAdapter).update(tags)
-        (binding.rvMarketCategoryTags.adapter as TagsAdapter).notifyDataSetChanged()
+        tagsAdapter.update(tags)
+        tagsAdapter.notifyDataSetChanged()
     }
 
     override fun showPartners(
         dataSource: PartnersDataSource,
-        prefetchDistance: Int,
         pageSize: Int
     ) {
         val config = PagedList.Config.Builder()
             .setEnablePlaceholders(false)
-            .setPrefetchDistance(prefetchDistance)
             .setPageSize(pageSize)
             .build()
 
@@ -96,20 +97,19 @@ class MarketCategoryFragment : BaseFragment(),
             .inject(this)
     }
 
-    private fun configureTagsList() {
-        binding.rvMarketCategoryTags.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        binding.rvMarketCategoryTags.adapter = TagsAdapter(
-            presenter::onTagClick,
-            presenter::onAllTagsClick,
-            presenter::onOtherTagsClick
+    private fun configurePartnersList() {
+        binding.rvMarketCategoryPartners.setHasFixedSize(false)
+        binding.rvMarketCategoryPartners.layoutManager =
+            LinearLayoutManager(context!!, LinearLayoutManager.VERTICAL, false)
+        binding.rvMarketCategoryPartners.adapter = PartnersAdapter(
+            onCreateTags = this::configureTagsList
         )
     }
 
-    private fun configurePartnersList() {
-        binding.rvMarketCategoryPartners.layoutManager =
-            LinearLayoutManager(context!!, LinearLayoutManager.VERTICAL, false)
-        binding.rvMarketCategoryPartners.adapter = PartnersAdapter()
+    private fun configureTagsList(tagsList: RecyclerView) {
+        tagsList.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        tagsList.adapter = tagsAdapter
     }
 
     companion object {

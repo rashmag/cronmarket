@@ -15,7 +15,7 @@ interface MarketCategoryContract {
 
         fun showTags(tags: TagsResult)
 
-        fun showPartners(dataSource: PartnersDataSource, prefetchDistance: Int, pageSize: Int)
+        fun showPartners(dataSource: PartnersDataSource, pageSize: Int)
 
         fun showConnectionErrorScreen()
         fun showAnyErrorScreen()

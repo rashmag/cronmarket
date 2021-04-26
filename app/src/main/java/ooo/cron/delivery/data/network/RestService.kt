@@ -55,6 +55,6 @@ interface RestService {
     ): Response<PartnerResult>
 
     companion object {
-        const val PARTNERS_PAGINATION_LIMIT = 15
+        const val PARTNERS_PAGINATION_LIMIT = 3
     }
 }

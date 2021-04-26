@@ -50,7 +50,6 @@ class MarketCategoryPresenter @Inject constructor(
                     offset
                 )
             },
-            PREFETCH_DISTANCE,
             PARTNER_OFFSET_STEP
         )
     }
@@ -65,7 +64,6 @@ class MarketCategoryPresenter @Inject constructor(
                     offset
                 )
             },
-            PREFETCH_DISTANCE,
             PARTNER_OFFSET_STEP
         )
     }
@@ -166,6 +164,5 @@ class MarketCategoryPresenter @Inject constructor(
 
     companion object {
         const val PARTNER_OFFSET_STEP = RestService.PARTNERS_PAGINATION_LIMIT
-        const val PREFETCH_DISTANCE = 10
     }
 }

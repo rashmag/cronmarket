@@ -22,8 +22,16 @@ interface FirstAddressSelectionContract {
         fun disableAddressPopup()
         fun clearAddressField()
 
-        fun startLocationProgress()
+        fun checkLocationPermission()
+        fun requestLocationPermission()
+        fun showLocationPermissionExplanation()
+        fun checkLocationProviderEnabled()
+        fun requestUserLocation()
+
         fun stopLocationProgress()
+        fun startLocationProgress()
+        fun removeLocationUpdates()
+        fun showAlertGpsDisabled()
 
         fun disableCitySelection()
         fun disableAddressField()
@@ -47,8 +55,18 @@ interface FirstAddressSelectionContract {
         fun onNoCitySelected()
 
         fun onAddressChanged(typedAddress: String)
-        fun onLocationUpdated(latitude: Double, longitude: Double)
         fun addressItemSelected(pos: Int)
+
+        fun onFindLocationClicked()
+
+        fun onLocationPermissionGranted()
+        fun onLocationPermissionNotGranted()
+        fun onShouldShowLocationPermissionRationale()
+
+        fun onLocationProviderEnabled()
+        fun onLocationProviderDisabled()
+
+        fun onLocationUpdated(latitude: Double, longitude: Double)
 
         fun onSubmitClicked()
     }

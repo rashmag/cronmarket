@@ -2,10 +2,8 @@ package ooo.cron.delivery.screens.first_address_selection_screen
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
@@ -29,11 +27,9 @@ import ooo.cron.delivery.screens.BaseActivity
 import ooo.cron.delivery.screens.main_screen.MainActivity
 import javax.inject.Inject
 
-
 /**
  * Created by Ramazan Gadzhikadiev on 13.04.2021.
  */
-
 class FirstAddressSelectionActivity :
     BaseActivity(),
     ActivityCompat.OnRequestPermissionsResultCallback,
@@ -41,10 +37,18 @@ class FirstAddressSelectionActivity :
 
     @Inject
     lateinit var presenter: FirstAddressSelectionContract.Presenter
+
     @Inject
     lateinit var binding: ActivityFirstAddressSelectionBinding
+
     @Inject
     lateinit var addressesPopupWindow: ListPopupWindow
+
+    @Inject
+    lateinit var locationManager: LocationManager
+
+    @Inject
+    lateinit var locationListener: LocationListener
 
     private var updateAddressesPopupTimer: CountDownTimer? = null
 
@@ -75,9 +79,11 @@ class FirstAddressSelectionActivity :
         requestCode: Int,
         permissions: Array<out String>,
         grantResults: IntArray
-    ) = when (requestCode) {
-        App.LOCATION_PERMISSION_REQUEST_CODE -> findLocationIfPermissionGranted()
-        else -> super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    ) {
+        when (requestCode) {
+            App.LOCATION_PERMISSION_REQUEST_CODE -> presenter.onLocationPermissionGranted()
+            else -> super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        }
     }
 
     override fun showCities(cities: List<City>) {
@@ -120,14 +126,69 @@ class FirstAddressSelectionActivity :
         addressesPopupWindow.dismiss()
     }
 
-    override fun startLocationProgress() {
+    override fun checkLocationPermission() {
+        when {
+            isLocationPermissionGranted() ->
+                presenter.onLocationPermissionGranted()
+
+            ActivityCompat.shouldShowRequestPermissionRationale(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) -> presenter.onShouldShowLocationPermissionRationale()
+
+            else -> presenter.onLocationPermissionNotGranted()
+        }
+    }
+
+    override fun requestLocationPermission() {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+            App.LOCATION_PERMISSION_REQUEST_CODE
+        )
+    }
+
+    override fun showLocationPermissionExplanation() {
+        AlertDialog.Builder(this)
+            .setTitle(R.string.first_address_selection_access_location_permission_title)
+            .setMessage(R.string.first_address_selection_access_location_permission_description)
+            .setPositiveButton(R.string.first_address_selection_access_location_permission_ok) { _, _ ->
+                requestLocationPermission()
+            }
+            .create()
+            .show()
+    }
+
+
+    override fun checkLocationProviderEnabled() {
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            presenter.onLocationProviderEnabled()
+        } else {
+            presenter.onLocationProviderDisabled()
+        }
+    }
+
+    override fun requestUserLocation() {
+        locationManager.requestGpsLocation(locationListener)
+        locationManager.requestNetworkLocation(locationListener)
+    }
+
+    override fun stopLocationProgress() {
         binding.tvFirstAddressSelectionFindLocation.visibility = View.VISIBLE
         binding.pbFirstAddressSelectionLocationProgress.visibility = View.GONE
     }
 
-    override fun stopLocationProgress() {
+    override fun startLocationProgress() {
         binding.tvFirstAddressSelectionFindLocation.visibility = View.INVISIBLE
         binding.pbFirstAddressSelectionLocationProgress.visibility = View.VISIBLE
+    }
+
+    override fun removeLocationUpdates() {
+        locationManager.removeUpdates(locationListener)
+    }
+
+    override fun showAlertGpsDisabled() {
+        showAlertNoGps()
     }
 
     override fun disableCitySelection() {
@@ -173,7 +234,7 @@ class FirstAddressSelectionActivity :
 
     private fun injectDependencies() {
         App.appComponent.firstAddressSelectionBuilder()
-            .bindLayoutInflater(layoutInflater)
+            .context(this)
             .build()
             .inject(this)
     }
@@ -200,13 +261,17 @@ class FirstAddressSelectionActivity :
         }
     }
 
-    private fun configureFindLocation() =
+    private fun configureFindLocation() {
         binding.tvFirstAddressSelectionFindLocation
-            .setOnClickListener { checkLocationPermission() }
+            .setOnClickListener {
+                presenter.onFindLocationClicked()
+            }
+    }
 
-    private fun configureSubmit() =
+    private fun configureSubmit() {
         binding.btnFirstAddressSelectionSubmit
             .setOnClickListener { presenter.onSubmitClicked() }
+    }
 
     private fun createSelectionCityListener(
         onItemSelected: (position: Int) -> Unit,
@@ -218,9 +283,13 @@ class FirstAddressSelectionActivity :
                 view: View?,
                 position: Int,
                 id: Long
-            ) = onItemSelected(position)
+            ) {
+                onItemSelected(position)
+            }
 
-            override fun onNothingSelected(parent: AdapterView<*>?) = onNothingSelected()
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                onNothingSelected()
+            }
         }
 
     private fun updateCities(cities: List<City>) {
@@ -241,45 +310,15 @@ class FirstAddressSelectionActivity :
     private fun startNewAddressUpdateTimer(onFinish: () -> Unit) =
         object : CountDownTimer(ADDRESS_TYPE_WAITING_IN_MILLIS, ADDRESS_TYPE_WAITING_IN_MILLIS) {
 
-            override fun onTick(millisUntilFinished: Long) =
+            override fun onTick(millisUntilFinished: Long) {
                 log("update address pop up timer ticked $millisUntilFinished")
+            }
 
-            override fun onFinish() =
+            override fun onFinish() {
                 onFinish()
+            }
 
         }.start()
-
-    private fun checkLocationPermission() = when {
-        isLocationPermissionGranted() ->
-            requestUserLocation()
-
-        ActivityCompat.shouldShowRequestPermissionRationale(
-            this,
-            Manifest.permission.ACCESS_FINE_LOCATION
-        ) -> showLocationPermissionExplanation()
-
-        else -> requestLocationPermission()
-    }
-
-    private fun showLocationPermissionExplanation() = AlertDialog.Builder(this)
-        .setTitle(R.string.first_address_selection_access_location_permission_title)
-        .setMessage(R.string.first_address_selection_access_location_permission_description)
-        .setPositiveButton(R.string.first_address_selection_access_location_permission_ok) { _, _ ->
-            requestLocationPermission()
-        }
-        .create()
-        .show()
-
-    private fun requestLocationPermission() = ActivityCompat.requestPermissions(
-        this,
-        arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-        App.LOCATION_PERMISSION_REQUEST_CODE
-    )
-
-    private fun findLocationIfPermissionGranted() {
-        if (isLocationPermissionGranted())
-            requestUserLocation()
-    }
 
     private fun isLocationPermissionGranted() =
         isFineLocationGranted() && isCoarseLocationGranted()
@@ -294,62 +333,25 @@ class FirstAddressSelectionActivity :
         Manifest.permission.ACCESS_COARSE_LOCATION
     ) == PackageManager.PERMISSION_GRANTED
 
-    private fun requestUserLocation() {
-        val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
-
-        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-            && isLocationPermissionGranted()
-        ) {
-            stopLocationProgress()
-            requestUserLocation(locationManager)
-        } else {
-            showAlertNoGps()
-        }
-    }
-
-    private fun requestUserLocation(locationManager: LocationManager) {
-        locationManager.createLocationListener().also { listener ->
-            locationManager.requestGpsLocation(listener)
-            locationManager.requestNetworkLocation(listener)
-        }
-    }
-
-    private fun LocationManager.createLocationListener() =
-        object : LocationListener {
-            override fun onLocationChanged(location: Location) {
-                presenter.onLocationUpdated(location.latitude, location.longitude)
-                removeUpdates(this)
-            }
-
-            override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) =
-                log("location status changed: $status")
-
-            override fun onProviderDisabled(provider: String) {
-                showAlertNoGps()
-            }
-
-            override fun onProviderEnabled(provider: String) {
-                log("location provider enabled")
-            }
-        }
-
     @SuppressLint("MissingPermission")
-    private fun LocationManager.requestGpsLocation(locationListener: LocationListener) =
+    private fun LocationManager.requestGpsLocation(locationListener: LocationListener) {
         requestLocationUpdates(
             LocationManager.GPS_PROVIDER,
-            0L,
-            0f,
+            REQUEST_LOCATION_PERIOD_IN_MILLIS,
+            REQUEST_LOCATION_DISTANCE_IN_METERS,
             locationListener
         )
+    }
 
     @SuppressLint("MissingPermission")
-    private fun LocationManager.requestNetworkLocation(locationListener: LocationListener) =
+    private fun LocationManager.requestNetworkLocation(locationListener: LocationListener) {
         requestLocationUpdates(
             LocationManager.NETWORK_PROVIDER,
-            0L,
-            0f,
+            REQUEST_LOCATION_PERIOD_IN_MILLIS,
+            REQUEST_LOCATION_DISTANCE_IN_METERS,
             locationListener
         )
+    }
 
     private fun showAlertNoGps() {
         AlertDialog.Builder(this)
@@ -373,6 +375,8 @@ class FirstAddressSelectionActivity :
     }
 
     companion object {
+        const val REQUEST_LOCATION_PERIOD_IN_MILLIS = 10_000L
+        const val REQUEST_LOCATION_DISTANCE_IN_METERS = 20F
         const val ADDRESS_TYPE_WAITING_IN_MILLIS = 300L
     }
 }

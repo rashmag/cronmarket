@@ -31,6 +31,7 @@ class FirstAddressSelectionPresenter @Inject constructor(
 
     override fun onDestroyView() {
         citiesScope.cancel()
+        view?.removeLocationUpdates()
     }
 
     override fun onCitySelected(pos: Int) {
@@ -59,24 +60,50 @@ class FirstAddressSelectionPresenter @Inject constructor(
         view?.disableAddressPopup()
     }
 
-    override fun onSubmitClicked(): Unit {
-        disableInteractiveViews()
-        stopUpdateView()
+    override fun onFindLocationClicked() {
+        view?.checkLocationPermission()
+    }
 
-        submitScope.launch {
-            writeData()
-            view?.navigateMainScreen()
-        }
+    override fun onLocationPermissionGranted() {
+        view?.checkLocationProviderEnabled()
+    }
+
+    override fun onLocationPermissionNotGranted() {
+        view?.requestLocationPermission()
+    }
+
+    override fun onShouldShowLocationPermissionRationale() {
+        view?.showLocationPermissionExplanation()
+    }
+
+    override fun onLocationProviderEnabled() {
+        view?.startLocationProgress()
+        view?.requestUserLocation()
+    }
+
+    override fun onLocationProviderDisabled() {
+        view?.showAlertGpsDisabled()
     }
 
     override fun onLocationUpdated(latitude: Double, longitude: Double) {
-        view?.startLocationProgress()
+        view?.stopLocationProgress()
+        view?.removeLocationUpdates()
         addressScope.launch {
             withErrorsHandle(
                 { dataManager.getSuggestAddress(latitude, longitude).handleAddresses() },
                 { view?.showConnectionErrorScreen() },
                 { view?.showAnyErrorScreen() }
             )
+        }
+    }
+
+    override fun onSubmitClicked() {
+        disableInteractiveViews()
+        stopUpdateView()
+
+        submitScope.launch {
+            writeData()
+            view?.navigateMainScreen()
         }
     }
 
@@ -90,10 +117,10 @@ class FirstAddressSelectionPresenter @Inject constructor(
         }
     }
 
-    private fun loadAddresses(addressFragment: String) = addressScope.launch {
+    private fun loadAddresses(addressPart: String) = addressScope.launch {
         selectedCity?.let {
             withErrorsHandle(
-                { dataManager.getSuggestAddress(it.kladrId, addressFragment).handleAddresses() },
+                { dataManager.getSuggestAddress(it.kladrId, addressPart).handleAddresses() },
                 { view?.showConnectionErrorScreen() },
                 { view?.showAnyErrorScreen() }
             )
@@ -120,7 +147,7 @@ class FirstAddressSelectionPresenter @Inject constructor(
             view?.let {
                 if (it.getAddress().isValidAddress()) {
                     it.showSuccessMessage()
-                } else
+                } else if (it.getAddress().isNotEmpty())
                     it.showWarningMessage()
             }
         } else {
@@ -147,6 +174,7 @@ class FirstAddressSelectionPresenter @Inject constructor(
         }
     }
 
+    @Suppress("UselessCallOnNotNull")
     private fun List<SuggestAddress>.weedOutNullAddresses() =
         filter { address -> address.streetWithType.isNullOrBlank().not() }
 

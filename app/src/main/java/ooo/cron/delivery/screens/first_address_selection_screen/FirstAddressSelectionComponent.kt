@@ -1,7 +1,5 @@
 package ooo.cron.delivery.screens.first_address_selection_screen
 
-import android.content.Context
-import android.view.LayoutInflater
 import dagger.BindsInstance
 import dagger.Subcomponent
 
@@ -19,7 +17,7 @@ interface FirstAddressSelectionComponent {
     interface Builder {
 
         @BindsInstance
-        fun bindLayoutInflater(inflater: LayoutInflater): Builder
+        fun context(activity: FirstAddressSelectionActivity): Builder
 
         fun build(): FirstAddressSelectionComponent
     }

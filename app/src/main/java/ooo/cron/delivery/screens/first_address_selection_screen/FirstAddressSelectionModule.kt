@@ -1,7 +1,11 @@
 package ooo.cron.delivery.screens.first_address_selection_screen
 
 import android.content.Context
-import android.view.LayoutInflater
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
+import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.widget.ListPopupWindow
 import androidx.core.content.ContextCompat
 import dagger.Binds
@@ -28,8 +32,32 @@ interface FirstAddressSelectionModule {
     companion object {
         @Provides
         @FirstAddressSelectionScope
-        fun provideBinder(inflater: LayoutInflater): ActivityFirstAddressSelectionBinding =
-            ActivityFirstAddressSelectionBinding.inflate(inflater)
+        fun provideLocationListener(presenter: FirstAddressSelectionContract.Presenter) = object : LocationListener {
+            override fun onLocationChanged(location: Location) =
+                presenter.onLocationUpdated(location.latitude, location.longitude)
+
+            override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
+                Log.d(this::javaClass.name, "location status changed: $status")
+            }
+
+            override fun onProviderDisabled(provider: String) {
+                presenter.onLocationProviderDisabled()
+            }
+
+            override fun onProviderEnabled(provider: String) {
+                Log.d(this::javaClass.name, "location provider enabled")
+            }
+        }
+
+        @Provides
+        @FirstAddressSelectionScope
+        fun provideLocationManager(activity: FirstAddressSelectionActivity) =
+            activity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+        @Provides
+        @FirstAddressSelectionScope
+        fun provideBinder(activity: FirstAddressSelectionActivity): ActivityFirstAddressSelectionBinding =
+            ActivityFirstAddressSelectionBinding.inflate(activity.layoutInflater)
 
         @Provides
         fun provideMainScope() = CoroutineScope(Dispatchers.Main)

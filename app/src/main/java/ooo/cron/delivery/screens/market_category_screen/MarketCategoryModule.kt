@@ -1,11 +1,16 @@
 package ooo.cron.delivery.screens.market_category_screen
 
+import android.content.Context
 import android.view.LayoutInflater
+import androidx.appcompat.widget.ListPopupWindow
+import androidx.appcompat.widget.PopupMenu
+import androidx.core.content.ContextCompat
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import ooo.cron.delivery.R
 import ooo.cron.delivery.databinding.FragmentMarketCategoryBinding
 
 /**
@@ -23,15 +28,17 @@ interface MarketCategoryModule {
     companion object {
 
         @Provides
+        @MarketCategoryScope
         fun provideBinder(inflater: LayoutInflater) = FragmentMarketCategoryBinding
             .inflate(inflater)
 
         @Provides
-        fun provideTagsAdapter(presenter: MarketCategoryContract.Presenter) =
+        @MarketCategoryScope
+        fun provideTagsAdapter(
+            presenter: MarketCategoryContract.Presenter) =
             TagsAdapter(
                 presenter::onTagClick,
                 presenter::onAllTagsClick,
-                presenter::onOtherTagsClick
             )
 
         @Provides

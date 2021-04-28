@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Delivery</string>
+
+    <string name="enter_phone_title">Укажите номер</string>
+    <string name="enter_phone_for_auth_title">Введите номер телефона для авторизации</string>
+    <string name="next">Далее</string>
+    <string name="privacy_policy_text"><font color="#212529">Продолжая, я подтверждаю, что согласен с
+    </font> <font color="#0000ff"><u>правилами, условиями и политикой конфидециальности.</u></font></string>
 </resources>

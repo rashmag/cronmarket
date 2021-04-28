@@ -11,6 +11,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".screens.main_screen.MainActivity">
+
+        </activity>
+
+        <activity
+            android:name=".screens.login_screen.LoginActivity"
+            android:theme="@style/NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

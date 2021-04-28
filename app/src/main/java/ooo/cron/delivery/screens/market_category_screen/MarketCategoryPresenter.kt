@@ -142,7 +142,9 @@ class MarketCategoryPresenter @Inject constructor(
             callback.onResult(
                 body()?.partners ?: listOf(),
                 null,
-                startOffset + PARTNER_OFFSET_STEP
+                if (startOffset + PARTNER_OFFSET_STEP < body()!!.pagination.total)
+                    startOffset + PARTNER_OFFSET_STEP
+                else null
             )
         } else {
             view?.showAnyErrorScreen()
@@ -155,7 +157,8 @@ class MarketCategoryPresenter @Inject constructor(
     ) {
         if (isSuccessful) {
             val nextOffset =
-                if (startOffset < body()!!.pagination.total) startOffset + PARTNER_OFFSET_STEP
+                if (startOffset + PARTNER_OFFSET_STEP < body()!!.pagination.total)
+                    startOffset + PARTNER_OFFSET_STEP
                 else null
             callback.onResult(body()?.partners ?: listOf(), nextOffset)
         }

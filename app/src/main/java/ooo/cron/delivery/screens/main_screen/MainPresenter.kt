@@ -27,7 +27,7 @@ class MainPresenter @Inject constructor(
         mainScope.cancel()
     }
 
-    override fun onStartView() {
+    override fun onCreateView() {
         if (marketCategories != null)
             return
 
@@ -35,12 +35,18 @@ class MainPresenter @Inject constructor(
             val chosenCity = dataManager.readChosenCity()
             loadMarketCategories(chosenCity.id)
         }
+    }
 
+    override fun onStartView() {
         mainScope.launch {
             val address = dataManager.readBuildingAddress()
             if (address.isNullOrBlank().not())
                 view?.showSavedAddress(address!!)
         }
+    }
+
+    override fun onTabSelected(position: Int) {
+        view?.startMarketCategoryFragment(marketCategories!![position])
     }
 
     override fun onClickAddress() {

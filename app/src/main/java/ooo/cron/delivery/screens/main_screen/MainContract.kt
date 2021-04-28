@@ -25,8 +25,9 @@ interface MainContract {
     }
 
     interface Presenter : MvpPresenter<View> {
+        fun onCreateView()
         fun onStartView()
-
+        fun onTabSelected(position:Int)
         fun onClickAddress()
     }
 }

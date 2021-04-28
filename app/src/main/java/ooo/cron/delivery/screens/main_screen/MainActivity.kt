@@ -2,6 +2,7 @@ package ooo.cron.delivery.screens.main_screen
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import com.google.android.material.tabs.TabLayout
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
@@ -27,6 +28,7 @@ class MainActivity : BaseActivity(), MainContract.View {
         setContentView(binding.root)
 
         configureAppBar()
+        presenter.onCreateView()
     }
 
     override fun onStart() {
@@ -51,6 +53,20 @@ class MainActivity : BaseActivity(), MainContract.View {
         binding.tlMainMarketCategories.apply {
             clear()
             fillTabs(categories)
+            addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
+                override fun onTabSelected(tab: TabLayout.Tab?) {
+                    presenter.onTabSelected(tab!!.position)
+                }
+
+                override fun onTabUnselected(tab: TabLayout.Tab?) {
+                    Log.d(MainActivity::class.simpleName, "tab ${tab?.text} unselected")
+                }
+
+                override fun onTabReselected(tab: TabLayout.Tab?) {
+                    Log.d(MainActivity::class.simpleName, "tab ${tab?.text} reselected")
+                }
+
+            })
         }
     }
 

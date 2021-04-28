@@ -40,4 +40,5 @@
     <string name="market_category_rating_description">Рэйтинг</string>
     <string name="market_category_min_price_description">Минимальная стоимость заказа</string>
     <string name="market_category_partner_image_description">Изображение партнера</string>
+    <string name="market_category_partner_min_price">от %1$d₽</string>
 </resources>

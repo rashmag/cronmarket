@@ -104,7 +104,11 @@ class PartnersAdapter(
             binding.tvMarketCategoryPartnerTitle.text = partner.name
             binding.tvMarketCategoryPartnerShortDescription.text = partner.shortDescription
             binding.tvMarketCategoryPartnerRating.text = partner.rating.toString()
-            binding.tvMarketCategoryPartnerMinPrice.text = partner.minAmountOrder.toInt().toString()
+            binding.tvMarketCategoryPartnerMinPrice.text =
+                binding.root.context.getString(
+                    R.string.market_category_partner_min_price,
+                    partner.minAmountOrder.toInt()
+                )
 
             loadImage(partner)
             loadLogo(partner)

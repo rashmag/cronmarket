@@ -10,9 +10,9 @@ import androidx.recyclerview.widget.AdapterListUpdateCallback
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.ListUpdateCallback
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.Partner
-import ooo.cron.delivery.databinding.ItemMarketCategoryHeaderBinding
 import ooo.cron.delivery.databinding.ItemMarketCategoryPartnerBinding
 
 /**
@@ -21,7 +21,7 @@ import ooo.cron.delivery.databinding.ItemMarketCategoryPartnerBinding
 class PartnersAdapter(
     val onCreateTags: (tagsList: RecyclerView) -> Unit
 ) :
-    PagedListAdapter<Partner, RecyclerView.ViewHolder>(Partner.DIFF_CALBACK) {
+    PagedListAdapter<Partner, RecyclerView.ViewHolder>(Partner.DIFF_CALLBACK) {
 
     override fun getItem(position: Int): Partner? {
         return differ.getItem(position - 1)
@@ -69,7 +69,7 @@ class PartnersAdapter(
 
     val adapterCallback = AdapterListUpdateCallback(this)
 
-    val listUpdateCallback = object : ListUpdateCallback {
+    private val listUpdateCallback = object : ListUpdateCallback {
         override fun onInserted(position: Int, count: Int) {
             adapterCallback.onInserted(position + 1, count)
         }
@@ -87,9 +87,10 @@ class PartnersAdapter(
         }
     }
 
-    val differ = AsyncPagedListDiffer<Partner>(listUpdateCallback,
-        AsyncDifferConfig.Builder<Partner>(Partner.DIFF_CALBACK).build())
-
+    private val differ = AsyncPagedListDiffer(
+        listUpdateCallback,
+        AsyncDifferConfig.Builder(Partner.DIFF_CALLBACK).build()
+    )
 
     class HeaderViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView)
@@ -101,6 +102,35 @@ class PartnersAdapter(
 
         fun bind(partner: Partner) {
             binding.tvMarketCategoryPartnerTitle.text = partner.name
+            binding.tvMarketCategoryPartnerShortDescription.text = partner.shortDescription
+            binding.tvMarketCategoryPartnerRating.text = partner.rating.toString()
+            binding.tvMarketCategoryPartnerMinPrice.text = partner.minAmountOrder.toInt().toString()
+
+            loadImage(partner)
+            loadLogo(partner)
+
+        }
+
+        private fun loadImage(partner: Partner) {
+            if (partner.mainWinImg.isEmpty())
+                return
+
+            Glide.with(binding.root)
+                .load(partner.mainWinImg)
+                .centerCrop()
+                .into(binding.ivMarketCategoryPartner)
+        }
+
+        private fun loadLogo(partner: Partner) {
+            if (partner.logo.isEmpty())
+                return
+
+            Glide.with(binding.root)
+                .load(partner.logo)
+                .centerCrop()
+                .into(binding.ivMarketCategoryPartnerLogo)
+
+            binding.ivMarketCategoryPartnerLogo.visibility = View.VISIBLE
         }
     }
 }

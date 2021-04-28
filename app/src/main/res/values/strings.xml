@@ -37,4 +37,7 @@
     <string name="market_category_all_tags">Все</string>
     <string name="market_category_other_tags">…</string>
     <string name="market_category_partner_common_rating">0.0</string>
+    <string name="market_category_rating_description">Рэйтинг</string>
+    <string name="market_category_min_price_description">Минимальная стоимость заказа</string>
+    <string name="market_category_partner_image_description">Изображение партнера</string>
 </resources>

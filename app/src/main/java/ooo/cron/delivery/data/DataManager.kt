@@ -1,10 +1,16 @@
 package ooo.cron.delivery.data
 
+import ooo.cron.delivery.data.network.RestService
+import ooo.cron.delivery.data.network.request.ConfirmCodeReq
+import ooo.cron.delivery.data.network.request.SentCodeReq
+import ooo.cron.delivery.data.network.request.SetUserNameReq
+import ooo.cron.delivery.data.network.response.ConfirmCodeRes
 import android.content.SharedPreferences
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ooo.cron.delivery.data.network.RestService
 import ooo.cron.delivery.data.network.models.City
+import retrofit2.Call
 import retrofit2.http.Query
 import javax.inject.Inject
 
@@ -62,6 +68,18 @@ class DataManager @Inject constructor(
         offset: Int
     ) = withContext(Dispatchers.IO) {
         restService.getPartnersByTag(cityId, marketCategoryId, tagId, offset)
+    }
+
+    fun sentCode(sentCodeReq: SentCodeReq): Call<Void> {
+        return restService.sentCode(sentCodeReq)
+    }
+
+    fun sentConfirmCode(confirmCodeReq: ConfirmCodeReq): Call<ConfirmCodeRes> {
+        return restService.sentConfirmCode(confirmCodeReq)
+    }
+
+    fun setUserName(token: String,userName: SetUserNameReq): Call<Void> {
+        return restService.setUserName(token,userName)
     }
 
     suspend fun writeChosenCity(city: City) = withContext(Dispatchers.IO) {

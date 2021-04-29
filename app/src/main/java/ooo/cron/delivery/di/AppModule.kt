@@ -9,6 +9,8 @@ import okhttp3.logging.HttpLoggingInterceptor
 import ooo.cron.delivery.BuildConfig
 import ooo.cron.delivery.data.DataManager
 import ooo.cron.delivery.data.network.RestService
+import ooo.cron.delivery.data.network.errors.ApiErrorsUtils
+import ooo.cron.delivery.screens.main_screen.MainPresenter
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -55,4 +57,10 @@ class AppModule {
     @Singleton
     fun provideDataManager(restService: RestService, sharedPreferences: SharedPreferences) =
         DataManager(restService, sharedPreferences)
+
+    @Provides
+    @Singleton
+    fun provideApiErrorUtils(): ApiErrorsUtils {
+        return ApiErrorsUtils()
+    }
 }

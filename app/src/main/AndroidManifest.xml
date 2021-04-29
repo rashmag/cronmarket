@@ -15,9 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".screens.main_screen.MainActivity">
-
-        </activity>
+        <activity android:name=".screens.main_screen.MainActivity"/>
 
         <activity android:name=".screens.any_error_screen.AnyErrorActivity" />
 
@@ -29,6 +27,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".screens.login_screen.LoginActivity"/>
 
     </application>
 

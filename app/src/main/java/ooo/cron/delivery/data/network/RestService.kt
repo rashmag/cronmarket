@@ -1,9 +1,13 @@
 package ooo.cron.delivery.data.network
 
 import ooo.cron.delivery.data.network.models.*
+import ooo.cron.delivery.data.network.request.ConfirmCodeReq
+import ooo.cron.delivery.data.network.request.SentCodeReq
+import ooo.cron.delivery.data.network.request.SetUserNameReq
+import ooo.cron.delivery.data.network.response.ConfirmCodeRes
+import retrofit2.Call
 import retrofit2.Response
-import retrofit2.http.GET
-import retrofit2.http.Query
+import retrofit2.http.*
 
 /**
  * Created by Ramazan Gadzhikadiev on 13.04.2021.
@@ -53,6 +57,16 @@ interface RestService {
         @Query("Offset") offset: Int,
         @Query("Limit") limit: Int = PARTNERS_PAGINATION_LIMIT
     ): Response<PartnerResult>
+
+    @POST("Account/send_code")
+    fun sentCode(@Body sentCodeReq: SentCodeReq): Call<Void>
+
+
+    @POST("Account/confirm_code")
+    fun sentConfirmCode(@Body sentConformCodeReq: ConfirmCodeReq): Call<ConfirmCodeRes>
+
+    @POST("User/name")
+    fun setUserName(@Header("Authorization") token: String, @Body name: SetUserNameReq): Call<Void>
 
     companion object {
         const val PARTNERS_PAGINATION_LIMIT = 15

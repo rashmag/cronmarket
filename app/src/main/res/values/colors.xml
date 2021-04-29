@@ -8,6 +8,8 @@
     <color name="brand_light">#ED926B</color>
     <color name="main_dark">#F65F1E</color>
 
+    <color name="errors">#DE350B</color>
+
     <color name="white">#FFFFFF</color>
     <color name="grey2">#F8F9FA</color>
     <color name="grey10">#E9ECEF</color>

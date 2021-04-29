@@ -85,4 +85,9 @@ dependencies {
     //Duo navigation drawer
     def duo_navigation_drawer_version = '3.0.0'
     implementation "nl.psdcompany:duo-navigation-drawer:$duo_navigation_drawer_version"
+
+    //Phone Mask
+    def phone_mask_version = '3.4.2'
+    implementation "com.redmadrobot:inputmask:$phone_mask_version"
+
 }

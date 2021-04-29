@@ -3,6 +3,7 @@ package ooo.cron.delivery.screens.login_screen.login_fragments.confirm_phone_fra
 import ooo.cron.delivery.data.DataManager
 import ooo.cron.delivery.data.network.errors.ApiErrorsUtils
 import ooo.cron.delivery.data.network.request.ConfirmCodeReq
+import ooo.cron.delivery.data.network.request.SentCodeReq
 import ooo.cron.delivery.data.network.response.ConfirmCodeRes
 import ooo.cron.delivery.screens.base_mvp.BaseMvpPresenter
 import retrofit2.Call
@@ -41,5 +42,20 @@ class ConfirmPhonePresenter @Inject constructor(
                     }
                 }
             })
+    }
+
+    override fun sendPhone() {
+        dataManager.sentCode(SentCodeReq(view?.getPhone()!!)).enqueue(object : Callback<Void> {
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                //todo show error
+                println("sendcode error $t")
+            }
+
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if (!response.isSuccessful) {
+                    view?.showError(apiErrorsUtils.parseError(response))
+                }
+            }
+        })
     }
 }

@@ -58,14 +58,14 @@ interface RestService {
         @Query("Limit") limit: Int = PARTNERS_PAGINATION_LIMIT
     ): Response<PartnerResult>
 
-    @POST("Account/send_code")
+    @POST("/api/v1/Account/send_code")
     fun sentCode(@Body sentCodeReq: SentCodeReq): Call<Void>
 
 
-    @POST("Account/confirm_code")
+    @POST("/api/v1/Account/confirm_code")
     fun sentConfirmCode(@Body sentConformCodeReq: ConfirmCodeReq): Call<ConfirmCodeRes>
 
-    @POST("User/name")
+    @POST("/api/v1/User/name")
     fun setUserName(@Header("Authorization") token: String, @Body name: SetUserNameReq): Call<Void>
 
     companion object {

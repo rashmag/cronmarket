@@ -93,7 +93,7 @@ class ConfirmPhoneFragment : Fragment(R.layout.fragment_confirm_phone), ConfirmP
                         requireContext().getString(R.string.repeat_sent_code_title),
                         p0 / 1000
                     )
-                    setTextColor(ContextCompat.getColor(requireContext(), R.color.gray90))
+                    setTextColor(ContextCompat.getColor(requireContext(), R.color.grey90))
                     isClickable = false
                 }
             }

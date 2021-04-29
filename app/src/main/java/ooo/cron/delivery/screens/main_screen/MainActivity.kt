@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import com.google.android.material.tabs.TabLayout
+import kotlinx.android.synthetic.main.layout_drawer_menu.view.*
 import nl.psdcompany.duonavigationdrawer.widgets.DuoDrawerToggle
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
@@ -12,6 +13,7 @@ import ooo.cron.delivery.data.network.models.MarketCategory
 import ooo.cron.delivery.databinding.ActivityMainBinding
 import ooo.cron.delivery.screens.BaseActivity
 import ooo.cron.delivery.screens.first_address_selection_screen.FirstAddressSelectionActivity
+import ooo.cron.delivery.screens.login_screen.LoginActivity
 import ooo.cron.delivery.screens.market_category_screen.MarketCategoryFragment
 import javax.inject.Inject
 
@@ -114,6 +116,14 @@ class MainActivity : BaseActivity(), MainContract.View {
 
         binding.drawer.setDrawerListener(drawerToggle)
         drawerToggle.syncState()
+
+
+        binding.drawer.tv_drawer_profile.setOnClickListener {
+            startActivity(Intent(this, LoginActivity::class.java))
+        }
+        binding.drawer.tv_drawer_profile_log_in_out.setOnClickListener {
+            startActivity(Intent(this, LoginActivity::class.java))
+        }
 
         configureMenuItemsClick {
             //TODO()

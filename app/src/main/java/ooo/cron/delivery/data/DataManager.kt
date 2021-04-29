@@ -8,10 +8,8 @@ import ooo.cron.delivery.data.network.response.ConfirmCodeRes
 import android.content.SharedPreferences
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import ooo.cron.delivery.data.network.RestService
 import ooo.cron.delivery.data.network.models.City
 import retrofit2.Call
-import retrofit2.http.Query
 import javax.inject.Inject
 
 /**

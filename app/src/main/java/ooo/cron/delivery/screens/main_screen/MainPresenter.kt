@@ -51,10 +51,7 @@ class MainPresenter @Inject constructor(
 
     override fun onClickAddress() {
         mainScope.launch {
-            if (dataManager.readBuildingAddress().isNullOrBlank())
-                view?.navigateFirstAddressSelection()
-            else
-                view?.navigateAddressSelection()
+            view?.navigateFirstAddressSelection()
         }
     }
 

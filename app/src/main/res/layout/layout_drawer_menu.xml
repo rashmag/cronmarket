@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_dark"
+    android:tag="menu">
+
+    <ImageView
+        android:id="@+id/iv_drawer_logo"
+        android:layout_width="182dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="7dp"
+        android:contentDescription="@string/drawer_logo_image_description"
+        android:src="@drawable/ic_drawer_logo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_drawer_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="39dp"
+        android:layout_marginTop="42dp"
+        android:contentDescription="@string/drawer_profile_image_description"
+        android:src="@drawable/ic_drawer_profile"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_drawer_logo" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/DrawerMenuItem"
+        android:id="@+id/tv_drawer_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:text="@string/drawer_profile_name_unauthorized"
+        app:layout_constraintBottom_toBottomOf="@id/iv_drawer_profile"
+        app:layout_constraintStart_toEndOf="@id/iv_drawer_profile"
+        app:layout_constraintTop_toTopOf="@id/iv_drawer_profile" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/DrawerMenuItem"
+        android:id="@+id/tv_drawer_menu_item_shops"
+        android:layout_width="204dp"
+        android:layout_height="wrap_content"
+        android:paddingStart="19dp"
+        android:paddingEnd="19dp"
+        android:background="@drawable/bg_drawer_menu_item"
+        android:layout_marginTop="37dp"
+        android:layout_marginStart="36dp"
+        android:drawableStart="@drawable/ic_drawer_menu_item_shops"
+        android:text="@string/drawer_menu_item_shops"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider_top" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/DrawerMenuItem"
+        android:id="@+id/tv_drawer_menu_item_contacts"
+        android:layout_width="204dp"
+        android:layout_height="wrap_content"
+        android:paddingStart="19dp"
+        android:paddingEnd="19dp"
+        android:background="@drawable/bg_drawer_menu_item"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="36dp"
+        android:drawableStart="@drawable/ic_drawer_menu_item_contacts"
+        android:text="@string/drawer_menu_item_contacts"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_drawer_menu_item_shops" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/DrawerMenuItem"
+        android:id="@+id/tv_drawer_menu_item_about_us"
+        android:layout_width="204dp"
+        android:layout_height="wrap_content"
+        android:paddingStart="19dp"
+        android:paddingEnd="19dp"
+        android:background="@drawable/bg_drawer_menu_item"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="36dp"
+        android:drawableStart="@drawable/ic_drawer_menu_item_about_us"
+        android:text="@string/drawer_menu_item_about_us"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_drawer_menu_item_contacts" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/DrawerMenuItem"
+        android:id="@+id/tv_drawer_menu_item_vacancies"
+        android:layout_width="204dp"
+        android:layout_height="wrap_content"
+        android:paddingStart="19dp"
+        android:paddingEnd="19dp"
+        android:background="@drawable/bg_drawer_menu_item"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="36dp"
+        android:drawableStart="@drawable/ic_drawer_menu_item_vacancies"
+        android:text="@string/drawer_menu_item_vacancies"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_drawer_menu_item_about_us" />
+
+    <View
+        android:id="@+id/divider_top"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:layout_marginTop="17dp"
+        android:background="@color/grey2"
+        android:alpha="0.5"
+        app:layout_constraintTop_toBottomOf="@id/iv_drawer_profile"
+        app:layout_constraintStart_toStartOf="@id/tv_drawer_menu_item_shops"
+        app:layout_constraintEnd_toEndOf="@id/tv_drawer_menu_item_shops"/>
+
+    <View
+        android:id="@+id/divider_bottom"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:layout_marginTop="17dp"
+        android:background="@color/grey2"
+        android:alpha="0.5"
+        app:layout_constraintBottom_toTopOf="@id/tv_drawer_settings"
+        app:layout_constraintStart_toStartOf="@id/tv_drawer_menu_item_shops"
+        app:layout_constraintEnd_toEndOf="@id/tv_drawer_menu_item_shops"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/DrawerMenuItem"
+        android:id="@+id/tv_drawer_settings"
+        android:layout_width="204dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="36dp"
+        android:paddingStart="19dp"
+        android:paddingEnd="19dp"
+        android:background="@drawable/bg_drawer_menu_item"
+        android:drawableStart="@drawable/ic_drawer_settings"
+        android:text="@string/drawer_menu_settings"
+        app:layout_constraintBottom_toTopOf="@id/tv_drawer_profile_log_in_out"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/DrawerMenuItem"
+        android:id="@+id/tv_drawer_profile_log_in_out"
+        android:layout_width="204dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginBottom="76dp"
+        android:background="@drawable/bg_drawer_menu_item"
+        android:paddingStart="19dp"
+        android:paddingEnd="19dp"
+        android:drawableStart="@drawable/ic_drawer_log_in"
+        android:text="@string/drawer_log_in"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

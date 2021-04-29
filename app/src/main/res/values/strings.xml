@@ -41,4 +41,18 @@
     <string name="market_category_min_price_description">Минимальная стоимость заказа</string>
     <string name="market_category_partner_image_description">Изображение партнера</string>
     <string name="market_category_partner_min_price">от %1$d₽</string>
+    
+    <string name="navigation_drawer_open">navigation_drawer_open</string>
+    <string name="navigation_drawer_close">navigation_drawer_close</string>
+
+    <string name="drawer_logo_image_description">Логотип крон доставка</string>
+    <string name="drawer_profile_image_description">Профиль</string>
+
+    <string name="drawer_menu_item_shops">Магазины</string>
+    <string name="drawer_menu_item_contacts">Связаться с нами</string>
+    <string name="drawer_menu_item_about_us">О сервисе</string>
+    <string name="drawer_menu_item_vacancies">Стать курьером</string>
+    <string name="drawer_menu_settings">Настройки</string>
+    <string name="drawer_log_in">Вход / Регистрация</string>
+    <string name="drawer_profile_name_unauthorized">Вход \nне выполнен</string>
 </resources>

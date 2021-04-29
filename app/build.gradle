@@ -80,5 +80,9 @@ dependencies {
     //Glide
     def glide_version = '4.12.0'
     implementation "com.github.bumptech.glide:glide:$glide_version"
-    annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
+    kapt "com.github.bumptech.glide:compiler:$glide_version"
+
+    //Duo navigation drawer
+    def duo_navigation_drawer_version = '3.0.0'
+    implementation "nl.psdcompany:duo-navigation-drawer:$duo_navigation_drawer_version"
 }

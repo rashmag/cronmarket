@@ -3,7 +3,9 @@ package ooo.cron.delivery.screens.main_screen
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import com.google.android.material.tabs.TabLayout
+import nl.psdcompany.duonavigationdrawer.widgets.DuoDrawerToggle
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.MarketCategory
@@ -26,14 +28,17 @@ class MainActivity : BaseActivity(), MainContract.View {
         presenter.attachView(this)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
         configureAppBar()
+
+        configureNavigationDrawer()
+
         presenter.onCreateView()
     }
 
     override fun onStart() {
         super.onStart()
         presenter.onStartView()
+        binding.vgMainMenu.tvDrawerMenuItemShops.isSelected = true
     }
 
     override fun onDestroy() {
@@ -53,7 +58,7 @@ class MainActivity : BaseActivity(), MainContract.View {
         binding.tlMainMarketCategories.apply {
             clear()
             fillTabs(categories)
-            addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
+            addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
                 override fun onTabSelected(tab: TabLayout.Tab?) {
                     presenter.onTabSelected(tab!!.position)
                 }
@@ -98,6 +103,23 @@ class MainActivity : BaseActivity(), MainContract.View {
         onAddressClick()
     }
 
+    private fun configureNavigationDrawer() {
+        val drawerToggle = DuoDrawerToggle(
+            this@MainActivity,
+            binding.drawer,
+            binding.tbMain,
+            R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close
+        )
+
+        binding.drawer.setDrawerListener(drawerToggle)
+        drawerToggle.syncState()
+
+        configureMenuItemsClick {
+            //TODO()
+        }
+    }
+
     private fun onAddressClick() = binding.tvMainUserAddress.setOnClickListener {
         presenter.onClickAddress()
     }
@@ -121,5 +143,24 @@ class MainActivity : BaseActivity(), MainContract.View {
             MarketCategoryFragment.ARGUMENT_MARKET_CATEGORY_ID,
             category.id
         )
+    }
+
+    private fun configureMenuItemsClick(onClick: (menuItem: View) -> Unit) {
+        val menuItems = listOf(
+            binding.vgMainMenu.tvDrawerMenuItemShops,
+            binding.vgMainMenu.tvDrawerMenuItemContacts,
+            binding.vgMainMenu.tvDrawerMenuItemAboutUs,
+            binding.vgMainMenu.tvDrawerMenuItemVacancies
+        )
+
+        menuItems.forEach {
+            it.setOnClickListener {clickedView ->
+                menuItems.forEach { item ->
+                    item.isSelected = item == clickedView
+                }
+
+                onClick(clickedView)
+            }
+        }
     }
 }

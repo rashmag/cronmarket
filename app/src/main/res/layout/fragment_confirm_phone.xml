@@ -5,12 +5,12 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/tv_enter_phone"
+        android:id="@+id/tv_confirm_phone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="@string/enter_phone_title"
+        android:text="@string/confirm_phone_title"
         android:textColor="@color/gray90"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -18,34 +18,33 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/tv_on_phone_send_code"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
-        android:text="@string/enter_phone_for_auth_title"
+        android:text="@string/sms_sent_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_enter_phone" />
+        app:layout_constraintTop_toBottomOf="@id/tv_confirm_phone" />
 
 
     <EditText
-        android:id="@+id/et_phone"
-        style="@style/Widget.AppCompat.EditText"
+        android:id="@+id/et_code"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:hint="+7 (___) ___-__-__"
+        android:hint="@string/code_from_sms_title"
         android:inputType="phone"
-        android:maxLength="18"
+        android:maxLength="6"
         android:background="@drawable/bg_edit_text_selector"
         android:textColorHint="@color/gray50"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_on_phone_send_code" />
 
     <TextView
         android:id="@+id/tv_error"
@@ -60,7 +59,7 @@
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/et_phone"/>
+        app:layout_constraintTop_toBottomOf="@id/et_code"/>
 
     <Button
         android:id="@+id/btn_next"
@@ -70,7 +69,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/bg_next_button_selector"
-        android:text="@string/next_title"
+        android:text="@string/confirm_title"
         android:textColor="@drawable/bg_next_button_text_selector"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -79,13 +78,13 @@
 
 
     <TextView
-        android:id="@+id/tv_privacy_policy"
+        android:id="@+id/tv_timer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:text="@string/privacy_policy_text"
+        android:text="@string/repeat_sent_code_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_next" />

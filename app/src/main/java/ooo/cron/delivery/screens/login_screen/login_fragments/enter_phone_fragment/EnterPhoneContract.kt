@@ -13,12 +13,12 @@ interface EnterPhoneContract {
 
     interface View : MvpView {
         fun getPhone(): String
-        fun showError()
+        fun showError(message:String)
+        fun startNextScreen()
     }
 
 
     interface Presenter : MvpPresenter<View> {
         fun sendPhone()
-
     }
 }

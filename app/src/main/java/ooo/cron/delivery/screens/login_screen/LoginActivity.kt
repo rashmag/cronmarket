@@ -17,5 +17,23 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         viewPager.adapter = LoginViewPagerAdapter(supportFragmentManager)
+        onBackClick()
+    }
+
+    private fun onBackClick() {
+        iv_back.setOnClickListener {
+            if (viewPager.currentItem != 0) {
+                viewPager.setCurrentItem(viewPager.currentItem - 1, true)
+            } else {
+                onBackPressed()
+            }
+        }
+    }
+
+
+    fun setViewPagerPosition(position: Int) {
+        viewPager.post {
+            viewPager.setCurrentItem(position, true)
+        }
     }
 }

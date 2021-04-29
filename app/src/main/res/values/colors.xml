@@ -11,4 +11,5 @@
     <color name="gray40">#ADB5BD</color>
     <color name="gray10">#E9ECEF</color>
     <color name="white">#FFFFFF</color>
+    <color name="errors">#DE350B</color>
 </resources>

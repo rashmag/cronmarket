@@ -2,8 +2,18 @@
     <string name="app_name">Delivery</string>
 
     <string name="enter_phone_title">Укажите номер</string>
+    <string name="confirm_phone_title">Подтвердите номер</string>
+    <string name="whats_your_name_title">Как вас зовут?</string>
+    <string name="enter_your_name_title">Введите ваше имя, чтобы мы могли к вам правильно обращаться</string>
+    <string name="code_from_sms_title">Код из смс</string>
+    <string name="your_name_title">Ваше имя</string>
+    <string name="sms_sent_title">На номер %1$s отправлено СМС с кодом подтверждения. Введите его, чтобы войти</string>
     <string name="enter_phone_for_auth_title">Введите номер телефона для авторизации</string>
-    <string name="next">Далее</string>
+    <string name="next_title">Далее</string>
+    <string name="confirm_title">Подтвердить</string>
+    <string name="done_title">Готово</string>
     <string name="privacy_policy_text"><font color="#212529">Продолжая, я подтверждаю, что согласен с
     </font> <font color="#0000ff"><u>правилами, условиями и политикой конфидециальности.</u></font></string>
+
+    <string name="repeat_sent_code_title">Выслать код повторно можно через %1$d сек</string>
 </resources>

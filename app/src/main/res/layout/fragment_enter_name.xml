@@ -5,12 +5,12 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/tv_enter_phone"
+        android:id="@+id/tv_enter_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="@string/enter_phone_title"
+        android:text="@string/whats_your_name_title"
         android:textColor="@color/gray90"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -24,43 +24,29 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
-        android:text="@string/enter_phone_for_auth_title"
+        android:text="@string/enter_your_name_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_enter_phone" />
+        app:layout_constraintTop_toBottomOf="@id/tv_enter_name" />
 
 
     <EditText
-        android:id="@+id/et_phone"
+        android:id="@+id/et_name"
         style="@style/Widget.AppCompat.EditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:hint="+7 (___) ___-__-__"
-        android:inputType="phone"
-        android:maxLength="18"
+        android:hint="@string/your_name_title"
+        android:inputType="textPersonName"
+        android:maxLength="25"
         android:background="@drawable/bg_edit_text_selector"
         android:textColorHint="@color/gray50"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
-    <TextView
-        android:id="@+id/tv_error"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:textColor="@color/errors"
-        android:drawableStart="@drawable/ic_error"
-        android:textSize="12sp"
-        android:drawablePadding="4dp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/et_phone"/>
 
     <Button
         android:id="@+id/btn_next"
@@ -70,24 +56,11 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/bg_next_button_selector"
-        android:text="@string/next_title"
+        android:text="@string/done_title"
         android:textColor="@drawable/bg_next_button_text_selector"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_error" />
-
-
-    <TextView
-        android:id="@+id/tv_privacy_policy"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="@string/privacy_policy_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_next" />
+        app:layout_constraintTop_toBottomOf="@+id/et_name" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

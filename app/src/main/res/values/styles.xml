@@ -52,4 +52,13 @@
         <item name="android:textColor">@color/drawer_menu_item</item>
         <item name="android:textStyle">bold</item>
     </style>
+
+
+    <style name="BottomSheetDialogTheme" parent="Theme.Design.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
+    </style>
+
+    <style name="BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bg_bottom_sheet_rounded_corners</item>
+    </style>
 </resources>

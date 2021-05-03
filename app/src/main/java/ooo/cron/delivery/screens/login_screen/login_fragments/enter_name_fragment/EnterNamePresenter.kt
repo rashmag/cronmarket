@@ -22,7 +22,10 @@ class EnterNamePresenter @Inject constructor(
     BaseMvpPresenter<EnterNameContract.View>(), EnterNameContract.Presenter {
 
     override fun sentUserName() {
-        dataManager.setUserName(view?.getToken()!!, SetUserNameReq(view?.getUserName()!!))
+        dataManager.setUserName(
+            accessTokenParameter(),
+            SetUserNameReq(view?.getUserName()!!)
+        )
             .enqueue(object : Callback<Void> {
                 override fun onFailure(call: Call<Void>, t: Throwable) {
                     //todo show error
@@ -37,4 +40,7 @@ class EnterNamePresenter @Inject constructor(
                 }
             })
     }
+
+    private fun accessTokenParameter() =
+        "Bearer ${dataManager.readToken().accessToken}"
 }

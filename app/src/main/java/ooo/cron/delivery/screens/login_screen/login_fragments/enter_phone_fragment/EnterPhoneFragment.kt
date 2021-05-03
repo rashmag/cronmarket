@@ -13,8 +13,6 @@ import kotlinx.android.synthetic.main.fragment_enter_phone.*
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
 import ooo.cron.delivery.screens.login_screen.LoginActivity
-import ooo.cron.delivery.utils.Constants
-import ooo.cron.delivery.utils.Shared
 import ooo.cron.delivery.utils.Utils
 import javax.inject.Inject
 
@@ -82,7 +80,6 @@ class EnterPhoneFragment : Fragment(R.layout.fragment_enter_phone), EnterPhoneCo
 
 
     override fun getPhone(): String {
-        Shared.setStringValue(requireContext(), Constants.USER_PHONE, Utils.phoneReplace(et_phone))
         return Utils.phoneReplace(et_phone)
     }
 

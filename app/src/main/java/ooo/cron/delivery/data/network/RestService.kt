@@ -4,7 +4,6 @@ import ooo.cron.delivery.data.network.models.*
 import ooo.cron.delivery.data.network.request.ConfirmCodeReq
 import ooo.cron.delivery.data.network.request.SentCodeReq
 import ooo.cron.delivery.data.network.request.SetUserNameReq
-import ooo.cron.delivery.data.network.response.ConfirmCodeRes
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
@@ -63,7 +62,7 @@ interface RestService {
 
 
     @POST("/api/v1/Account/confirm_code")
-    fun sentConfirmCode(@Body sentConformCodeReq: ConfirmCodeReq): Call<ConfirmCodeRes>
+    fun sentConfirmCode(@Body sentConformCodeReq: ConfirmCodeReq): Call<RefreshableToken>
 
     @POST("/api/v1/User/name")
     fun setUserName(@Header("Authorization") token: String, @Body name: SetUserNameReq): Call<Void>

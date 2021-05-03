@@ -4,11 +4,11 @@ import ooo.cron.delivery.data.network.RestService
 import ooo.cron.delivery.data.network.request.ConfirmCodeReq
 import ooo.cron.delivery.data.network.request.SentCodeReq
 import ooo.cron.delivery.data.network.request.SetUserNameReq
-import ooo.cron.delivery.data.network.response.ConfirmCodeRes
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ooo.cron.delivery.data.network.SPrefsService
 import ooo.cron.delivery.data.network.models.City
+import ooo.cron.delivery.data.network.models.RefreshableToken
 import retrofit2.Call
 import javax.inject.Inject
 
@@ -77,7 +77,7 @@ class DataManager @Inject constructor(
         return restService.sentCode(sentCodeReq)
     }
 
-    fun sentConfirmCode(confirmCodeReq: ConfirmCodeReq): Call<ConfirmCodeRes> {
+    fun sentConfirmCode(confirmCodeReq: ConfirmCodeReq): Call<RefreshableToken> {
         return restService.sentConfirmCode(confirmCodeReq)
     }
 
@@ -104,4 +104,18 @@ class DataManager @Inject constructor(
         withContext(Dispatchers.IO) {
             sPrefsService.readBuildingAddress()
         }
+
+    fun readUserPhone()=
+        sPrefsService.readUserPhone()
+
+    fun writeUserPhone(phone: String) {
+        sPrefsService.writeUserPhone(phone)
+    }
+
+    fun writeToken(token: RefreshableToken) {
+        sPrefsService.writeToken(token)
+    }
+
+    fun readToken() =
+        sPrefsService.readToken()
 }

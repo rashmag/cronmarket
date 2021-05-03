@@ -12,10 +12,7 @@ import kotlinx.android.synthetic.main.fragment_confirm_phone.btn_next
 import kotlinx.android.synthetic.main.fragment_confirm_phone.tv_error
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
-import ooo.cron.delivery.data.network.response.ConfirmCodeRes
 import ooo.cron.delivery.screens.login_screen.LoginActivity
-import ooo.cron.delivery.utils.Constants
-import ooo.cron.delivery.utils.Shared
 import ooo.cron.delivery.utils.Utils
 import javax.inject.Inject
 
@@ -37,16 +34,15 @@ class ConfirmPhoneFragment : Fragment(R.layout.fragment_confirm_phone), ConfirmP
         presenter.attachView(this)
         super.onViewCreated(view, savedInstanceState)
         initViews()
+    }
 
+    override fun onResume() {
+        super.onResume()
+        initSendPhoneText()
+        initCountDownTimer()
     }
 
     private fun initViews() {
-        tv_on_phone_send_code.text = String.format(
-            requireContext().getString(R.string.sms_sent_title),
-            Shared.getStringValue(requireContext(), Constants.USER_PHONE)
-        )
-
-
         btn_next.setOnClickListener {
             Utils.hideKeyboard(requireActivity())
             presenter.sendConfirmCode()
@@ -68,9 +64,11 @@ class ConfirmPhoneFragment : Fragment(R.layout.fragment_confirm_phone), ConfirmP
 
     }
 
-    override fun onResume() {
-        super.onResume()
-        initCountDownTimer()
+    private fun initSendPhoneText() {
+        tv_on_phone_send_code.text = String.format(
+            requireContext().getString(R.string.sms_sent_title),
+            presenter.getUserPhone()
+        )
     }
 
     private fun initCountDownTimer() {
@@ -115,15 +113,7 @@ class ConfirmPhoneFragment : Fragment(R.layout.fragment_confirm_phone), ConfirmP
         return et_code.text.toString()
     }
 
-    override fun getPhone(): String {
-        return Shared.getStringValue(requireContext(), Constants.USER_PHONE)!!
-    }
-
-    override fun showNextScreen(body: ConfirmCodeRes) {
-        Shared.apply {
-            setStringValue(requireContext(), Constants.ACCESS_TOKEN, body.accessToken)
-            setStringValue(requireContext(), Constants.REFRESH_TOKEN, body.refreshToken)
-        }
+    override fun showNextScreen() {
         (activity as LoginActivity).setViewPagerPosition(2)
     }
 

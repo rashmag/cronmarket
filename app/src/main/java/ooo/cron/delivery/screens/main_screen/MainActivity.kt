@@ -108,20 +108,20 @@ class MainActivity : BaseActivity(), MainContract.View {
     private fun configureNavigationDrawer() {
         val drawerToggle = DuoDrawerToggle(
             this@MainActivity,
-            binding.drawer,
+            binding.drawerMain,
             binding.tbMain,
             R.string.navigation_drawer_open,
             R.string.navigation_drawer_close
         )
 
-        binding.drawer.setDrawerListener(drawerToggle)
+        binding.drawerMain.setDrawerListener(drawerToggle)
         drawerToggle.syncState()
 
 
-        binding.drawer.tv_drawer_profile.setOnClickListener {
+        binding.drawerMain.tv_drawer_profile.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
         }
-        binding.drawer.tv_drawer_profile_log_in_out.setOnClickListener {
+        binding.drawerMain.tv_drawer_profile_log_in_out.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
         }
 

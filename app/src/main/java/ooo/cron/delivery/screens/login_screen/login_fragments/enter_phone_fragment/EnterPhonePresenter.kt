@@ -23,7 +23,9 @@ class EnterPhonePresenter @Inject constructor(
 
 
     override fun sendPhone() {
-        dataManager.sentCode(SentCodeReq(view?.getPhone()!!)).enqueue(object : Callback<Void> {
+        val userPhoneNumber = view?.getPhone()!!
+        dataManager.writeUserPhone(userPhoneNumber)
+        dataManager.sentCode(SentCodeReq(userPhoneNumber)).enqueue(object : Callback<Void> {
             override fun onFailure(call: Call<Void>, t: Throwable) {
                 //todo show error
                 println("sendcode error $t")

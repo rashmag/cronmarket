@@ -5,13 +5,11 @@ import android.os.CountDownTimer
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_confirm_phone.*
 import kotlinx.android.synthetic.main.fragment_confirm_phone.btn_next
 import kotlinx.android.synthetic.main.fragment_confirm_phone.tv_error
-import kotlinx.android.synthetic.main.fragment_enter_phone.*
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.response.ConfirmCodeRes
@@ -31,6 +29,8 @@ class ConfirmPhoneFragment : Fragment(R.layout.fragment_confirm_phone), ConfirmP
 
     @Inject
     lateinit var presenter: ConfirmPhonePresenter
+
+    private lateinit var countDownTimer: CountDownTimer
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         App.appComponent.confirmPhoneComponentBuilder().build().inject(this)
@@ -74,13 +74,14 @@ class ConfirmPhoneFragment : Fragment(R.layout.fragment_confirm_phone), ConfirmP
     }
 
     private fun initCountDownTimer() {
-        object : CountDownTimer(60000, 1000) {
+        countDownTimer = object : CountDownTimer(60000, 1000) {
             override fun onFinish() {
                 tv_timer.apply {
-                    text = "Выслать код повторно"
+                    text = getString(R.string.enter_phone_repeat_send_code_title)
                     setTextColor(ContextCompat.getColor(requireContext(), R.color.main_dark))
                     setOnClickListener {
                         initCountDownTimer()
+                        presenter.sendPhone()
                     }
                     isClickable = true
                 }
@@ -95,9 +96,18 @@ class ConfirmPhoneFragment : Fragment(R.layout.fragment_confirm_phone), ConfirmP
                     )
                     setTextColor(ContextCompat.getColor(requireContext(), R.color.grey90))
                     isClickable = false
+
+
                 }
             }
-        }.start()
+        }
+        countDownTimer.start()
+    }
+
+
+    override fun onPause() {
+        super.onPause()
+        countDownTimer.cancel()
     }
 
 

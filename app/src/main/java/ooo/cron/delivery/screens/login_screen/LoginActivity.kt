@@ -1,6 +1,7 @@
 package ooo.cron.delivery.screens.login_screen
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_login.*
 import ooo.cron.delivery.R
@@ -30,6 +31,9 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    fun hideBackButton() {
+        iv_back.visibility = View.GONE
+    }
 
     fun setViewPagerPosition(position: Int) {
         viewPager.post {

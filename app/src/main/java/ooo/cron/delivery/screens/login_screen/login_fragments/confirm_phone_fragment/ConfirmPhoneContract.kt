@@ -21,5 +21,6 @@ interface ConfirmPhoneContract {
 
     interface Presenter : MvpPresenter<View> {
         fun sendConfirmCode()
+        fun sendPhone()
     }
 }

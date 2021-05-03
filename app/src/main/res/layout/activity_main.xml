@@ -1,121 +1,127 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<nl.psdcompany.duonavigationdrawer.views.DuoDrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<nl.psdcompany.duonavigationdrawer.views.DuoDrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/drawer"
+    android:id="@+id/drawer_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:contentScaleOpen="0.85"
     app:clickToCloseScale="1"
-    app:marginFactor="0.6"
-    >
+    app:contentScaleOpen="0.85"
+    app:marginFactor="0.6">
 
     <include
         android:id="@+id/vg_main_menu"
         layout="@layout/layout_drawer_menu"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         android:background="@color/grey2"
         android:tag="content">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/ab_main"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tb_main"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/grey2">
+            android:layout_height="?attr/actionBarSize">
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/tb_main"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_scrollFlags="scroll|enterAlways|snap">
+                android:layout_height="match_parent">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_main_user_address"
+                    android:layout_width="0dp"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="18dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/bg_main_address_incorrect"
+                    android:drawableStart="@drawable/ic_main_address"
+                    android:gravity="center"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12sp"
+                    android:text="@string/main_address_incorrect"
+                    android:textColor="@color/grey90"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/iv_main_search"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tv_main_user_address"
-                        android:layout_width="0dp"
-                        android:layout_height="32dp"
-                        android:layout_marginStart="18dp"
-                        android:layout_marginEnd="10dp"
-                        android:background="@drawable/bg_main_address_incorrect"
-                        android:drawableStart="@drawable/ic_main_address"
-                        android:gravity="center"
-                        android:paddingStart="12dp"
-                        android:paddingEnd="12sp"
-                        android:text="@string/main_address_incorrect"
-                        android:textColor="@color/grey90"
-                        android:textSize="14sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/iv_main_search"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                <ImageView
+                    android:id="@+id/iv_main_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="30dp"
+                    android:contentDescription="@string/main_search"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_main_search"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                    <ImageView
-                        android:id="@+id/iv_main_search"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="30dp"
-                        android:contentDescription="@string/main_search"
-                        android:padding="8dp"
-                        android:src="@drawable/ic_main_search"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.appcompat.widget.Toolbar>
 
-            </androidx.appcompat.widget.Toolbar>
-
-        </com.google.android.material.appbar.AppBarLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/vg_main_content"
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            android:layout_height="match_parent">
 
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tl_main_market_categories"
-                style="@style/Widget.App.TabLayout.MarketCategories"
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/ab_main"
                 android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:layout_marginTop="8dp"
+                android:layout_height="wrap_content"
                 android:background="@color/main_market_categories_background"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:tabBackground="@drawable/bg_main_market_categories"
-                app:tabContentStart="@dimen/main_market_categories_left_space"
-                app:tabMode="scrollable" />
+                >
 
-            <FrameLayout
-                android:id="@+id/container_main"
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tl_main_market_categories"
+                    style="@style/Widget.App.TabLayout.MarketCategories"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginBottom="3dp"
+                    android:background="@color/main_market_categories_background"
+                    app:tabBackground="@drawable/bg_main_market_categories"
+                    app:tabContentStart="@dimen/main_market_categories_left_space"
+                    app:tabMode="scrollable"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_scrollFlags="scroll|enterAlways|snap"/>
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/vg_main_content"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tl_main_market_categories" />
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <include
-                android:id="@+id/vg_main_market_categories_progress"
-                layout="@layout/layout_progress"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                <FrameLayout
+                    android:id="@+id/container_main"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <include
+                    android:id="@+id/vg_main_market_categories_progress"
+                    layout="@layout/layout_progress"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    </LinearLayout>
 </nl.psdcompany.duonavigationdrawer.views.DuoDrawerLayout>

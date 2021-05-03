@@ -18,13 +18,11 @@ import ooo.cron.delivery.databinding.ItemMarketCategoryPartnerBinding
 /**
  * Created by Ramazan Gadzhikadiev on 22.04.2021.
  */
-class PartnersAdapter(
-    val onCreateTags: (tagsList: RecyclerView) -> Unit
-) :
+class PartnersAdapter() :
     PagedListAdapter<Partner, RecyclerView.ViewHolder>(Partner.DIFF_CALLBACK) {
 
     override fun getItem(position: Int): Partner? {
-        return differ.getItem(position - 1)
+        return differ.getItem(position)
     }
 
     override fun submitList(pagedList: PagedList<Partner>?) {
@@ -35,23 +33,11 @@ class PartnersAdapter(
         return differ.currentList
     }
 
-    override fun getItemViewType(position: Int): Int =
-        if (position > 0) R.layout.item_market_category_partner
-        else R.layout.item_market_category_header
-
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): RecyclerView.ViewHolder =
-        if (viewType == R.layout.item_market_category_header)
-            HeaderViewHolder(
-                LayoutInflater.from(parent.context!!).inflate(
-                    R.layout.item_market_category_header, parent, false
-                ).also {
-                    onCreateTags(it.findViewById(R.id.rv_market_category_tags))
-                }
-            )
-        else PartnerViewHolder(
+        PartnerViewHolder(
             LayoutInflater.from(parent.context!!).inflate(
                 R.layout.item_market_category_partner, parent, false
             )
@@ -65,25 +51,25 @@ class PartnersAdapter(
     }
 
     override fun getItemCount(): Int =
-        differ.itemCount + 1
+        differ.itemCount
 
     val adapterCallback = AdapterListUpdateCallback(this)
 
     private val listUpdateCallback = object : ListUpdateCallback {
         override fun onInserted(position: Int, count: Int) {
-            adapterCallback.onInserted(position + 1, count)
+            adapterCallback.onInserted(position, count)
         }
 
         override fun onRemoved(position: Int, count: Int) {
-            adapterCallback.onRemoved(position + 1, count)
+            adapterCallback.onRemoved(position, count)
         }
 
         override fun onMoved(fromPosition: Int, toPosition: Int) {
-            adapterCallback.onMoved(fromPosition + 1, toPosition + 1)
+            adapterCallback.onMoved(fromPosition, toPosition)
         }
 
         override fun onChanged(position: Int, count: Int, payload: Any?) {
-            adapterCallback.onChanged(position + 1, count, payload)
+            adapterCallback.onChanged(position, count, payload)
         }
     }
 
@@ -91,9 +77,6 @@ class PartnersAdapter(
         listUpdateCallback,
         AsyncDifferConfig.Builder(Partner.DIFF_CALLBACK).build()
     )
-
-    class HeaderViewHolder(itemView: View) :
-        RecyclerView.ViewHolder(itemView)
 
     class PartnerViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {

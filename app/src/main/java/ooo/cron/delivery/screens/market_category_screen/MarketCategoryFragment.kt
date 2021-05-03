@@ -43,6 +43,7 @@ class MarketCategoryFragment : BaseFragment(),
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? = binding.root.apply {
+        configureTagsList()
         configurePartnersList()
     }
 
@@ -101,15 +102,13 @@ class MarketCategoryFragment : BaseFragment(),
         binding.rvMarketCategoryPartners.setHasFixedSize(false)
         binding.rvMarketCategoryPartners.layoutManager =
             LinearLayoutManager(context!!, LinearLayoutManager.VERTICAL, false)
-        binding.rvMarketCategoryPartners.adapter = PartnersAdapter(
-            onCreateTags = this::configureTagsList
-        )
+        binding.rvMarketCategoryPartners.adapter = PartnersAdapter()
     }
 
-    private fun configureTagsList(tagsList: RecyclerView) {
-        tagsList.layoutManager =
+    private fun configureTagsList() {
+        binding.rvMarketCategoryTags.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        tagsList.adapter = tagsAdapter
+        binding.rvMarketCategoryTags.adapter = tagsAdapter
     }
 
     companion object {

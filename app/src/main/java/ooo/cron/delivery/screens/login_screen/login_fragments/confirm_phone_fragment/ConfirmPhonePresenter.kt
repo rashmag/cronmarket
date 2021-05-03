@@ -35,10 +35,17 @@ class ConfirmPhonePresenter @Inject constructor(
                     call: Call<ConfirmCodeRes>,
                     response: Response<ConfirmCodeRes>
                 ) {
-                    if (response.isSuccessful) {
-                        view?.showNextScreen(response.body()!!)
-                    } else {
-                        view?.showError(apiErrorsUtils.parseError(response))
+                    when {
+                        response.isSuccessful -> {
+                            view?.showNextScreen(response.body()!!)
+                        }
+                        response.code() == 400 -> {
+                            view?.showError(response.errorBody()?.string()!!)
+
+                        }
+                        else -> {
+                            view?.showError(apiErrorsUtils.parseError(response))
+                        }
                     }
                 }
             })

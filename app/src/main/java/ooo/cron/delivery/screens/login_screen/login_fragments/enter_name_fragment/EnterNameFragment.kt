@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_enter_name.*
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
+import ooo.cron.delivery.screens.login_screen.LoginActivity
 import ooo.cron.delivery.utils.Constants
 import ooo.cron.delivery.utils.Shared
 import javax.inject.Inject
@@ -45,6 +46,12 @@ class EnterNameFragment : Fragment(R.layout.fragment_enter_name), EnterNameContr
                 }
             }
         })
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        (activity as LoginActivity).hideBackButton()
     }
 
     private fun onSetNameClick() {

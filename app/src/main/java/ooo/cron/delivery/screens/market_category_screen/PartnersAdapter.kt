@@ -18,7 +18,7 @@ import ooo.cron.delivery.databinding.ItemMarketCategoryPartnerBinding
 /**
  * Created by Ramazan Gadzhikadiev on 22.04.2021.
  */
-class PartnersAdapter() :
+class PartnersAdapter(private val onClick: (partnerId: String) -> Unit) :
     PagedListAdapter<Partner, RecyclerView.ViewHolder>(Partner.DIFF_CALLBACK) {
 
     override fun getItem(position: Int): Partner? {
@@ -44,10 +44,11 @@ class PartnersAdapter() :
         )
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder is PartnerViewHolder)
+        if (holder is PartnerViewHolder) {
             getItem(position)?.let {
-                holder.bind(it)
+                holder.bind(it, onClick)
             }
+        }
     }
 
     override fun getItemCount(): Int =
@@ -83,7 +84,10 @@ class PartnersAdapter() :
 
         private val binding = ItemMarketCategoryPartnerBinding.bind(itemView)
 
-        fun bind(partner: Partner) {
+        fun bind(partner: Partner, onClick: (partnerId: String) -> Unit) {
+
+            binding.root.setOnClickListener{ onClick(partner.id) }
+
             binding.tvMarketCategoryPartnerTitle.text = partner.name
             binding.tvMarketCategoryPartnerShortDescription.text = partner.shortDescription
             binding.tvMarketCategoryPartnerRating.text = partner.rating.toString()

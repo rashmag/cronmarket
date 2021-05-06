@@ -40,8 +40,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View {
         presenter.attachView(this)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-//        partnerId = intent.getStringExtra("partnerId") as String
-        partnerId = "89a6d43a-99b3-4260-98d3-03e8bb6e915a"
+        partnerId = intent.getStringExtra(EXTRA_PARTNER_ID) as String
         setTitleVisibility()
         presenter.getPartnerInfo()
     }
@@ -133,5 +132,9 @@ class PartnersActivity : BaseActivity(), PartnersContract.View {
     override fun onDestroy() {
         super.onDestroy()
         presenter.detachView()
+    }
+
+    companion object {
+        const val EXTRA_PARTNER_ID = "partnerId"
     }
 }

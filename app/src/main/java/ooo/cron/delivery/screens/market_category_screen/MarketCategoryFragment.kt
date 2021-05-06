@@ -1,5 +1,6 @@
 package ooo.cron.delivery.screens.market_category_screen
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import ooo.cron.delivery.data.network.models.Partner
 import ooo.cron.delivery.data.network.models.TagsResult
 import ooo.cron.delivery.databinding.FragmentMarketCategoryBinding
 import ooo.cron.delivery.screens.BaseFragment
+import ooo.cron.delivery.screens.partners_screen.PartnersActivity
 import java.lang.Exception
 import java.util.concurrent.Executors
 import javax.inject.Inject
@@ -91,6 +93,14 @@ class MarketCategoryFragment : BaseFragment(),
         (binding.rvMarketCategoryPartners.adapter as PartnersAdapter).submitList(pagedList)
     }
 
+    override fun navigatePartnerScreen(partnerId: String) {
+        startActivity(Intent(context!!, PartnersActivity::class.java)
+            .apply {
+                putExtra(PartnersActivity.EXTRA_PARTNER_ID, partnerId)
+            }
+        )
+    }
+
     private fun injectDependencies() {
         App.appComponent.marketCategoryBuilder()
             .inflater(layoutInflater)
@@ -102,7 +112,9 @@ class MarketCategoryFragment : BaseFragment(),
         binding.rvMarketCategoryPartners.setHasFixedSize(false)
         binding.rvMarketCategoryPartners.layoutManager =
             LinearLayoutManager(context!!, LinearLayoutManager.VERTICAL, false)
-        binding.rvMarketCategoryPartners.adapter = PartnersAdapter()
+        binding.rvMarketCategoryPartners.adapter = PartnersAdapter {
+            presenter.onPartnerClicked(it)
+        }
     }
 
     private fun configureTagsList() {

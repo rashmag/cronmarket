@@ -1,4 +1,4 @@
-package ooo.cron.delivery.screens.base_mvp
+package ooo.cron.delivery.screens.connection_error_screen
 
 import android.content.Context
 import android.content.Intent

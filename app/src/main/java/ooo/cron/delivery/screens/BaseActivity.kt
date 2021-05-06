@@ -11,7 +11,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import ooo.cron.delivery.screens.any_error_screen.AnyErrorActivity
-import ooo.cron.delivery.screens.base_mvp.ConnectionErrorActivity
+import ooo.cron.delivery.screens.connection_error_screen.ConnectionErrorActivity
 
 
 /**

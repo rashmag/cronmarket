@@ -67,10 +67,6 @@ class MarketCategoryPresenter @Inject constructor(
         )
     }
 
-    override fun onOtherTagsClick() {
-        //TODO("Not yet implemented")
-    }
-
     private fun initMarketCategory() {
         view?.let {
             if (this::marketCategory.isInitialized.not())
@@ -83,6 +79,10 @@ class MarketCategoryPresenter @Inject constructor(
                     it.showAnyErrorScreen()
                 }
         }
+    }
+
+    override fun onPartnerClicked(partnerId: String) {
+        view?.navigatePartnerScreen(partnerId)
     }
 
     private suspend fun initCity() {

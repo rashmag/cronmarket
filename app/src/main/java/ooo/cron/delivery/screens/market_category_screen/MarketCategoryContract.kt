@@ -17,6 +17,8 @@ interface MarketCategoryContract {
 
         fun showPartners(dataSource: PartnersDataSource, pageSize: Int)
 
+        fun navigatePartnerScreen(partnerId: String)
+
         fun showConnectionErrorScreen()
         fun showAnyErrorScreen()
     }
@@ -25,6 +27,6 @@ interface MarketCategoryContract {
         fun onViewCreated()
         fun onTagClick(tag: Tag)
         fun onAllTagsClick()
-        fun onOtherTagsClick()
+        fun onPartnerClicked(partnerId: String)
     }
 }

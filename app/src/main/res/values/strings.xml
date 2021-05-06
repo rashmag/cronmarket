@@ -74,6 +74,11 @@
     <string name="repeat_sent_code_title">Выслать код повторно можно через %1$d сек</string>
     <string name="enter_phone_repeat_send_code_title"><u>Выслать код повторно</u></string>
 
+    <string name="common_user_not_authorized">Пользователь не авторизован</string>
+    <string name="partners_activity_min_order_template">от %1$d \u20BD</string>
+
+    <string name="partners_activity_close_title">Закрыть</string>
+
     <string name="enter_phone_privacy_policy_text">Настоящая Политика конфиденциальности персональных данных (далее – Политика конфиденциальности), действует в отношении всей информации, которую собирает общество с ограниченной ответственностью «КРОН» (далее — Исполнитель) в лице мобильного приложения «CronДоставка» (далее – Мобильное приложение), которую может получить о Пользователе во время использования им Мобильного приложения.
 
 ТЕРМИНЫ И ОПРЕДЕЛЕНИЯ
@@ -145,8 +150,4 @@
 КОНТАКТНАЯ ИНФОРМАЦИЯ
 10.1. Адрес организации: Россия, Республика Дагестан, город Махачкала, улица Ирчи Казака, 11 А
 10.2. Телефон: 8 965 417 39 04, Email: krosstom@yandex.ru</string>
-    <string name="common_user_not_authorized">Пользователь не авторизован</string>
-    <string name="partners_activity_min_order_template">от %1$d \u20BD</string>
-
-    <string name="partners_activity_close_title">Закрыть</string>
 </resources>

@@ -4,8 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import com.google.android.material.tabs.TabLayout
-import kotlinx.android.synthetic.main.layout_drawer_menu.view.*
 import nl.psdcompany.duonavigationdrawer.widgets.DuoDrawerToggle
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
@@ -40,7 +40,6 @@ class MainActivity : BaseActivity(), MainContract.View {
     override fun onStart() {
         super.onStart()
         presenter.onStartView()
-        binding.vgMainMenu.tvDrawerMenuItemShops.isSelected = true
     }
 
     override fun onDestroy() {
@@ -55,6 +54,13 @@ class MainActivity : BaseActivity(), MainContract.View {
 
     override fun removeMarketCategoriesProgress() =
         binding.vgMainContent.removeView(binding.vgMainMarketCategoriesProgress.root)
+
+    override fun showNotAuthorizedMessage() {
+        Toast.makeText(
+            this,
+            getString(R.string.common_user_not_authorized), Toast.LENGTH_SHORT
+        ).show()
+    }
 
     override fun showMarketCategories(categories: List<MarketCategory>) {
         binding.tlMainMarketCategories.apply {
@@ -72,9 +78,40 @@ class MainActivity : BaseActivity(), MainContract.View {
                 override fun onTabReselected(tab: TabLayout.Tab?) {
                     Log.d(MainActivity::class.simpleName, "tab ${tab?.text} reselected")
                 }
-
             })
         }
+    }
+
+    override fun selectMarketCategory(position: Int) {
+        binding.tlMainMarketCategories.getTabAt(position)?.let {
+            if (!it.isSelected)
+                it.select()
+        }
+    }
+
+    override fun showAuthorizedUser(username: String) {
+        binding.vgMainMenu.ivDrawerProfile.setImageResource(
+            R.drawable.ic_drawable_authorized_profile
+        )
+        binding.vgMainMenu.tvDrawerProfile.text = username
+
+        binding.vgMainMenu.tvDrawerProfileLogInOut.setCompoundDrawablesWithIntrinsicBounds(
+            R.drawable.ic_drawer_log_out, 0, 0, 0
+        )
+
+        binding.vgMainMenu.tvDrawerProfileLogInOut.text = getString(R.string.drawer_log_out)
+    }
+
+    override fun showUnauthorizedUser() {
+        binding.vgMainMenu.ivDrawerProfile.setImageResource(
+            R.drawable.ic_drawable_authorized_profile
+        )
+        binding.vgMainMenu.tvDrawerProfile.text =
+            getString(R.string.drawer_profile_name_unauthorized)
+
+        binding.vgMainMenu.tvDrawerProfileLogInOut.setCompoundDrawablesWithIntrinsicBounds(
+            R.drawable.ic_drawer_log_out, 0, 0, 0
+        )
     }
 
     override fun startMarketCategoryFragment(category: MarketCategory) {
@@ -86,12 +123,22 @@ class MainActivity : BaseActivity(), MainContract.View {
         ).commit()
     }
 
+    override fun reopenMainScreen() {
+        val intent = this.intent
+        finish()
+        startActivity(intent)
+    }
+
     override fun navigateFirstAddressSelection() {
         startActivity(Intent(this, FirstAddressSelectionActivity::class.java))
     }
 
     override fun navigateAddressSelection() {
         TODO("Not yet implemented")
+    }
+
+    override fun navigateLoginActivity() {
+        startActivity(Intent(this, LoginActivity::class.java))
     }
 
     private fun injectDependencies() =
@@ -117,16 +164,28 @@ class MainActivity : BaseActivity(), MainContract.View {
         binding.drawerMain.setDrawerListener(drawerToggle)
         drawerToggle.syncState()
 
-
-        binding.drawerMain.tv_drawer_profile.setOnClickListener {
-            startActivity(Intent(this, LoginActivity::class.java))
-        }
-        binding.drawerMain.tv_drawer_profile_log_in_out.setOnClickListener {
-            startActivity(Intent(this, LoginActivity::class.java))
-        }
+        setOnProfileClick()
+        setOnLoginLogOut()
 
         configureMenuItemsClick {
             //TODO()
+        }
+
+        binding.vgMainMenu.tvDrawerMenuItemShops.isSelected = true
+    }
+
+    private fun setOnProfileClick() {
+        binding.vgMainMenu.ivDrawerProfile.setOnClickListener {
+            presenter.onProfileClick()
+        }
+        binding.vgMainMenu.tvDrawerProfile.setOnClickListener {
+            presenter.onProfileClick()
+        }
+    }
+
+    private fun setOnLoginLogOut() {
+        binding.vgMainMenu.tvDrawerProfileLogInOut.setOnClickListener {
+            presenter.onLogInLogOutClick()
         }
     }
 
@@ -164,7 +223,7 @@ class MainActivity : BaseActivity(), MainContract.View {
         )
 
         menuItems.forEach {
-            it.setOnClickListener {clickedView ->
+            it.setOnClickListener { clickedView ->
                 menuItems.forEach { item ->
                     item.isSelected = item == clickedView
                 }

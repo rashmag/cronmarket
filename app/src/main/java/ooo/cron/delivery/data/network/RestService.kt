@@ -1,7 +1,9 @@
 package ooo.cron.delivery.data.network
 
+import okhttp3.ResponseBody
 import ooo.cron.delivery.data.network.models.*
 import ooo.cron.delivery.data.network.request.ConfirmCodeReq
+import ooo.cron.delivery.data.network.request.LogOutReq
 import ooo.cron.delivery.data.network.request.SentCodeReq
 import ooo.cron.delivery.data.network.request.SetUserNameReq
 import retrofit2.Call
@@ -13,6 +15,11 @@ import retrofit2.http.*
  */
 
 interface RestService {
+
+    @GET("/api/v1/User")
+    suspend fun getUser(
+        @Header("Authorization") token: String
+    ): Response<UserResponse>
 
     @GET("/api/v1/Address/delivery_cities")
     suspend fun getCities(): Response<List<City>>
@@ -60,12 +67,21 @@ interface RestService {
     @POST("/api/v1/Account/send_code")
     fun sentCode(@Body sentCodeReq: SentCodeReq): Call<Void>
 
-
     @POST("/api/v1/Account/confirm_code")
     fun sentConfirmCode(@Body sentConformCodeReq: ConfirmCodeReq): Call<RefreshableToken>
 
     @POST("/api/v1/User/name")
     fun setUserName(@Header("Authorization") token: String, @Body name: SetUserNameReq): Call<Void>
+
+    @POST("/api/v1/Account/refresh_token")
+    suspend fun refreshToken(
+        @Body token: RefreshableToken
+    ): Response<RefreshableToken>
+
+    @POST("/api/v1/Account/logout")
+    suspend fun logOut(
+        @Body refreshToken:LogOutReq
+    ): Response<ResponseBody>
 
     companion object {
         const val PARTNERS_PAGINATION_LIMIT = 15

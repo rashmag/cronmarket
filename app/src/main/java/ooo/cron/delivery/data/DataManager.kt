@@ -6,10 +6,13 @@ import ooo.cron.delivery.data.network.request.SentCodeReq
 import ooo.cron.delivery.data.network.request.SetUserNameReq
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import okhttp3.ResponseBody
 import ooo.cron.delivery.data.network.SPrefsService
 import ooo.cron.delivery.data.network.models.City
 import ooo.cron.delivery.data.network.models.RefreshableToken
+import ooo.cron.delivery.data.network.request.LogOutReq
 import retrofit2.Call
+import retrofit2.Response
 import javax.inject.Inject
 
 /**
@@ -73,6 +76,16 @@ class DataManager @Inject constructor(
             restService.getPartnersByTag(cityId, marketCategoryId, tagId, offset)
         }
 
+    suspend fun getUser(token: String) =
+        withContext(Dispatchers.IO) {
+            restService.getUser(token)
+        }
+
+    suspend fun refreshToken(token: RefreshableToken) =
+        withContext(Dispatchers.IO) {
+            restService.refreshToken(token)
+        }
+
     fun sentCode(sentCodeReq: SentCodeReq): Call<Void> {
         return restService.sentCode(sentCodeReq)
     }
@@ -84,6 +97,9 @@ class DataManager @Inject constructor(
     fun setUserName(token: String, userName: SetUserNameReq): Call<Void> {
         return restService.setUserName(token, userName)
     }
+
+    suspend fun logOut(refreshToken: LogOutReq): Response<ResponseBody> =
+        restService.logOut(refreshToken)
 
     suspend fun writeChosenCity(city: City) =
         withContext(Dispatchers.IO) {
@@ -118,4 +134,7 @@ class DataManager @Inject constructor(
 
     fun readToken() =
         sPrefsService.readToken()
+
+    fun removeToken() =
+        sPrefsService.removeToken()
 }

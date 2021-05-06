@@ -39,7 +39,7 @@ class SPrefsService @Inject constructor(
             .commit()
 
     fun readUserPhone() =
-        sharedPreferences.getString(USER_PHONE, "default")
+        sharedPreferences.getString(USER_PHONE, "")
 
     fun writeToken(token: RefreshableToken) =
         sharedPreferences.edit()
@@ -49,9 +49,15 @@ class SPrefsService @Inject constructor(
 
     fun readToken() =
         RefreshableToken(
-            sharedPreferences.getString(ACCESS_TOKEN, "default")!!,
-            sharedPreferences.getString(REFRESH_TOKEN, "default")!!
+            sharedPreferences.getString(ACCESS_TOKEN, "")!!,
+            sharedPreferences.getString(REFRESH_TOKEN, "")!!
         )
+
+    fun removeToken() =
+        sharedPreferences.edit()
+            .remove(ACCESS_TOKEN)
+            .remove(REFRESH_TOKEN)
+            .commit()
 
     companion object {
         const val CITY_ID = "CITY_ID"

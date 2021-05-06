@@ -54,6 +54,7 @@
     <string name="drawer_menu_item_vacancies">Стать курьером</string>
     <string name="drawer_menu_settings">Настройки</string>
     <string name="drawer_log_in">Вход / Регистрация</string>
+    <string name="drawer_log_out">Выйти из профиля</string>
     <string name="drawer_profile_name_unauthorized">Вход \nне выполнен</string>
 
     <string name="enter_phone_title">Укажите номер</string>
@@ -144,4 +145,5 @@
 КОНТАКТНАЯ ИНФОРМАЦИЯ
 10.1. Адрес организации: Россия, Республика Дагестан, город Махачкала, улица Ирчи Казака, 11 А
 10.2. Телефон: 8 965 417 39 04, Email: krosstom@yandex.ru</string>
+    <string name="common_user_not_authorized">Пользователь не авторизован</string>
 </resources>

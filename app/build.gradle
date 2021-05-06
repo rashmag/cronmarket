@@ -92,4 +92,10 @@ dependencies {
     def phone_mask_version = '3.4.2'
     implementation "com.redmadrobot:inputmask:$phone_mask_version"
 
+
+    //Circle ImageView
+    def circle_image_version = '3.1.0'
+    implementation "de.hdodenhof:circleimageview:$circle_image_version"
+
+
 }

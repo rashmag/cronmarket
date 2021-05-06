@@ -73,6 +73,11 @@ interface RestService {
     @POST("/api/v1/User/name")
     fun setUserName(@Header("Authorization") token: String, @Body name: SetUserNameReq): Call<Void>
 
+    @GET("/api/v1/PartnerCard/partnerInfo")
+    suspend fun getPartnersInfo(
+        @Query("PartnerId") partnerId: String
+    ) : Response<PartnersInfoRes>
+
     @POST("/api/v1/Account/refresh_token")
     suspend fun refreshToken(
         @Body token: RefreshableToken

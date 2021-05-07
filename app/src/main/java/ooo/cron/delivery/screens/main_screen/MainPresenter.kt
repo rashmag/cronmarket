@@ -153,11 +153,15 @@ class MainPresenter @Inject constructor(
     }
 
     private fun selectMarketCategory() {
-        val lastBoughtMarketCategoryPosition =
-            marketCategories!!.indexOfFirst { it.id == user?.lastMarketCategoryId }
-        view?.selectMarketCategory(
-            if (lastBoughtMarketCategoryPosition == -1) 0
-            else lastBoughtMarketCategoryPosition
-        )
+        mainScope.launch {
+            if (dataManager.readChosenCity().id == user?.lastDeliveryCityId) {
+                val lastBoughtMarketCategoryPosition =
+                    marketCategories!!.indexOfFirst { it.id == user?.lastMarketCategoryId }
+                view?.selectMarketCategory(
+                    if (lastBoughtMarketCategoryPosition == -1) 0
+                    else lastBoughtMarketCategoryPosition
+                )
+            }
+        }
     }
 }

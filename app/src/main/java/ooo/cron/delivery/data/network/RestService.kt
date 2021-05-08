@@ -61,6 +61,9 @@ interface RestService {
     @POST("/api/v1/Account/send_code")
     fun sentCode(@Body sentCodeReq: SentCodeReq): Call<Void>
 
+    @GET("/api/v1/PartnerCard/partner_products_categories")
+    suspend fun getPartnersCategory(@Query("PartnerId") PartnerId: String):
+            Response<PartnerCategoryRes>
 
     @POST("/api/v1/Account/confirm_code")
     fun sentConfirmCode(@Body sentConformCodeReq: ConfirmCodeReq): Call<ConfirmCodeRes>
@@ -71,7 +74,7 @@ interface RestService {
     @GET("/api/v1/PartnerCard/partnerInfo")
     suspend fun getPartnersInfo(
         @Query("PartnerId") partnerId: String
-    ) : Response<PartnersInfoRes>
+    ): Response<PartnersInfoRes>
 
     companion object {
         const val PARTNERS_PAGINATION_LIMIT = 15

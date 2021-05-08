@@ -1,5 +1,6 @@
 package ooo.cron.delivery.screens.partners_screen
 
+import ooo.cron.delivery.data.network.models.PartnerCategoryRes
 import ooo.cron.delivery.data.network.models.PartnersInfoRes
 import ooo.cron.delivery.screens.base_mvp.MvpPresenter
 import ooo.cron.delivery.screens.base_mvp.MvpView
@@ -16,9 +17,11 @@ interface PartnersContract {
 
         fun showAnyErrorScreen()
         fun showConnectionErrorScreen()
+        fun showPartnerCategory(body: PartnerCategoryRes)
     }
 
     interface Presenter : MvpPresenter<View> {
         fun getPartnerInfo()
+        fun getPartnerCategory()
     }
 }

@@ -72,6 +72,10 @@ class DataManager @Inject constructor(
         restService.getPartnersInfo(partnerId)
     }
 
+    suspend fun getPartnerCategory(partnerId: String) = withContext(Dispatchers.IO) {
+        restService.getPartnersCategory(partnerId)
+    }
+
     fun sentCode(sentCodeReq: SentCodeReq): Call<Void> {
         return restService.sentCode(sentCodeReq)
     }
@@ -80,8 +84,8 @@ class DataManager @Inject constructor(
         return restService.sentConfirmCode(confirmCodeReq)
     }
 
-    fun setUserName(token: String,userName: SetUserNameReq): Call<Void> {
-        return restService.setUserName(token,userName)
+    fun setUserName(token: String, userName: SetUserNameReq): Call<Void> {
+        return restService.setUserName(token, userName)
     }
 
     suspend fun writeChosenCity(city: City) = withContext(Dispatchers.IO) {

@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:fitsSystemWindows="true"
+        android:background="@color/grey2"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
@@ -48,7 +49,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="16dp"
                     android:layout_marginEnd="16dp"
                     app:layout_collapseMode="pin">
 
@@ -56,6 +57,7 @@
                         android:id="@+id/iv_back"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -67,6 +69,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"
+
                         android:textColor="@color/grey90"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -78,6 +82,7 @@
                         android:id="@+id/iv_favorite"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@id/iv_search"
                         app:layout_constraintTop_toTopOf="parent"
@@ -87,6 +92,7 @@
                         android:id="@+id/iv_search"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -102,11 +108,13 @@
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedscrollview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/bg_partners_scroll_view_rounded"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        android:layout_marginTop="-50dp"
         app:layout_anchor="@id/appbar"
-        app:layout_anchorGravity="bottom|end"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:background="@drawable/bg_partners_scroll_view_rounded"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -218,23 +226,31 @@
 
             </LinearLayout>
 
-        <TextView
-            app:layout_constraintTop_toBottomOf="@id/vg_rating"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_categories"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Этот большой текст тут для того что бы можно было полненно протестировать скроллинг этого экрана, вместо него тут будет список блюд и все такое дальше можешь не читать
-Этот большой текст тут для того что бы можно было полненно протестировать скроллинг этого экрана, вместо него тут будет список блюд и все такое дальше можешь не читать
-Этот большой текст тут для того что бы можно было полненно протестировать скроллинг этого экрана, вместо него тут будет список блюд и все такое дальше можешь не читать
-Этот большой текст тут для того что бы можно было полненно протестировать скроллинг этого экрана, вместо него тут будет список блюд и все такое дальше можешь не читать
-Этот большой текст тут для того что бы можно было полненно протестировать скроллинг этого экрана, вместо него тут будет список блюд и все такое дальше можешь не читать
-Этот большой текст тут для того что бы можно было полненно протестировать скроллинг этого экрана, вместо него тут будет список блюд и все такое дальше можешь не читать
-Этот большой текст тут для того что бы можно было полненно протестировать скроллинг этого экрана, вместо него тут будет список блюд и все такое дальше можешь не читать
-Этот большой текст тут для того что бы можно было полненно протестировать скроллинг этого экрана, вместо него тут будет список блюд и все такое дальше можешь не читать
-Этот большой текст тут для того что бы можно было полненно протестировать скроллинг этого экрана, вместо него тут будет список блюд и все такое дальше можешь не читать
-Этот большой текст тут для того что бы можно было полненно протестировать скроллинг этого экрана, вместо него тут будет список блюд и все такое дальше можешь не читать
-Этот большой текст тут для того что бы можно было полненно протестировать скроллинг этого экрана, вместо него тут будет список блюд и все такое дальше можешь не читать
-Этот большой текст тут для того что бы можно было полненно протестировать скроллинг этого экрана, вместо него тут будет список блюд и все такое дальше можешь не читать
-Этот большой текст тут для того что бы можно было полненно протестировать скроллинг этого экрана, вместо него тут будет список блюд и все такое дальше можешь не читать"/>
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="36dp"
+            android:layout_marginEnd="36dp"
+            tools:listitem="@layout/item_market_category_tag"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@id/vg_rating"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_product"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="16dp"
+                app:spanCount="2"
+                tools:listitem="@layout/item_partner_product"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:layout_constraintTop_toBottomOf="@id/rv_categories"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

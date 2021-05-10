@@ -12,6 +12,7 @@
 
     <color name="white">#FFFFFF</color>
     <color name="grey2">#F8F9FA</color>
+    <color name="grey5">#F1F3F5</color>
     <color name="grey10">#E9ECEF</color>
     <color name="grey30">#CED4DA</color>
     <color name="grey40">#ADB5BD</color>
@@ -24,6 +25,8 @@
     <color name="true_light">#E3FCEF</color>
     <color name="false_light">#FFEBE6</color>
     <color name="question_light">#FFFAE6</color>
+
+    <color name="black">#000000</color>
 
     <color name="main_market_categories_background">@color/grey2</color>
     <color name="main_market_categories_inactive_underscore">@color/grey30</color>

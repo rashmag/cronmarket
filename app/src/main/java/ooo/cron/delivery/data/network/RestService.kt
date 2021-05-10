@@ -76,7 +76,15 @@ interface RestService {
     @GET("/api/v1/PartnerCard/partnerInfo")
     suspend fun getPartnersInfo(
         @Query("PartnerId") partnerId: String
-    ) : Response<PartnersInfoRes>
+    ): Response<PartnersInfoRes>
+
+    @GET("/api/v1/PartnerCard/partner_products_categories")
+    suspend fun getPartnersCategory(@Query("PartnerId") PartnerId: String):
+            Response<PartnerCategoryRes>
+
+    @GET("/api/v1/PartnerCard/partner_products")
+    suspend fun getPartnerProducts(@Query("PartnerId") partnerId: String) :
+            Response<List<PartnerProductsRes>>
 
     @POST("/api/v1/Account/refresh_token")
     suspend fun refreshToken(

@@ -2,18 +2,23 @@ package ooo.cron.delivery.screens.partners_screen
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+import android.widget.*
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.dialog_partners_info.*
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
+import ooo.cron.delivery.data.network.models.PartnerCategoryRes
+import ooo.cron.delivery.data.network.models.PartnerProductsRes
 import ooo.cron.delivery.data.network.models.PartnersInfoRes
 import ooo.cron.delivery.databinding.ActivityPartnersBinding
-import ooo.cron.delivery.databinding.DialogPartnersInfoBinding
 import ooo.cron.delivery.screens.BaseActivity
 import javax.inject.Inject
 
@@ -43,6 +48,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View {
         partnerId = intent.getStringExtra(EXTRA_PARTNER_ID) as String
         setTitleVisibility()
         presenter.getPartnerInfo()
+
     }
 
     private fun injectDependencies() =
@@ -58,21 +64,63 @@ class PartnersActivity : BaseActivity(), PartnersContract.View {
     }
 
     override fun showPartnerInfo(partnerInfo: PartnersInfoRes) {
+        presenter.getPartnerCategory()
         with(partnerInfo) {
             binding.run {
-                vgMainView.removeView(vgPartnersActivityProgress.root)
                 tvPartnersName.text = name
                 tvPartnersCategory.text = shortDescription
-                tvRating.text = rating.toString()
-                tvFreeDelivery.text = String.format(
-                    getString(R.string.partners_activity_min_order_template),
-                    minAmountOrder
-                )
+                tvRating.text =
+                    if (feedbackCount == 0)
+                        rating.toString()
+                    else
+                        "$rating ($feedbackCount)"
+
+                tvFreeDelivery.text =
+                    if (minAmountDelivery == null)
+                        String.format(
+                            getString(R.string.partners_activity_min_order_template),
+                            minAmountOrder
+                        )
+                    else
+                        String.format(
+                            getString(R.string.partners_activity_free_delivery_template),
+                            minAmountDelivery
+                        )
 
                 Glide.with(binding.root)
-                    .load(partnerInfo.logo)
-                    .centerCrop()
-                    .into(backdrop)
+                    .load(logo)
+                    .into(ivPartnersLogo)
+
+                if (mainWinImg != null) {
+                    Glide.with(binding.root)
+                        .load(partnerInfo.mainWinImg)
+                        .centerCrop()
+                        .into(backdrop)
+                } else {
+                    appbar.setExpanded(false)
+
+                    val scrollViewParams =
+                        CoordinatorLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+                    scrollViewParams.setMargins(
+                        0,
+                        resources.getDimensionPixelSize(R.dimen.nested_scroll_view_top_margin),
+                        0,
+                        0
+                    )
+                    nestedscrollview.layoutParams = scrollViewParams
+
+                    val collapsingParams =
+                        CollapsingToolbarLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+                    collapsingParams.collapseMode =
+                        CollapsingToolbarLayout.LayoutParams.COLLAPSE_MODE_OFF
+                    toolbar.layoutParams = collapsingParams
+
+
+                    val appBarParams = CoordinatorLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+                    appBarParams.height = LinearLayout.LayoutParams.WRAP_CONTENT
+                    appbar.layoutParams = appBarParams
+
+                }
             }
         }
         onBackButtonClick()
@@ -110,6 +158,31 @@ class PartnersActivity : BaseActivity(), PartnersContract.View {
         }
     }
 
+    override fun showPartnerCategory(body: PartnerCategoryRes) {
+        binding.run {
+            presenter.getPartnerProducts()
+            rvCategories.apply {
+                layoutManager =
+                    LinearLayoutManager(
+                        this@PartnersActivity,
+                        LinearLayoutManager.HORIZONTAL,
+                        false
+                    )
+                adapter = PartnerCategoryAdapter(body)
+            }
+        }
+    }
+
+    override fun showPartnerProducts(body: List<PartnerProductsRes>) {
+        binding.run {
+            vgMainView.removeView(vgPartnersActivityProgress.root)
+            rvProduct.apply {
+                layoutManager = GridLayoutManager(this@PartnersActivity, SPAN_COUNT)
+                adapter = PartnerProductAdapter(body)
+            }
+        }
+    }
+
     private fun setTitleVisibility() {
         var isShow = false
         var scrollRange = -1
@@ -136,5 +209,6 @@ class PartnersActivity : BaseActivity(), PartnersContract.View {
 
     companion object {
         const val EXTRA_PARTNER_ID = "partnerId"
+        const val SPAN_COUNT = 2
     }
 }

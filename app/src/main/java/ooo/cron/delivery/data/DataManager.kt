@@ -90,6 +90,14 @@ class DataManager @Inject constructor(
         restService.getPartnersInfo(partnerId)
     }
 
+    suspend fun getPartnerCategory(partnerId: String) = withContext(Dispatchers.IO) {
+        restService.getPartnersCategory(partnerId)
+    }
+
+    suspend fun getPartnerProducts(partnerId: String) = withContext(Dispatchers.IO) {
+        restService.getPartnerProducts(partnerId)
+    }
+
     fun sentCode(sentCodeReq: SentCodeReq): Call<Void> {
         return restService.sentCode(sentCodeReq)
     }

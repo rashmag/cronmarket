@@ -6,6 +6,7 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.*
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.appbar.AppBarLayout
@@ -15,6 +16,7 @@ import kotlinx.android.synthetic.main.dialog_partners_info.*
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.PartnerCategoryRes
+import ooo.cron.delivery.data.network.models.PartnerProductsRes
 import ooo.cron.delivery.data.network.models.PartnersInfoRes
 import ooo.cron.delivery.databinding.ActivityPartnersBinding
 import ooo.cron.delivery.screens.BaseActivity
@@ -28,6 +30,10 @@ import javax.inject.Inject
 
 
 class PartnersActivity : BaseActivity(), PartnersContract.View {
+
+    companion object {
+        const val SPAN_COUNT = 2
+    }
 
     @Inject
     lateinit var presenter: PartnersPresenter
@@ -159,7 +165,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View {
 
     override fun showPartnerCategory(body: PartnerCategoryRes) {
         binding.run {
-            vgMainView.removeView(vgPartnersActivityProgress.root)
+            presenter.getPartnerProducts()
             rvCategories.apply {
                 layoutManager =
                     LinearLayoutManager(
@@ -168,6 +174,16 @@ class PartnersActivity : BaseActivity(), PartnersContract.View {
                         false
                     )
                 adapter = PartnerCategoryAdapter(body)
+            }
+        }
+    }
+
+    override fun showPartnerProducts(body: List<PartnerProductsRes>) {
+        binding.run {
+            vgMainView.removeView(vgPartnersActivityProgress.root)
+            rvProduct.apply {
+                layoutManager = GridLayoutManager(this@PartnersActivity, SPAN_COUNT)
+                adapter = PartnerProductAdapter(body)
             }
         }
     }

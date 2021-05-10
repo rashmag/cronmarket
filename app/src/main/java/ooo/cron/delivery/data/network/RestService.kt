@@ -65,6 +65,10 @@ interface RestService {
     suspend fun getPartnersCategory(@Query("PartnerId") PartnerId: String):
             Response<PartnerCategoryRes>
 
+    @GET("/api/v1/PartnerCard/partner_products")
+    suspend fun getPartnerProducts(@Query("PartnerId") partnerId: String) :
+            Response<List<PartnerProductsRes>>
+
     @POST("/api/v1/Account/confirm_code")
     fun sentConfirmCode(@Body sentConformCodeReq: ConfirmCodeReq): Call<ConfirmCodeRes>
 

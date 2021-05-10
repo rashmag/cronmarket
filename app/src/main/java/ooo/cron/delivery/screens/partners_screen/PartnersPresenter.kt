@@ -4,6 +4,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import ooo.cron.delivery.data.DataManager
 import ooo.cron.delivery.data.network.models.PartnerCategoryRes
+import ooo.cron.delivery.data.network.models.PartnerProductsRes
 import ooo.cron.delivery.data.network.models.PartnersInfoRes
 import ooo.cron.delivery.screens.base_mvp.BaseMvpPresenter
 import retrofit2.Response
@@ -49,10 +50,28 @@ class PartnersPresenter @Inject constructor(
         }
     }
 
-
     private fun Response<PartnerCategoryRes>.handlePartnerCategory() {
         if (isSuccessful) {
             view?.showPartnerCategory(body()!!)
+        } else {
+            view?.showAnyErrorScreen()
+        }
+    }
+
+
+    override fun getPartnerProducts() {
+        mainScope.launch {
+            withErrorsHandle(
+                { dataManager.getPartnerProducts(view?.getPartnerId()!!).handlePartnerProducts() },
+                { view?.showConnectionErrorScreen() },
+                { view?.showAnyErrorScreen() }
+            )
+        }
+    }
+
+    private fun Response<List<PartnerProductsRes>>.handlePartnerProducts() {
+        if (isSuccessful) {
+            view?.showPartnerProducts(body()!!)
         } else {
             view?.showAnyErrorScreen()
         }

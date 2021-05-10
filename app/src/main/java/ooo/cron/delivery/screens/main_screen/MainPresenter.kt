@@ -95,11 +95,10 @@ class MainPresenter @Inject constructor(
 
         if (response.isSuccessful)
             return updateUser(response)
-        if (response.code() == 401)
+
+        if (response.code() == 401 && token.accessToken.isNotEmpty() && token.refreshToken.isNotEmpty())
             return dataManager.refreshToken(token)
                 .handleRefreshToken()
-
-        view?.showAnyErrorScreen() ?: Unit
     }
 
     private fun Response<ResponseBody>.handleLogOut() {

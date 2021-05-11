@@ -6,7 +6,6 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.*
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.appbar.AppBarLayout
@@ -18,8 +17,10 @@ import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.PartnerCategoryRes
 import ooo.cron.delivery.data.network.models.PartnerProductsRes
 import ooo.cron.delivery.data.network.models.PartnersInfoRes
+import ooo.cron.delivery.data.network.models.ProductCategoryModel
 import ooo.cron.delivery.databinding.ActivityPartnersBinding
 import ooo.cron.delivery.screens.BaseActivity
+import java.util.ArrayList
 import javax.inject.Inject
 
 
@@ -30,10 +31,6 @@ import javax.inject.Inject
 
 
 class PartnersActivity : BaseActivity(), PartnersContract.View {
-
-    companion object {
-        const val SPAN_COUNT = 2
-    }
 
     @Inject
     lateinit var presenter: PartnersPresenter
@@ -163,8 +160,10 @@ class PartnersActivity : BaseActivity(), PartnersContract.View {
         }
     }
 
+    private lateinit var categoryRes: List<PartnerCategoryRes.Categories>
     override fun showPartnerCategory(body: PartnerCategoryRes) {
         binding.run {
+            categoryRes = body.categories
             presenter.getPartnerProducts()
             rvCategories.apply {
                 layoutManager =
@@ -179,11 +178,30 @@ class PartnersActivity : BaseActivity(), PartnersContract.View {
     }
 
     override fun showPartnerProducts(body: List<PartnerProductsRes>) {
+        val productCategoriesModel = ArrayList<ProductCategoryModel>()
+        val productList = ArrayList<PartnerProductsRes>()
+        for (category in categoryRes) {
+            for (product in body) {
+                if (category.id == product.categoryId) {
+                    productList.add(product)
+                }
+            }
+            productCategoriesModel.add(
+                ProductCategoryModel(
+                    category.id,
+                    category.name,
+                    productList.filterIndexed { _, partnerProductsRes ->
+                        partnerProductsRes.categoryId == category.id
+                    }
+                )
+            )
+        }
+
         binding.run {
             vgMainView.removeView(vgPartnersActivityProgress.root)
             rvProduct.apply {
-                layoutManager = GridLayoutManager(this@PartnersActivity, SPAN_COUNT)
-                adapter = PartnerProductAdapter(body)
+                layoutManager = LinearLayoutManager(this@PartnersActivity)
+                adapter = PartnerProductAdapter(productCategoriesModel)
             }
         }
     }

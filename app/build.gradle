@@ -96,5 +96,9 @@ dependencies {
     def circle_image_version = '3.1.0'
     implementation "de.hdodenhof:circleimageview:$circle_image_version"
 
+    //Section RecyclerView
+    def section_recycler_view = '0.0.2'
+    implementation "com.github.fajaragungpramana:section-recyclerview:$section_recycler_view"
+
 
 }

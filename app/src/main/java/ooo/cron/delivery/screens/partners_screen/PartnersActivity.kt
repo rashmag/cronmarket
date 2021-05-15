@@ -4,13 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
-import android.widget.*
+import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.Toast
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import kotlinx.android.synthetic.main.activity_partners.*
 import kotlinx.android.synthetic.main.dialog_partners_info.*
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
@@ -20,7 +24,7 @@ import ooo.cron.delivery.data.network.models.PartnersInfoRes
 import ooo.cron.delivery.data.network.models.ProductCategoryModel
 import ooo.cron.delivery.databinding.ActivityPartnersBinding
 import ooo.cron.delivery.screens.BaseActivity
-import java.util.ArrayList
+import java.util.*
 import javax.inject.Inject
 
 
@@ -30,7 +34,8 @@ import javax.inject.Inject
 
 
 
-class PartnersActivity : BaseActivity(), PartnersContract.View {
+class PartnersActivity : BaseActivity(), PartnersContract.View,
+    PartnerCategoryAdapter.OnCategoryClickListener {
 
     @Inject
     lateinit var presenter: PartnersPresenter
@@ -172,11 +177,23 @@ class PartnersActivity : BaseActivity(), PartnersContract.View {
                         LinearLayoutManager.HORIZONTAL,
                         false
                     )
-                adapter = PartnerCategoryAdapter(body)
+                adapter = PartnerCategoryAdapter(body, this@PartnersActivity)
             }
         }
     }
 
+    override fun onCategoryClick(position: Int) {
+        val originalPos = IntArray(2)
+        rv_product.getChildAt(position).getLocationInWindow(originalPos)
+        val x = originalPos[0]
+        val y = originalPos[1]
+
+        nestedscrollview.post{
+            nestedscrollview.smoothScrollTo(x,y)
+        }
+    }
+
+    lateinit var partnerProductAdapter: PartnerProductAdapter
     override fun showPartnerProducts(body: List<PartnerProductsRes>) {
         val productCategoriesModel = ArrayList<ProductCategoryModel>()
         val productList = ArrayList<PartnerProductsRes>()
@@ -201,7 +218,8 @@ class PartnersActivity : BaseActivity(), PartnersContract.View {
             vgMainView.removeView(vgPartnersActivityProgress.root)
             rvProduct.apply {
                 layoutManager = LinearLayoutManager(this@PartnersActivity)
-                adapter = PartnerProductAdapter(productCategoriesModel)
+                partnerProductAdapter = PartnerProductAdapter(productCategoriesModel)
+                adapter = partnerProductAdapter
             }
         }
     }

@@ -64,12 +64,19 @@ class PartnerProductAdapter(private val productCategoryModel: List<ProductCatego
 
     override fun viewHolder(view: View) = ViewHolder(view)
 
+    private lateinit var currentRecyclerView: RecyclerView
+
     inner class ViewHolder(view: View) : SectionRecyclerViewHolder(view) {
 
         override fun bindSectionListAdapter(recyclerView: RecyclerView, position: Int) {
+            currentRecyclerView = recyclerView
             recyclerView.adapter = CategoryAdapter(productCategoryModel[position].productList)
         }
 
+    }
+
+    fun getRecyclerView(): RecyclerView {
+        return currentRecyclerView
     }
 
 }

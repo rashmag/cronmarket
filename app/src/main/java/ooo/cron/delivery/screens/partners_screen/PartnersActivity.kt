@@ -1,15 +1,10 @@
 package ooo.cron.delivery.screens.partners_screen
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.TextView
-import android.widget.Toast
-import androidx.constraintlayout.widget.ConstraintLayout
+import android.widget.*
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -38,7 +33,7 @@ import javax.inject.Inject
 
 
 class PartnersActivity : BaseActivity(), PartnersContract.View,
-    PartnerCategoryAdapter.OnCategoryClickListener {
+    PartnerCategoryAdapter.OnCategoryClickListener, CategoryAdapter.OnProductClickListener {
 
     @Inject
     lateinit var presenter: PartnersPresenter
@@ -76,7 +71,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
                 if (visiblePosition > -1) {
                     val categoryId = categoryAdapter.getCategoryId(visiblePosition)
                     categoryAdapter.setSelected(categoryId)
-                    println("onProductRecyclerViewScrollChanged $visiblePosition = visiblePosition, $categoryId = categoryId")
+                    binding.rvCategories.smoothScrollToPosition(visiblePosition)
                 }
             }
         })
@@ -149,6 +144,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
 
                     val appBarParams = CoordinatorLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
                     appBarParams.height = LinearLayout.LayoutParams.WRAP_CONTENT
+
                     appbar.layoutParams = appBarParams
 
                 }
@@ -217,8 +213,8 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         val x = originalPos[0]
         val y = originalPos[1]
 
-        binding.nestedscrollview.post{
-            binding.nestedscrollview.smoothScrollTo(x,y)
+        binding.nestedscrollview.post {
+            binding.nestedscrollview.smoothScrollTo(x, y)
         }
     }
 
@@ -243,12 +239,31 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         }
 
         binding.run {
-            vgMainView.removeView(vgPartnersActivityProgress.root)
+            vgMainView.removeView(binding.vgPartnersActivityProgress.root)
             rvProduct.apply {
                 layoutManager = LinearLayoutManager(this@PartnersActivity)
-                adapter = PartnerProductAdapter(productCategoriesModel)
+                adapter = PartnerProductAdapter(productCategoriesModel, this@PartnersActivity)
             }
         }
+    }
+
+    override fun onProductClick(product: PartnerProductsRes) {
+        val bottomSheetInfoDialog =
+            BottomSheetDialog(this, R.style.BottomSheetDialogTheme)
+        val bottomSheetView =
+            LayoutInflater.from(this).inflate(R.layout.dialog_product_info, null)
+
+        with(bottomSheetView) {
+            findViewById<TextView>(R.id.tv_name).text = product.name
+            findViewById<TextView>(R.id.tv_cost).text = product.cost.toString()
+            findViewById<TextView>(R.id.tv_description).text = product.description
+
+            Glide.with(binding.root)
+                .load(product.photo)
+                .into(findViewById(R.id.iv_product))
+        }
+        bottomSheetInfoDialog.setContentView(bottomSheetView)
+        bottomSheetInfoDialog.show()
     }
 
     private fun setTitleVisibility() {

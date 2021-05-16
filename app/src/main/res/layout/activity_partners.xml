@@ -109,9 +109,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="-50dp"
         android:background="@drawable/bg_partners_scroll_view_rounded"
         android:orientation="vertical"
-        app:behavior_overlapTop="50dp"
         app:layout_anchor="@id/appbar"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 

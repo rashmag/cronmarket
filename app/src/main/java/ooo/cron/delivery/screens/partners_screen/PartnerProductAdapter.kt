@@ -17,13 +17,19 @@ import ooo.cron.delivery.utils.section_recycler_view.SectionRecyclerViewHolder
 
 
 
-class CategoryAdapter(private val productCategoryModel: List<PartnerProductsRes>) :
+class CategoryAdapter(
+    private val productCategoryModel: List<PartnerProductsRes>,
+    private val listener: OnProductClickListener
+) :
     RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
 
     override fun getItemCount() = productCategoryModel.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindProduct(productCategoryModel[position])
+        holder.itemView.setOnClickListener {
+            listener.onProductClick(productCategoryModel[position])
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
@@ -55,28 +61,30 @@ class CategoryAdapter(private val productCategoryModel: List<PartnerProductsRes>
 
     }
 
+    interface OnProductClickListener {
+        fun onProductClick(product: PartnerProductsRes)
+    }
+
 }
 
-class PartnerProductAdapter(private val productCategoryModel: List<ProductCategoryModel>) :
+class PartnerProductAdapter(
+    private val productCategoryModel: List<ProductCategoryModel>,
+    private val listener: CategoryAdapter.OnProductClickListener
+) :
     SectionRecyclerViewAdapter<PartnerProductAdapter.ViewHolder, ProductCategoryModel>(
         productCategoryModel
     ) {
 
     override fun viewHolder(view: View) = ViewHolder(view)
 
-    private lateinit var currentRecyclerView: RecyclerView
 
     inner class ViewHolder(view: View) : SectionRecyclerViewHolder(view) {
 
         override fun bindSectionListAdapter(recyclerView: RecyclerView, position: Int) {
-            currentRecyclerView = recyclerView
-            recyclerView.adapter = CategoryAdapter(productCategoryModel[position].productList)
+            recyclerView.adapter =
+                CategoryAdapter(productCategoryModel[position].productList, listener)
         }
 
-    }
-
-    fun getRecyclerView(): RecyclerView {
-        return currentRecyclerView
     }
 
 }

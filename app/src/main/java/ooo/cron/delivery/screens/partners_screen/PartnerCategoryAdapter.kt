@@ -1,6 +1,5 @@
 package ooo.cron.delivery.screens.partners_screen
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +19,19 @@ class PartnerCategoryAdapter(
     private val listener: OnCategoryClickListener
 ) :
     RecyclerView.Adapter<PartnerCategoryAdapter.ViewHolder>() {
+    private var checkedPosition = 0
 
+
+    fun setSelected(categoryId: String) {
+        categoryRes.categories.indexOfFirst { it.id == categoryId }.also { position ->
+            checkedPosition = position
+            notifyDataSetChanged()
+        }
+    }
+
+    fun getCategoryId(position: Int) : String {
+        return categoryRes.categories[position].id
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -35,15 +46,28 @@ class PartnerCategoryAdapter(
         with(holder) {
             (itemView as TextView).text = categoryRes.categories[position].name
             itemView.setOnClickListener {
+                itemView.setBackgroundResource(R.drawable.bg_market_category_tag_selected_item)
+                if (checkedPosition != holder.adapterPosition) {
+                    notifyItemChanged(checkedPosition)
+                    checkedPosition = holder.adapterPosition
+                }
                 listener.onCategoryClick(position)
+            }
+
+            if (checkedPosition == -1) {
+                itemView.setBackgroundResource(R.drawable.bg_market_category_tag_not_selected_item)
+            } else {
+                if (checkedPosition == holder.adapterPosition) {
+                    itemView.setBackgroundResource(R.drawable.bg_market_category_tag_selected_item)
+                } else {
+                    itemView.setBackgroundResource(R.drawable.bg_market_category_tag_not_selected_item)
+                }
             }
 
         }
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-    }
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
 
     interface OnCategoryClickListener {

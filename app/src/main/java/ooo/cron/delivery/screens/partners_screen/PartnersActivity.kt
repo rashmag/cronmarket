@@ -1,5 +1,6 @@
 package ooo.cron.delivery.screens.partners_screen
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
@@ -8,13 +9,15 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import kotlinx.android.synthetic.main.activity_partners.*
 import kotlinx.android.synthetic.main.dialog_partners_info.*
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
@@ -55,7 +58,28 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         partnerId = "90a0b108-0733-46b1-902e-abc49cf9d9e1"
         setTitleVisibility()
         presenter.getPartnerInfo()
+        onProductRecyclerViewScrollChanged()
 
+    }
+
+    private fun onProductRecyclerViewScrollChanged() {
+        ViewCompat.setNestedScrollingEnabled(binding.rvProduct, false)
+        binding.rvProduct.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                val visiblePosition =
+                    (recyclerView.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
+
+                val categoryAdapter = binding.rvCategories.adapter as PartnerCategoryAdapter
+
+
+                if (visiblePosition > -1) {
+                    val categoryId = categoryAdapter.getCategoryId(visiblePosition)
+                    categoryAdapter.setSelected(categoryId)
+                    println("onProductRecyclerViewScrollChanged $visiblePosition = visiblePosition, $categoryId = categoryId")
+                }
+            }
+        })
     }
 
     private fun injectDependencies() =
@@ -107,7 +131,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
                     appbar.setExpanded(false)
 
                     val scrollViewParams =
-                        CoordinatorLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+                        LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
                     scrollViewParams.setMargins(
                         0,
                         resources.getDimensionPixelSize(R.dimen.nested_scroll_view_top_margin),
@@ -182,18 +206,22 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         }
     }
 
+    /**
+     * т.к. наш recyclerView находится в NestedScrollView
+     * скроллить до нужного нам итема мы будем по позиции этого итема
+     */
+
     override fun onCategoryClick(position: Int) {
         val originalPos = IntArray(2)
-        rv_product.getChildAt(position).getLocationInWindow(originalPos)
+        binding.rvProduct.getChildAt(position).getLocationInWindow(originalPos)
         val x = originalPos[0]
         val y = originalPos[1]
 
-        nestedscrollview.post{
-            nestedscrollview.smoothScrollTo(x,y)
+        binding.nestedscrollview.post{
+            binding.nestedscrollview.smoothScrollTo(x,y)
         }
     }
 
-    lateinit var partnerProductAdapter: PartnerProductAdapter
     override fun showPartnerProducts(body: List<PartnerProductsRes>) {
         val productCategoriesModel = ArrayList<ProductCategoryModel>()
         val productList = ArrayList<PartnerProductsRes>()
@@ -218,8 +246,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
             vgMainView.removeView(vgPartnersActivityProgress.root)
             rvProduct.apply {
                 layoutManager = LinearLayoutManager(this@PartnersActivity)
-                partnerProductAdapter = PartnerProductAdapter(productCategoriesModel)
-                adapter = partnerProductAdapter
+                adapter = PartnerProductAdapter(productCategoriesModel)
             }
         }
     }

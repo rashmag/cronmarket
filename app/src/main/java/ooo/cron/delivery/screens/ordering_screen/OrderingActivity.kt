@@ -3,6 +3,7 @@ package ooo.cron.delivery.screens.ordering_screen
 import android.os.Bundle
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.activity_ordering.*
+import ooo.cron.delivery.App
 import ooo.cron.delivery.R
 import ooo.cron.delivery.databinding.ActivityOrderingBinding
 import ooo.cron.delivery.screens.BaseActivity
@@ -14,15 +15,27 @@ import javax.inject.Inject
 
 
 
-class OrderingActivity : BaseActivity() {
+class OrderingActivity : BaseActivity(), OrderContract.View {
 
-//    @Inject
-//    lateinit var binding: ActivityOrderingBinding
+    @Inject
+    lateinit var presenter: OrderPresenter
+
+    @Inject
+    lateinit var binding: ActivityOrderingBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        initDependencies()
+        presenter.attachView(this)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_ordering)
+        setContentView(binding.root)
         initViewPager()
+    }
+
+    private fun initDependencies() {
+        App.appComponent.orderingComponentBuilder()
+            .buildInstance(layoutInflater)
+            .build()
+            .inject(this)
     }
 
     private fun initViewPager() {

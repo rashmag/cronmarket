@@ -29,7 +29,8 @@
 
         <activity android:name=".screens.partners_screen.PartnersActivity"/>
 
-        <activity android:name=".screens.ordering_screen.OrderingActivity">
+        <activity android:name=".screens.ordering_screen.OrderingActivity"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

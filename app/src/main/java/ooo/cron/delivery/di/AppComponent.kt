@@ -10,6 +10,9 @@ import ooo.cron.delivery.screens.login_screen.login_fragments.enter_name_fragmen
 import ooo.cron.delivery.screens.login_screen.login_fragments.enter_phone_fragment.EnterPhoneComponent
 import ooo.cron.delivery.screens.main_screen.MainComponent
 import ooo.cron.delivery.screens.market_category_screen.MarketCategoryComponent
+import ooo.cron.delivery.screens.ordering_screen.OrderComponent
+import ooo.cron.delivery.screens.ordering_screen.delivery_details_fragment.DeliveryDetailsComponent
+import ooo.cron.delivery.screens.ordering_screen.order_cost_fragment.OrderCostComponent
 import ooo.cron.delivery.screens.partners_screen.PartnersActivity
 import ooo.cron.delivery.screens.partners_screen.PartnersComponent
 import javax.inject.Singleton
@@ -30,6 +33,9 @@ interface AppComponent {
     fun confirmPhoneComponentBuilder(): ConfirmPhoneComponent.Builder
     fun enterNameComponentBuilder(): EnterNameComponent.Builder
     fun partnersComponentBuilder(): PartnersComponent.Builder
+    fun orderingComponentBuilder(): OrderComponent.Builder
+    fun deliveryDetailsComponentBuilder(): DeliveryDetailsComponent.Builder
+    fun orderCostComponentBuilder(): OrderCostComponent.Builder
 
     @Component.Builder
     interface Builder {

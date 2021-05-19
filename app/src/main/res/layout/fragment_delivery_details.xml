@@ -40,8 +40,6 @@
             android:layout_marginEnd="36dp"
             android:background="@drawable/bg_edit_text_selector"
             android:hint="@string/delivery_details_enter_address_title"
-            android:inputType="phone"
-            android:maxLength="18"
             android:textColorHint="@color/grey50"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -237,24 +235,26 @@
             app:layout_constraintTop_toBottomOf="@id/et_comments" />
 
         <LinearLayout
+            android:id="@+id/vg_delivery_time"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="36dp"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="36dp"
-            android:orientation="horizontal"
             android:layout_marginBottom="16dp"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_delivery_time"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/tv_delivery_time">
 
             <RadioGroup
+                android:id="@+id/rg_delivery_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <RadioButton
+                    android:id="@+id/rb_fast"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_delivery_time_selector"
@@ -268,6 +268,7 @@
                     android:textStyle="bold" />
 
                 <RadioButton
+                    android:id="@+id/rb_in_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -288,6 +289,43 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/vg_choose_delivery_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintTop_toBottomOf="@id/vg_delivery_time">
+
+
+            <TextView
+                android:id="@+id/tv_choose_delivery_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="36dp"
+                android:layout_marginTop="24dp"
+                android:text="@string/delivery_details_choose_delivery_time_title"
+                android:textColor="@color/grey70" />
+
+            <EditText
+                android:id="@+id/et_delivery_time"
+                style="@style/Widget.AppCompat.EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="36dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="36dp"
+                android:background="@drawable/bg_edit_text_selector"
+                android:hint="18:00"
+                android:inputType="phone"
+                android:maxLength="18"
+                android:textColorHint="@color/grey50"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_number" />
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

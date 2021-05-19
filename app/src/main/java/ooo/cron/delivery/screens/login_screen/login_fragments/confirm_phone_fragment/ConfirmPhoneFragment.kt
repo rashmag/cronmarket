@@ -76,7 +76,7 @@ class ConfirmPhoneFragment : Fragment(R.layout.fragment_confirm_phone), ConfirmP
             override fun onFinish() {
                 tv_timer.apply {
                     text = getString(R.string.enter_phone_repeat_send_code_title)
-                    setTextColor(ContextCompat.getColor(requireContext(), R.color.main_dark))
+                    setTextColor(ContextCompat.getColor(requireContext(), R.color.brand))
                     setOnClickListener {
                         initCountDownTimer()
                         presenter.sendPhone()

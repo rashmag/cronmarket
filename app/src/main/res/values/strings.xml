@@ -79,6 +79,26 @@
     <string name="partners_activity_free_delivery_template">от %1$d \u20BD бесплатно</string>
     <string name="partners_activity_close_title">Закрыть</string>
 
+
+    <string name="delivery_details_address_title">Адрес доставки</string>
+    <string name="delivery_details_enter_address_title">Введите адрес</string>
+    <string name="delivery_details_entrance_title">Подъезд</string>
+    <string name="delivery_details_floor_title">Этаж</string>
+    <string name="delivery_details_flat_title">Квартира</string>
+    <string name="delivery_details_save_address_title">Сохранить адрес</string>
+    <string name="delivery_details_phone_number_title">Номер телефона</string>
+    <string name="delivery_details_comments_to_order_title">Комментарий к заказу</string>
+    <string name="delivery_details_delivery_time_title">Время доставки</string>
+    <string name="delivery_details_soon_as_possible_title">Как можно скорее</string>
+    <string name="delivery_details_in_time_title">Ко времени</string>
+    <string name="delivery_details_title">Детали доставки</string>
+    <string name="order_costs_title">Стоимость заказа</string>
+
+
+
+
+
+
     <string name="enter_phone_privacy_policy_text">Настоящая Политика конфиденциальности персональных данных (далее – Политика конфиденциальности), действует в отношении всей информации, которую собирает общество с ограниченной ответственностью «КРОН» (далее — Исполнитель) в лице мобильного приложения «CronДоставка» (далее – Мобильное приложение), которую может получить о Пользователе во время использования им Мобильного приложения.
 
 ТЕРМИНЫ И ОПРЕДЕЛЕНИЯ

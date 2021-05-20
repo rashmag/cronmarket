@@ -4,10 +4,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.PartnerProductsRes
+import ooo.cron.delivery.data.network.models.ProductCategoryModel
 import ooo.cron.delivery.databinding.ItemPartnerProductBinding
+import ooo.cron.delivery.utils.section_recycler_view.SectionRecyclerViewAdapter
+import ooo.cron.delivery.utils.section_recycler_view.SectionRecyclerViewHolder
 
 /*
  * Created by Muhammad on 08.05.2021
@@ -15,37 +17,74 @@ import ooo.cron.delivery.databinding.ItemPartnerProductBinding
 
 
 
-class PartnerProductAdapter(private val productList: List<PartnerProductsRes>) :
-    RecyclerView.Adapter<PartnerProductAdapter.ViewHolder>() {
+class CategoryAdapter(
+    private val productCategoryModel: List<PartnerProductsRes>,
+    private val listener: OnProductClickListener
+) :
+    RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(
-            LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_partner_product, parent, false)
-        )
-    }
-
-    override fun getItemCount() = productList.size
+    override fun getItemCount() = productCategoryModel.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(productList[position])
+        holder.bindProduct(productCategoryModel[position])
+        holder.itemView.setOnClickListener {
+            listener.onProductClick(productCategoryModel[position])
+        }
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private var binding = ItemPartnerProductBinding.bind(itemView)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+        ViewHolder(
+            LayoutInflater.from(parent.context).inflate(
+                R.layout.item_partner_product,
+                parent,
+                false
+            )
+        )
 
-        fun bind(product: PartnerProductsRes) {
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+
+        private val binding = ItemPartnerProductBinding.bind(view)
+
+        fun bindProduct(product: PartnerProductsRes) {
             binding.run {
                 with(product) {
                     tvProductName.text = name
                     tvCost.text = cost.toString()
                     tvGram.text = portionSize
 
-                    Glide.with(root)
+                    com.bumptech.glide.Glide.with(root)
                         .load(photo)
                         .into(ivProduct)
                 }
             }
         }
+
     }
+
+    interface OnProductClickListener {
+        fun onProductClick(product: PartnerProductsRes)
+    }
+
+}
+
+class PartnerProductAdapter(
+    private val productCategoryModel: List<ProductCategoryModel>,
+    private val listener: CategoryAdapter.OnProductClickListener
+) :
+    SectionRecyclerViewAdapter<PartnerProductAdapter.ViewHolder, ProductCategoryModel>(
+        productCategoryModel
+    ) {
+
+    override fun viewHolder(view: View) = ViewHolder(view)
+
+
+    inner class ViewHolder(view: View) : SectionRecyclerViewHolder(view) {
+
+        override fun bindSectionListAdapter(recyclerView: RecyclerView, position: Int) {
+            recyclerView.adapter =
+                CategoryAdapter(productCategoryModel[position].productList, listener)
+        }
+
+    }
+
 }

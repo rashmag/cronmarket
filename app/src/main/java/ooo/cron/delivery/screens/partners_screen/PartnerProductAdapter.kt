@@ -26,7 +26,7 @@ class CategoryAdapter(
     override fun getItemCount() = productCategoryModel.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindProduct(productCategoryModel[position])
+        holder.bindProduct(position)
         holder.itemView.setOnClickListener {
             listener.onProductClick(productCategoryModel[position])
         }
@@ -41,11 +41,12 @@ class CategoryAdapter(
             )
         )
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         private val binding = ItemPartnerProductBinding.bind(view)
 
-        fun bindProduct(product: PartnerProductsRes) {
+        fun bindProduct(position: Int) {
+            val product = productCategoryModel[position]
             binding.run {
                 with(product) {
                     tvProductName.text = name
@@ -57,12 +58,26 @@ class CategoryAdapter(
                         .into(ivProduct)
                 }
             }
-        }
 
+            binding.tvCost.setOnClickListener{
+                listener.onPriceClick(product, position)
+            }
+
+            binding.ivPlus.setOnClickListener{
+                listener.onPlusClick(product, position)
+            }
+
+            binding.ivMinus.setOnClickListener{
+                listener.onMinusClick(product, position)
+            }
+        }
     }
 
     interface OnProductClickListener {
         fun onProductClick(product: PartnerProductsRes)
+        fun onPriceClick(product: PartnerProductsRes, position: Int)
+        fun onPlusClick(product: PartnerProductsRes, position: Int)
+        fun onMinusClick(product: PartnerProductsRes, position: Int)
     }
 
 }
@@ -84,7 +99,5 @@ class PartnerProductAdapter(
             recyclerView.adapter =
                 CategoryAdapter(productCategoryModel[position].productList, listener)
         }
-
     }
-
 }

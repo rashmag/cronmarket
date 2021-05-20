@@ -14,6 +14,7 @@ data class PartnerProductsRes(
     var portionSize: String,
     var description: String,
     var categoryId: String,
+    var additives: List<Additives>,
     var nonRequiredAdditives: List<NonRequiredAdditives>,
     var requiredAdditiveGroups: List<RequiredAdditiveGroups>
 ) {
@@ -34,4 +35,10 @@ data class PartnerProductsRes(
             var name: String
         )
     }
+
+    data class Additives(
+        var id: String,
+        var name: String,
+        var cost: Int
+    )
 }

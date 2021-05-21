@@ -8,5 +8,6 @@ data class User(
     val name: String,
     val phone: String,
     val lastMarketCategoryId: Int,
-    val lastDeliveryCityId: String
+    val lastDeliveryCityId: String,
+    val basket: Basket
 )

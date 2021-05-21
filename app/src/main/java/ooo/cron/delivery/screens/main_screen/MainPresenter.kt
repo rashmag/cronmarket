@@ -93,8 +93,10 @@ class MainPresenter @Inject constructor(
     private suspend fun loadUser(token: RefreshableToken) {
         val response = dataManager.getUser("Bearer ${token.accessToken}")
 
-        if (response.isSuccessful)
+        if (response.isSuccessful) {
+            writeBasketId(response)
             return updateUser(response)
+        }
 
         if (response.code() == 401 && token.accessToken.isNotEmpty() && token.refreshToken.isNotEmpty())
             return dataManager.refreshToken(token)
@@ -104,6 +106,7 @@ class MainPresenter @Inject constructor(
     private fun Response<ResponseBody>.handleLogOut() {
         if (isSuccessful) {
             dataManager.removeToken()
+            dataManager.removeUserBasket()
             view?.reopenMainScreen()
         } else {
             view?.showAnyErrorScreen()
@@ -125,6 +128,11 @@ class MainPresenter @Inject constructor(
         }
 
         view?.showAnyErrorScreen() ?: Unit
+    }
+
+    private fun writeBasketId(response: Response<UserResponse>) {
+        if (response.body()?.user?.basket?.id != null)
+            dataManager.writeUserBasket(response.body()?.user?.basket?.id ?: DataManager.EMPTY_UUID)
     }
 
     private fun updateUser(response: Response<UserResponse>) {

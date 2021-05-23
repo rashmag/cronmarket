@@ -105,7 +105,13 @@
     <string name="all_cost_title">Итого к оплате:</string>
     <string name="order_title">Заказать</string>
 
+    <string name="delivery_time_error_title">Не раньше чем через час после открытия и за пол часа до закрытия</string>
 
+    <string-array name="payment_method_array">
+        <item>Наличными при получении</item>
+        <item>Онлайн оплата с карты</item>
+        <item>Онлайн оплата с GooglePay</item>
+    </string-array>
 
 
 

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nested_scroll_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -8,15 +9,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <Spinner
-            android:id="@+id/spinner_choose_save_address"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="36dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="36dp"
-            android:background="@drawable/bg_first_address_selection_city"
-            app:layout_constraintTop_toTopOf="parent" />
+<!--        <Spinner-->
+<!--            android:id="@+id/spinner_choose_save_address"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="36dp"-->
+<!--            android:layout_marginTop="16dp"-->
+<!--            android:layout_marginEnd="36dp"-->
+<!--            android:background="@drawable/bg_first_address_selection_city"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
 
 
         <TextView
@@ -28,7 +29,7 @@
             android:text="@string/delivery_details_address_title"
             android:textColor="@color/grey70"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/spinner_choose_save_address" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/et_address"
@@ -40,6 +41,7 @@
             android:layout_marginEnd="36dp"
             android:background="@drawable/bg_edit_text_selector"
             android:hint="@string/delivery_details_enter_address_title"
+            android:focusable="false"
             android:textColorHint="@color/grey50"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -79,6 +81,7 @@
                     android:hint="@string/delivery_details_entrance_title"
                     android:inputType="phone"
                     android:maxLength="18"
+                    android:focusable="false"
                     android:textColorHint="@color/grey50"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -110,6 +113,7 @@
                     android:hint="@string/delivery_details_floor_title"
                     android:inputType="phone"
                     android:maxLength="18"
+                    android:focusable="false"
                     android:textColorHint="@color/grey50"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -141,6 +145,7 @@
                     android:hint="@string/delivery_details_flat_title"
                     android:inputType="phone"
                     android:maxLength="18"
+                    android:focusable="false"
                     android:textColorHint="@color/grey50"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -151,17 +156,17 @@
         </LinearLayout>
 
 
-        <CheckBox
-            android:id="@+id/chk_save_address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="36dp"
-            android:layout_marginTop="8dp"
-            android:enabled="false"
-            android:text="@string/delivery_details_save_address_title"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/vg_address_details" />
+<!--        <CheckBox-->
+<!--            android:id="@+id/chk_save_address"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="36dp"-->
+<!--            android:layout_marginTop="8dp"-->
+<!--            android:enabled="false"-->
+<!--            android:text="@string/delivery_details_save_address_title"-->
+<!--            android:textSize="16sp"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/vg_address_details" />-->
 
 
         <TextView
@@ -173,7 +178,7 @@
             android:text="@string/delivery_details_phone_number_title"
             android:textColor="@color/grey70"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/chk_save_address" />
+            app:layout_constraintTop_toBottomOf="@id/vg_address_details" />
 
 
         <EditText
@@ -188,6 +193,8 @@
             android:hint="+7 (___) ___-__-__"
             android:inputType="phone"
             android:maxLength="18"
+            android:clickable="false"
+            android:focusable="false"
             android:textColorHint="@color/grey50"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -217,6 +224,7 @@
             android:background="@drawable/bg_edit_text_selector"
             android:inputType="phone"
             android:maxLength="18"
+            android:focusable="false"
             android:textColorHint="@color/grey50"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -319,12 +327,29 @@
                 android:layout_marginEnd="36dp"
                 android:background="@drawable/bg_edit_text_selector"
                 android:hint="18:00"
+                android:clickable="false"
+                android:focusable="false"
                 android:inputType="phone"
                 android:maxLength="18"
                 android:textColorHint="@color/grey50"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_number" />
+            <TextView
+                android:id="@+id/tv_error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="36dp"
+                android:layout_marginEnd="36dp"
+                android:textColor="@color/errors"
+                android:drawableStart="@drawable/ic_error"
+                android:textSize="12sp"
+                android:minLines="2"
+                android:drawablePadding="4dp"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/et_phone"/>
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -133,7 +133,10 @@ class DataManager @Inject constructor(
             sPrefsService.readBuildingAddress()
         }
 
-    fun readUserPhone()=
+    fun readAddress() =
+        sPrefsService.readBuildingAddress()
+
+    fun readUserPhone() =
         sPrefsService.readUserPhone()
 
     fun writeUserPhone(phone: String) {

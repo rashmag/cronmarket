@@ -11,11 +11,12 @@ import ooo.cron.delivery.screens.base_mvp.MvpView
 
 interface DeliveryDetailsContract {
 
-    interface View: MvpView {
+    interface View : MvpView {
 
     }
 
-    interface Presenter: MvpPresenter<View> {
-
+    interface Presenter : MvpPresenter<View> {
+        fun getAddress(): String?
+        fun getPhone(): String?
     }
 }

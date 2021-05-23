@@ -16,5 +16,7 @@ class DeliveryDetailsPresenter @Inject constructor(
     private val mainScope: CoroutineScope
 ) : BaseMvpPresenter<DeliveryDetailsContract.View>(), DeliveryDetailsContract.Presenter {
 
+    override fun getAddress() = dataManager.readAddress()
 
+    override fun getPhone(): String? = dataManager.readUserPhone()
 }

@@ -200,6 +200,12 @@ class FirstAddressSelectionPresenter @Inject constructor(
         }
     }
 
+    override fun writeChosenAddress() {
+        addressScope.launch {
+            writeData()
+        }
+    }
+
     @Suppress("UselessCallOnNotNull")
     private fun List<SuggestAddress>.weedOutNullAddresses() =
         filter { address -> address.streetWithType.isNullOrBlank().not() }

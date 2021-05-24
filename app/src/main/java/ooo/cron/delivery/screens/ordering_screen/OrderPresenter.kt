@@ -1,8 +1,11 @@
 package ooo.cron.delivery.screens.ordering_screen
 
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
+import okhttp3.ResponseBody
 import ooo.cron.delivery.data.DataManager
 import ooo.cron.delivery.screens.base_mvp.BaseMvpPresenter
+import retrofit2.Response
 import javax.inject.Inject
 
 /*
@@ -17,8 +20,27 @@ class OrderPresenter @Inject constructor(
 ) : BaseMvpPresenter<OrderContract.View>(), OrderContract.Presenter {
 
 
-
     fun getBasketId(): String {
-        return dataManager.
+        //todo get basket id
+        return "basket_id"
+    }
+
+    override fun sendOrder() {
+        mainScope.launch {
+            withErrorsHandle(
+                { dataManager.sendOrder(view?.getOrderReq()!!).handleOrderResponse() },
+                { view?.showConnectionErrorScreen() },
+                { view?.showAnyErrorScreen() }
+            )
+        }
+    }
+
+
+    private fun Response<ResponseBody>.handleOrderResponse() {
+        if (isSuccessful) {
+            view?.showOrderSuccessfulScreen()
+        } else {
+            view?.showOrderErrorScreen()
+        }
     }
 }

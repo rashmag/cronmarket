@@ -84,19 +84,25 @@ class DeliveryDetailsFragment : BaseFragment(), DeliveryDetailsContract.View {
         }
     }
 
+
+    override fun onStart() {
+        super.onStart()
+        binding.etAddress.apply {
+            setText(presenter.getAddress())
+            setOnClickListener {
+                startActivity(
+                    Intent(requireContext(), FirstAddressSelectionActivity::class.java)
+                        .putExtra("isFromOrderingScreen", true)
+                )
+            }
+        }
+    }
     private fun initViews() {
         onChooseDeliveryTimeClick()
 
         binding.run {
-            etAddress.apply {
-                setText(presenter.getAddress())
-                setOnClickListener {
-                    startActivity(
-                        Intent(requireContext(), FirstAddressSelectionActivity::class.java)
-                            .putExtra("fromOrderingActivity", true)
-                    )
-                }
-            }
+
+
             etPhone.addTextChangedListener(
                 MaskedTextChangedListener(
                     "+7 ([000]) [000]-[00]-[00]",
@@ -156,14 +162,13 @@ class DeliveryDetailsFragment : BaseFragment(), DeliveryDetailsContract.View {
                     binding.tvError.visibility = View.INVISIBLE
                 }
 
-                binding.etDeliveryTime.setText("$hour:${checkDigit(minute)}")
+                val deliveryTime = String.format("%d:%s", hour, checkDigit(minute))
+                binding.etDeliveryTime.setText(deliveryTime)
             },
             calendar.get(Calendar.HOUR_OF_DAY),
             calendar.get(Calendar.MINUTE),
             true
         ).show()
-
-        orderingView.getAddress("Eshkere")
     }
 
     /**
@@ -173,5 +178,20 @@ class DeliveryDetailsFragment : BaseFragment(), DeliveryDetailsContract.View {
      */
     private fun checkDigit(number: Int): String? {
         return if (number <= 9) "0$number" else number.toString()
+    }
+
+    fun getDeliveryInfo() {
+        binding.run {
+            with(orderingView) {
+                getAddress(presenter.getAddress()!!)
+                getEntrance(etEntrance.text.toString())
+                getFloor(etFloor.text.toString())
+                getFlat(etFlat.text.toString())
+                getPhone(etPhone.text.toString())
+                getComment(etComments.text.toString())
+                getDeliveryTime(etDeliveryTime.text.toString())
+            }
+        }
+
     }
 }

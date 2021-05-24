@@ -7,15 +7,15 @@ package ooo.cron.delivery.data.network.request
 
 
 data class OrderReq(
-    var basketId: String,
-    var phoneNumber: String,
-    var comment: String,
-    var deliveryCityId: String,
-    var address: String,
-    var entrance: String,
-    var floor: String,
-    var flat: String,
-    var deliverAtTime: String,
-    var saveAddress: Boolean,
-    var discount: Int
+    var basketId: String? = null,
+    var phoneNumber: String? = null,
+    var comment: String? = null,
+    var deliveryCityId: String? = null,
+    var address: String? = null,
+    var entrance: String? = null,
+    var floor: String? = null,
+    var flat: String? = null,
+    var deliverAtTime: String? = null,
+    var saveAddress: Boolean? = null,
+    var discount: Int? = null
 )

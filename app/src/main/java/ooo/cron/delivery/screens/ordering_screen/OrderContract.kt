@@ -1,5 +1,6 @@
 package ooo.cron.delivery.screens.ordering_screen
 
+import ooo.cron.delivery.data.network.request.OrderReq
 import ooo.cron.delivery.screens.base_mvp.MvpPresenter
 import ooo.cron.delivery.screens.base_mvp.MvpView
 
@@ -12,12 +13,22 @@ import ooo.cron.delivery.screens.base_mvp.MvpView
 interface OrderContract {
 
     interface View : MvpView {
-        fun getBasketId(): String
-        fun getPhone(): String
+        fun getBasketId()
+        fun getPhone(phone: String)
         fun getAddress(address: String)
+        fun getComment(comment: String)
+        fun getDeliveryTime(deliveryTime: String)
+        fun getEntrance(entrance: String)
+        fun getFloor(floor:String)
+        fun getFlat(flat:String)
+        fun getOrderReq(): OrderReq
+        fun showAnyErrorScreen()
+        fun showConnectionErrorScreen()
+        fun showOrderSuccessfulScreen()
+        fun showOrderErrorScreen()
     }
 
     interface Presenter : MvpPresenter<View> {
-
+        fun sendOrder()
     }
 }

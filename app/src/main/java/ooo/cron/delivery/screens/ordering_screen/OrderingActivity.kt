@@ -5,8 +5,10 @@ import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.activity_ordering.*
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
+import ooo.cron.delivery.data.network.request.OrderReq
 import ooo.cron.delivery.databinding.ActivityOrderingBinding
 import ooo.cron.delivery.screens.BaseActivity
+import ooo.cron.delivery.screens.ordering_screen.delivery_details_fragment.DeliveryDetailsFragment
 import javax.inject.Inject
 
 /*
@@ -23,6 +25,8 @@ class OrderingActivity : BaseActivity(), OrderContract.View {
     @Inject
     lateinit var binding: ActivityOrderingBinding
 
+    private val orderReq = OrderReq()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         initDependencies()
         presenter.attachView(this)
@@ -34,7 +38,7 @@ class OrderingActivity : BaseActivity(), OrderContract.View {
 
     private fun onOrderClick() {
         binding.btnOrder.setOnClickListener {
-
+            presenter.sendOrder()
         }
     }
 
@@ -58,15 +62,54 @@ class OrderingActivity : BaseActivity(), OrderContract.View {
         }.attach()
     }
 
-    override fun getBasketId(): String {
-        presenter.
+    override fun getBasketId() {
+        orderReq.basketId = presenter.getBasketId()
     }
 
-    override fun getPhone(): String {
-        TODO("Not yet implemented")
+    override fun getPhone(phone: String) {
+        orderReq.phoneNumber = phone
+    }
+
+    override fun getEntrance(entrance: String) {
+        orderReq.entrance = entrance
+    }
+
+    override fun getFloor(floor: String) {
+        orderReq.floor = floor
+    }
+
+    override fun getFlat(flat: String) {
+        orderReq.flat = flat
     }
 
     override fun getAddress(address: String) {
-        println("addressFrom getAddress $address")
+        orderReq.address = address
+    }
+
+    override fun getComment(comment: String) {
+        orderReq.comment = comment
+    }
+
+    override fun getDeliveryTime(deliveryTime: String) {
+        orderReq.deliverAtTime = deliveryTime
+    }
+
+    override fun getOrderReq(): OrderReq {
+        applyChanges()
+        return orderReq
+    }
+
+    private fun applyChanges() {
+        val deliveryFragment = supportFragmentManager.findFragmentByTag("f" + 0)
+        (deliveryFragment as DeliveryDetailsFragment).getDeliveryInfo()
+    }
+
+
+    override fun showOrderSuccessfulScreen() {
+
+    }
+
+    override fun showOrderErrorScreen() {
+        TODO("Not yet implemented")
     }
 }

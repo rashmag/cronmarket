@@ -1,16 +1,13 @@
 package ooo.cron.delivery.data
 
 import ooo.cron.delivery.data.network.RestService
-import ooo.cron.delivery.data.network.request.ConfirmCodeReq
-import ooo.cron.delivery.data.network.request.SentCodeReq
-import ooo.cron.delivery.data.network.request.SetUserNameReq
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.ResponseBody
 import ooo.cron.delivery.data.network.SPrefsService
 import ooo.cron.delivery.data.network.models.City
 import ooo.cron.delivery.data.network.models.RefreshableToken
-import ooo.cron.delivery.data.network.request.LogOutReq
+import ooo.cron.delivery.data.network.request.*
 import retrofit2.Call
 import retrofit2.Response
 import javax.inject.Inject
@@ -96,6 +93,10 @@ class DataManager @Inject constructor(
 
     suspend fun getPartnerProducts(partnerId: String) = withContext(Dispatchers.IO) {
         restService.getPartnerProducts(partnerId)
+    }
+
+    suspend fun sendOrder(orderReq: OrderReq) = withContext(Dispatchers.IO) {
+        restService.sendOrder(orderReq)
     }
 
     fun sentCode(sentCodeReq: SentCodeReq): Call<Void> {

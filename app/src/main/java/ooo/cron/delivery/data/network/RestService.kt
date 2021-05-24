@@ -2,10 +2,7 @@ package ooo.cron.delivery.data.network
 
 import okhttp3.ResponseBody
 import ooo.cron.delivery.data.network.models.*
-import ooo.cron.delivery.data.network.request.ConfirmCodeReq
-import ooo.cron.delivery.data.network.request.LogOutReq
-import ooo.cron.delivery.data.network.request.SentCodeReq
-import ooo.cron.delivery.data.network.request.SetUserNameReq
+import ooo.cron.delivery.data.network.request.*
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
@@ -83,7 +80,7 @@ interface RestService {
             Response<PartnerCategoryRes>
 
     @GET("/api/v1/PartnerCard/partner_products")
-    suspend fun getPartnerProducts(@Query("PartnerId") partnerId: String) :
+    suspend fun getPartnerProducts(@Query("PartnerId") partnerId: String):
             Response<List<PartnerProductsRes>>
 
     @POST("/api/v1/Account/refresh_token")
@@ -93,8 +90,12 @@ interface RestService {
 
     @POST("/api/v1/Account/logout")
     suspend fun logOut(
-        @Body refreshToken:LogOutReq
+        @Body refreshToken: LogOutReq
     ): Response<ResponseBody>
+
+
+    @POST("/api/v1/Order")
+    suspend fun sendOrder(@Body orderReq: OrderReq): Response<ResponseBody>
 
     companion object {
         const val PARTNERS_PAGINATION_LIMIT = 15

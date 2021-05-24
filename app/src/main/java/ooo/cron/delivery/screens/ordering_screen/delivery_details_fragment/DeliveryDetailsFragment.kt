@@ -1,6 +1,7 @@
 package ooo.cron.delivery.screens.ordering_screen.delivery_details_fragment
 
 import android.app.TimePickerDialog
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,6 +14,7 @@ import ooo.cron.delivery.R
 import ooo.cron.delivery.databinding.FragmentDeliveryDetailsBinding
 import ooo.cron.delivery.screens.BaseFragment
 import ooo.cron.delivery.screens.first_address_selection_screen.FirstAddressSelectionActivity
+import ooo.cron.delivery.screens.ordering_screen.OrderContract
 import java.util.*
 import javax.inject.Inject
 
@@ -24,11 +26,26 @@ import javax.inject.Inject
 
 class DeliveryDetailsFragment : BaseFragment(), DeliveryDetailsContract.View {
 
+    companion object {
+        var PARTNER_OPEN_HOURS = -1
+        var PARTNER_OPEN_MINUTES = -1
+        var PARTNER_CLOSE_HOURS = -1
+        var PARTNER_CLOSE_MINUTES = -1
+    }
+
+    private lateinit var orderingView: OrderContract.View
+
     @Inject
     lateinit var presenter: DeliveryDetailsPresenter
 
     @Inject
     lateinit var binding: FragmentDeliveryDetailsBinding
+
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        orderingView = context as OrderContract.View
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         injectDependencies()
@@ -55,6 +72,16 @@ class DeliveryDetailsFragment : BaseFragment(), DeliveryDetailsContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
+        initScheduleTime()
+    }
+
+    private fun initScheduleTime() {
+        with(requireActivity()) {
+            PARTNER_OPEN_HOURS = intent.getIntExtra("PARTNER_OPEN_HOURS", -1)
+            PARTNER_OPEN_MINUTES = intent.getIntExtra("PARTNER_OPEN_MINUTES", -1)
+            PARTNER_CLOSE_HOURS = intent.getIntExtra("PARTNER_CLOSE_HOURS", -1)
+            PARTNER_CLOSE_MINUTES = intent.getIntExtra("PARTNER_CLOSE_MINUTES", -1)
+        }
     }
 
     private fun initViews() {
@@ -77,8 +104,6 @@ class DeliveryDetailsFragment : BaseFragment(), DeliveryDetailsContract.View {
                 )
             )
             etPhone.setText(presenter.getPhone())
-
-
         }
     }
 
@@ -101,17 +126,15 @@ class DeliveryDetailsFragment : BaseFragment(), DeliveryDetailsContract.View {
 
     private fun showTimePickerDialog() {
         val calendar = Calendar.getInstance()
-        val openTime = 9
-        val closeTime = 23
-
         val openCalendar = Calendar.getInstance()
-        openCalendar.set(Calendar.HOUR_OF_DAY, openTime)
+        openCalendar.set(Calendar.HOUR_OF_DAY, PARTNER_OPEN_HOURS)
+        openCalendar.set(Calendar.MINUTE, PARTNER_OPEN_MINUTES)
 
         val closeCalendar = Calendar.getInstance()
-        closeCalendar.set(Calendar.HOUR_OF_DAY, closeTime - 1)
-        closeCalendar.set(Calendar.MINUTE, 30)
+        closeCalendar.set(Calendar.HOUR_OF_DAY, PARTNER_CLOSE_HOURS - 1)
+        closeCalendar.set(Calendar.MINUTE, PARTNER_CLOSE_MINUTES)
 
-        val timePicker = TimePickerDialog(
+        TimePickerDialog(
             context, TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
                 val chooseCalendar = Calendar.getInstance()
                 chooseCalendar.set(Calendar.HOUR_OF_DAY, hour)
@@ -138,8 +161,9 @@ class DeliveryDetailsFragment : BaseFragment(), DeliveryDetailsContract.View {
             calendar.get(Calendar.HOUR_OF_DAY),
             calendar.get(Calendar.MINUTE),
             true
-        )
-        timePicker.show()
+        ).show()
+
+        orderingView.getAddress("Eshkere")
     }
 
     /**

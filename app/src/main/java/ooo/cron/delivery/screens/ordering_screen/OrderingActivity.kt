@@ -29,6 +29,13 @@ class OrderingActivity : BaseActivity(), OrderContract.View {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         initViewPager()
+        onOrderClick()
+    }
+
+    private fun onOrderClick() {
+        binding.btnOrder.setOnClickListener {
+
+        }
     }
 
     private fun initDependencies() {
@@ -49,5 +56,17 @@ class OrderingActivity : BaseActivity(), OrderContract.View {
                 else -> ""
             }
         }.attach()
+    }
+
+    override fun getBasketId(): String {
+        presenter.
+    }
+
+    override fun getPhone(): String {
+        TODO("Not yet implemented")
+    }
+
+    override fun getAddress(address: String) {
+        println("addressFrom getAddress $address")
     }
 }

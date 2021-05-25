@@ -100,6 +100,8 @@ class OrderingActivity : BaseActivity(), OrderContract.View {
     }
 
     private fun applyChanges() {
+        orderReq.saveAddress = false
+        orderReq.discount = 0
         val deliveryFragment = supportFragmentManager.findFragmentByTag("f" + 0)
         (deliveryFragment as DeliveryDetailsFragment).getDeliveryInfo()
     }

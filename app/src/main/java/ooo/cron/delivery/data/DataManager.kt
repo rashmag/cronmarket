@@ -10,6 +10,7 @@ import ooo.cron.delivery.data.network.models.RefreshableToken
 import ooo.cron.delivery.data.network.request.*
 import retrofit2.Call
 import retrofit2.Response
+import retrofit2.http.Header
 import javax.inject.Inject
 
 /**
@@ -95,8 +96,8 @@ class DataManager @Inject constructor(
         restService.getPartnerProducts(partnerId)
     }
 
-    suspend fun sendOrder(orderReq: OrderReq) = withContext(Dispatchers.IO) {
-        restService.sendOrder(orderReq)
+    suspend fun sendOrder(token: String, orderReq: OrderReq) = withContext(Dispatchers.IO) {
+        restService.sendOrder(token, orderReq)
     }
 
     fun sentCode(sentCodeReq: SentCodeReq): Call<Void> {
@@ -123,6 +124,10 @@ class DataManager @Inject constructor(
         withContext(Dispatchers.IO) {
             sPrefsService.readChosenCity()
         }
+
+    fun readChosenCityId() =
+            sPrefsService.readChosenCity().id
+
 
     suspend fun writeBuildingAddress(address: String) =
         withContext(Dispatchers.IO) {

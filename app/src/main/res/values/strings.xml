@@ -114,6 +114,11 @@
     </string-array>
 
 
+    <string name="ordering_pay_status_done">Ваш заказ принят.</string>
+    <string name="ordering_pay_status_done_details_title">Спасибо! Мы доставим вам заказ в ближайшее время.</string>
+    <string name="ordering_pay_status_error">Ваш платёж не прошёл.</string>
+    <string name="ordering_pay_status_error_detail_title">Не удалось произвести платёж. Попробуйте снова, или обратитесь в <u>техподдержку</u>.</string>
+
 
 
     <string name="enter_phone_privacy_policy_text">Настоящая Политика конфиденциальности персональных данных (далее – Политика конфиденциальности), действует в отношении всей информации, которую собирает общество с ограниченной ответственностью «КРОН» (далее — Исполнитель) в лице мобильного приложения «CronДоставка» (далее – Мобильное приложение), которую может получить о Пользователе во время использования им Мобильного приложения.
@@ -195,4 +200,5 @@
     <string name="basket_counter_minus">Уменьшить количество</string>
     <string name="basket_counter_plus">Увеличить количество</string>
     <string name="basket_item_image_description">Изображение блюда</string>
+    <string name="order_repeat_title">Повторить</string>
 </resources>

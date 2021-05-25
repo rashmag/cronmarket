@@ -95,7 +95,9 @@ interface RestService {
 
 
     @POST("/api/v1/Order")
-    suspend fun sendOrder(@Body orderReq: OrderReq): Response<ResponseBody>
+    suspend fun sendOrder(
+        @Header("Authorization") token: String,
+        @Body orderReq: OrderReq): Response<ResponseBody>
 
     companion object {
         const val PARTNERS_PAGINATION_LIMIT = 15

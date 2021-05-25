@@ -1,5 +1,6 @@
 package ooo.cron.delivery.screens.ordering_screen
 
+import android.widget.EditText
 import ooo.cron.delivery.data.network.request.OrderReq
 import ooo.cron.delivery.screens.base_mvp.MvpPresenter
 import ooo.cron.delivery.screens.base_mvp.MvpView
@@ -14,7 +15,7 @@ interface OrderContract {
 
     interface View : MvpView {
         fun getBasketId()
-        fun getPhone(phone: String)
+        fun getPhone(phone: EditText)
         fun getAddress(address: String)
         fun getComment(comment: String)
         fun getDeliveryTime(deliveryTime: String)

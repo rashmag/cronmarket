@@ -187,9 +187,10 @@ class DeliveryDetailsFragment : BaseFragment(), DeliveryDetailsContract.View {
                 getEntrance(etEntrance.text.toString())
                 getFloor(etFloor.text.toString())
                 getFlat(etFlat.text.toString())
-                getPhone(etPhone.text.toString())
+                getPhone(etPhone)
                 getComment(etComments.text.toString())
                 getDeliveryTime(etDeliveryTime.text.toString())
+                getBasketId()
             }
         }
 

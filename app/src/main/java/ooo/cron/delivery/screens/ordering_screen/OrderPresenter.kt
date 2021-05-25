@@ -21,14 +21,19 @@ class OrderPresenter @Inject constructor(
 
 
     fun getBasketId(): String {
-        //todo get basket id
-        return "basket_id"
+        return dataManager.readUserBasket()
     }
 
     override fun sendOrder() {
         mainScope.launch {
             withErrorsHandle(
-                { dataManager.sendOrder(view?.getOrderReq()!!).handleOrderResponse() },
+                {
+                    dataManager.sendOrder(
+                        "Bearer ${dataManager.readToken().accessToken}",
+                        view?.getOrderReq()!!
+                    )
+                        .handleOrderResponse()
+                },
                 { view?.showConnectionErrorScreen() },
                 { view?.showAnyErrorScreen() }
             )
@@ -42,5 +47,9 @@ class OrderPresenter @Inject constructor(
         } else {
             view?.showOrderErrorScreen()
         }
+    }
+
+     fun getDeliveryCityId(): String? {
+        return dataManager.readChosenCityId()
     }
 }

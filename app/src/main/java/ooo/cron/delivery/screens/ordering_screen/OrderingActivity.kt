@@ -1,6 +1,9 @@
 package ooo.cron.delivery.screens.ordering_screen
 
 import android.os.Bundle
+import android.view.View
+import android.widget.EditText
+import androidx.core.content.ContextCompat
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.activity_ordering.*
 import ooo.cron.delivery.App
@@ -9,6 +12,7 @@ import ooo.cron.delivery.data.network.request.OrderReq
 import ooo.cron.delivery.databinding.ActivityOrderingBinding
 import ooo.cron.delivery.screens.BaseActivity
 import ooo.cron.delivery.screens.ordering_screen.delivery_details_fragment.DeliveryDetailsFragment
+import ooo.cron.delivery.utils.Utils
 import javax.inject.Inject
 
 /*
@@ -37,8 +41,12 @@ class OrderingActivity : BaseActivity(), OrderContract.View {
     }
 
     private fun onOrderClick() {
-        binding.btnOrder.setOnClickListener {
-            presenter.sendOrder()
+        binding.btnOrder.apply {
+            text = getString(R.string.order_title)
+            setOnClickListener {
+                presenter.sendOrder()
+            }
+
         }
     }
 
@@ -63,11 +71,12 @@ class OrderingActivity : BaseActivity(), OrderContract.View {
     }
 
     override fun getBasketId() {
-        orderReq.basketId = presenter.getBasketId()
+//        orderReq.basketId = presenter.getBasketId()
+        orderReq.basketId = "77914b25-38d2-4082-8e71-a5d9f54a5048"
     }
 
-    override fun getPhone(phone: String) {
-        orderReq.phoneNumber = phone
+    override fun getPhone(phone: EditText) {
+        orderReq.phoneNumber = Utils.phoneReplace(phone)
     }
 
     override fun getEntrance(entrance: String) {
@@ -102,16 +111,47 @@ class OrderingActivity : BaseActivity(), OrderContract.View {
     private fun applyChanges() {
         orderReq.saveAddress = false
         orderReq.discount = 0
+        orderReq.basketId = "77914b25-38d2-4082-8e71-a5d9f54a5048"
+        orderReq.deliveryCityId = presenter.getDeliveryCityId()
         val deliveryFragment = supportFragmentManager.findFragmentByTag("f" + 0)
         (deliveryFragment as DeliveryDetailsFragment).getDeliveryInfo()
     }
 
 
     override fun showOrderSuccessfulScreen() {
-
+        binding.run {
+            vgOrderPayStatus.visibility = View.VISIBLE
+            ivOrderStatus.setImageDrawable(
+                ContextCompat.getDrawable(
+                    this@OrderingActivity,
+                    R.drawable.ic_circle_done
+                )
+            )
+            tvOrderStatus.text = getString(R.string.ordering_pay_status_done)
+            tvOrderDetailsStatus.text = getString(R.string.ordering_pay_status_done_details_title)
+            btnOrder.text = getString(R.string.done_title)
+            btnOrder.setOnClickListener {
+                onBackPressed()
+            }
+        }
     }
 
     override fun showOrderErrorScreen() {
-        TODO("Not yet implemented")
+        binding.run {
+            vgOrderPayStatus.visibility = View.VISIBLE
+            ivOrderStatus.setImageDrawable(
+                ContextCompat.getDrawable(
+                    this@OrderingActivity,
+                    R.drawable.ic_circle_cross
+                )
+            )
+            tvOrderStatus.text = getString(R.string.ordering_pay_status_error)
+            tvOrderDetailsStatus.text = getString(R.string.ordering_pay_status_error_detail_title)
+            btnOrder.text = getString(R.string.order_repeat_title)
+            btnOrder.setOnClickListener {
+                vgOrderPayStatus.visibility = View.GONE
+                onOrderClick()
+            }
+        }
     }
 }

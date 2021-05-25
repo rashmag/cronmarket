@@ -94,7 +94,7 @@ class MainPresenter @Inject constructor(
         val response = dataManager.getUser("Bearer ${token.accessToken}")
 
         if (response.isSuccessful) {
-            writeBasketId(response)
+            writeBasket(response)
             return updateUser(response)
         }
 
@@ -130,10 +130,12 @@ class MainPresenter @Inject constructor(
         view?.showAnyErrorScreen() ?: Unit
     }
 
-    private fun writeBasketId(response: Response<UserResponse>) {
-        if (response.body()?.user?.basket?.id != null)
-            dataManager.writeUserBasket(response.body()?.user?.basket?.id ?: DataManager.EMPTY_UUID)
+    private fun writeBasket(response: Response<UserResponse>) {
+        writeBasketId(response)
     }
+
+    private fun writeBasketId(response: Response<UserResponse>) =
+        dataManager.writeUserBasket(response.body()?.user?.basket?.id ?: DataManager.EMPTY_UUID)
 
     private fun updateUser(response: Response<UserResponse>) {
         user = response.body()?.user

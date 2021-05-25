@@ -41,6 +41,18 @@ class SPrefsService @Inject constructor(
     fun readUserPhone() =
         sharedPreferences.getString(USER_PHONE, "")
 
+    fun writeUserBasket(id: String) =
+        sharedPreferences.edit()
+            .putString(USER_BASKET, id)
+            .commit()
+
+    fun readUserBasket() =
+        sharedPreferences.getString(USER_BASKET, null)
+
+    fun removeBasketId() =
+        sharedPreferences.edit().putString(USER_BASKET, EMPTY_UUID)
+            .commit()
+
     fun writeToken(token: RefreshableToken) =
         sharedPreferences.edit()
             .putString(ACCESS_TOKEN, token.accessToken)
@@ -59,7 +71,11 @@ class SPrefsService @Inject constructor(
             .remove(REFRESH_TOKEN)
             .commit()
 
+
+
     companion object {
+        const val EMPTY_UUID = "00000000-0000-0000-0000-000000000000"
+
         const val CITY_ID = "CITY_ID"
         const val CITY_NAME = "CITY_NAME"
         const val CITY_KLADR_ID = "CITY_KLADR_ID"
@@ -67,6 +83,8 @@ class SPrefsService @Inject constructor(
         const val STREET_WITH_BUILDING = "STREET_WITH_BUILDING"
 
         const val USER_PHONE = "user_phone"
+        const val USER_BASKET = "user_basket"
+
         const val ACCESS_TOKEN = "access_token"
         const val REFRESH_TOKEN = "refresh_token"
     }

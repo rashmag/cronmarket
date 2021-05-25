@@ -4,6 +4,7 @@ import android.content.Context
 import dagger.BindsInstance
 import dagger.Component
 import ooo.cron.delivery.screens.base_error_screen.BaseErrorComponent
+import ooo.cron.delivery.screens.basket_screen.BasketComponent
 import ooo.cron.delivery.screens.first_address_selection_screen.FirstAddressSelectionComponent
 import ooo.cron.delivery.screens.login_screen.login_fragments.confirm_phone_fragment.ConfirmPhoneComponent
 import ooo.cron.delivery.screens.login_screen.login_fragments.enter_name_fragment.EnterNameComponent
@@ -33,6 +34,7 @@ interface AppComponent {
     fun confirmPhoneComponentBuilder(): ConfirmPhoneComponent.Builder
     fun enterNameComponentBuilder(): EnterNameComponent.Builder
     fun partnersComponentBuilder(): PartnersComponent.Builder
+    fun basketComponentBuilder(): BasketComponent.Builder
     fun orderingComponentBuilder(): OrderComponent.Builder
     fun deliveryDetailsComponentBuilder(): DeliveryDetailsComponent.Builder
     fun orderCostComponentBuilder(): OrderCostComponent.Builder

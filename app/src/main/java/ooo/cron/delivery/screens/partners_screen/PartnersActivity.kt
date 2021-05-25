@@ -2,12 +2,14 @@ package ooo.cron.delivery.screens.partners_screen
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.*
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.CollapsingToolbarLayout
@@ -18,8 +20,12 @@ import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.PartnerCategoryRes
 import ooo.cron.delivery.data.network.models.PartnerProductsRes
 import ooo.cron.delivery.data.network.models.PartnersInfoRes
+import ooo.cron.delivery.data.network.models.ProductCategoryModel
 import ooo.cron.delivery.databinding.ActivityPartnersBinding
 import ooo.cron.delivery.screens.BaseActivity
+import ooo.cron.delivery.screens.market_category_screen.PartnersAdapter
+import ooo.cron.delivery.utils.ProductBottomSheetDialog
+import java.util.*
 import javax.inject.Inject
 
 
@@ -29,7 +35,8 @@ import javax.inject.Inject
 
 
 
-class PartnersActivity : BaseActivity(), PartnersContract.View {
+class PartnersActivity : BaseActivity(), PartnersContract.View,
+    PartnerCategoryAdapter.OnCategoryClickListener, CategoryAdapter.OnProductClickListener {
 
     @Inject
     lateinit var presenter: PartnersPresenter
@@ -48,7 +55,28 @@ class PartnersActivity : BaseActivity(), PartnersContract.View {
         partnerId = intent.getStringExtra(EXTRA_PARTNER_ID) as String
         setTitleVisibility()
         presenter.getPartnerInfo()
+        onProductRecyclerViewScrollChanged()
 
+    }
+
+    private fun onProductRecyclerViewScrollChanged() {
+        ViewCompat.setNestedScrollingEnabled(binding.rvProduct, false)
+        binding.rvProduct.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                val visiblePosition =
+                    (recyclerView.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
+
+                val categoryAdapter = binding.rvCategories.adapter as PartnerCategoryAdapter
+
+
+                if (visiblePosition > -1) {
+                    val categoryId = categoryAdapter.getCategoryId(visiblePosition)
+                    categoryAdapter.setSelected(categoryId)
+                    binding.rvCategories.smoothScrollToPosition(visiblePosition)
+                }
+            }
+        })
     }
 
     private fun injectDependencies() =
@@ -100,7 +128,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View {
                     appbar.setExpanded(false)
 
                     val scrollViewParams =
-                        CoordinatorLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+                        LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
                     scrollViewParams.setMargins(
                         0,
                         resources.getDimensionPixelSize(R.dimen.nested_scroll_view_top_margin),
@@ -118,6 +146,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View {
 
                     val appBarParams = CoordinatorLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
                     appBarParams.height = LinearLayout.LayoutParams.WRAP_CONTENT
+
                     appbar.layoutParams = appBarParams
 
                 }
@@ -158,8 +187,10 @@ class PartnersActivity : BaseActivity(), PartnersContract.View {
         }
     }
 
+    private lateinit var categoryRes: List<PartnerCategoryRes.Categories>
     override fun showPartnerCategory(body: PartnerCategoryRes) {
         binding.run {
+            categoryRes = body.categories
             presenter.getPartnerProducts()
             rvCategories.apply {
                 layoutManager =
@@ -168,19 +199,71 @@ class PartnersActivity : BaseActivity(), PartnersContract.View {
                         LinearLayoutManager.HORIZONTAL,
                         false
                     )
-                adapter = PartnerCategoryAdapter(body)
+                adapter = PartnerCategoryAdapter(body, this@PartnersActivity)
             }
         }
     }
 
+    /**
+     * т.к. наш recyclerView находится в NestedScrollView
+     * скроллить до нужного нам итема мы будем по позиции этого итема
+     */
+
+    override fun onCategoryClick(position: Int) {
+        val originalPos = IntArray(2)
+        binding.rvProduct.getChildAt(position).getLocationInWindow(originalPos)
+        val x = originalPos[0]
+        val y = originalPos[1]
+
+        binding.nestedscrollview.post {
+            binding.nestedscrollview.smoothScrollTo(x, y)
+        }
+    }
+
     override fun showPartnerProducts(body: List<PartnerProductsRes>) {
+        val productCategoriesModel = ArrayList<ProductCategoryModel>()
+        val productList = ArrayList<PartnerProductsRes>()
+        for (category in categoryRes) {
+            for (product in body) {
+                if (category.id == product.categoryId) {
+                    productList.add(product)
+                }
+            }
+            productCategoriesModel.add(
+                ProductCategoryModel(
+                    category.id,
+                    category.name,
+                    productList.filterIndexed { _, partnerProductsRes ->
+                        partnerProductsRes.categoryId == category.id
+                    }
+                )
+            )
+        }
+
         binding.run {
-            vgMainView.removeView(vgPartnersActivityProgress.root)
+            vgMainView.removeView(binding.vgPartnersActivityProgress.root)
             rvProduct.apply {
-                layoutManager = GridLayoutManager(this@PartnersActivity, SPAN_COUNT)
-                adapter = PartnerProductAdapter(body)
+                layoutManager = LinearLayoutManager(this@PartnersActivity)
+                adapter = PartnerProductAdapter(productCategoriesModel, this@PartnersActivity)
             }
         }
+    }
+
+    override fun onProductClick(product: PartnerProductsRes) {
+        val productBottomSheetDialog = ProductBottomSheetDialog(this, product)
+        productBottomSheetDialog.show()
+    }
+
+    override fun onPriceClick(product: PartnerProductsRes, position: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onPlusClick(product: PartnerProductsRes, position: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onMinusClick(product: PartnerProductsRes, position: Int) {
+        TODO("Not yet implemented")
     }
 
     private fun setTitleVisibility() {

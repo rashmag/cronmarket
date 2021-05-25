@@ -144,6 +144,16 @@ class DataManager @Inject constructor(
         sPrefsService.writeUserPhone(phone)
     }
 
+    fun readUserBasket() =
+        sPrefsService.readUserBasket() ?: EMPTY_UUID
+
+    fun writeUserBasket(id: String) =
+        sPrefsService.writeUserBasket(id)
+
+    fun removeUserBasket() {
+        sPrefsService.removeBasketId()
+    }
+
     fun writeToken(token: RefreshableToken) {
         sPrefsService.writeToken(token)
     }
@@ -153,4 +163,8 @@ class DataManager @Inject constructor(
 
     fun removeToken() =
         sPrefsService.removeToken()
+
+    companion object {
+        const val EMPTY_UUID = SPrefsService.EMPTY_UUID
+    }
 }

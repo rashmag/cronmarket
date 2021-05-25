@@ -10,5 +10,5 @@ data class SuggestAddress(
     val streetWithType: String = "",
     val house: String =""
 ) {
-    override fun toString() = "$streetWithType ${house?:""}"
+    override fun toString() = "$streetWithType $house"
 }

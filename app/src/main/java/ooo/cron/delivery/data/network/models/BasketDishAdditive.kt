@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 /**
  * Created by Ramazan Gadzhikadiev on 26.05.2021.
  */
-data class AdditiveInBasket(
+data class BasketDishAdditive(
     @SerializedName("Id")
     val id: String,
     @SerializedName("Name")

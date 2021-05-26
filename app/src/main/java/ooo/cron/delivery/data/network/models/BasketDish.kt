@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 /**
  * Created by Ramazan Gadzhikadiev on 26.05.2021.
  */
-data class ProductInBasket(
+data class BasketDish(
     @SerializedName("Id")
     val id: String,
     @SerializedName("ProductId")
@@ -19,5 +19,5 @@ data class ProductInBasket(
     @SerializedName("PhotoUri")
     val photoUri: String,
     @SerializedName("Additives")
-    val additives: List<AdditiveInBasket>
+    val dishAdditives: List<BasketDishAdditive>
 )

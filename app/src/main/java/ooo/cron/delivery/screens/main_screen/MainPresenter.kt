@@ -78,6 +78,12 @@ class MainPresenter @Inject constructor(
         }
     }
 
+    override fun continueLastSessionCLick() {
+        user?.basket?.partnerId?.let {
+            view?.navigatePartnerScreen(it)
+        }
+    }
+
     private suspend fun defineAddress() {
         val address = dataManager.readBuildingAddress()
         if (address.isNullOrBlank().not())
@@ -94,8 +100,8 @@ class MainPresenter @Inject constructor(
         val response = dataManager.getUser("Bearer ${token.accessToken}")
 
         if (response.isSuccessful) {
-            writeBasket(response)
-            return updateUser(response)
+            updateUser(response)
+            return
         }
 
         if (response.code() == 401 && token.accessToken.isNotEmpty() && token.refreshToken.isNotEmpty())
@@ -130,21 +136,26 @@ class MainPresenter @Inject constructor(
         view?.showAnyErrorScreen() ?: Unit
     }
 
-    private fun writeBasket(response: Response<UserResponse>) {
+    private fun handleBasket(response: Response<UserResponse>) {
         writeBasketId(response)
+        view?.showContinueLastSession()
     }
 
     private fun writeBasketId(response: Response<UserResponse>) =
         dataManager.writeUserBasket(response.body()?.user?.basket?.id ?: DataManager.EMPTY_UUID)
 
     private fun updateUser(response: Response<UserResponse>) {
+        handleBasket(response)
+        showAuthorizeUser(response)
+        selectMarketCategory()
+    }
+
+    private fun showAuthorizeUser(response: Response<UserResponse>) {
         user = response.body()?.user
 
         user?.let {
             view?.showAuthorizedUser(it.name)
         }
-
-        selectMarketCategory()
     }
 
     private fun Response<List<MarketCategory>>.handleMarketCategories() {

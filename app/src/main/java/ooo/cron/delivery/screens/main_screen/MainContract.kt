@@ -18,6 +18,7 @@ interface MainContract {
         fun selectMarketCategory(position: Int)
         fun showAuthorizedUser(username: String)
         fun showUnauthorizedUser()
+        fun showContinueLastSession()
         fun removeMarketCategoriesProgress()
         fun showNotAuthorizedMessage()
         fun startMarketCategoryFragment(category: MarketCategory)
@@ -25,6 +26,7 @@ interface MainContract {
         fun navigateFirstAddressSelection()
         fun navigateAddressSelection()
         fun navigateLoginActivity()
+        fun navigatePartnerScreen(partnerId: String)
     }
 
     interface Presenter : MvpPresenter<View> {
@@ -34,5 +36,6 @@ interface MainContract {
         fun onClickAddress()
         fun onProfileClick()
         fun onLogInLogOutClick()
+        fun continueLastSessionCLick()
     }
 }

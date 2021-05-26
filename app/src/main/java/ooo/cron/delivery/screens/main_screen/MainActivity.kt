@@ -6,15 +6,20 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.google.android.material.tabs.TabLayout
+import com.google.gson.Gson
+import kotlinx.android.synthetic.main.activity_main.*
 import nl.psdcompany.duonavigationdrawer.widgets.DuoDrawerToggle
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
+import ooo.cron.delivery.data.network.models.AdditiveInBasket
 import ooo.cron.delivery.data.network.models.MarketCategory
+import ooo.cron.delivery.data.network.models.ProductInBasket
 import ooo.cron.delivery.databinding.ActivityMainBinding
 import ooo.cron.delivery.screens.BaseActivity
 import ooo.cron.delivery.screens.first_address_selection_screen.FirstAddressSelectionActivity
 import ooo.cron.delivery.screens.login_screen.LoginActivity
 import ooo.cron.delivery.screens.market_category_screen.MarketCategoryFragment
+import ooo.cron.delivery.screens.partners_screen.PartnersActivity
 import javax.inject.Inject
 
 class MainActivity : BaseActivity(), MainContract.View {
@@ -33,6 +38,8 @@ class MainActivity : BaseActivity(), MainContract.View {
         configureAppBar()
 
         configureNavigationDrawer()
+
+        setContinueLastSessionClickListener()
 
         presenter.onCreateView()
     }
@@ -114,11 +121,16 @@ class MainActivity : BaseActivity(), MainContract.View {
         )
     }
 
+    override fun showContinueLastSession() {
+        binding.vgMainContinueLastSession.visibility = View.VISIBLE
+    }
+
     override fun startMarketCategoryFragment(category: MarketCategory) {
         supportFragmentManager.beginTransaction().replace(
             R.id.container_main,
             MarketCategoryFragment().apply {
                 arguments = marketCategoryArguments(category)
+
             }
         ).commit()
     }
@@ -139,6 +151,14 @@ class MainActivity : BaseActivity(), MainContract.View {
 
     override fun navigateLoginActivity() {
         startActivity(Intent(this, LoginActivity::class.java))
+    }
+
+    override fun navigatePartnerScreen(partnerId: String) {
+        startActivity(Intent(this, PartnersActivity::class.java)
+            .apply {
+                putExtra(PartnersActivity.EXTRA_PARTNER_ID, partnerId)
+            }
+        )
     }
 
     private fun injectDependencies() =
@@ -191,6 +211,12 @@ class MainActivity : BaseActivity(), MainContract.View {
 
     private fun onAddressClick() = binding.tvMainUserAddress.setOnClickListener {
         presenter.onClickAddress()
+    }
+
+    private fun setContinueLastSessionClickListener() {
+        binding.btnMainContinueLastSession.setOnClickListener {
+            presenter.continueLastSessionCLick()
+        }
     }
 
     private fun TabLayout.clear() {

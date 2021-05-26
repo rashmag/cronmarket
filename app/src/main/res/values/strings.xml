@@ -158,4 +158,5 @@
     <string name="basket_counter_minus">Уменьшить количество</string>
     <string name="basket_counter_plus">Увеличить количество</string>
     <string name="basket_item_image_description">Изображение блюда</string>
+    <string name="main_continue_last_session">Продолжить покупки</string>
 </resources>

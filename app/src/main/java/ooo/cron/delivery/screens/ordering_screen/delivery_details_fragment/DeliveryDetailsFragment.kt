@@ -97,6 +97,7 @@ class DeliveryDetailsFragment : BaseFragment(), DeliveryDetailsContract.View {
             }
         }
     }
+
     private fun initViews() {
         onChooseDeliveryTimeClick()
 
@@ -141,7 +142,7 @@ class DeliveryDetailsFragment : BaseFragment(), DeliveryDetailsContract.View {
         closeCalendar.set(Calendar.MINUTE, PARTNER_CLOSE_MINUTES)
 
         TimePickerDialog(
-            context, TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
+            context, TimePickerDialog.OnTimeSetListener { _, hour, minute ->
                 val chooseCalendar = Calendar.getInstance()
                 chooseCalendar.set(Calendar.HOUR_OF_DAY, hour)
                 chooseCalendar.set(Calendar.MINUTE, minute)
@@ -153,6 +154,7 @@ class DeliveryDetailsFragment : BaseFragment(), DeliveryDetailsContract.View {
                         text =
                             requireContext().resources.getString(R.string.delivery_time_error_title)
                         visibility = View.VISIBLE
+//                        orderingView.setOrderButtonEnabled(false)
                     }
                 } else {
                     binding.etDeliveryTime.background = ContextCompat.getDrawable(
@@ -160,6 +162,7 @@ class DeliveryDetailsFragment : BaseFragment(), DeliveryDetailsContract.View {
                         R.drawable.bg_edit_text_selector
                     )
                     binding.tvError.visibility = View.INVISIBLE
+//                    orderingView.setOrderButtonEnabled(true)
                 }
 
                 val deliveryTime = String.format("%d:%s", hour, checkDigit(minute))

@@ -108,6 +108,10 @@ class OrderingActivity : BaseActivity(), OrderContract.View {
         return orderReq
     }
 
+    override fun setOrderButtonEnabled(isEnable: Boolean) {
+        binding.btnOrder.isEnabled = isEnable
+    }
+
     private fun applyChanges() {
         orderReq.saveAddress = false
         orderReq.discount = 0

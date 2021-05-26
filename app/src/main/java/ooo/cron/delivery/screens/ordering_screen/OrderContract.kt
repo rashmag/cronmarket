@@ -20,13 +20,14 @@ interface OrderContract {
         fun getComment(comment: String)
         fun getDeliveryTime(deliveryTime: String)
         fun getEntrance(entrance: String)
-        fun getFloor(floor:String)
-        fun getFlat(flat:String)
+        fun getFloor(floor: String)
+        fun getFlat(flat: String)
         fun getOrderReq(): OrderReq
         fun showAnyErrorScreen()
         fun showConnectionErrorScreen()
         fun showOrderSuccessfulScreen()
         fun showOrderErrorScreen()
+        fun setOrderButtonEnabled(isEnable: Boolean)
     }
 
     interface Presenter : MvpPresenter<View> {

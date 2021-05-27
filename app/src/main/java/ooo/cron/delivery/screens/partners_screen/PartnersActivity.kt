@@ -187,10 +187,8 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         }
     }
 
-    private lateinit var categoryRes: List<PartnerCategoryRes.Categories>
     override fun showPartnerCategory(body: PartnerCategoryRes) {
         binding.run {
-            categoryRes = body.categories
             presenter.getPartnerProducts()
             rvCategories.apply {
                 layoutManager =
@@ -220,25 +218,9 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         }
     }
 
-    override fun showPartnerProducts(body: List<PartnerProductsRes>) {
-        val productCategoriesModel = ArrayList<ProductCategoryModel>()
-        val productList = ArrayList<PartnerProductsRes>()
-        for (category in categoryRes) {
-            for (product in body) {
-                if (category.id == product.categoryId) {
-                    productList.add(product)
-                }
-            }
-            productCategoriesModel.add(
-                ProductCategoryModel(
-                    category.id,
-                    category.name,
-                    productList.filterIndexed { _, partnerProductsRes ->
-                        partnerProductsRes.categoryId == category.id
-                    }
-                )
-            )
-        }
+    override fun showPartnerProducts(
+        productCategoriesModel: ArrayList<ProductCategoryModel>
+    ) {
 
         binding.run {
             vgMainView.removeView(binding.vgPartnersActivityProgress.root)
@@ -247,6 +229,12 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
                 adapter = PartnerProductAdapter(productCategoriesModel, this@PartnersActivity)
             }
         }
+    }
+
+    override fun showBasketPreview(basketId: String, quantity: Int, basketPrice: Double) {
+        binding.tvPartnerBasket.text = getString(R.string.partner_basket, quantity)
+        binding.btnPartnerBasketPrice.text = getString(R.string.partner_basket_price, basketPrice)
+        binding.vgPartnerBasket.visibility = View.VISIBLE
     }
 
     override fun onProductClick(product: PartnerProductsRes) {

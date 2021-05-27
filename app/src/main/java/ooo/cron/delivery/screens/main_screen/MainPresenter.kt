@@ -142,7 +142,7 @@ class MainPresenter @Inject constructor(
     }
 
     private fun writeBasketId(response: Response<UserResponse>) =
-        dataManager.writeUserBasket(response.body()?.user?.basket?.id ?: DataManager.EMPTY_UUID)
+        dataManager.writeUserBasket(response.body()?.basket?.id ?: DataManager.EMPTY_UUID)
 
     private fun updateUser(response: Response<UserResponse>) {
         handleBasket(response)

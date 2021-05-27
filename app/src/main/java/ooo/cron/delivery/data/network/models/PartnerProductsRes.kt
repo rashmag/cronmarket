@@ -16,7 +16,8 @@ data class PartnerProductsRes(
     var categoryId: String,
     var additives: List<Additives>,
     var nonRequiredAdditives: List<NonRequiredAdditives>,
-    var requiredAdditiveGroups: List<RequiredAdditiveGroups>
+    var requiredAdditiveGroups: List<RequiredAdditiveGroups>,
+    var inBasketQuantity: Int = 0
 ) {
 
     data class NonRequiredAdditives(

@@ -6,14 +6,10 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.google.android.material.tabs.TabLayout
-import com.google.gson.Gson
-import kotlinx.android.synthetic.main.activity_main.*
 import nl.psdcompany.duonavigationdrawer.widgets.DuoDrawerToggle
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
-import ooo.cron.delivery.data.network.models.AdditiveInBasket
 import ooo.cron.delivery.data.network.models.MarketCategory
-import ooo.cron.delivery.data.network.models.ProductInBasket
 import ooo.cron.delivery.databinding.ActivityMainBinding
 import ooo.cron.delivery.screens.BaseActivity
 import ooo.cron.delivery.screens.first_address_selection_screen.FirstAddressSelectionActivity

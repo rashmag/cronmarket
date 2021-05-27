@@ -53,6 +53,8 @@ class CategoryAdapter(
                     tvCost.text = cost.toString()
                     tvGram.text = portionSize
 
+                    showPriceAndCounter(this)
+
                     com.bumptech.glide.Glide.with(root)
                         .load(photo)
                         .into(ivProduct)
@@ -70,6 +72,17 @@ class CategoryAdapter(
             binding.ivMinus.setOnClickListener{
                 listener.onMinusClick(product, position)
             }
+        }
+
+        private fun showPriceAndCounter(product: PartnerProductsRes) {
+            if (product.inBasketQuantity <= 0) {
+                binding.vgCost.visibility = View.VISIBLE
+                return
+            }
+
+            binding.tvCost.visibility = View.INVISIBLE
+            binding.vgAddProduct.visibility = View.VISIBLE
+            binding.tvPortionCount.text = product.inBasketQuantity.toString()
         }
     }
 

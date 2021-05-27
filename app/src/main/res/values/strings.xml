@@ -159,4 +159,9 @@
     <string name="basket_counter_plus">Увеличить количество</string>
     <string name="basket_item_image_description">Изображение блюда</string>
     <string name="main_continue_last_session">Продолжить покупки</string>
+    <string name="partner_basket">В корзине %1$d товаров \nна сумму:</string>
+    <string name="partner_basket_price">%1$d₽</string>
+    <string name="partner_product_image">Изображение продукта</string>
+    <string name="partner_product_decrease_quantity">Уменьшить количество на 1</string>
+    <string name="partner_product_increase_product">Увеличить количество на 1</string>
 </resources>

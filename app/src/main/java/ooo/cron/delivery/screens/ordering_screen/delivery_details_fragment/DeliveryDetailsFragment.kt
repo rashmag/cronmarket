@@ -154,7 +154,7 @@ class DeliveryDetailsFragment : BaseFragment(), DeliveryDetailsContract.View {
                         text =
                             requireContext().resources.getString(R.string.delivery_time_error_title)
                         visibility = View.VISIBLE
-//                        orderingView.setOrderButtonEnabled(false)
+                        orderingView.setOrderButtonEnabled(false)
                     }
                 } else {
                     binding.etDeliveryTime.background = ContextCompat.getDrawable(
@@ -162,7 +162,7 @@ class DeliveryDetailsFragment : BaseFragment(), DeliveryDetailsContract.View {
                         R.drawable.bg_edit_text_selector
                     )
                     binding.tvError.visibility = View.INVISIBLE
-//                    orderingView.setOrderButtonEnabled(true)
+                    orderingView.setOrderButtonEnabled(true)
                 }
 
                 val deliveryTime = String.format("%d:%s", hour, checkDigit(minute))

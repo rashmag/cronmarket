@@ -71,8 +71,7 @@ class OrderingActivity : BaseActivity(), OrderContract.View {
     }
 
     override fun getBasketId() {
-//        orderReq.basketId = presenter.getBasketId()
-        orderReq.basketId = "77914b25-38d2-4082-8e71-a5d9f54a5048"
+        orderReq.basketId = presenter.getBasketId()
     }
 
     override fun getPhone(phone: EditText) {
@@ -115,7 +114,6 @@ class OrderingActivity : BaseActivity(), OrderContract.View {
     private fun applyChanges() {
         orderReq.saveAddress = false
         orderReq.discount = 0
-        orderReq.basketId = "77914b25-38d2-4082-8e71-a5d9f54a5048"
         orderReq.deliveryCityId = presenter.getDeliveryCityId()
         val deliveryFragment = supportFragmentManager.findFragmentByTag("f" + 0)
         (deliveryFragment as DeliveryDetailsFragment).getDeliveryInfo()

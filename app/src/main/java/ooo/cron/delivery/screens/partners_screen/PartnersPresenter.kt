@@ -9,6 +9,7 @@ import ooo.cron.delivery.screens.base_mvp.BaseMvpPresenter
 import retrofit2.Response
 import java.util.*
 import javax.inject.Inject
+import kotlin.math.round
 
 /*
  * Created by Muhammad on 05.05.2021
@@ -73,9 +74,9 @@ class PartnersPresenter @Inject constructor(
 
                     productCategoriesModel.forEach { category ->
                         category.productList.forEach { product ->
-                            findProductQuantityInBasket(product)?.let {quantity ->
+                            findProductQuantityInBasket(product)?.let { quantity ->
                                 product.inBasketQuantity = quantity
-                            }
+                            } ?: kotlin.run { product.inBasketQuantity = 0 }
                         }
                     }
                     view?.showPartnerProducts(productCategoriesModel)
@@ -84,6 +85,18 @@ class PartnersPresenter @Inject constructor(
                 { view?.showAnyErrorScreen() }
             )
         }
+    }
+
+    override fun priceClick(product: PartnerProductsRes, position: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun minusClick(product: PartnerProductsRes, position: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun plusClick(product: PartnerProductsRes, position: Int) {
+        TODO("Not yet implemented")
     }
 
     private fun Response<List<PartnerProductsRes>>.handlePartnerProducts() {
@@ -120,6 +133,10 @@ class PartnersPresenter @Inject constructor(
             if (basket?.marketCategoryId == 1) {
                 basketContent = deserializeDishes()
             }
+            view?.showBasketPreview(
+                body()!!.id,
+                basketContent?.sumBy { it.quantity } ?: 0,
+                String.format("%.2f", body()!!.amount))
         } else {
             basket = null
             basketContent = null

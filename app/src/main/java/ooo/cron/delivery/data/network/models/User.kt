@@ -9,5 +9,4 @@ data class User(
     val phone: String,
     val lastMarketCategoryId: Int,
     val lastDeliveryCityId: String,
-    val basket: Basket
 )

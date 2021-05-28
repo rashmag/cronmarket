@@ -308,7 +308,6 @@
             android:textColor="@color/grey90"
             android:textStyle="normal"
             android:textSize="12sp"
-            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/iv_partner_basket"
             app:layout_constraintTop_toTopOf="parent"

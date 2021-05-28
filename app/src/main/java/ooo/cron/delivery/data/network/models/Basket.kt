@@ -8,7 +8,7 @@ data class Basket(
     val id: String,
     val marketCategoryId: Int,
     val partnerId: String,
-    val amount: Int,
+    val amount: Double,
     val cutleryCount: Int,
     val content: String
 )

@@ -23,12 +23,16 @@ interface PartnersContract {
         fun showPartnerCategory(body: PartnerCategoryRes)
         fun showPartnerProducts(productCategoriesModel: ArrayList<ProductCategoryModel>)
 
-        fun showBasketPreview(basketId: String, quantity: Int, basketPrice: Double)
+        fun showBasketPreview(basketId: String, quantity: Int, basketPrice: String)
     }
 
     interface Presenter : MvpPresenter<View> {
         fun getPartnerInfo()
         fun getPartnerCategory()
         fun getPartnerProducts()
+
+        fun minusClick(product: PartnerProductsRes, position: Int)
+        fun plusClick(product: PartnerProductsRes, position: Int)
+        fun priceClick(product: PartnerProductsRes, position: Int)
     }
 }

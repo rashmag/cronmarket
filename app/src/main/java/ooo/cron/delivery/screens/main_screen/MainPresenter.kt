@@ -23,7 +23,7 @@ class MainPresenter @Inject constructor(
     BaseMvpPresenter<MainContract.View>(), MainContract.Presenter {
 
     private var marketCategories: List<MarketCategory>? = null
-    private var user: User? = null
+    private var user: UserResponse? = null
 
     override fun detachView() {
         super.detachView()
@@ -151,10 +151,10 @@ class MainPresenter @Inject constructor(
     }
 
     private fun showAuthorizeUser(response: Response<UserResponse>) {
-        user = response.body()?.user
+        user = response.body()
 
         user?.let {
-            view?.showAuthorizedUser(it.name)
+            view?.showAuthorizedUser(it.user.name)
         }
     }
 
@@ -174,9 +174,9 @@ class MainPresenter @Inject constructor(
 
     private fun selectMarketCategory() {
         mainScope.launch {
-            if (dataManager.readChosenCity().id == user?.lastDeliveryCityId) {
+            if (dataManager.readChosenCity().id == user?.user?.lastDeliveryCityId) {
                 val lastBoughtMarketCategoryPosition =
-                    marketCategories!!.indexOfFirst { it.id == user?.lastMarketCategoryId }
+                    marketCategories!!.indexOfFirst { it.id == user?.user?.lastMarketCategoryId }
                 view?.selectMarketCategory(
                     if (lastBoughtMarketCategoryPosition == -1) 0
                     else lastBoughtMarketCategoryPosition

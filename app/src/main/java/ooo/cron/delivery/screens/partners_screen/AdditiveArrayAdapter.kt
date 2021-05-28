@@ -19,8 +19,8 @@ import ooo.cron.delivery.data.network.models.PartnerProductsRes
 class AdditiveArrayAdapter(
     context: Context,
     @LayoutRes private val layoutResource: Int,
-    private val additives: List<PartnerProductsRes.Additives>
-) : ArrayAdapter<PartnerProductsRes.Additives>(context, layoutResource, additives) {
+    private val additives: List<PartnerProductsRes.Additive>
+) : ArrayAdapter<PartnerProductsRes.Additive>(context, layoutResource, additives) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_additive, parent, false)
@@ -28,7 +28,7 @@ class AdditiveArrayAdapter(
         return view
     }
 
-    override fun getItem(position: Int): PartnerProductsRes.Additives? {
+    override fun getItem(position: Int): PartnerProductsRes.Additive? {
         return additives[position]
     }
 }

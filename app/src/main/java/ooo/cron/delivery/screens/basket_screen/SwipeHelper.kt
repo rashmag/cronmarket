@@ -3,6 +3,7 @@ package ooo.cron.delivery.screens.basket_screen
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.drawable.PaintDrawable
+import android.util.Log
 import android.view.MotionEvent
 import androidx.core.content.ContextCompat
 import androidx.core.view.marginStart
@@ -56,7 +57,7 @@ class SwipeHelper(
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        //TODO("Not yet implemented")
+        Log.d(this::class.simpleName, "Basket item swiped")
     }
 
     private var delta: Int? = null

@@ -8,8 +8,7 @@ import com.github.fajaragungpramana.sectionrecyclerview.Section
 import ooo.cron.delivery.R
 
 abstract class SectionRecyclerViewAdapter<VH : SectionRecyclerViewHolder, M : Section>(
-    private var listSection: List<M>,
-    private var layoutManger: RecyclerView.LayoutManager
+    private var listSection: List<M>
 ) :
     RecyclerView.Adapter<VH>() {
 

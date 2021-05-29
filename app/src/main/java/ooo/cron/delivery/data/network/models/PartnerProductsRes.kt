@@ -24,11 +24,12 @@ data class PartnerProductsRes(
     data class RequiredAdditiveGroup(
         var name: String,
         var additives: List<Additive>
-    )
+    ) : Section(name)
 
     data class Additive(
         var id: String,
         var name: String,
-        var cost: Int
+        var cost: Int,
+        var isChecked: Boolean
     )
 }

@@ -11,7 +11,9 @@ import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.PartnerProductsRes
+import ooo.cron.delivery.data.network.models.RequireAdditiveModel
 import ooo.cron.delivery.databinding.DialogProductInfoBinding
+import ooo.cron.delivery.screens.partners_screen.AdditiveArrayAdapter
 import ooo.cron.delivery.screens.partners_screen.AdditivesAdapter
 import ooo.cron.delivery.screens.partners_screen.RequireAdditivesAdapter
 
@@ -28,7 +30,7 @@ class ProductBottomSheetDialog(context: Context, private val product: PartnerPro
 
 
     private lateinit var binding: DialogProductInfoBinding
-
+    private var additiveList = ArrayList<RequireAdditiveModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DialogProductInfoBinding.bind(
@@ -82,14 +84,17 @@ class ProductBottomSheetDialog(context: Context, private val product: PartnerPro
             }
 
 
+            product.requiredAdditiveGroups.forEach {
+                additiveList.add(RequireAdditiveModel(it.name, it.additives))
+            }
             if (product.requiredAdditiveGroups.isNotEmpty()) {
-                initRequireAdditivesRecycler(product.requiredAdditiveGroups)
+                initRequireAdditivesRecycler(additiveList)
             }
 
             if (product.additives.isNotEmpty()) {
                 lvAdditives.apply {
                     choiceMode = ListView.CHOICE_MODE_MULTIPLE
-                    adapter = ooo.cron.delivery.screens.partners_screen.AdditiveArrayAdapter(
+                    adapter = AdditiveArrayAdapter(
                         context,
                         R.layout.item_additive, product.additives
                     )
@@ -102,7 +107,7 @@ class ProductBottomSheetDialog(context: Context, private val product: PartnerPro
         }
     }
 
-    private fun initRequireAdditivesRecycler(requiredAdditiveGroups: List<PartnerProductsRes.RequiredAdditiveGroups>) {
+    private fun initRequireAdditivesRecycler(requiredAdditiveGroups: ArrayList<RequireAdditiveModel>) {
         binding.rvRequireAdditives.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = RequireAdditivesAdapter(requiredAdditiveGroups, this@ProductBottomSheetDialog)

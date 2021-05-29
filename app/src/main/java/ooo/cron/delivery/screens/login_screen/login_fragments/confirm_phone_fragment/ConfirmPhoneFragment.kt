@@ -5,19 +5,14 @@ import android.os.CountDownTimer
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_confirm_phone.*
 import kotlinx.android.synthetic.main.fragment_confirm_phone.btn_next
 import kotlinx.android.synthetic.main.fragment_confirm_phone.tv_error
-import kotlinx.android.synthetic.main.fragment_enter_phone.*
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
-import ooo.cron.delivery.data.network.response.ConfirmCodeRes
 import ooo.cron.delivery.screens.login_screen.LoginActivity
-import ooo.cron.delivery.utils.Constants
-import ooo.cron.delivery.utils.Shared
 import ooo.cron.delivery.utils.Utils
 import javax.inject.Inject
 
@@ -32,21 +27,22 @@ class ConfirmPhoneFragment : Fragment(R.layout.fragment_confirm_phone), ConfirmP
     @Inject
     lateinit var presenter: ConfirmPhonePresenter
 
+    private lateinit var countDownTimer: CountDownTimer
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         App.appComponent.confirmPhoneComponentBuilder().build().inject(this)
         presenter.attachView(this)
         super.onViewCreated(view, savedInstanceState)
         initViews()
+    }
 
+    override fun onResume() {
+        super.onResume()
+        initSendPhoneText()
+        initCountDownTimer()
     }
 
     private fun initViews() {
-        tv_on_phone_send_code.text = String.format(
-            requireContext().getString(R.string.sms_sent_title),
-            Shared.getStringValue(requireContext(), Constants.USER_PHONE)
-        )
-
-
         btn_next.setOnClickListener {
             Utils.hideKeyboard(requireActivity())
             presenter.sendConfirmCode()
@@ -68,19 +64,22 @@ class ConfirmPhoneFragment : Fragment(R.layout.fragment_confirm_phone), ConfirmP
 
     }
 
-    override fun onResume() {
-        super.onResume()
-        initCountDownTimer()
+    private fun initSendPhoneText() {
+        tv_on_phone_send_code.text = String.format(
+            requireContext().getString(R.string.sms_sent_title),
+            presenter.getUserPhone()
+        )
     }
 
     private fun initCountDownTimer() {
-        object : CountDownTimer(60000, 1000) {
+        countDownTimer = object : CountDownTimer(60000, 1000) {
             override fun onFinish() {
                 tv_timer.apply {
-                    text = "Выслать код повторно"
+                    text = getString(R.string.enter_phone_repeat_send_code_title)
                     setTextColor(ContextCompat.getColor(requireContext(), R.color.main_dark))
                     setOnClickListener {
                         initCountDownTimer()
+                        presenter.sendPhone()
                     }
                     isClickable = true
                 }
@@ -95,9 +94,18 @@ class ConfirmPhoneFragment : Fragment(R.layout.fragment_confirm_phone), ConfirmP
                     )
                     setTextColor(ContextCompat.getColor(requireContext(), R.color.grey90))
                     isClickable = false
+
+
                 }
             }
-        }.start()
+        }
+        countDownTimer.start()
+    }
+
+
+    override fun onPause() {
+        super.onPause()
+        countDownTimer.cancel()
     }
 
 
@@ -105,15 +113,7 @@ class ConfirmPhoneFragment : Fragment(R.layout.fragment_confirm_phone), ConfirmP
         return et_code.text.toString()
     }
 
-    override fun getPhone(): String {
-        return Shared.getStringValue(requireContext(), Constants.USER_PHONE)!!
-    }
-
-    override fun showNextScreen(body: ConfirmCodeRes) {
-        Shared.apply {
-            setStringValue(requireContext(), Constants.ACCESS_TOKEN, body.accessToken)
-            setStringValue(requireContext(), Constants.REFRESH_TOKEN, body.refreshToken)
-        }
+    override fun showNextScreen() {
         (activity as LoginActivity).setViewPagerPosition(2)
     }
 

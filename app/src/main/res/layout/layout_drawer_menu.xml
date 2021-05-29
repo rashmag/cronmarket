@@ -24,7 +24,7 @@
         android:layout_marginStart="39dp"
         android:layout_marginTop="42dp"
         android:contentDescription="@string/drawer_profile_image_description"
-        android:src="@drawable/ic_drawer_profile"
+        android:src="@drawable/ic_drawer_unauthorized_profile"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/iv_drawer_logo" />
 

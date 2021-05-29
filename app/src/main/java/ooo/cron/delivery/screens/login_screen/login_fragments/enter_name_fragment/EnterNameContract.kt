@@ -15,7 +15,6 @@ interface EnterNameContract {
         fun getUserName(): String
         fun showError(parseError: String)
         fun cancelLogin()
-        fun getToken(): String
     }
 
     interface Presenter : MvpPresenter<View> {

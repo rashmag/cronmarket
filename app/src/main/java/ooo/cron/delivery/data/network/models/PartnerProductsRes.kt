@@ -16,29 +16,17 @@ data class PartnerProductsRes(
     var portionSize: String,
     var description: String,
     var categoryId: String,
-    var additives: List<Additives>,
-    var nonRequiredAdditives: List<NonRequiredAdditives>,
-    var requiredAdditiveGroups: List<RequiredAdditiveGroups>
+    var additives: List<Additive>,
+    var requiredAdditiveGroups: List<RequiredAdditiveGroup>,
+    var inBasketQuantity: Int = 0
 ) {
 
-    data class NonRequiredAdditives(
-        var id: String,
+    data class RequiredAdditiveGroup(
         var name: String,
-        var cost: Int
+        var additives: List<Additive>
     )
 
-
-    data class RequiredAdditiveGroups(
-        var name: String,
-        var requiredAdditives: List<RequireAdditives>
-    ) : Section(name) {
-        data class RequireAdditives(
-            var id: String,
-            var name: String
-        )
-    }
-
-    data class Additives(
+    data class Additive(
         var id: String,
         var name: String,
         var cost: Int

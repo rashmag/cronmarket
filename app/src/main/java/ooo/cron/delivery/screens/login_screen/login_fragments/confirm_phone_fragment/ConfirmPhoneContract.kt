@@ -1,6 +1,6 @@
 package ooo.cron.delivery.screens.login_screen.login_fragments.confirm_phone_fragment
 
-import ooo.cron.delivery.data.network.response.ConfirmCodeRes
+import ooo.cron.delivery.data.network.models.RefreshableToken
 import ooo.cron.delivery.screens.base_mvp.MvpPresenter
 import ooo.cron.delivery.screens.base_mvp.MvpView
 
@@ -14,12 +14,13 @@ interface ConfirmPhoneContract {
 
     interface View: MvpView {
         fun getCode(): String
-        fun getPhone(): String
-        fun showNextScreen(body: ConfirmCodeRes)
+        fun showNextScreen()
         fun showError(message: String)
     }
 
     interface Presenter : MvpPresenter<View> {
         fun sendConfirmCode()
+        fun sendPhone()
+        fun getUserPhone(): String?
     }
 }

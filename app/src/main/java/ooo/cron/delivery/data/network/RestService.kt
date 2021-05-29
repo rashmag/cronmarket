@@ -1,10 +1,11 @@
 package ooo.cron.delivery.data.network
 
+import okhttp3.ResponseBody
 import ooo.cron.delivery.data.network.models.*
 import ooo.cron.delivery.data.network.request.ConfirmCodeReq
+import ooo.cron.delivery.data.network.request.LogOutReq
 import ooo.cron.delivery.data.network.request.SentCodeReq
 import ooo.cron.delivery.data.network.request.SetUserNameReq
-import ooo.cron.delivery.data.network.response.ConfirmCodeRes
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
@@ -14,6 +15,11 @@ import retrofit2.http.*
  */
 
 interface RestService {
+
+    @GET("/api/v1/User")
+    suspend fun getUser(
+        @Header("Authorization") token: String
+    ): Response<UserResponse>
 
     @GET("/api/v1/Address/delivery_cities")
     suspend fun getCities(): Response<List<City>>
@@ -61,16 +67,8 @@ interface RestService {
     @POST("/api/v1/Account/send_code")
     fun sentCode(@Body sentCodeReq: SentCodeReq): Call<Void>
 
-    @GET("/api/v1/PartnerCard/partner_products_categories")
-    suspend fun getPartnersCategory(@Query("PartnerId") PartnerId: String):
-            Response<PartnerCategoryRes>
-
-    @GET("/api/v1/PartnerCard/partner_products")
-    suspend fun getPartnerProducts(@Query("PartnerId") partnerId: String) :
-            Response<List<PartnerProductsRes>>
-
     @POST("/api/v1/Account/confirm_code")
-    fun sentConfirmCode(@Body sentConformCodeReq: ConfirmCodeReq): Call<ConfirmCodeRes>
+    fun sentConfirmCode(@Body sentConformCodeReq: ConfirmCodeReq): Call<RefreshableToken>
 
     @POST("/api/v1/User/name")
     fun setUserName(@Header("Authorization") token: String, @Body name: SetUserNameReq): Call<Void>
@@ -79,6 +77,29 @@ interface RestService {
     suspend fun getPartnersInfo(
         @Query("PartnerId") partnerId: String
     ): Response<PartnersInfoRes>
+
+    @GET("/api/v1/PartnerCard/partner_products_categories")
+    suspend fun getPartnersCategory(@Query("PartnerId") PartnerId: String):
+            Response<PartnerCategoryRes>
+
+    @GET("/api/v1/PartnerCard/partner_products")
+    suspend fun getPartnerProducts(@Query("PartnerId") partnerId: String) :
+            Response<List<PartnerProductsRes>>
+
+    @POST("/api/v1/Account/refresh_token")
+    suspend fun refreshToken(
+        @Body token: RefreshableToken
+    ): Response<RefreshableToken>
+
+    @POST("/api/v1/Account/logout")
+    suspend fun logOut(
+        @Body refreshToken:LogOutReq
+    ): Response<ResponseBody>
+
+    @GET("/api/v1/Basket")
+    suspend fun getBasket(
+        @Query("BasketId") basketId: String
+    ): Response<Basket>
 
     companion object {
         const val PARTNERS_PAGINATION_LIMIT = 15

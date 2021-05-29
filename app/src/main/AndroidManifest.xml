@@ -19,20 +19,23 @@
 
         <activity android:name=".screens.any_error_screen.AnyErrorActivity" />
 
-        <activity android:name=".screens.base_mvp.ConnectionErrorActivity" />
+        <activity android:name=".screens.connection_error_screen.ConnectionErrorActivity" />
 
         <activity android:name=".screens.first_address_selection_screen.FirstAddressSelectionActivity">
-
-        </activity>
-
-        <activity android:name=".screens.login_screen.LoginActivity"/>
-
-        <activity android:name=".screens.partners_screen.PartnersActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".screens.login_screen.LoginActivity"/>
+
+        <activity android:name=".screens.partners_screen.PartnersActivity"/>
+
+        <activity android:name=".screens.basket_screen.BasketActivity">
+
+        </activity>
+
     </application>
 
 </manifest>

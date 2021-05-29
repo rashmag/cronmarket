@@ -4,12 +4,16 @@ import ooo.cron.delivery.data.network.RestService
 import ooo.cron.delivery.data.network.request.ConfirmCodeReq
 import ooo.cron.delivery.data.network.request.SentCodeReq
 import ooo.cron.delivery.data.network.request.SetUserNameReq
-import ooo.cron.delivery.data.network.response.ConfirmCodeRes
-import android.content.SharedPreferences
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import okhttp3.ResponseBody
+import ooo.cron.delivery.data.network.SPrefsService
+import ooo.cron.delivery.data.network.models.Basket
 import ooo.cron.delivery.data.network.models.City
+import ooo.cron.delivery.data.network.models.RefreshableToken
+import ooo.cron.delivery.data.network.request.LogOutReq
 import retrofit2.Call
+import retrofit2.Response
 import javax.inject.Inject
 
 /**
@@ -18,18 +22,20 @@ import javax.inject.Inject
 
 class DataManager @Inject constructor(
     private val restService: RestService,
-    private val sharedPreferences: SharedPreferences
+    private val sPrefsService: SPrefsService
 ) {
-    suspend fun getCities() = withContext(Dispatchers.IO) {
-        restService.getCities()
-    }
+    suspend fun getCities() =
+        withContext(Dispatchers.IO) {
+            restService.getCities()
+        }
 
     suspend fun getSuggestAddress(
         kladrId: String,
         city: String
-    ) = withContext(Dispatchers.IO) {
-        restService.getSuggestAddress(kladrId, city)
-    }
+    ) =
+        withContext(Dispatchers.IO) {
+            restService.getSuggestAddress(kladrId, city)
+        }
 
     suspend fun getSuggestAddress(
         latitude: Double,
@@ -39,9 +45,10 @@ class DataManager @Inject constructor(
             restService.getSuggestAddress(latitude, longitude)
         }
 
-    suspend fun getMarketCategories(cityId: String) = withContext(Dispatchers.IO) {
-        restService.getMarketCategories(cityId)
-    }
+    suspend fun getMarketCategories(cityId: String) =
+        withContext(Dispatchers.IO) {
+            restService.getMarketCategories(cityId)
+        }
 
     suspend fun getTagsResponse(
         cityId: String,
@@ -55,18 +62,30 @@ class DataManager @Inject constructor(
         cityId: String,
         marketCategoryId: Int,
         offset: Int
-    ) = withContext(Dispatchers.IO) {
-        restService.getPartners(cityId, marketCategoryId, offset)
-    }
+    ) =
+        withContext(Dispatchers.IO) {
+            restService.getPartners(cityId, marketCategoryId, offset)
+        }
 
     suspend fun getPartnersByTag(
         cityId: String,
         marketCategoryId: Int,
         tagId: String,
         offset: Int
-    ) = withContext(Dispatchers.IO) {
-        restService.getPartnersByTag(cityId, marketCategoryId, tagId, offset)
-    }
+    ) =
+        withContext(Dispatchers.IO) {
+            restService.getPartnersByTag(cityId, marketCategoryId, tagId, offset)
+        }
+
+    suspend fun getUser(token: String) =
+        withContext(Dispatchers.IO) {
+            restService.getUser(token)
+        }
+
+    suspend fun refreshToken(token: RefreshableToken) =
+        withContext(Dispatchers.IO) {
+            restService.refreshToken(token)
+        }
 
     suspend fun getPartnersInfo(partnerId: String) = withContext(Dispatchers.IO) {
         restService.getPartnersInfo(partnerId)
@@ -84,7 +103,7 @@ class DataManager @Inject constructor(
         return restService.sentCode(sentCodeReq)
     }
 
-    fun sentConfirmCode(confirmCodeReq: ConfirmCodeReq): Call<ConfirmCodeRes> {
+    fun sentConfirmCode(confirmCodeReq: ConfirmCodeReq): Call<RefreshableToken> {
         return restService.sentConfirmCode(confirmCodeReq)
     }
 
@@ -92,37 +111,60 @@ class DataManager @Inject constructor(
         return restService.setUserName(token, userName)
     }
 
-    suspend fun writeChosenCity(city: City) = withContext(Dispatchers.IO) {
-        sharedPreferences.edit()
-            .putString(CITY_ID, city.id)
-            .putString(CITY_NAME, city.city)
-            .putString(CITY_KLADR_ID, city.kladrId)
-            .commit()
+    suspend fun logOut(refreshToken: LogOutReq): Response<ResponseBody> =
+        restService.logOut(refreshToken)
+
+    suspend fun getBasket(basketId: String): Response<Basket> =
+        restService.getBasket(basketId)
+
+    suspend fun writeChosenCity(city: City) =
+        withContext(Dispatchers.IO) {
+            sPrefsService.writeChosenCity(city)
+        }
+
+    suspend fun readChosenCity() =
+        withContext(Dispatchers.IO) {
+            sPrefsService.readChosenCity()
+        }
+
+    suspend fun writeBuildingAddress(address: String) =
+        withContext(Dispatchers.IO) {
+            sPrefsService.writeBuildingAddress(address)
+        }
+
+    suspend fun readBuildingAddress() =
+        withContext(Dispatchers.IO) {
+            sPrefsService.readBuildingAddress()
+        }
+
+    fun readUserPhone()=
+        sPrefsService.readUserPhone()
+
+    fun writeUserPhone(phone: String) {
+        sPrefsService.writeUserPhone(phone)
     }
 
-    suspend fun readChosenCity() = withContext(Dispatchers.IO) {
-        City(
-            sharedPreferences.getString(CITY_ID, "")!!,
-            sharedPreferences.getString(CITY_NAME, "")!!,
-            sharedPreferences.getString(CITY_KLADR_ID, "")!!
-        )
+    fun readUserBasket() =
+        sPrefsService.readUserBasket() ?: EMPTY_UUID
+
+    fun writeUserBasket(id: String) =
+        sPrefsService.writeUserBasket(id)
+
+    fun removeUserBasket() {
+        sPrefsService.removeBasketId()
     }
 
-    suspend fun writeBuildingAddress(address: String) = withContext(Dispatchers.IO) {
-        sharedPreferences.edit()
-            .putString(STREET_WITH_BUILDING, address)
-            .commit()
+    fun writeToken(token: RefreshableToken) {
+        sPrefsService.writeToken(token)
     }
 
-    suspend fun readBuildingAddress() = withContext(Dispatchers.IO) {
-        sharedPreferences.getString(STREET_WITH_BUILDING, "")
-    }
+    fun readToken() =
+        sPrefsService.readToken()
+
+    fun removeToken() =
+        sPrefsService.removeToken()
 
     companion object {
-        const val CITY_ID = "CITY_ID"
-        const val CITY_NAME = "CITY_NAME"
-        const val CITY_KLADR_ID = "CITY_KLADR_ID"
-
-        const val STREET_WITH_BUILDING = "STREET_WITH_BUILDING"
+        const val EMPTY_UUID = SPrefsService.EMPTY_UUID
     }
 }

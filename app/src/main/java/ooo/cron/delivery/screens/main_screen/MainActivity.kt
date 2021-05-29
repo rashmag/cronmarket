@@ -4,8 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import com.google.android.material.tabs.TabLayout
-import kotlinx.android.synthetic.main.layout_drawer_menu.view.*
 import nl.psdcompany.duonavigationdrawer.widgets.DuoDrawerToggle
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
@@ -15,6 +15,7 @@ import ooo.cron.delivery.screens.BaseActivity
 import ooo.cron.delivery.screens.first_address_selection_screen.FirstAddressSelectionActivity
 import ooo.cron.delivery.screens.login_screen.LoginActivity
 import ooo.cron.delivery.screens.market_category_screen.MarketCategoryFragment
+import ooo.cron.delivery.screens.partners_screen.PartnersActivity
 import javax.inject.Inject
 
 class MainActivity : BaseActivity(), MainContract.View {
@@ -34,13 +35,14 @@ class MainActivity : BaseActivity(), MainContract.View {
 
         configureNavigationDrawer()
 
+        setContinueLastSessionClickListener()
+
         presenter.onCreateView()
     }
 
     override fun onStart() {
         super.onStart()
         presenter.onStartView()
-        binding.vgMainMenu.tvDrawerMenuItemShops.isSelected = true
     }
 
     override fun onDestroy() {
@@ -55,6 +57,13 @@ class MainActivity : BaseActivity(), MainContract.View {
 
     override fun removeMarketCategoriesProgress() =
         binding.vgMainContent.removeView(binding.vgMainMarketCategoriesProgress.root)
+
+    override fun showNotAuthorizedMessage() {
+        Toast.makeText(
+            this,
+            getString(R.string.common_user_not_authorized), Toast.LENGTH_SHORT
+        ).show()
+    }
 
     override fun showMarketCategories(categories: List<MarketCategory>) {
         binding.tlMainMarketCategories.apply {
@@ -72,9 +81,44 @@ class MainActivity : BaseActivity(), MainContract.View {
                 override fun onTabReselected(tab: TabLayout.Tab?) {
                     Log.d(MainActivity::class.simpleName, "tab ${tab?.text} reselected")
                 }
-
             })
         }
+    }
+
+    override fun selectMarketCategory(position: Int) {
+        binding.tlMainMarketCategories.getTabAt(position)?.let {
+            if (!it.isSelected)
+                it.select()
+        }
+    }
+
+    override fun showAuthorizedUser(username: String) {
+        binding.vgMainMenu.ivDrawerProfile.setImageResource(
+            R.drawable.ic_drawable_authorized_profile
+        )
+        binding.vgMainMenu.tvDrawerProfile.text = username
+
+        binding.vgMainMenu.tvDrawerProfileLogInOut.setCompoundDrawablesWithIntrinsicBounds(
+            R.drawable.ic_drawer_log_out, 0, 0, 0
+        )
+
+        binding.vgMainMenu.tvDrawerProfileLogInOut.text = getString(R.string.drawer_log_out)
+    }
+
+    override fun showUnauthorizedUser() {
+        binding.vgMainMenu.ivDrawerProfile.setImageResource(
+            R.drawable.ic_drawable_authorized_profile
+        )
+        binding.vgMainMenu.tvDrawerProfile.text =
+            getString(R.string.drawer_profile_name_unauthorized)
+
+        binding.vgMainMenu.tvDrawerProfileLogInOut.setCompoundDrawablesWithIntrinsicBounds(
+            R.drawable.ic_drawer_log_out, 0, 0, 0
+        )
+    }
+
+    override fun showContinueLastSession() {
+        binding.vgMainContinueLastSession.visibility = View.VISIBLE
     }
 
     override fun startMarketCategoryFragment(category: MarketCategory) {
@@ -82,8 +126,15 @@ class MainActivity : BaseActivity(), MainContract.View {
             R.id.container_main,
             MarketCategoryFragment().apply {
                 arguments = marketCategoryArguments(category)
+
             }
         ).commit()
+    }
+
+    override fun reopenMainScreen() {
+        val intent = this.intent
+        finish()
+        startActivity(intent)
     }
 
     override fun navigateFirstAddressSelection() {
@@ -92,6 +143,18 @@ class MainActivity : BaseActivity(), MainContract.View {
 
     override fun navigateAddressSelection() {
         TODO("Not yet implemented")
+    }
+
+    override fun navigateLoginActivity() {
+        startActivity(Intent(this, LoginActivity::class.java))
+    }
+
+    override fun navigatePartnerScreen(partnerId: String) {
+        startActivity(Intent(this, PartnersActivity::class.java)
+            .apply {
+                putExtra(PartnersActivity.EXTRA_PARTNER_ID, partnerId)
+            }
+        )
     }
 
     private fun injectDependencies() =
@@ -108,30 +171,48 @@ class MainActivity : BaseActivity(), MainContract.View {
     private fun configureNavigationDrawer() {
         val drawerToggle = DuoDrawerToggle(
             this@MainActivity,
-            binding.drawer,
+            binding.drawerMain,
             binding.tbMain,
             R.string.navigation_drawer_open,
             R.string.navigation_drawer_close
         )
 
-        binding.drawer.setDrawerListener(drawerToggle)
+        binding.drawerMain.setDrawerListener(drawerToggle)
         drawerToggle.syncState()
 
-
-        binding.drawer.tv_drawer_profile.setOnClickListener {
-            startActivity(Intent(this, LoginActivity::class.java))
-        }
-        binding.drawer.tv_drawer_profile_log_in_out.setOnClickListener {
-            startActivity(Intent(this, LoginActivity::class.java))
-        }
+        setOnProfileClick()
+        setOnLoginLogOut()
 
         configureMenuItemsClick {
             //TODO()
+        }
+
+        binding.vgMainMenu.tvDrawerMenuItemShops.isSelected = true
+    }
+
+    private fun setOnProfileClick() {
+        binding.vgMainMenu.ivDrawerProfile.setOnClickListener {
+            presenter.onProfileClick()
+        }
+        binding.vgMainMenu.tvDrawerProfile.setOnClickListener {
+            presenter.onProfileClick()
+        }
+    }
+
+    private fun setOnLoginLogOut() {
+        binding.vgMainMenu.tvDrawerProfileLogInOut.setOnClickListener {
+            presenter.onLogInLogOutClick()
         }
     }
 
     private fun onAddressClick() = binding.tvMainUserAddress.setOnClickListener {
         presenter.onClickAddress()
+    }
+
+    private fun setContinueLastSessionClickListener() {
+        binding.btnMainContinueLastSession.setOnClickListener {
+            presenter.continueLastSessionCLick()
+        }
     }
 
     private fun TabLayout.clear() {
@@ -164,7 +245,7 @@ class MainActivity : BaseActivity(), MainContract.View {
         )
 
         menuItems.forEach {
-            it.setOnClickListener {clickedView ->
+            it.setOnClickListener { clickedView ->
                 menuItems.forEach { item ->
                     item.isSelected = item == clickedView
                 }

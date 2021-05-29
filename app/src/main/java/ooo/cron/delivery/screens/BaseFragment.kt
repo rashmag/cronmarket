@@ -2,7 +2,7 @@ package ooo.cron.delivery.screens
 
 import androidx.fragment.app.Fragment
 import ooo.cron.delivery.screens.any_error_screen.AnyErrorActivity
-import ooo.cron.delivery.screens.base_mvp.ConnectionErrorActivity
+import ooo.cron.delivery.screens.connection_error_screen.ConnectionErrorActivity
 
 /**
  * Created by Ramazan Gadzhikadiev on 22.04.2021.

@@ -70,11 +70,13 @@ class TagsAdapter(
             tagsToShow?.let { tags ->
                 (holder.itemView as TextView).apply {
                     val tagIndex = position - 1
-                    text = tags.tags[tagIndex].name
-                    setOnClickListener {
-                        selectedTagPosition = position
-                        notifyDataSetChanged()
-                        onTagClickCallback(tags.tags[tagIndex])
+                    if (tags.tags.isNotEmpty()) {
+                        text = tags.tags[tagIndex].name
+                        setOnClickListener {
+                            selectedTagPosition = position
+                            notifyDataSetChanged()
+                            onTagClickCallback(tags.tags[tagIndex])
+                        }
                     }
                 }
             }
@@ -83,7 +85,14 @@ class TagsAdapter(
     }
 
     override fun getItemCount(): Int =
-        tagsToShow?.let { it.visibleTagsCount + 2 } ?: 0
+        tagsToShow?.let {
+            if (it.tags.isEmpty())
+                return@let 0
+            if (it.tags.size < it.visibleTagsCount)
+                return@let it.tags.size + 1
+
+            it.visibleTagsCount + 2
+        } ?: 0
 
     fun update(result: TagsResult) {
         tagsToShow = result

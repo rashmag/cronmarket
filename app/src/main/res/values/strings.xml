@@ -4,6 +4,7 @@
     <string name="common_gps_disabled">Похоже, что GPS выключен. Вы хотите включить GPS</string>
     <string name="common_yes">Да</string>
     <string name="common_no">Нет</string>
+    <string name="common_user_not_authorized">Пользователь не авторизован</string>
 
     <string name="base_error_icon_description">Иконка ошибки</string>
 
@@ -54,6 +55,7 @@
     <string name="drawer_menu_item_vacancies">Стать курьером</string>
     <string name="drawer_menu_settings">Настройки</string>
     <string name="drawer_log_in">Вход / Регистрация</string>
+    <string name="drawer_log_out">Выйти из профиля</string>
     <string name="drawer_profile_name_unauthorized">Вход \nне выполнен</string>
 
     <string name="enter_phone_title">Укажите номер</string>
@@ -72,9 +74,9 @@
 
     <string name="repeat_sent_code_title">Выслать код повторно можно через %1$d сек</string>
     <string name="enter_phone_repeat_send_code_title"><u>Выслать код повторно</u></string>
+
     <string name="partners_activity_min_order_template">заказ от %1$d \u20BD</string>
     <string name="partners_activity_free_delivery_template">от %1$d \u20BD бесплатно</string>
-
     <string name="partners_activity_close_title">Закрыть</string>
 
     <string name="enter_phone_privacy_policy_text">Настоящая Политика конфиденциальности персональных данных (далее – Политика конфиденциальности), действует в отношении всей информации, которую собирает общество с ограниченной ответственностью «КРОН» (далее — Исполнитель) в лице мобильного приложения «CronДоставка» (далее – Мобильное приложение), которую может получить о Пользователе во время использования им Мобильного приложения.
@@ -148,4 +150,18 @@
 КОНТАКТНАЯ ИНФОРМАЦИЯ
 10.1. Адрес организации: Россия, Республика Дагестан, город Махачкала, улица Ирчи Казака, 11 А
 10.2. Телефон: 8 965 417 39 04, Email: krosstom@yandex.ru</string>
+    <string name="basket_title">Корзина</string>
+    <string name="common_navigate_on_screen_before">Перейти на предыдущий экран</string>
+    <string name="basket_clear">Очистить корзину</string>
+    <string name="basket_order_title">Ваш заказ</string>
+    <string name="basket_portions">Количество \nприборов</string>
+    <string name="basket_counter_minus">Уменьшить количество</string>
+    <string name="basket_counter_plus">Увеличить количество</string>
+    <string name="basket_item_image_description">Изображение блюда</string>
+    <string name="main_continue_last_session">Продолжить покупки</string>
+    <string name="partner_basket">В корзине %1$d товаров \nна сумму:</string>
+    <string name="partner_basket_price">%1$s₽</string>
+    <string name="partner_product_image">Изображение продукта</string>
+    <string name="partner_product_decrease_quantity">Уменьшить количество на 1</string>
+    <string name="partner_product_increase_product">Увеличить количество на 1</string>
 </resources>

@@ -1,16 +1,18 @@
 package ooo.cron.delivery.screens.login_screen.login_fragments.enter_phone_fragment
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.Button
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.redmadrobot.inputmask.MaskedTextChangedListener
+import kotlinx.android.synthetic.main.dialog_privacy_policy.*
 import kotlinx.android.synthetic.main.fragment_enter_phone.*
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
 import ooo.cron.delivery.screens.login_screen.LoginActivity
-import ooo.cron.delivery.utils.Constants
-import ooo.cron.delivery.utils.Shared
 import ooo.cron.delivery.utils.Utils
 import javax.inject.Inject
 
@@ -31,9 +33,20 @@ class EnterPhoneFragment : Fragment(R.layout.fragment_enter_phone), EnterPhoneCo
         super.onViewCreated(view, savedInstanceState)
         initPhoneTextWatcher()
         onNextClick()
+        onPrivacyPolicyClick()
+    }
 
-        tv_enter_phone.setOnClickListener {
-            startNextScreen()
+    private fun onPrivacyPolicyClick() {
+        tv_privacy_policy.setOnClickListener {
+            val bottomSheetPrivacyPolicyDialog =
+                BottomSheetDialog(requireContext(), R.style.BottomSheetDialogTheme)
+            val bottomSheetView =
+                LayoutInflater.from(context).inflate(R.layout.dialog_privacy_policy, bottom_sheet)
+            bottomSheetView.findViewById<Button>(R.id.btn_close).setOnClickListener {
+                bottomSheetPrivacyPolicyDialog.dismiss()
+            }
+            bottomSheetPrivacyPolicyDialog.setContentView(bottomSheetView)
+            bottomSheetPrivacyPolicyDialog.show()
         }
     }
 
@@ -67,7 +80,6 @@ class EnterPhoneFragment : Fragment(R.layout.fragment_enter_phone), EnterPhoneCo
 
 
     override fun getPhone(): String {
-        Shared.setStringValue(requireContext(), Constants.USER_PHONE, Utils.phoneReplace(et_phone))
         return Utils.phoneReplace(et_phone)
     }
 

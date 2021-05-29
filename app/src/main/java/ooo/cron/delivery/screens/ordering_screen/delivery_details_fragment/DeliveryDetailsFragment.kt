@@ -15,6 +15,7 @@ import ooo.cron.delivery.databinding.FragmentDeliveryDetailsBinding
 import ooo.cron.delivery.screens.BaseFragment
 import ooo.cron.delivery.screens.first_address_selection_screen.FirstAddressSelectionActivity
 import ooo.cron.delivery.screens.ordering_screen.OrderContract
+import ooo.cron.delivery.screens.ordering_screen.OrderingActivity
 import java.util.*
 import javax.inject.Inject
 
@@ -102,8 +103,6 @@ class DeliveryDetailsFragment : BaseFragment(), DeliveryDetailsContract.View {
         onChooseDeliveryTimeClick()
 
         binding.run {
-
-
             etPhone.addTextChangedListener(
                 MaskedTextChangedListener(
                     "+7 ([000]) [000]-[00]-[00]",
@@ -186,6 +185,22 @@ class DeliveryDetailsFragment : BaseFragment(), DeliveryDetailsContract.View {
     fun getDeliveryInfo() {
         binding.run {
             with(orderingView) {
+                if (presenter.getAddress()!!.isEmpty()) {
+                    etAddress.background =
+                        ContextCompat.getDrawable(requireContext(), R.drawable.bg_edit_text_error)
+                    (activity as OrderingActivity).isRequestParametersValid = false
+                    return@run
+                }
+
+                etAddress.background =
+                    ContextCompat.getDrawable(requireContext(), R.drawable.bg_edit_text_selector)
+                (activity as OrderingActivity).isRequestParametersValid = false
+                if (etPhone.text.isEmpty() || etPhone.text.toString() == "+7 (") {
+                    etPhone.background =
+                        ContextCompat.getDrawable(requireContext(), R.drawable.bg_edit_text_error)
+                    (activity as OrderingActivity).isRequestParametersValid = false
+                    return@run
+                }
                 getAddress(presenter.getAddress()!!)
                 getEntrance(etEntrance.text.toString())
                 getFloor(etFloor.text.toString())
@@ -194,6 +209,7 @@ class DeliveryDetailsFragment : BaseFragment(), DeliveryDetailsContract.View {
                 getComment(etComments.text.toString())
                 getDeliveryTime(etDeliveryTime.text.toString())
                 getBasketId()
+                (activity as OrderingActivity).isRequestParametersValid = true
             }
         }
 

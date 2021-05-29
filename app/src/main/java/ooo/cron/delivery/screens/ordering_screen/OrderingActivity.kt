@@ -31,6 +31,11 @@ class OrderingActivity : BaseActivity(), OrderContract.View {
 
     private val orderReq = OrderReq()
 
+    var isRequestParametersValid: Boolean
+        get() = false
+        set(value) {}
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         initDependencies()
         presenter.attachView(this)
@@ -44,7 +49,9 @@ class OrderingActivity : BaseActivity(), OrderContract.View {
         binding.btnOrder.apply {
             text = getString(R.string.order_title)
             setOnClickListener {
-                presenter.sendOrder()
+                applyChanges()
+                if (isRequestParametersValid)
+                    presenter.sendOrder()
             }
 
         }
@@ -118,7 +125,6 @@ class OrderingActivity : BaseActivity(), OrderContract.View {
         val deliveryFragment = supportFragmentManager.findFragmentByTag("f" + 0)
         (deliveryFragment as DeliveryDetailsFragment).getDeliveryInfo()
     }
-
 
     override fun showOrderSuccessfulScreen() {
         binding.run {

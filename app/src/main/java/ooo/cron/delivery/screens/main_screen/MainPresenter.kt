@@ -23,7 +23,7 @@ class MainPresenter @Inject constructor(
     BaseMvpPresenter<MainContract.View>(), MainContract.Presenter {
 
     private var marketCategories: List<MarketCategory>? = null
-    private var user: User? = null
+    private var user: UserResponse? = null
 
     override fun detachView() {
         super.detachView()
@@ -78,6 +78,12 @@ class MainPresenter @Inject constructor(
         }
     }
 
+    override fun continueLastSessionCLick() {
+        user?.basket?.partnerId?.let {
+            view?.navigatePartnerScreen(it)
+        }
+    }
+
     private suspend fun defineAddress() {
         val address = dataManager.readBuildingAddress()
         if (address.isNullOrBlank().not())
@@ -94,8 +100,8 @@ class MainPresenter @Inject constructor(
         val response = dataManager.getUser("Bearer ${token.accessToken}")
 
         if (response.isSuccessful) {
-            writeBasketId(response)
-            return updateUser(response)
+            updateUser(response)
+            return
         }
 
         if (response.code() == 401 && token.accessToken.isNotEmpty() && token.refreshToken.isNotEmpty())
@@ -130,19 +136,26 @@ class MainPresenter @Inject constructor(
         view?.showAnyErrorScreen() ?: Unit
     }
 
-    private fun writeBasketId(response: Response<UserResponse>) {
-        if (response.body()?.user?.basket?.id != null)
-            dataManager.writeUserBasket(response.body()?.user?.basket?.id ?: DataManager.EMPTY_UUID)
+    private fun handleBasket(response: Response<UserResponse>) {
+        writeBasketId(response)
+        view?.showContinueLastSession()
     }
 
+    private fun writeBasketId(response: Response<UserResponse>) =
+        dataManager.writeUserBasket(response.body()?.basket?.id ?: DataManager.EMPTY_UUID)
+
     private fun updateUser(response: Response<UserResponse>) {
-        user = response.body()?.user
+        handleBasket(response)
+        showAuthorizeUser(response)
+        selectMarketCategory()
+    }
+
+    private fun showAuthorizeUser(response: Response<UserResponse>) {
+        user = response.body()
 
         user?.let {
-            view?.showAuthorizedUser(it.name)
+            view?.showAuthorizedUser(it.user.name)
         }
-
-        selectMarketCategory()
     }
 
     private fun Response<List<MarketCategory>>.handleMarketCategories() {
@@ -161,9 +174,9 @@ class MainPresenter @Inject constructor(
 
     private fun selectMarketCategory() {
         mainScope.launch {
-            if (dataManager.readChosenCity().id == user?.lastDeliveryCityId) {
+            if (dataManager.readChosenCity().id == user?.user?.lastDeliveryCityId) {
                 val lastBoughtMarketCategoryPosition =
-                    marketCategories!!.indexOfFirst { it.id == user?.lastMarketCategoryId }
+                    marketCategories!!.indexOfFirst { it.id == user?.user?.lastMarketCategoryId }
                 view?.selectMarketCategory(
                     if (lastBoughtMarketCategoryPosition == -1) 0
                     else lastBoughtMarketCategoryPosition

@@ -94,7 +94,7 @@
     <string name="delivery_details_title">Детали доставки</string>
     <string name="order_costs_title">Стоимость заказа</string>
     <string name="delivery_details_choose_delivery_time_title">Выберите время доставки</string>
-    
+
     <string name="order_cost_payment_method_title">Способ оплаты</string>
     <string name="order_cost_promo_code_title">Промокод</string>
     <string name="order_cost_enter_promo_code_title">Введите промокод</string>
@@ -200,5 +200,11 @@
     <string name="basket_counter_minus">Уменьшить количество</string>
     <string name="basket_counter_plus">Увеличить количество</string>
     <string name="basket_item_image_description">Изображение блюда</string>
+    <string name="main_continue_last_session">Продолжить покупки</string>
+    <string name="partner_basket">В корзине %1$d товаров \nна сумму:</string>
+    <string name="partner_basket_price">%1$s₽</string>
+    <string name="partner_product_image">Изображение продукта</string>
+    <string name="partner_product_decrease_quantity">Уменьшить количество на 1</string>
+    <string name="partner_product_increase_product">Увеличить количество на 1</string>
     <string name="order_repeat_title">Повторить</string>
 </resources>

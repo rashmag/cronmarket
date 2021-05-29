@@ -22,7 +22,7 @@ import javax.inject.Inject
 /**
  * Created by Ramazan Gadzhikadiev on 22.04.2021.
  */
-class MarketCategoryFragment : BaseFragment(),
+class MarketCategoryFragment() : BaseFragment(),
     MarketCategoryContract.View {
 
     @Inject

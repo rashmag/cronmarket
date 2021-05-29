@@ -1,5 +1,7 @@
 package ooo.cron.delivery.screens.partners_screen
 
+import android.os.CountDownTimer
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,6 +47,8 @@ class CategoryAdapter(
 
         private val binding = ItemPartnerProductBinding.bind(view)
 
+        private lateinit var timer: CountDownTimer
+
         fun bindProduct(position: Int) {
             val product = productCategoryModel[position]
             binding.run {
@@ -53,24 +57,90 @@ class CategoryAdapter(
                     tvCost.text = cost.toString()
                     tvGram.text = portionSize
 
+                    updateCounter(inBasketQuantity)
+
                     com.bumptech.glide.Glide.with(root)
                         .load(photo)
                         .into(ivProduct)
                 }
             }
 
-            binding.tvCost.setOnClickListener{
-                listener.onPriceClick(product, position)
+            binding.tvCost.setOnClickListener {
+                var currentQuantity = binding.tvPortionCount.text.toString().toInt()
+                binding.tvPortionCount.text = (++currentQuantity).toString()
+                updateCounter(currentQuantity)
+
+                if (::timer.isInitialized) {
+                    timer.cancel()
+                }
+                timer = object : CountDownTimer(1500, 1500) {
+                    override fun onTick(millisUntilFinished: Long) {
+                        Log.d(this::class.simpleName, "Timer Restarted")
+                    }
+
+                    override fun onFinish() {
+                        //listener.onPriceClick(product, position)
+                    }
+
+                }
+                timer.start()
             }
 
-            binding.ivPlus.setOnClickListener{
-                listener.onPlusClick(product, position)
+            binding.ivPlus.setOnClickListener {
+                var currentQuantity = binding.tvPortionCount.text.toString().toInt()
+                binding.tvPortionCount.text = (++currentQuantity).toString()
+                updateCounter(currentQuantity)
+
+                if (::timer.isInitialized) {
+                    timer.cancel()
+                }
+                timer = object : CountDownTimer(1500, 1500) {
+                    override fun onTick(millisUntilFinished: Long) {
+                        Log.d(this::class.simpleName, "Timer Restarted")
+                    }
+
+                    override fun onFinish() {
+                        //listener.onPlusClick(product, position)
+                    }
+
+                }
+                timer.start()
             }
 
-            binding.ivMinus.setOnClickListener{
-                listener.onMinusClick(product, position)
+            binding.ivMinus.setOnClickListener {
+                var currentQuantity = binding.tvPortionCount.text.toString().toInt()
+                binding.tvPortionCount.text = (--currentQuantity).toString()
+                updateCounter(currentQuantity)
+
+                if (::timer.isInitialized) {
+                    timer.cancel()
+                }
+                timer = object : CountDownTimer(1500, 1500) {
+                    override fun onTick(millisUntilFinished: Long) {
+                        Log.d(this::class.simpleName, "Timer Restarted")
+                    }
+
+                    override fun onFinish() {
+//                        listener.onMinusClick(product, position)
+                    }
+
+                }
+                timer.start()
             }
         }
+
+        private fun updateCounter(quantity: Int) {
+            if (quantity <= 0) {
+                binding.tvCost.visibility = View.VISIBLE
+                binding.vgAddProduct.visibility = View.INVISIBLE
+                return
+            }
+            binding.tvPortionCount.text = quantity.toString()
+            binding.tvCost.visibility = View.INVISIBLE
+            binding.vgAddProduct.visibility = View.VISIBLE
+        }
+
+
     }
 
     interface OnProductClickListener {

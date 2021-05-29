@@ -99,6 +99,11 @@ interface RestService {
         @Header("Authorization") token: String,
         @Body orderReq: OrderReq): Response<ResponseBody>
 
+    @GET("/api/v1/Basket")
+    suspend fun getBasket(
+        @Query("BasketId") basketId: String
+    ): Response<Basket>
+
     companion object {
         const val PARTNERS_PAGINATION_LIMIT = 15
     }

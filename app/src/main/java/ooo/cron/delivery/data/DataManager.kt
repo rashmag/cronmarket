@@ -5,6 +5,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.ResponseBody
 import ooo.cron.delivery.data.network.SPrefsService
+import ooo.cron.delivery.data.network.models.Basket
 import ooo.cron.delivery.data.network.models.City
 import ooo.cron.delivery.data.network.models.RefreshableToken
 import ooo.cron.delivery.data.network.request.*
@@ -114,6 +115,9 @@ class DataManager @Inject constructor(
 
     suspend fun logOut(refreshToken: LogOutReq): Response<ResponseBody> =
         restService.logOut(refreshToken)
+
+    suspend fun getBasket(basketId: String): Response<Basket> =
+        restService.getBasket(basketId)
 
     suspend fun writeChosenCity(city: City) =
         withContext(Dispatchers.IO) {

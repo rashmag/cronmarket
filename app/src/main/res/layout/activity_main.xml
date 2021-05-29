@@ -68,7 +68,8 @@
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
             <com.google.android.material.appbar.AppBarLayout
                 android:id="@+id/ab_main"
@@ -122,6 +123,33 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/vg_main_continue_last_session"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_main_continue_last_session"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="36dp"
+                android:layout_marginEnd="36dp"
+                android:backgroundTint="@color/main_dark"
+                android:text="@string/main_continue_last_session"
+                android:textColor="@color/white"
+                android:textAllCaps="false"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:elevation="16dp"
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                android:gravity="center"/>
+
+        </androidx.cardview.widget.CardView>
 
     </LinearLayout>
 </nl.psdcompany.duonavigationdrawer.views.DuoDrawerLayout>

@@ -1,5 +1,6 @@
 package ooo.cron.delivery.screens.partners_screen
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -23,7 +24,7 @@ import ooo.cron.delivery.data.network.models.PartnersInfoRes
 import ooo.cron.delivery.data.network.models.ProductCategoryModel
 import ooo.cron.delivery.databinding.ActivityPartnersBinding
 import ooo.cron.delivery.screens.BaseActivity
-import ooo.cron.delivery.screens.market_category_screen.PartnersAdapter
+import ooo.cron.delivery.screens.basket_screen.BasketActivity
 import ooo.cron.delivery.utils.ProductBottomSheetDialog
 import java.util.*
 import javax.inject.Inject
@@ -187,10 +188,8 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         }
     }
 
-    private lateinit var categoryRes: List<PartnerCategoryRes.Categories>
     override fun showPartnerCategory(body: PartnerCategoryRes) {
         binding.run {
-            categoryRes = body.categories
             presenter.getPartnerProducts()
             rvCategories.apply {
                 layoutManager =
@@ -220,25 +219,9 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         }
     }
 
-    override fun showPartnerProducts(body: List<PartnerProductsRes>) {
-        val productCategoriesModel = ArrayList<ProductCategoryModel>()
-        val productList = ArrayList<PartnerProductsRes>()
-        for (category in categoryRes) {
-            for (product in body) {
-                if (category.id == product.categoryId) {
-                    productList.add(product)
-                }
-            }
-            productCategoriesModel.add(
-                ProductCategoryModel(
-                    category.id,
-                    category.name,
-                    productList.filterIndexed { _, partnerProductsRes ->
-                        partnerProductsRes.categoryId == category.id
-                    }
-                )
-            )
-        }
+    override fun showPartnerProducts(
+        productCategoriesModel: ArrayList<ProductCategoryModel>
+    ) {
 
         binding.run {
             vgMainView.removeView(binding.vgPartnersActivityProgress.root)
@@ -249,21 +232,34 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         }
     }
 
+    override fun showBasketPreview(basketId: String, quantity: Int, basketPrice: String) {
+        binding.tvPartnerBasket.text = getString(R.string.partner_basket, quantity)
+        binding.btnPartnerBasketPrice.text = getString(R.string.partner_basket_price, basketPrice)
+        binding.vgPartnerBasket.visibility = View.VISIBLE
+
+        with(View.OnClickListener {
+            startActivity(Intent(this@PartnersActivity, BasketActivity::class.java))
+        }) {
+            binding.vgPartnerBasket.setOnClickListener(this)
+            binding.btnPartnerBasketPrice.setOnClickListener(this)
+        }
+    }
+
     override fun onProductClick(product: PartnerProductsRes) {
         val productBottomSheetDialog = ProductBottomSheetDialog(this, product)
         productBottomSheetDialog.show()
     }
 
     override fun onPriceClick(product: PartnerProductsRes, position: Int) {
-        TODO("Not yet implemented")
+        presenter.priceClick(product, position)
     }
 
     override fun onPlusClick(product: PartnerProductsRes, position: Int) {
-        TODO("Not yet implemented")
+        presenter.plusClick(product, position)
     }
 
     override fun onMinusClick(product: PartnerProductsRes, position: Int) {
-        TODO("Not yet implemented")
+        presenter.minusClick(product, position)
     }
 
     private fun setTitleVisibility() {

@@ -16,6 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="108dp"
             android:scaleType="centerCrop"
+            android:contentDescription="@string/partner_product_image"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@mipmap/ic_launcher" />
 
@@ -83,7 +84,7 @@
                 tools:text="1000₽" />
 
             <LinearLayout
-                android:id="@+id/vd_add_product"
+                android:id="@+id/vg_add_product"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_partner_add_product_rounded_corners"
@@ -96,6 +97,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:padding="6dp"
+                    android:contentDescription="@string/partner_product_decrease_quantity"
                     android:src="@drawable/ic_minus"
                     android:textColor="@color/white"
                     android:textSize="22sp" />
@@ -108,7 +110,8 @@
                     android:padding="6dp"
                     android:text="1"
                     android:textColor="@color/white"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    tools:ignore="HardcodedText" />
 
                 <ImageView
                     android:id="@+id/iv_plus"
@@ -116,6 +119,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:padding="6dp"
+                    android:contentDescription="@string/partner_product_increase_product"
                     android:src="@drawable/ic_plus"
                     android:textColor="@color/white"
                     android:textSize="22sp" />

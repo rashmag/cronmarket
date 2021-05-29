@@ -103,7 +103,7 @@ class PartnersAdapter(private val onClick: (partnerId: String) -> Unit) :
         }
 
         private fun loadImage(partner: Partner) {
-            if (partner.mainWinImg.isEmpty())
+            if (partner.mainWinImg == null || partner.mainWinImg.isEmpty())
                 return
 
             Glide.with(binding.root)

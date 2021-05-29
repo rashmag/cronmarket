@@ -1,5 +1,7 @@
 package ooo.cron.delivery.data.network.models
 
+import com.github.fajaragungpramana.sectionrecyclerview.Section
+
 /*
  * Created by Muhammad on 08.05.2021
  */
@@ -29,7 +31,7 @@ data class PartnerProductsRes(
     data class RequiredAdditiveGroups(
         var name: String,
         var requiredAdditives: List<RequireAdditives>
-    ) {
+    ) : Section(name) {
         data class RequireAdditives(
             var id: String,
             var name: String

@@ -3,7 +3,9 @@ package ooo.cron.delivery.screens.partners_screen
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import ooo.cron.delivery.App
 import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.PartnerProductsRes
 import ooo.cron.delivery.data.network.models.ProductCategoryModel
@@ -71,9 +73,8 @@ class PartnerProductAdapter(
     private val productCategoryModel: List<ProductCategoryModel>,
     private val listener: CategoryAdapter.OnProductClickListener
 ) :
-    SectionRecyclerViewAdapter<PartnerProductAdapter.ViewHolder, ProductCategoryModel>(
-        productCategoryModel
-    ) {
+    SectionRecyclerViewAdapter<PartnerProductAdapter.ViewHolder, ProductCategoryModel>(productCategoryModel,
+        GridLayoutManager(App.context, 2)) {
 
     override fun viewHolder(view: View) = ViewHolder(view)
 

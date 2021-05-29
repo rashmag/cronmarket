@@ -250,46 +250,6 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
     }
 
     override fun onProductClick(product: PartnerProductsRes) {
-//        val bottomSheetInfoDialog =
-//            BottomSheetDialog(this, R.style.BottomSheetDialogTheme)
-//        val bottomSheetView =
-//            LayoutInflater.from(this).inflate(R.layout.dialog_product_info, null)
-//
-//        with(bottomSheetView) {
-//            findViewById<TextView>(R.id.tv_name).text = product.name
-//            findViewById<TextView>(R.id.tv_cost).text = product.cost.toString()
-//            findViewById<TextView>(R.id.tv_description).text = product.description
-//
-//            Glide.with(binding.root)
-//                .load(product.photo)
-//                .into(findViewById(R.id.iv_product))
-//
-//            findViewById<ImageView>(R.id.iv_plus).setOnClickListener {
-//                findViewById<TextView>(R.id.tv_portion_count).text =
-//                    (findViewById<TextView>(R.id.tv_portion_count).text.toString()
-//                        .toInt() + 1).toString()
-//
-//                findViewById<TextView>(R.id.tv_cost).text =
-//                    (findViewById<TextView>(R.id.tv_portion_count).text.toString().toInt() *
-//                            findViewById<TextView>(R.id.tv_cost).text.toString().toInt()).toString()
-//            }
-//
-//            if (product.additives.isNotEmpty()) {
-//                findViewById<ListView>(R.id.lv_additives).apply {
-//                    choiceMode = ListView.CHOICE_MODE_MULTIPLE
-//                    adapter = AdditiveArrayAdapter(
-//                        this@PartnersActivity,
-//                        R.layout.item_additive, product.additives
-//                    )
-//
-//                }
-//            } else {
-//                findViewById<LinearLayout>(R.id.vg_additives).visibility = View.GONE
-//            }
-//        }
-//        bottomSheetInfoDialog.setContentView(bottomSheetView)
-//        bottomSheetInfoDialog.show()
-
         val productBottomSheetDialog = ProductBottomSheetDialog(this, product)
         productBottomSheetDialog.show()
     }

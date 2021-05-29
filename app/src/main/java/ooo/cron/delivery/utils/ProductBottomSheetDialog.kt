@@ -3,15 +3,17 @@ package ooo.cron.delivery.utils
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ListView
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.PartnerProductsRes
 import ooo.cron.delivery.databinding.DialogProductInfoBinding
+import ooo.cron.delivery.screens.partners_screen.AdditivesAdapter
+import ooo.cron.delivery.screens.partners_screen.RequireAdditivesAdapter
 
 
 /*
@@ -21,7 +23,8 @@ import ooo.cron.delivery.databinding.DialogProductInfoBinding
 
 
 class ProductBottomSheetDialog(context: Context, private val product: PartnerProductsRes) :
-    BottomSheetDialog(context, R.style.BottomSheetDialogTheme) {
+    BottomSheetDialog(context, R.style.BottomSheetDialogTheme),
+    AdditivesAdapter.OnRequireAdditivesListener {
 
 
     private lateinit var binding: DialogProductInfoBinding
@@ -78,6 +81,11 @@ class ProductBottomSheetDialog(context: Context, private val product: PartnerPro
                 }
             }
 
+
+            if (product.requiredAdditiveGroups.isNotEmpty()) {
+                initRequireAdditivesRecycler(product.requiredAdditiveGroups)
+            }
+
             if (product.additives.isNotEmpty()) {
                 lvAdditives.apply {
                     choiceMode = ListView.CHOICE_MODE_MULTIPLE
@@ -93,4 +101,12 @@ class ProductBottomSheetDialog(context: Context, private val product: PartnerPro
             }
         }
     }
+
+    private fun initRequireAdditivesRecycler(requiredAdditiveGroups: List<PartnerProductsRes.RequiredAdditiveGroups>) {
+        binding.rvRequireAdditives.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = RequireAdditivesAdapter(requiredAdditiveGroups, this@ProductBottomSheetDialog)
+        }
+    }
+
 }

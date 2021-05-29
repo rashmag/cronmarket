@@ -41,6 +41,15 @@
                 app:layout_constraintTop_toBottomOf="@id/iv_product"
                 tools:text="Люля-кебаб – это традиционное блюдо восточной кухни из рубленого мяса обжаренного на шампурах. В составе также  куриное мясо, лук, сладкий перец, петрушка, помидор, специи. Вес: 250гр." />
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_require_additives"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@id/tv_description"/>
+
 
             <LinearLayout
                 android:id="@+id/vg_additives"
@@ -50,7 +59,7 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginTop="16dp"
                 android:orientation="vertical"
-                app:layout_constraintTop_toBottomOf="@id/tv_description">
+                app:layout_constraintTop_toBottomOf="@id/rv_require_additives">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

@@ -3,6 +3,7 @@ package ooo.cron.delivery.screens.partners_screen
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioButton
 import androidx.recyclerview.widget.RecyclerView
 import com.github.fajaragungpramana.sectionrecyclerview.SectionRecyclerViewAdapter
 import com.github.fajaragungpramana.sectionrecyclerview.SectionRecyclerViewHolder
@@ -10,6 +11,7 @@ import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.PartnerProductsRes
 import ooo.cron.delivery.data.network.models.RequireAdditiveModel
 import ooo.cron.delivery.databinding.ItemRequireAdditivesBinding
+
 
 /*
  * Created by Muhammad on 29.05.2021
@@ -44,6 +46,7 @@ class AdditivesAdapter(
     private val listener: OnRequireAdditivesListener
 ) : RecyclerView.Adapter<AdditivesAdapter.ViewHolder>() {
 
+    private var checkedPosition = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -55,27 +58,28 @@ class AdditivesAdapter(
     override fun getItemCount() = requireAdditivesList.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindAdditives(requireAdditivesList[position])
+        val item = requireAdditivesList[position]
+        with(holder) {
+            rbAdditives.apply {
+                text = item.name
+                isChecked = adapterPosition == checkedPosition
+                setOnClickListener {
+                    if (checkedPosition != holder.adapterPosition) {
+                        notifyItemChanged(checkedPosition)
+                        checkedPosition = holder.adapterPosition
+                    }
+                }
+            }
+
+        }
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
 
         private val binding = ItemRequireAdditivesBinding.bind(itemView)
+        val rbAdditives: RadioButton = binding.rbAdditives
 
-        fun bindAdditives(requiredAdditiveGroups: PartnerProductsRes.Additive) {
-            binding.run {
-                with(requiredAdditiveGroups) {
-                    rbAdditives.apply {
-                        text = name
-                        setOnClickListener {
-                            requiredAdditiveGroups.isChecked = !requiredAdditiveGroups.isChecked
-                            isChecked = requiredAdditiveGroups.isChecked
-                        }
-                    }
-                }
-            }
-        }
     }
 
     interface OnRequireAdditivesListener

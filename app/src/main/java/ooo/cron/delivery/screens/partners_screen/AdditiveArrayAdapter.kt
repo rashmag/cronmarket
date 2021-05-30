@@ -23,8 +23,13 @@ class AdditiveArrayAdapter(
 ) : ArrayAdapter<PartnerProductsRes.Additive>(context, layoutResource, additives) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_additive, parent, false)
-        view.findViewById<TextView>(R.id.tv_additive).text = additives[position].name
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.item_additive, parent, false)
+        var additiveText = additives[position].name
+        if (additives[position].cost != 0)
+            additiveText += " +${additives[position].cost}₽"
+
+        view.findViewById<TextView>(R.id.tv_additive).text = additiveText
         return view
     }
 

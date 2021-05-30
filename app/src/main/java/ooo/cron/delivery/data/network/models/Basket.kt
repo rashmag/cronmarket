@@ -9,6 +9,7 @@ data class Basket(
     val marketCategoryId: Int,
     val partnerId: String,
     val amount: Double,
+    val deliveryCost: Double,
     val cutleryCount: Int,
     val content: String
 )

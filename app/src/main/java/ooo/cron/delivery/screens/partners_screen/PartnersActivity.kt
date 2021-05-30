@@ -18,10 +18,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.dialog_partners_info.*
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
-import ooo.cron.delivery.data.network.models.PartnerCategoryRes
-import ooo.cron.delivery.data.network.models.PartnerProductsRes
-import ooo.cron.delivery.data.network.models.PartnersInfoRes
-import ooo.cron.delivery.data.network.models.ProductCategoryModel
+import ooo.cron.delivery.data.network.models.*
 import ooo.cron.delivery.databinding.ActivityPartnersBinding
 import ooo.cron.delivery.screens.BaseActivity
 import ooo.cron.delivery.screens.basket_screen.BasketActivity
@@ -219,10 +216,13 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         }
     }
 
+    override fun removeProgress() {
+        binding.vgPartnersActivityProgress.root.visibility = View.GONE
+    }
+
     override fun showPartnerProducts(
         productCategoriesModel: ArrayList<ProductCategoryModel>
     ) {
-
         binding.run {
             vgMainView.removeView(binding.vgPartnersActivityProgress.root)
             rvProduct.apply {
@@ -254,8 +254,13 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         presenter.priceClick(product, position)
     }
 
-    override fun onPlusClick(product: PartnerProductsRes, position: Int) {
-        presenter.plusClick(product, position)
+    override fun onPlusClick(
+        product: PartnerProductsRes,
+        additves: List<BasketDishAdditive>,
+        quantity: Int,
+        position: Int
+    ) {
+        presenter.plusClick(product, additves, quantity, position)
     }
 
     override fun onMinusClick(product: PartnerProductsRes, position: Int) {

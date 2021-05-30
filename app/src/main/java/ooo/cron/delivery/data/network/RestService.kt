@@ -2,10 +2,7 @@ package ooo.cron.delivery.data.network
 
 import okhttp3.ResponseBody
 import ooo.cron.delivery.data.network.models.*
-import ooo.cron.delivery.data.network.request.ConfirmCodeReq
-import ooo.cron.delivery.data.network.request.LogOutReq
-import ooo.cron.delivery.data.network.request.SentCodeReq
-import ooo.cron.delivery.data.network.request.SetUserNameReq
+import ooo.cron.delivery.data.network.request.*
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
@@ -100,6 +97,17 @@ interface RestService {
     suspend fun getBasket(
         @Query("BasketId") basketId: String
     ): Response<Basket>
+
+    @POST("/api/v1/Basket/inc_product")
+    suspend fun increaseProductInBasket(
+        @Body editor: BasketEditorReq
+    ): Basket
+
+    @POST("/api/v1/Basket/inc_product")
+    suspend fun increaseProductInBasket(
+        @Header("Authorization") token: String,
+        @Body editor: BasketEditorReq
+    ): Basket
 
     companion object {
         const val PARTNERS_PAGINATION_LIMIT = 15

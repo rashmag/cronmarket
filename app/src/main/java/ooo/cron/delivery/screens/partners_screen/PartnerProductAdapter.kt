@@ -7,11 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ooo.cron.delivery.R
-import ooo.cron.delivery.data.network.models.PartnerProductsRes
-import ooo.cron.delivery.data.network.models.ProductCategoryModel
+import ooo.cron.delivery.data.network.models.*
 import ooo.cron.delivery.databinding.ItemPartnerProductBinding
+import ooo.cron.delivery.utils.BasketCounterTimer
 import ooo.cron.delivery.utils.section_recycler_view.SectionRecyclerViewAdapter
 import ooo.cron.delivery.utils.section_recycler_view.SectionRecyclerViewHolder
+import java.util.*
 
 /*
  * Created by Muhammad on 08.05.2021
@@ -21,7 +22,8 @@ import ooo.cron.delivery.utils.section_recycler_view.SectionRecyclerViewHolder
 
 class CategoryAdapter(
     private val productCategoryModel: List<PartnerProductsRes>,
-    private val listener: OnProductClickListener
+    private val listener: OnProductClickListener,
+    private val recyclerViewPosition: Int
 ) :
     RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
 
@@ -47,7 +49,7 @@ class CategoryAdapter(
 
         private val binding = ItemPartnerProductBinding.bind(view)
 
-        private lateinit var timer: CountDownTimer
+        private val timer = BasketCounterTimer(1500, 1500)
 
         fun bindProduct(position: Int) {
             val product = productCategoryModel[position]
@@ -70,20 +72,25 @@ class CategoryAdapter(
                 binding.tvPortionCount.text = (++currentQuantity).toString()
                 updateCounter(currentQuantity)
 
-                if (::timer.isInitialized) {
-                    timer.cancel()
-                }
-                timer = object : CountDownTimer(1500, 1500) {
-                    override fun onTick(millisUntilFinished: Long) {
-                        Log.d(this::class.simpleName, "Timer Restarted")
-                    }
+                val quantityChangeStatus =
+                    defineQuantityChangeStatus(currentQuantity, product.inBasketQuantity)
 
-                    override fun onFinish() {
-                        //listener.onPriceClick(product, position)
-                    }
-
+                if (quantityChangeStatus ==
+                    QuantityChangeStatus.INCREASED
+                ) {
+                    if (product.additives.isEmpty() &&
+                        product.requiredAdditiveGroups.isEmpty()
+                    )
+                        return@setOnClickListener restartTimer {
+                            listener.onPlusClick(
+                                product,
+                                listOf(),
+                                currentQuantity - product.inBasketQuantity,
+                                recyclerViewPosition
+                            )
+                        }
+                    TODO("Should show product dialog")
                 }
-                timer.start()
             }
 
             binding.ivPlus.setOnClickListener {
@@ -91,20 +98,30 @@ class CategoryAdapter(
                 binding.tvPortionCount.text = (++currentQuantity).toString()
                 updateCounter(currentQuantity)
 
-                if (::timer.isInitialized) {
-                    timer.cancel()
-                }
-                timer = object : CountDownTimer(1500, 1500) {
-                    override fun onTick(millisUntilFinished: Long) {
-                        Log.d(this::class.simpleName, "Timer Restarted")
+                val quantityChangeStatus =
+                    defineQuantityChangeStatus(currentQuantity, product.inBasketQuantity)
+
+                when (quantityChangeStatus) {
+                    QuantityChangeStatus.INCREASED -> {
+                        if (product.additives.isEmpty() &&
+                            product.requiredAdditiveGroups.isEmpty()
+                        )
+                            return@setOnClickListener restartTimer {
+                                listener.onPlusClick(
+                                    product,
+                                    listOf(),
+                                    currentQuantity - product.inBasketQuantity,
+                                    position
+                                )
+                            }
+                        TODO("Should show product dialog")
                     }
 
-                    override fun onFinish() {
-                        //listener.onPlusClick(product, position)
-                    }
-
+                    QuantityChangeStatus.DECREASED ->
+                        restartTimer {
+                            listener.onMinusClick(product, position)
+                        }
                 }
-                timer.start()
             }
 
             binding.ivMinus.setOnClickListener {
@@ -112,20 +129,30 @@ class CategoryAdapter(
                 binding.tvPortionCount.text = (--currentQuantity).toString()
                 updateCounter(currentQuantity)
 
-                if (::timer.isInitialized) {
-                    timer.cancel()
-                }
-                timer = object : CountDownTimer(1500, 1500) {
-                    override fun onTick(millisUntilFinished: Long) {
-                        Log.d(this::class.simpleName, "Timer Restarted")
+                val quantityChangeStatus =
+                    defineQuantityChangeStatus(currentQuantity, product.inBasketQuantity)
+
+                when (quantityChangeStatus) {
+                    QuantityChangeStatus.INCREASED -> {
+                        if (product.additives.isEmpty() &&
+                            product.requiredAdditiveGroups.isEmpty()
+                        )
+                            return@setOnClickListener restartTimer {
+                                listener.onPlusClick(
+                                    product,
+                                    listOf(),
+                                    currentQuantity - product.inBasketQuantity,
+                                    position
+                                )
+                            }
+                        TODO("Should show product dialog")
                     }
 
-                    override fun onFinish() {
-//                        listener.onMinusClick(product, position)
-                    }
-
+                    QuantityChangeStatus.DECREASED ->
+                        restartTimer {
+                            listener.onMinusClick(product, position)
+                        }
                 }
-                timer.start()
             }
         }
 
@@ -140,20 +167,52 @@ class CategoryAdapter(
             binding.vgAddProduct.visibility = View.VISIBLE
         }
 
+        private fun restartTimer(
+            onFinish: () -> Unit
+        ) {
+            timer.cancel()
+            timer.start {
+                binding.partnerProductProgress.visibility = View.VISIBLE
+                binding.vgCost.visibility = View.INVISIBLE
+                onFinish()
+            }
+        }
+    }
 
+    private fun defineQuantityChangeStatus(
+        quantity: Int,
+        inBasketQuantity: Int
+    ): QuantityChangeStatus {
+        if (quantity > inBasketQuantity)
+            return QuantityChangeStatus.INCREASED
+
+        if (quantity < inBasketQuantity)
+            return QuantityChangeStatus.DECREASED
+
+        return QuantityChangeStatus.NO_CHANGES
+    }
+
+    private enum class QuantityChangeStatus {
+        INCREASED, DECREASED, NO_CHANGES
     }
 
     interface OnProductClickListener {
         fun onProductClick(product: PartnerProductsRes)
         fun onPriceClick(product: PartnerProductsRes, position: Int)
-        fun onPlusClick(product: PartnerProductsRes, position: Int)
+        fun onPlusClick(
+            product: PartnerProductsRes,
+            additves: List<BasketDishAdditive>,
+            quantity: Int,
+            position: Int
+        )
+
         fun onMinusClick(product: PartnerProductsRes, position: Int)
     }
 
 }
 
 class PartnerProductAdapter(
-    private val productCategoryModel: List<ProductCategoryModel>,
+    var productCategoryModel: List<ProductCategoryModel>,
     private val listener: CategoryAdapter.OnProductClickListener
 ) :
     SectionRecyclerViewAdapter<PartnerProductAdapter.ViewHolder, ProductCategoryModel>(
@@ -167,7 +226,7 @@ class PartnerProductAdapter(
 
         override fun bindSectionListAdapter(recyclerView: RecyclerView, position: Int) {
             recyclerView.adapter =
-                CategoryAdapter(productCategoryModel[position].productList, listener)
+                CategoryAdapter(productCategoryModel[position].productList, listener, position)
         }
     }
 }

@@ -1,9 +1,6 @@
 package ooo.cron.delivery.data
 
 import ooo.cron.delivery.data.network.RestService
-import ooo.cron.delivery.data.network.request.ConfirmCodeReq
-import ooo.cron.delivery.data.network.request.SentCodeReq
-import ooo.cron.delivery.data.network.request.SetUserNameReq
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.ResponseBody
@@ -11,7 +8,7 @@ import ooo.cron.delivery.data.network.SPrefsService
 import ooo.cron.delivery.data.network.models.Basket
 import ooo.cron.delivery.data.network.models.City
 import ooo.cron.delivery.data.network.models.RefreshableToken
-import ooo.cron.delivery.data.network.request.LogOutReq
+import ooo.cron.delivery.data.network.request.*
 import retrofit2.Call
 import retrofit2.Response
 import javax.inject.Inject
@@ -117,6 +114,16 @@ class DataManager @Inject constructor(
     suspend fun getBasket(basketId: String): Response<Basket> =
         restService.getBasket(basketId)
 
+    suspend fun increaseProductInBasket(token: String, editor: BasketEditorReq) =
+        withContext(Dispatchers.IO) {
+            restService.increaseProductInBasket(token, editor)
+        }
+
+    suspend fun increaseProductInBasket(editor: BasketEditorReq) =
+        withContext(Dispatchers.IO) {
+            restService.increaseProductInBasket(editor)
+        }
+
     suspend fun writeChosenCity(city: City) =
         withContext(Dispatchers.IO) {
             sPrefsService.writeChosenCity(city)
@@ -137,7 +144,7 @@ class DataManager @Inject constructor(
             sPrefsService.readBuildingAddress()
         }
 
-    fun readUserPhone()=
+    fun readUserPhone() =
         sPrefsService.readUserPhone()
 
     fun writeUserPhone(phone: String) {

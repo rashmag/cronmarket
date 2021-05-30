@@ -13,7 +13,7 @@ import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.PartnerProductsRes
 import ooo.cron.delivery.data.network.models.RequireAdditiveModel
 import ooo.cron.delivery.databinding.DialogProductInfoBinding
-import ooo.cron.delivery.screens.partners_screen.AdditiveArrayAdapter
+import ooo.cron.delivery.screens.partners_screen.AdditiveRecyclerAdapter
 import ooo.cron.delivery.screens.partners_screen.AdditivesAdapter
 import ooo.cron.delivery.screens.partners_screen.RequireAdditivesAdapter
 
@@ -92,12 +92,9 @@ class ProductBottomSheetDialog(context: Context, private val product: PartnerPro
             }
 
             if (product.additives.isNotEmpty()) {
-                lvAdditives.apply {
-                    choiceMode = ListView.CHOICE_MODE_MULTIPLE
-                    adapter = AdditiveArrayAdapter(
-                        context,
-                        R.layout.item_additive, product.additives
-                    )
+                rvAdditives.apply {
+                    layoutManager = LinearLayoutManager(context)
+                    adapter = AdditiveRecyclerAdapter(product.additives)
 
                 }
             } else {

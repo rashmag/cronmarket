@@ -36,6 +36,7 @@
 
         </activity>
 
+        <activity android:name=".screens.splash_screen.SplashScreenActivity"/>
     </application>
 
 </manifest>

@@ -4,14 +4,13 @@ import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import ooo.cron.delivery.data.DataManager
-import ooo.cron.delivery.data.network.SPrefsService
 import ooo.cron.delivery.data.network.models.*
+import ooo.cron.delivery.data.network.request.BasketClearReq
 import ooo.cron.delivery.data.network.request.BasketEditorReq
 import ooo.cron.delivery.screens.base_mvp.BaseMvpPresenter
 import retrofit2.Response
 import java.util.*
 import javax.inject.Inject
-import kotlin.math.round
 
 /*
  * Created by Muhammad on 05.05.2021
@@ -101,8 +100,32 @@ class PartnersPresenter @Inject constructor(
         position: Int
     ) {
         mainScope.launch {
-            if (basket != null && basket?.partnerId != partner.id) {
-                //TODO(show dialog, about clear basket)
+            if (basket != null &&
+                basket!!.partnerId != DataManager.EMPTY_UUID &&
+                basket!!.partnerId != partner.id
+            ) {
+                view?.showClearBasketDialog(
+                    {
+                        view?.showPartnerProducts(productCategoriesModel)
+                    },
+                    {
+                        mainScope.launch {
+                            basket = dataManager.clearBasket(BasketClearReq(basket!!.id)).copy(
+                                partnerId = DataManager.EMPTY_UUID
+                            )
+                            dataManager.writeUserBasket(basket!!.id)
+                            dataManager.removeUserBasket()
+                            basketContent = deserializeDishes()
+                            mergeBasketIntoProducts()
+                            view?.showPartnerProducts(productCategoriesModel)
+                            view?.updateBasketPreview(
+                                basketContent?.sumBy { it.quantity } ?: 0,
+                                String.format("%.2f", basket!!.amount)
+                            )
+                        }
+                    }
+                )
+                return@launch
             }
 
             if (partner.marketCategoryId == 1) {
@@ -146,6 +169,8 @@ class PartnersPresenter @Inject constructor(
                         basketContent = deserializeDishes()
                         mergeBasketIntoProducts()
                         view?.showPartnerProducts(productCategoriesModel)
+                        view?.updateBasketPreview(basketContent?.sumBy { it.quantity } ?: 0,
+                            String.format("%.2f", basket!!.amount))
                     },
                     { view?.showConnectionErrorScreen() },
                     { view?.showAnyErrorScreen() }
@@ -181,15 +206,13 @@ class PartnersPresenter @Inject constructor(
 
     private fun Response<Basket>.handleBasket() {
         if (isSuccessful && body() != null &&
-            body()!!.id != DataManager.EMPTY_UUID &&
-            body()!!.partnerId == view?.getPartnerId()
+            body()!!.id != DataManager.EMPTY_UUID
         ) {
             basket = body()
             if (basket?.marketCategoryId == 1) {
                 basketContent = deserializeDishes()
             }
-            view?.showBasketPreview(
-                body()!!.id,
+            view?.updateBasketPreview(
                 basketContent?.sumBy { it.quantity } ?: 0,
                 String.format("%.2f", body()!!.amount))
         } else {

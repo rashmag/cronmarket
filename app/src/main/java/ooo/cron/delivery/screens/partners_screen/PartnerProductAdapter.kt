@@ -49,7 +49,7 @@ class CategoryAdapter(
 
         private val binding = ItemPartnerProductBinding.bind(view)
 
-        private val timer = BasketCounterTimer(1500, 1500)
+        private val timer = BasketCounterTimer()
 
         fun bindProduct(position: Int) {
             val product = productCategoryModel[position]

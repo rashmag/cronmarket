@@ -80,7 +80,7 @@ interface RestService {
             Response<PartnerCategoryRes>
 
     @GET("/api/v1/PartnerCard/partner_products")
-    suspend fun getPartnerProducts(@Query("PartnerId") partnerId: String) :
+    suspend fun getPartnerProducts(@Query("PartnerId") partnerId: String):
             Response<List<PartnerProductsRes>>
 
     @POST("/api/v1/Account/refresh_token")
@@ -90,7 +90,7 @@ interface RestService {
 
     @POST("/api/v1/Account/logout")
     suspend fun logOut(
-        @Body refreshToken:LogOutReq
+        @Body refreshToken: LogOutReq
     ): Response<ResponseBody>
 
     @GET("/api/v1/Basket")
@@ -107,6 +107,11 @@ interface RestService {
     suspend fun increaseProductInBasket(
         @Header("Authorization") token: String,
         @Body editor: BasketEditorReq
+    ): Basket
+
+    @POST("/api/v1/Basket/clear")
+    suspend fun clearBasket(
+        @Body basketClearReq: BasketClearReq
     ): Basket
 
     companion object {

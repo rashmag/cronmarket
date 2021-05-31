@@ -92,7 +92,7 @@ class BasketAdapter @Inject constructor(
     inner class ProductViewHolder(private val binding: ItemBasketProductBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        private val timer = BasketCounterTimer(1500, 1500)
+        private val timer = BasketCounterTimer()
 
         fun bind(product: BasketItem) {
             binding.tvBasketProductName.text = product.name

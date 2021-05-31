@@ -20,6 +20,7 @@ import ooo.cron.delivery.App
 import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.*
 import ooo.cron.delivery.databinding.ActivityPartnersBinding
+import ooo.cron.delivery.screens.AcceptDialog
 import ooo.cron.delivery.screens.BaseActivity
 import ooo.cron.delivery.screens.basket_screen.BasketActivity
 import ooo.cron.delivery.utils.ProductBottomSheetDialog
@@ -232,10 +233,22 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         }
     }
 
-    override fun showBasketPreview(basketId: String, quantity: Int, basketPrice: String) {
+    override fun showClearBasketDialog(onDismiss: () -> Unit, onAccept: () -> Unit) {
+        AcceptDialog(onDismiss, onAccept).show(
+            supportFragmentManager,
+            AcceptDialog::class.simpleName
+        )
+    }
+
+    override fun updateBasketPreview(quantity: Int, basketPrice: String) {
         binding.tvPartnerBasket.text = getString(R.string.partner_basket, quantity)
         binding.btnPartnerBasketPrice.text = getString(R.string.partner_basket_price, basketPrice)
-        binding.vgPartnerBasket.visibility = View.VISIBLE
+
+        binding.vgPartnerBasket.visibility =
+            if (quantity > 0)
+                View.VISIBLE
+            else
+                View.GONE
 
         with(View.OnClickListener {
             startActivity(Intent(this@PartnersActivity, BasketActivity::class.java))

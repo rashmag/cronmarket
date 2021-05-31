@@ -124,6 +124,11 @@ class DataManager @Inject constructor(
             restService.increaseProductInBasket(editor)
         }
 
+    suspend fun clearBasket(basketClearReq: BasketClearReq) =
+        withContext(Dispatchers.IO) {
+            restService.clearBasket(basketClearReq)
+        }
+
     suspend fun writeChosenCity(city: City) =
         withContext(Dispatchers.IO) {
             sPrefsService.writeChosenCity(city)

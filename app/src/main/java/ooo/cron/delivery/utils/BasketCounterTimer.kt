@@ -6,12 +6,9 @@ import android.util.Log
 /**
  * Created by Ramazan Gadzhikadiev on 28.05.2021.
  */
-class BasketCounterTimer(
-    millisInFuture: Long,
-    countDownInterval: Long
-) : CountDownTimer(
-    millisInFuture,
-    countDownInterval
+class BasketCounterTimer : CountDownTimer(
+    800,
+    800
 ) {
     private var actionOnFinish = {}
 

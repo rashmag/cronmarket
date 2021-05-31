@@ -21,7 +21,8 @@ interface PartnersContract {
         fun removeProgress()
         fun showPartnerProducts(productCategoriesModel: ArrayList<ProductCategoryModel>)
 
-        fun showBasketPreview(basketId: String, quantity: Int, basketPrice: String)
+        fun showClearBasketDialog(onDismiss: () -> Unit, onAccept: () -> Unit)
+        fun updateBasketPreview(quantity: Int, basketPrice: String)
     }
 
     interface Presenter : MvpPresenter<View> {

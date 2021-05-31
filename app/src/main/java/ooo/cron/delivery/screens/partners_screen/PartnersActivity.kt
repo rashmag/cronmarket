@@ -250,17 +250,13 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         productBottomSheetDialog.show()
     }
 
-    override fun onPriceClick(product: PartnerProductsRes, position: Int) {
-        presenter.priceClick(product, position)
-    }
-
     override fun onPlusClick(
         product: PartnerProductsRes,
-        additves: List<BasketDishAdditive>,
+        additives: List<BasketDishAdditive>,
         quantity: Int,
         position: Int
     ) {
-        presenter.plusClick(product, additves, quantity, position)
+        presenter.plusClick(product, additives, quantity, position)
     }
 
     override fun onMinusClick(product: PartnerProductsRes, position: Int) {

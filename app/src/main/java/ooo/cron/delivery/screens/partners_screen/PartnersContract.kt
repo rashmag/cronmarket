@@ -36,7 +36,5 @@ interface PartnersContract {
             quantity: Int,
             position: Int
         )
-
-        fun priceClick(product: PartnerProductsRes, position: Int)
     }
 }

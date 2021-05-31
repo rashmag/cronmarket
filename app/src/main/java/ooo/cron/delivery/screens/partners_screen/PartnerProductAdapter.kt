@@ -198,10 +198,9 @@ class CategoryAdapter(
 
     interface OnProductClickListener {
         fun onProductClick(product: PartnerProductsRes)
-        fun onPriceClick(product: PartnerProductsRes, position: Int)
         fun onPlusClick(
             product: PartnerProductsRes,
-            additves: List<BasketDishAdditive>,
+            additives: List<BasketDishAdditive>,
             quantity: Int,
             position: Int
         )

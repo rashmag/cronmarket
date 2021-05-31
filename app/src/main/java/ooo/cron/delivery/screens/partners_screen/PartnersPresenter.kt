@@ -90,10 +90,6 @@ class PartnersPresenter @Inject constructor(
         }
     }
 
-    override fun priceClick(product: PartnerProductsRes, position: Int) {
-        TODO("Not yet implemented")
-    }
-
     override fun minusClick(product: PartnerProductsRes, position: Int) {
         TODO("Not yet implemented")
     }

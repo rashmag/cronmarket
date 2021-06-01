@@ -89,13 +89,21 @@ class PartnersPresenter @Inject constructor(
         }
     }
 
+    override fun requiredAddressDialogAccepted() {
+        view?.showChangeAddressScreen()
+    }
+
+    override fun requiredAddressDialogDeclined() {
+        view?.showPartnerProducts(productCategoriesModel)
+    }
+
     override fun minusClick(
         product: PartnerProductsRes,
         quantity: Int
     ) {
         mainScope.launch {
             if (dataManager.readBuildingAddress().isNullOrEmpty()) {
-                view?.showChangeAddress()
+                view?.showChangeAddressDialog()
                 return@launch
             }
 
@@ -141,7 +149,7 @@ class PartnersPresenter @Inject constructor(
     ) {
         mainScope.launch {
             if (dataManager.readBuildingAddress().isNullOrEmpty()) {
-                view?.showChangeAddress()
+                view?.showChangeAddressDialog()
                 return@launch
             }
 

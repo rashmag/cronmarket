@@ -23,6 +23,7 @@ import ooo.cron.delivery.databinding.ActivityPartnersBinding
 import ooo.cron.delivery.screens.AcceptDialog
 import ooo.cron.delivery.screens.BaseActivity
 import ooo.cron.delivery.screens.basket_screen.BasketActivity
+import ooo.cron.delivery.screens.first_address_selection_screen.FirstAddressSelectionActivity
 import ooo.cron.delivery.utils.ProductBottomSheetDialog
 import java.util.*
 import javax.inject.Inject
@@ -258,8 +259,15 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         }
     }
 
-    override fun showChangeAddress() {
-        TODO("Not yet implemented")
+    override fun showChangeAddressDialog() {
+        RequiredAddressDialog(
+            { presenter.requiredAddressDialogDeclined() },
+            { presenter.requiredAddressDialogAccepted() }
+        ).show(supportFragmentManager, RequiredAddressDialog::class.simpleName)
+    }
+
+    override fun showChangeAddressScreen() {
+        startActivity(Intent(this, FirstAddressSelectionActivity::class.java))
     }
 
     override fun onProductClick(product: PartnerProductsRes) {

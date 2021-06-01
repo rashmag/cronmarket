@@ -18,11 +18,9 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.dialog_partners_info.*
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
-import ooo.cron.delivery.data.network.models.PartnerCategoryRes
-import ooo.cron.delivery.data.network.models.PartnerProductsRes
-import ooo.cron.delivery.data.network.models.PartnersInfoRes
-import ooo.cron.delivery.data.network.models.ProductCategoryModel
+import ooo.cron.delivery.data.network.models.*
 import ooo.cron.delivery.databinding.ActivityPartnersBinding
+import ooo.cron.delivery.screens.AcceptDialog
 import ooo.cron.delivery.screens.BaseActivity
 import ooo.cron.delivery.screens.basket_screen.BasketActivity
 import ooo.cron.delivery.utils.ProductBottomSheetDialog
@@ -220,10 +218,13 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         }
     }
 
+    override fun removeProgress() {
+        binding.vgPartnersActivityProgress.root.visibility = View.GONE
+    }
+
     override fun showPartnerProducts(
         productCategoriesModel: ArrayList<ProductCategoryModel>
     ) {
-
         binding.run {
             vgMainView.removeView(binding.vgPartnersActivityProgress.root)
             rvProduct.apply {
@@ -233,10 +234,22 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         }
     }
 
-    override fun showBasketPreview(basketId: String, quantity: Int, basketPrice: String) {
+    override fun showClearBasketDialog(onDismiss: () -> Unit, onAccept: () -> Unit) {
+        ClearBasketDialog(onDismiss, onAccept).show(
+            supportFragmentManager,
+            AcceptDialog::class.simpleName
+        )
+    }
+
+    override fun updateBasketPreview(quantity: Int, basketPrice: String) {
         binding.tvPartnerBasket.text = getString(R.string.partner_basket, quantity)
         binding.btnPartnerBasketPrice.text = getString(R.string.partner_basket_price, basketPrice)
-        binding.vgPartnerBasket.visibility = View.VISIBLE
+
+        binding.vgPartnerBasket.visibility =
+            if (quantity > 0)
+                View.VISIBLE
+            else
+                View.GONE
 
         with(View.OnClickListener {
             startActivity(Intent(this@PartnersActivity, BasketActivity::class.java))
@@ -246,22 +259,24 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         }
     }
 
+    override fun showChangeAddress() {
+        TODO("Not yet implemented")
+    }
+
     override fun onProductClick(product: PartnerProductsRes) {
         val productBottomSheetDialog = ProductBottomSheetDialog(this, product)
         productBottomSheetDialog.show()
     }
 
-    override fun onPriceClick(product: PartnerProductsRes, position: Int) {
-        presenter.priceClick(product, position)
-    }
+    override fun onPlusClick(
+        product: PartnerProductsRes,
+        additives: List<BasketDishAdditive>,
+        quantity: Int
+    ) =
+        presenter.plusClick(product, additives, quantity)
 
-    override fun onPlusClick(product: PartnerProductsRes, position: Int) {
-        presenter.plusClick(product, position)
-    }
-
-    override fun onMinusClick(product: PartnerProductsRes, position: Int) {
-        presenter.minusClick(product, position)
-    }
+    override fun onMinusClick(product: PartnerProductsRes, quantity: Int) =
+        presenter.minusClick(product, quantity)
 
     private fun setTitleVisibility() {
         var isShow = false

@@ -2,10 +2,7 @@ package ooo.cron.delivery.data.network
 
 import okhttp3.ResponseBody
 import ooo.cron.delivery.data.network.models.*
-import ooo.cron.delivery.data.network.request.ConfirmCodeReq
-import ooo.cron.delivery.data.network.request.LogOutReq
-import ooo.cron.delivery.data.network.request.SentCodeReq
-import ooo.cron.delivery.data.network.request.SetUserNameReq
+import ooo.cron.delivery.data.network.request.*
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
@@ -83,7 +80,7 @@ interface RestService {
             Response<PartnerCategoryRes>
 
     @GET("/api/v1/PartnerCard/partner_products")
-    suspend fun getPartnerProducts(@Query("PartnerId") partnerId: String) :
+    suspend fun getPartnerProducts(@Query("PartnerId") partnerId: String):
             Response<List<PartnerProductsRes>>
 
     @POST("/api/v1/Account/refresh_token")
@@ -93,13 +90,34 @@ interface RestService {
 
     @POST("/api/v1/Account/logout")
     suspend fun logOut(
-        @Body refreshToken:LogOutReq
+        @Body refreshToken: LogOutReq
     ): Response<ResponseBody>
 
     @GET("/api/v1/Basket")
     suspend fun getBasket(
         @Query("BasketId") basketId: String
     ): Response<Basket>
+
+    @POST("/api/v1/Basket/inc_product")
+    suspend fun increaseProductInBasket(
+        @Body editor: BasketEditorReq
+    ): Basket
+
+    @POST("/api/v1/Basket/inc_product")
+    suspend fun increaseProductInBasket(
+        @Header("Authorization") token: String,
+        @Body editor: BasketEditorReq
+    ): Basket
+
+    @POST("/api/v1/Basket/dec_product")
+    suspend fun decreaseProductInBasket(
+        @Body editor: BasketEditorReq
+    ): Basket
+
+    @POST("/api/v1/Basket/clear")
+    suspend fun clearBasket(
+        @Body basketClearReq: BasketClearReq
+    ): Basket
 
     companion object {
         const val PARTNERS_PAGINATION_LIMIT = 15

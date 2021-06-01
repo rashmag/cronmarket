@@ -230,7 +230,7 @@ class FirstAddressSelectionActivity :
 
     override fun showWarningMessage() {
         binding.vgFirstAddressSelectionMessage.setBackgroundResource(R.color.question_light)
-        binding.ivFirstAddressSelectionMessage.setImageResource(R.drawable.ic_first_address_selection_warning)
+        binding.ivFirstAddressSelectionMessage.setImageResource(R.drawable.ic_warning)
         binding.tvFirstAddressSelectionMessage.setTextColor(color(R.color.grey90))
         binding.tvFirstAddressSelectionMessage.text =
             getString(R.string.first_address_selection_warning_message)

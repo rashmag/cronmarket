@@ -10,6 +10,7 @@ import ooo.cron.delivery.databinding.ItemBasketHeaderBinding
 import ooo.cron.delivery.databinding.ItemBasketPersonsBinding
 import ooo.cron.delivery.databinding.ItemBasketProductBinding
 import ooo.cron.delivery.databinding.ItemBasketSpecialOffersBinding
+import ooo.cron.delivery.utils.BasketCounterTimer
 import javax.inject.Inject
 
 /**
@@ -34,10 +35,10 @@ class BasketAdapter @Inject constructor(
         viewType: Int
     ): RecyclerView.ViewHolder =
         when (viewType) {
-            R.layout.item_basket_header -> HeaderViewHolder(headerBinding(parent))
-            R.layout.item_basket_persons -> PersonsViewHolder(personsBinding(parent))
-            R.layout.item_basket_special_offers -> SpecialOffersBinding(specialOffersBinding(parent))
-            else -> ProductViewHolder(productBinding(parent))
+            R.layout.item_basket_header -> HeaderViewHolder(inflateHeader(parent))
+            R.layout.item_basket_persons -> PersonsViewHolder(inflatePersons(parent))
+            R.layout.item_basket_special_offers -> SpecialOffersBinding(inflateSpecialOffers(parent))
+            else -> ProductViewHolder(inflateProduct(parent))
         }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -48,27 +49,27 @@ class BasketAdapter @Inject constructor(
     override fun getItemCount(): Int =
         products.size + 3
 
-    fun productBinding(parent: ViewGroup) =
+    private fun inflateProduct(parent: ViewGroup) =
         ItemBasketProductBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
         )
 
-    fun headerBinding(parent: ViewGroup) =
+    private fun inflateHeader(parent: ViewGroup) =
         ItemBasketHeaderBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
         )
 
-    fun personsBinding(parent: ViewGroup) =
+    private fun inflatePersons(parent: ViewGroup) =
         ItemBasketPersonsBinding.inflate(
             LayoutInflater.from(parent.context),
             parent, false
         )
 
-    fun specialOffersBinding(parent: ViewGroup) =
+    private fun inflateSpecialOffers(parent: ViewGroup) =
         ItemBasketSpecialOffersBinding.inflate(
             LayoutInflater.from(parent.context),
             parent, false
@@ -90,10 +91,21 @@ class BasketAdapter @Inject constructor(
 
     inner class ProductViewHolder(private val binding: ItemBasketProductBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
+        private val timer = BasketCounterTimer()
+
         fun bind(product: BasketItem) {
             binding.tvBasketProductName.text = product.name
             binding.vgBasketCounter.tvBasketCounterQuantity.text = product.quantity.toString()
             binding.tvBasketProductAmount.text = product.getAmount().toString()
+
+            binding.vgBasketCounter.ivBasketCounterMinus.setOnClickListener {
+                TODO()
+            }
+
+            binding.vgBasketCounter.ivBasketCounterPlus.setOnClickListener {
+                TODO()
+            }
 
             Glide.with(itemView.context)
                 .load(product.photoUri)

@@ -24,9 +24,12 @@ class ConfirmPhonePresenter @Inject constructor(
     BaseMvpPresenter<ConfirmPhoneContract.View>(), ConfirmPhoneContract.Presenter {
 
     override fun sendConfirmCode() {
+        val basketId = dataManager.readUserBasket()
         dataManager.sentConfirmCode(
             ConfirmCodeReq(
-                dataManager.readUserPhone()!!, view?.getCode()!!
+                dataManager.readUserPhone()!!,
+                view?.getCode()!!,
+                basketId
             )
         ).enqueue(object : Callback<RefreshableToken> {
             override fun onFailure(call: Call<RefreshableToken>, t: Throwable) {

@@ -11,7 +11,7 @@ import com.github.fajaragungpramana.sectionrecyclerview.Section
 data class PartnerProductsRes(
     var id: String,
     var name: String,
-    var cost: Int,
+    var cost: Double,
     var photo: String,
     var portionSize: String,
     var description: String,

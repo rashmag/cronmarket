@@ -42,6 +42,10 @@ class BasketActivity : BaseActivity(), BasketContract.View {
         adapter.setProducts(createBasketItems())
         binding.rvBasketContent.adapter = adapter
 
+        binding.ivBasketBack.setOnClickListener {
+            finish()
+        }
+
         val itemTouchHelper = ItemTouchHelper(SwipeHelper(this) {
             Log.d("asdsad", "touched")
         })
@@ -54,6 +58,7 @@ class BasketActivity : BaseActivity(), BasketContract.View {
             UUID.randomUUID(),
             "First",
             10,
+
             100f,
             Uri.parse("https://www.study.ru/uploads/server/u9W0t6PiqVGBmMAt.jpg")
         ),

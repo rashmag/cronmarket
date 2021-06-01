@@ -164,4 +164,8 @@
     <string name="partner_product_image">Изображение продукта</string>
     <string name="partner_product_decrease_quantity">Уменьшить количество на 1</string>
     <string name="partner_product_increase_product">Увеличить количество на 1</string>
+    <string name="common_warning_description">Важное сообщение</string>
+    <string name="accept_warning_message">Нельзя заказать товары из разных заведений. Подтверждая вы удалите все товары из корзины.</string>
+    <string name="accept">Подтвердить</string>
+    <string name="cancel">Отмена</string>
 </resources>

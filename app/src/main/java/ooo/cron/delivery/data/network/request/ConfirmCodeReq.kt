@@ -8,5 +8,6 @@ package ooo.cron.delivery.data.network.request
 
 data class ConfirmCodeReq(
     var phoneNumber: String,
-    var code: String
+    var code: String,
+    var basketId: String? = null
 )

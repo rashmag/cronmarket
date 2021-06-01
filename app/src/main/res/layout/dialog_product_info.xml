@@ -1,23 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constrainedHeight="false"
+        android:fillViewport="true"
+        android:layout_marginBottom="120dp"
         app:layout_constraintBottom_toTopOf="@id/vg_basket"
         app:layout_constraintTop_toTopOf="parent">
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="16dp"
-            android:orientation="vertical">
+            android:layout_weight="10"
+            android:orientation="vertical"
+            android:paddingBottom="16dp">
 
 
             <ImageView
@@ -30,59 +33,70 @@
 
             <TextView
                 android:id="@+id/tv_description"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="16dp"
+                android:gravity="center"
                 android:textColor="@color/grey90"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/iv_product"
                 tools:text="Люля-кебаб – это традиционное блюдо восточной кухни из рубленого мяса обжаренного на шампурах. В составе также  куриное мясо, лук, сладкий перец, петрушка, помидор, специи. Вес: 250гр." />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_require_additives"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="16dp"
-                android:overScrollMode="never"
-                app:layout_constraintTop_toBottomOf="@id/tv_description"/>
-
 
             <LinearLayout
-                android:id="@+id/vg_additives"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="16dp"
                 android:orientation="vertical"
-                app:layout_constraintTop_toBottomOf="@id/rv_require_additives">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Дополнения"
-                    android:layout_marginStart="16dp"
-                    android:textColor="@color/grey90"
-                    android:textStyle="bold"/>
+                app:layout_constraintTop_toBottomOf="@id/tv_description">
 
-                <ListView
-                    android:id="@+id/lv_additives"
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_require_additives"
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_height="wrap_content"/>
+                    android:nestedScrollingEnabled="false"
+                    android:overScrollMode="never"
+                    app:layout_constraintTop_toBottomOf="@id/tv_description" />
 
+
+                <LinearLayout
+                    android:id="@+id/vg_additives"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:orientation="vertical"
+                    app:layout_constraintTop_toBottomOf="@id/rv_require_additives">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:text="Дополнения"
+                        android:textColor="@color/grey90"
+                        android:textStyle="bold" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_additives"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:nestedScrollingEnabled="false" />
+
+                </LinearLayout>
             </LinearLayout>
 
 
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </androidx.core.widget.NestedScrollView>
 
 
@@ -90,32 +104,34 @@
         android:id="@+id/vg_basket"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
         android:background="@color/white"
+        android:layout_alignParentBottom="true"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <TextView
             android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:text="Суп куриный"
-            android:textSize="20sp"
-            android:textStyle="bold"
             android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
             android:textColor="@color/grey90"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Суп куриный" />
 
 
         <LinearLayout
             android:id="@+id/vd_add_product"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             android:background="@drawable/bg_add_product_bottom_sheet"
+            android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_name">
@@ -136,9 +152,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:padding="6dp"
-                android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:padding="6dp"
                 android:text="1"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
@@ -160,22 +176,22 @@
             android:id="@+id/tv_cost"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="16dp"
+            android:textColor="@color/grey90"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:textColor="@color/grey90"
-            tools:text="200"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="200" />
 
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_add"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:backgroundTint="@color/brand"
             android:text="Добавить"
             android:textAllCaps="false"
@@ -186,4 +202,4 @@
             app:layout_constraintTop_toBottomOf="@id/tv_cost" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

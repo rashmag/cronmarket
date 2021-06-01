@@ -37,25 +37,30 @@ class FirstAddressSelectionActivity :
 
     @Inject
     lateinit var presenter: FirstAddressSelectionContract.Presenter
+
     @Inject
     lateinit var binding: ActivityFirstAddressSelectionBinding
+
     @Inject
     lateinit var addressesPopupWindow: ListPopupWindow
+
     @Inject
     lateinit var locationManager: LocationManager
+
     @Inject
     lateinit var locationListener: LocationListener
+
     @Inject
     lateinit var locationUpdateTimer: CountDownTimer
 
     private var updateAddressesPopupTimer: CountDownTimer? = null
-
+    private var isFromOrderingScreen = false
     override fun onCreate(savedInstanceState: Bundle?) {
         injectDependencies()
         presenter.attachView(this)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
+        isFromOrderingScreen = intent.getBooleanExtra("isFromOrderingScreen", false)
         configureSelectionCity()
         configureAddressField()
         configureAddressPopup()
@@ -178,8 +183,8 @@ class FirstAddressSelectionActivity :
 
     @SuppressLint("MissingPermission")
     override fun getLastKnownLocation() =
-        locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)?:
-        locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
+        locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+            ?: locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
 
     override fun startLocationUpdateTimer() {
         locationUpdateTimer.start()
@@ -241,7 +246,8 @@ class FirstAddressSelectionActivity :
         binding.ivFirstAddressSelectionMessage.setImageResource(R.drawable.ic_first_address_selection_error)
         binding.tvFirstAddressSelectionMessage.setTextColor(color(R.color.grey90))
         binding.tvFirstAddressSelectionMessage.text =
-            getString(R.string.first_address_selection_location_error_message)    }
+            getString(R.string.first_address_selection_location_error_message)
+    }
 
     override fun showSuccessMessage() {
         binding.vgFirstAddressSelectionMessage.setBackgroundResource(R.color.true_light)
@@ -262,6 +268,7 @@ class FirstAddressSelectionActivity :
         binding.spinnerFirstAddressSelectionCity.adapter = CitiesAdapter(this)
         binding.spinnerFirstAddressSelectionCity.onItemSelectedListener =
             createSelectionCityListener(presenter::onCitySelected, presenter::onNoCitySelected)
+        binding.spinnerFirstAddressSelectionCity.isEnabled = !isFromOrderingScreen
     }
 
     private fun configureAddressField() {
@@ -289,7 +296,20 @@ class FirstAddressSelectionActivity :
 
     private fun configureSubmit() {
         binding.btnFirstAddressSelectionSubmit
-            .setOnClickListener { presenter.onSubmitClicked() }
+            .setOnClickListener {
+                if (isFromOrderingScreen) {
+                    presenter.writeChosenAddress()
+                    onBackPressed()
+                } else {
+                    presenter.onSubmitClicked()
+                }
+            }
+
+        binding.btnFirstAddressSelectionSubmit.text = if (isFromOrderingScreen)
+            getString(R.string.done_title)
+        else
+            getString(R.string.first_address_selection_start_shopping)
+
     }
 
     private fun createSelectionCityListener(

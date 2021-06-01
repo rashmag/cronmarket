@@ -75,5 +75,7 @@ interface FirstAddressSelectionContract {
         fun onLocationProviderUpdateTimerFinished()
 
         fun onSubmitClicked()
+
+        fun writeChosenAddress()
     }
 }

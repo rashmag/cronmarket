@@ -79,6 +79,48 @@
     <string name="partners_activity_free_delivery_template">от %1$d \u20BD бесплатно</string>
     <string name="partners_activity_close_title">Закрыть</string>
 
+
+    <string name="delivery_details_address_title">Адрес доставки</string>
+    <string name="delivery_details_enter_address_title">Введите адрес</string>
+    <string name="delivery_details_entrance_title">Подъезд</string>
+    <string name="delivery_details_floor_title">Этаж</string>
+    <string name="delivery_details_flat_title">Квартира</string>
+    <string name="delivery_details_save_address_title">Сохранить адрес</string>
+    <string name="delivery_details_phone_number_title">Номер телефона</string>
+    <string name="delivery_details_comments_to_order_title">Комментарий к заказу</string>
+    <string name="delivery_details_delivery_time_title">Время доставки</string>
+    <string name="delivery_details_soon_as_possible_title">Как можно скорее</string>
+    <string name="delivery_details_in_time_title">Ко времени</string>
+    <string name="delivery_details_title">Детали доставки</string>
+    <string name="order_costs_title">Стоимость заказа</string>
+    <string name="delivery_details_choose_delivery_time_title">Выберите время доставки</string>
+
+    <string name="order_cost_payment_method_title">Способ оплаты</string>
+    <string name="order_cost_promo_code_title">Промокод</string>
+    <string name="order_cost_enter_promo_code_title">Введите промокод</string>
+    <string name="order_cost_apply_title">Применить</string>
+    <string name="cost_of_goods_title">Стоимость товаров:</string>
+    <string name="cost_of_delivery_title">Стоимость доставки:</string>
+    <string name="order_cost_discount_title">Скидка:</string>
+    <string name="all_cost_title">Итого к оплате:</string>
+    <string name="order_title">Заказать</string>
+
+    <string name="delivery_time_error_title">Не раньше чем через час после открытия и за пол часа до закрытия</string>
+
+    <string-array name="payment_method_array">
+        <item>Наличными при получении</item>
+        <item>Онлайн оплата с карты</item>
+        <item>Онлайн оплата с GooglePay</item>
+    </string-array>
+
+
+    <string name="ordering_pay_status_done">Ваш заказ принят.</string>
+    <string name="ordering_pay_status_done_details_title">Спасибо! Мы доставим вам заказ в ближайшее время.</string>
+    <string name="ordering_pay_status_error">Ваш платёж не прошёл.</string>
+    <string name="ordering_pay_status_error_detail_title">Не удалось произвести платёж. Попробуйте снова, или обратитесь в <u>техподдержку</u>.</string>
+
+
+
     <string name="enter_phone_privacy_policy_text">Настоящая Политика конфиденциальности персональных данных (далее – Политика конфиденциальности), действует в отношении всей информации, которую собирает общество с ограниченной ответственностью «КРОН» (далее — Исполнитель) в лице мобильного приложения «CronДоставка» (далее – Мобильное приложение), которую может получить о Пользователе во время использования им Мобильного приложения.
 
 ТЕРМИНЫ И ОПРЕДЕЛЕНИЯ
@@ -168,4 +210,5 @@
     <string name="accept_warning_message">Нельзя заказать товары из разных заведений. Подтверждая вы удалите все товары из корзины.</string>
     <string name="accept">Подтвердить</string>
     <string name="cancel">Отмена</string>
+    <string name="order_repeat_title">Повторить</string>
 </resources>

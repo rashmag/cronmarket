@@ -93,6 +93,12 @@ interface RestService {
         @Body refreshToken: LogOutReq
     ): Response<ResponseBody>
 
+
+    @POST("/api/v1/Order")
+    suspend fun sendOrder(
+        @Header("Authorization") token: String,
+        @Body orderReq: OrderReq): Response<ResponseBody>
+
     @GET("/api/v1/Basket")
     suspend fun getBasket(
         @Query("BasketId") basketId: String

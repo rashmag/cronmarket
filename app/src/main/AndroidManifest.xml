@@ -30,7 +30,8 @@
 
         <activity android:name=".screens.basket_screen.BasketActivity"/>
 
-        <activity android:name=".screens.splash_screen.SplashScreenActivity">
+        <activity android:name=".screens.splash_screen.SplashScreenActivity"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

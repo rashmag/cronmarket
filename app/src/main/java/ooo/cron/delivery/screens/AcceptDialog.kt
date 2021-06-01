@@ -11,9 +11,12 @@ import ooo.cron.delivery.databinding.DialogAcceptBinding
 /**
  * Created by Ramazan Gadzhikadiev on 31.05.2021.
  */
-class AcceptDialog(val onCancel: () -> Unit, val onAccept: () -> Unit) : DialogFragment() {
+abstract class AcceptDialog(val onCancel: () -> Unit, val onAccept: () -> Unit) : DialogFragment() {
 
-    private lateinit var binding: DialogAcceptBinding
+    protected lateinit var binding: DialogAcceptBinding
+
+    protected abstract val title: String
+    protected abstract val message: String
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -21,6 +24,8 @@ class AcceptDialog(val onCancel: () -> Unit, val onAccept: () -> Unit) : DialogF
         savedInstanceState: Bundle?
     ): View? {
         binding = DialogAcceptBinding.inflate(inflater)
+        binding.tvAcceptTitle.text = title
+        binding.tvAcceptMessage.text = message
         binding.btnAccept.setOnClickListener {
             onAccept()
             dismiss()

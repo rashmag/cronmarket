@@ -89,17 +89,62 @@ class PartnersPresenter @Inject constructor(
         }
     }
 
-    override fun minusClick(product: PartnerProductsRes, position: Int) {
-        TODO("Not yet implemented")
+    override fun minusClick(
+        product: PartnerProductsRes,
+        quantity: Int
+    ) {
+        mainScope.launch {
+            if (dataManager.readBuildingAddress().isNullOrEmpty()) {
+                view?.showChangeAddress()
+                return@launch
+            }
+
+            if (partner.marketCategoryId == 1 && basket?.id != null && basket?.id != DataManager.EMPTY_UUID) {
+                val reducingProduct = BasketDish(
+                    DataManager.EMPTY_UUID,
+                    product.id,
+                    product.name,
+                    quantity,
+                    product.cost,
+                    product.photo,
+                    listOf()
+                )
+
+                val basketEditor = BasketEditorReq(
+                    basket!!.id,
+                    partner.id,
+                    partner.marketCategoryId,
+                    Gson().toJson(reducingProduct)
+                )
+
+                withErrorsHandle(
+                    {
+                        basket = dataManager.decreaseProductInBasket(basketEditor)
+                        dataManager.writeUserBasket(basket!!.id)
+                        basketContent = deserializeDishes()
+                        mergeBasketIntoProducts()
+                        view?.showPartnerProducts(productCategoriesModel)
+                        view?.updateBasketPreview(basketContent?.sumBy { it.quantity } ?: 0,
+                            String.format("%.2f", basket!!.amount))
+                    },
+                    { view?.showConnectionErrorScreen() },
+                    { view?.showAnyErrorScreen() }
+                )
+            }
+        }
     }
 
     override fun plusClick(
         product: PartnerProductsRes,
         additives: List<BasketDishAdditive>,
-        quantity: Int,
-        position: Int
+        quantity: Int
     ) {
         mainScope.launch {
+            if (dataManager.readBuildingAddress().isNullOrEmpty()) {
+                view?.showChangeAddress()
+                return@launch
+            }
+
             if (basket != null &&
                 basket!!.partnerId != DataManager.EMPTY_UUID &&
                 basket!!.partnerId != partner.id
@@ -212,9 +257,10 @@ class PartnersPresenter @Inject constructor(
             if (basket?.marketCategoryId == 1) {
                 basketContent = deserializeDishes()
             }
-            view?.updateBasketPreview(
-                basketContent?.sumBy { it.quantity } ?: 0,
-                String.format("%.2f", body()!!.amount))
+            if (basket!!.partnerId == partner.id)
+                view?.updateBasketPreview(
+                    basketContent?.sumBy { it.quantity } ?: 0,
+                    String.format("%.2f", body()!!.amount))
         } else {
             basket = null
             basketContent = null

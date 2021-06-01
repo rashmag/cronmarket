@@ -124,6 +124,11 @@ class DataManager @Inject constructor(
             restService.increaseProductInBasket(editor)
         }
 
+    suspend fun decreaseProductInBasket(editor: BasketEditorReq) =
+        withContext(Dispatchers.IO) {
+            restService.decreaseProductInBasket(editor)
+        }
+
     suspend fun clearBasket(basketClearReq: BasketClearReq) =
         withContext(Dispatchers.IO) {
             restService.clearBasket(basketClearReq)

@@ -234,7 +234,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
     }
 
     override fun showClearBasketDialog(onDismiss: () -> Unit, onAccept: () -> Unit) {
-        AcceptDialog(onDismiss, onAccept).show(
+        ClearBasketDialog(onDismiss, onAccept).show(
             supportFragmentManager,
             AcceptDialog::class.simpleName
         )
@@ -258,6 +258,10 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         }
     }
 
+    override fun showChangeAddress() {
+        TODO("Not yet implemented")
+    }
+
     override fun onProductClick(product: PartnerProductsRes) {
         val productBottomSheetDialog = ProductBottomSheetDialog(this, product)
         productBottomSheetDialog.show()
@@ -266,15 +270,12 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
     override fun onPlusClick(
         product: PartnerProductsRes,
         additives: List<BasketDishAdditive>,
-        quantity: Int,
-        position: Int
-    ) {
-        presenter.plusClick(product, additives, quantity, position)
-    }
+        quantity: Int
+    ) =
+        presenter.plusClick(product, additives, quantity)
 
-    override fun onMinusClick(product: PartnerProductsRes, position: Int) {
-        presenter.minusClick(product, position)
-    }
+    override fun onMinusClick(product: PartnerProductsRes, quantity: Int) =
+        presenter.minusClick(product, quantity)
 
     private fun setTitleVisibility() {
         var isShow = false

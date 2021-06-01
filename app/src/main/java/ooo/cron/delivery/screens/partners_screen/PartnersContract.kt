@@ -23,6 +23,8 @@ interface PartnersContract {
 
         fun showClearBasketDialog(onDismiss: () -> Unit, onAccept: () -> Unit)
         fun updateBasketPreview(quantity: Int, basketPrice: String)
+
+        fun showChangeAddress()
     }
 
     interface Presenter : MvpPresenter<View> {
@@ -30,12 +32,15 @@ interface PartnersContract {
         fun getPartnerCategory()
         fun getPartnerProducts()
 
-        fun minusClick(product: PartnerProductsRes, position: Int)
+        fun minusClick(
+            product: PartnerProductsRes,
+            quantity: Int
+        )
+
         fun plusClick(
             product: PartnerProductsRes,
             additives: List<BasketDishAdditive>,
-            quantity: Int,
-            position: Int
+            quantity: Int
         )
     }
 }

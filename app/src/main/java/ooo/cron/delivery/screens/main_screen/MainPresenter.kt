@@ -24,6 +24,7 @@ class MainPresenter @Inject constructor(
 
     private var marketCategories: List<MarketCategory>? = null
     private var user: UserResponse? = null
+    private var basketPartnerId: String = DataManager.EMPTY_UUID
 
     override fun detachView() {
         super.detachView()
@@ -43,6 +44,16 @@ class MainPresenter @Inject constructor(
             }
 
             loadUser(dataManager.readToken())
+            val basketId = dataManager.readUserBasket()
+            if (basketId != DataManager.EMPTY_UUID) {
+                val basket = dataManager.getBasket(basketId)
+                if (basket.isSuccessful) {
+                    view
+                    basketPartnerId = basket.body()?.partnerId ?: DataManager.EMPTY_UUID
+                    view?.showContinueLastSession()
+                }
+            }
+
         }
     }
 
@@ -79,9 +90,7 @@ class MainPresenter @Inject constructor(
     }
 
     override fun continueLastSessionCLick() {
-        user?.basket?.partnerId?.let {
-            view?.navigatePartnerScreen(it)
-        }
+        view?.navigatePartnerScreen(basketPartnerId)
     }
 
     private suspend fun defineAddress() {
@@ -138,7 +147,6 @@ class MainPresenter @Inject constructor(
 
     private fun handleBasket(response: Response<UserResponse>) {
         writeBasketId(response)
-        view?.showContinueLastSession()
     }
 
     private fun writeBasketId(response: Response<UserResponse>) =

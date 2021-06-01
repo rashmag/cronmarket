@@ -109,6 +109,11 @@ interface RestService {
         @Body editor: BasketEditorReq
     ): Basket
 
+    @POST("/api/v1/Basket/dec_product")
+    suspend fun decreaseProductInBasket(
+        @Body editor: BasketEditorReq
+    ): Basket
+
     @POST("/api/v1/Basket/clear")
     suspend fun clearBasket(
         @Body basketClearReq: BasketClearReq

@@ -68,101 +68,68 @@ class CategoryAdapter(
             }
 
             binding.tvCost.setOnClickListener {
-                var currentQuantity = binding.tvPortionCount.text.toString().toInt()
-                binding.tvPortionCount.text = (++currentQuantity).toString()
+                var currentQuantity = binding.tvPortionCount.text.toString().toInt() + 1
                 updateCounter(currentQuantity)
 
                 val quantityChangeStatus =
                     defineQuantityChangeStatus(currentQuantity, product.inBasketQuantity)
 
-                if (quantityChangeStatus ==
-                    QuantityChangeStatus.INCREASED
-                ) {
-                    if (product.additives.isEmpty() &&
-                        product.requiredAdditiveGroups.isEmpty()
-                    )
-                        return@setOnClickListener restartTimer {
-                            listener.onPlusClick(
-                                product,
-                                listOf(),
-                                currentQuantity - product.inBasketQuantity,
-                                recyclerViewPosition
-                            )
-                        }
-                    TODO("Should show product dialog")
-                }
+                if (quantityChangeStatus == QuantityChangeStatus.INCREASED)
+                    increaseProduct(product, currentQuantity)
+
+                if (quantityChangeStatus == QuantityChangeStatus.NO_CHANGES)
+                    updateCounter(currentQuantity)
             }
 
             binding.ivPlus.setOnClickListener {
-                var currentQuantity = binding.tvPortionCount.text.toString().toInt()
-                binding.tvPortionCount.text = (++currentQuantity).toString()
+                var currentQuantity = binding.tvPortionCount.text.toString().toInt() + 1
                 updateCounter(currentQuantity)
 
                 val quantityChangeStatus =
                     defineQuantityChangeStatus(currentQuantity, product.inBasketQuantity)
 
-                when (quantityChangeStatus) {
-                    QuantityChangeStatus.INCREASED -> {
-                        if (product.additives.isEmpty() &&
-                            product.requiredAdditiveGroups.isEmpty()
-                        )
-                            return@setOnClickListener restartTimer {
-                                listener.onPlusClick(
-                                    product,
-                                    listOf(),
-                                    currentQuantity - product.inBasketQuantity,
-                                    position
-                                )
-                            }
-                        TODO("Should show product dialog")
-                    }
+                if (quantityChangeStatus == QuantityChangeStatus.INCREASED)
+                    increaseProduct(product, currentQuantity)
 
-                    QuantityChangeStatus.DECREASED ->
-                        restartTimer {
-                            listener.onMinusClick(product, position)
-                        }
+                if (quantityChangeStatus == QuantityChangeStatus.DECREASED) {
+                    restartTimer {
+                        listener.onMinusClick(product, position)
+                    }
                 }
+
+                if (quantityChangeStatus == QuantityChangeStatus.NO_CHANGES)
+                    updateCounter(currentQuantity)
             }
 
             binding.ivMinus.setOnClickListener {
-                var currentQuantity = binding.tvPortionCount.text.toString().toInt()
-                binding.tvPortionCount.text = (--currentQuantity).toString()
+                var currentQuantity = binding.tvPortionCount.text.toString().toInt() - 1
                 updateCounter(currentQuantity)
 
                 val quantityChangeStatus =
                     defineQuantityChangeStatus(currentQuantity, product.inBasketQuantity)
 
-                when (quantityChangeStatus) {
-                    QuantityChangeStatus.INCREASED -> {
-                        if (product.additives.isEmpty() &&
-                            product.requiredAdditiveGroups.isEmpty()
-                        )
-                            return@setOnClickListener restartTimer {
-                                listener.onPlusClick(
-                                    product,
-                                    listOf(),
-                                    currentQuantity - product.inBasketQuantity,
-                                    position
-                                )
-                            }
-                        TODO("Should show product dialog")
+                if (quantityChangeStatus == QuantityChangeStatus.INCREASED)
+                    increaseProduct(product, currentQuantity)
+
+                if (quantityChangeStatus == QuantityChangeStatus.DECREASED)
+                    restartTimer {
+                        listener.onMinusClick(product, position)
                     }
 
-                    QuantityChangeStatus.DECREASED ->
-                        restartTimer {
-                            listener.onMinusClick(product, position)
-                        }
+                if (quantityChangeStatus == QuantityChangeStatus.NO_CHANGES) {
+                    timer.cancel()
+                    updateCounter(currentQuantity)
                 }
             }
         }
 
         private fun updateCounter(quantity: Int) {
+            binding.tvPortionCount.text = quantity.toString()
             if (quantity <= 0) {
                 binding.tvCost.visibility = View.VISIBLE
                 binding.vgAddProduct.visibility = View.INVISIBLE
                 return
             }
-            binding.tvPortionCount.text = quantity.toString()
             binding.tvCost.visibility = View.INVISIBLE
             binding.vgAddProduct.visibility = View.VISIBLE
         }
@@ -177,19 +144,33 @@ class CategoryAdapter(
                 onFinish()
             }
         }
-    }
 
-    private fun defineQuantityChangeStatus(
-        quantity: Int,
-        inBasketQuantity: Int
-    ): QuantityChangeStatus {
-        if (quantity > inBasketQuantity)
-            return QuantityChangeStatus.INCREASED
+        private fun defineQuantityChangeStatus(
+            quantity: Int,
+            inBasketQuantity: Int
+        ): QuantityChangeStatus {
+            if (quantity > inBasketQuantity)
+                return QuantityChangeStatus.INCREASED
 
-        if (quantity < inBasketQuantity)
-            return QuantityChangeStatus.DECREASED
+            if (quantity < inBasketQuantity)
+                return QuantityChangeStatus.DECREASED
 
-        return QuantityChangeStatus.NO_CHANGES
+            return QuantityChangeStatus.NO_CHANGES
+        }
+
+        private fun increaseProduct(product: PartnerProductsRes, currentQuantity: Int) {
+            if (product.additives.isEmpty() &&
+                product.requiredAdditiveGroups.isEmpty()
+            )
+                return restartTimer {
+                    listener.onPlusClick(
+                        product,
+                        listOf(),
+                        currentQuantity - product.inBasketQuantity
+                    )
+                }
+            TODO("Should show product dialog")
+        }
     }
 
     private enum class QuantityChangeStatus {
@@ -201,11 +182,10 @@ class CategoryAdapter(
         fun onPlusClick(
             product: PartnerProductsRes,
             additives: List<BasketDishAdditive>,
-            quantity: Int,
-            position: Int
+            quantity: Int
         )
 
-        fun onMinusClick(product: PartnerProductsRes, position: Int)
+        fun onMinusClick(product: PartnerProductsRes, quantity: Int)
     }
 
 }

@@ -149,6 +149,9 @@ class DataManager @Inject constructor(
             sPrefsService.readChosenCity()
         }
 
+    fun readChosenCityId() =
+        sPrefsService.readChosenCity().id
+
     suspend fun writeBuildingAddress(address: String) =
         withContext(Dispatchers.IO) {
             sPrefsService.writeBuildingAddress(address)
@@ -158,6 +161,9 @@ class DataManager @Inject constructor(
         withContext(Dispatchers.IO) {
             sPrefsService.readBuildingAddress()
         }
+
+    fun readAddress() =
+        sPrefsService.readBuildingAddress()
 
     fun readUserPhone() =
         sPrefsService.readUserPhone()

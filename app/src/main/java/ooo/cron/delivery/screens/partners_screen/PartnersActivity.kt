@@ -51,8 +51,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         presenter.attachView(this)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-//        partnerId = intent.getStringExtra(EXTRA_PARTNER_ID) as String
-        partnerId = "5cc78e21-517f-4501-bad4-4e1aca0a9dc8"
+        partnerId = intent.getStringExtra(EXTRA_PARTNER_ID) as String
         setTitleVisibility()
         presenter.getPartnerInfo()
         onProductRecyclerViewScrollChanged()

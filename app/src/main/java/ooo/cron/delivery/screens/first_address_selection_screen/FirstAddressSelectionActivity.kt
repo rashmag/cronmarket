@@ -297,19 +297,13 @@ class FirstAddressSelectionActivity :
     private fun configureSubmit() {
         binding.btnFirstAddressSelectionSubmit
             .setOnClickListener {
-                if (isFromOrderingScreen) {
-                    presenter.writeChosenAddress()
-                    onBackPressed()
-                } else {
-                    presenter.onSubmitClicked()
-                }
+                presenter.onSubmitClicked()
             }
 
         binding.btnFirstAddressSelectionSubmit.text = if (isFromOrderingScreen)
             getString(R.string.done_title)
         else
             getString(R.string.first_address_selection_start_shopping)
-
     }
 
     private fun createSelectionCityListener(

@@ -22,6 +22,7 @@ interface MainContract {
         fun removeMarketCategoriesProgress()
         fun showNotAuthorizedMessage()
         fun startMarketCategoryFragment(category: MarketCategory)
+        fun startContactsFragment()
         fun reopenMainScreen()
         fun navigateFirstAddressSelection()
         fun navigateAddressSelection()

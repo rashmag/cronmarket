@@ -27,6 +27,7 @@ interface MainContract {
         fun navigateAddressSelection()
         fun navigateLoginActivity()
         fun navigatePartnerScreen(partnerId: String)
+        fun startAboutServiceFragment()
     }
 
     interface Presenter : MvpPresenter<View> {

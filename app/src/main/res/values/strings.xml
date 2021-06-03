@@ -164,4 +164,15 @@
     <string name="partner_product_image">Изображение продукта</string>
     <string name="partner_product_decrease_quantity">Уменьшить количество на 1</string>
     <string name="partner_product_increase_product">Увеличить количество на 1</string>
+    <string name="about_service_advantages_title">Наши основные преимущества</string>
+    <string name="about_service_other_products_title">Еда, продукты и любые товары</string>
+    <string name="about_service_other_products_description">В нашем приложение вы можете заказать еду уже сейчас. За это лето мы добавим продукты, книги, аптеки и косметику и т.д. Также будем рады если вы сообщите нам что бы вы хотели видеть у нас в ассортименте.</string>
+    <string name="about_service_delivery_title">Доставим клиенту заказ вовремя</string>
+    <string name="about_service_delivery_description">С помощью команды наших курьеров мы доставляем любой заказ по городу за 30-60 мин.</string>
+    <string name="about_service_interface_title">Простой интерфейс</string>
+    <string name="about_service_interface_description">Наше приложение позволяет за несколько кликов сделать заказ в любой категории ассортимента и получить его очень быстро с доставкой до двери.</string>
+    <string name="about_service_support_title">Поддержка 24/7</string>
+    <string name="about_service_support_description">Вы можете связаться с нами и получить ответ по интересующей вас информации.</string>
+    <string name="about_our_service_title">Наш сервис</string>
+    <string name="about_our_service_description">Наша площадка работает для того чтобы наши клиенты получили возможность не выходя из дома и комфортно получать все что они закажут. Потому что мы считаем что в наше время и при нашем ритме жизни, мы не должны терять время на походы в магазины. Наш сервис освобождает ваше время.</string>
 </resources>

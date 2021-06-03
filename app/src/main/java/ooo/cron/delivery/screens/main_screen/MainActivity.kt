@@ -123,6 +123,7 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
     override fun startMarketCategoryFragment(category: MarketCategory) {
+        setToolbarTitleVisibility(false, null)
         supportFragmentManager.beginTransaction().replace(
             R.id.container_main,
             MarketCategoryFragment().apply {
@@ -133,12 +134,7 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
     override fun startContactsFragment() {
-        binding.abMain.visibility = View.GONE
-        binding.ivMainSearch.visibility = View.GONE
-        binding.tvMainUserAddress.visibility = View.GONE
-        binding.vgMainContinueLastSession.visibility = View.GONE
-        binding.tvMainTitle.text = getString(R.string.contacts_title)
-
+        setToolbarTitleVisibility(true, getString(R.string.contacts_title))
         supportFragmentManager.beginTransaction().replace(
             R.id.container_main,
             ContactsFragment()
@@ -269,5 +265,15 @@ class MainActivity : BaseActivity(), MainContract.View {
                 onClick(clickedView)
             }
         }
+    }
+
+    private fun setToolbarTitleVisibility(isVisible: Boolean, title: String?) {
+        val visibility = if (isVisible) View.GONE else View.VISIBLE
+        binding.abMain.visibility = visibility
+        binding.ivMainSearch.visibility = visibility
+        binding.tvMainUserAddress.visibility = visibility
+        binding.vgMainContinueLastSession.visibility = visibility
+        binding.tvMainTitle.text = title
+        binding.tvMainTitle.visibility = if (isVisible) View.VISIBLE else View.GONE
     }
 }

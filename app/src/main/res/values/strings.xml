@@ -168,10 +168,14 @@
     <string name="contacts_said_lev_title">Гюльмагомедов Саид \nГюльмагомедович</string>
     <string name="contacts_said_lev_position_title">Руководитель отдела по работе с \nпартнёрами</string>
     <string name="contacts_said_lev_phone_title">Телефон: <font color="#e66835">8(965) 417-39-04</font></string>
+    <string name="said_lev_phone">8(965) 417–39–04</string>
+    <string name="said_lev_email">gsg@cron.ooo</string>
     <string name="contacts_said_lev_email_title">Эл.почта: <font color="#e66835">gsg@cron.ooo</font></string>
     <string name="contacts_magomed_title">Гаджиев Магомед Рамазанович</string>
     <string name="contacts_magomed_position_title">Старший менеджер отдела по работе с \nклиентами</string>
     <string name="contacts_magomed_phone_title">Телефон: <font color="#e66835">8(928) 514-79-23</font></string>
+    <string name="magomed_phone">8(928) 514–79–23</string>
+    <string name="magomed_email">magomed.g@cron.ooo</string>
     <string name="contacts_magomed_email_title">Эл.почта: <font color="#e66835">magomed.g@cron.ooo</font></string>
     <string name="contacts_title">Обратная связь</string>
 </resources>

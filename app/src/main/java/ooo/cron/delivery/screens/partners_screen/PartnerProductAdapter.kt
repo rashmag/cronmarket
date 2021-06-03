@@ -93,7 +93,7 @@ class CategoryAdapter(
 
                 if (quantityChangeStatus == QuantityChangeStatus.DECREASED) {
                     restartTimer {
-                        listener.onMinusClick(product, position)
+                        listener.onMinusClick(product, product.inBasketQuantity - currentQuantity)
                     }
                 }
 
@@ -113,7 +113,7 @@ class CategoryAdapter(
 
                 if (quantityChangeStatus == QuantityChangeStatus.DECREASED)
                     restartTimer {
-                        listener.onMinusClick(product, position)
+                        listener.onMinusClick(product, product.inBasketQuantity - currentQuantity)
                     }
 
                 if (quantityChangeStatus == QuantityChangeStatus.NO_CHANGES) {

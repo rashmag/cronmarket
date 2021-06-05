@@ -13,6 +13,7 @@ import ooo.cron.delivery.data.network.models.MarketCategory
 import ooo.cron.delivery.databinding.ActivityMainBinding
 import ooo.cron.delivery.screens.BaseActivity
 import ooo.cron.delivery.screens.about_service_screen.AboutServiceFragment
+import ooo.cron.delivery.screens.contacts_screen.ContactsFragment
 import ooo.cron.delivery.screens.first_address_selection_screen.FirstAddressSelectionActivity
 import ooo.cron.delivery.screens.login_screen.LoginActivity
 import ooo.cron.delivery.screens.market_category_screen.MarketCategoryFragment
@@ -123,6 +124,7 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
     override fun startMarketCategoryFragment(category: MarketCategory) {
+        setToolbarTitleVisibility(false, null)
         supportFragmentManager.beginTransaction().replace(
             R.id.container_main,
             MarketCategoryFragment().apply {
@@ -136,6 +138,14 @@ class MainActivity : BaseActivity(), MainContract.View {
         supportFragmentManager.beginTransaction().replace(
             R.id.container_main,
             AboutServiceFragment()
+        ).commit()
+    }
+
+    override fun startContactsFragment() {
+        setToolbarTitleVisibility(true, getString(R.string.contacts_title))
+        supportFragmentManager.beginTransaction().replace(
+            R.id.container_main,
+            ContactsFragment()
         ).commit()
     }
 
@@ -262,8 +272,21 @@ class MainActivity : BaseActivity(), MainContract.View {
                     binding.vgMainMenu.tvDrawerMenuItemAboutUs -> startAboutServiceFragment()
                 }
 
+                when (clickedView) {
+                    binding.vgMainMenu.tvDrawerMenuItemContacts -> startContactsFragment()
+                }
                 onClick(clickedView)
             }
         }
+    }
+
+    private fun setToolbarTitleVisibility(isVisible: Boolean, title: String?) {
+        val visibility = if (isVisible) View.GONE else View.VISIBLE
+        binding.abMain.visibility = visibility
+        binding.ivMainSearch.visibility = visibility
+        binding.tvMainUserAddress.visibility = visibility
+        binding.vgMainContinueLastSession.visibility = visibility
+        binding.tvMainTitle.text = title
+        binding.tvMainTitle.visibility = if (isVisible) View.VISIBLE else View.GONE
     }
 }

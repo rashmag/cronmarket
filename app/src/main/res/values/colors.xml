@@ -28,6 +28,8 @@
 
     <color name="black">#000000</color>
 
+    <color name="vacancies_phones_color">#e66835</color>
+
     <color name="main_market_categories_background">@color/grey2</color>
     <color name="main_market_categories_inactive_underscore">@color/grey30</color>
 </resources>

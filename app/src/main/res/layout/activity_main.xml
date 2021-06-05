@@ -73,6 +73,8 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="36dp"
                     android:layout_marginStart="18dp"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -100,6 +102,7 @@
                     app:tabBackground="@drawable/bg_main_market_categories"
                     app:tabContentStart="@dimen/main_market_categories_left_space"
                     app:tabMode="scrollable"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"

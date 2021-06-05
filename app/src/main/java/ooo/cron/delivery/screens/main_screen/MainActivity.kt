@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.google.android.material.tabs.TabLayout
 import nl.psdcompany.duonavigationdrawer.widgets.DuoDrawerToggle
 import ooo.cron.delivery.App
@@ -20,6 +21,7 @@ import ooo.cron.delivery.screens.market_category_screen.MarketCategoryFragment
 import ooo.cron.delivery.screens.partners_screen.PartnersActivity
 import ooo.cron.delivery.screens.vacancies_screen.VacanciesFragment
 import javax.inject.Inject
+
 
 class MainActivity : BaseActivity(), MainContract.View {
 
@@ -294,7 +296,12 @@ class MainActivity : BaseActivity(), MainContract.View {
         binding.ivMainSearch.visibility = visibility
         binding.tvMainUserAddress.visibility = visibility
         binding.vgMainContinueLastSession.visibility = visibility
-        binding.tlMainMarketCategories.visibility = visibility
+
+        if (isVisible) {
+            val params = binding.vgMainContent.layoutParams as CoordinatorLayout.LayoutParams
+            params.behavior = null
+            binding.vgMainContent.layoutParams = params
+        }
         binding.tvMainTitle.text = title
         binding.tvMainTitle.visibility = if (isVisible) View.VISIBLE else View.GONE
     }

@@ -12,6 +12,7 @@ import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.MarketCategory
 import ooo.cron.delivery.databinding.ActivityMainBinding
 import ooo.cron.delivery.screens.BaseActivity
+import ooo.cron.delivery.screens.about_service_screen.AboutServiceFragment
 import ooo.cron.delivery.screens.first_address_selection_screen.FirstAddressSelectionActivity
 import ooo.cron.delivery.screens.login_screen.LoginActivity
 import ooo.cron.delivery.screens.market_category_screen.MarketCategoryFragment
@@ -128,6 +129,13 @@ class MainActivity : BaseActivity(), MainContract.View {
                 arguments = marketCategoryArguments(category)
 
             }
+        ).commit()
+    }
+
+    override fun startAboutServiceFragment() {
+        supportFragmentManager.beginTransaction().replace(
+            R.id.container_main,
+            AboutServiceFragment()
         ).commit()
     }
 
@@ -248,6 +256,10 @@ class MainActivity : BaseActivity(), MainContract.View {
             it.setOnClickListener { clickedView ->
                 menuItems.forEach { item ->
                     item.isSelected = item == clickedView
+                }
+
+                when (clickedView) {
+                    binding.vgMainMenu.tvDrawerMenuItemAboutUs -> startAboutServiceFragment()
                 }
 
                 onClick(clickedView)

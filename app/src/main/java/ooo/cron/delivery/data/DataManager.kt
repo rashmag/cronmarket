@@ -141,7 +141,7 @@ class DataManager @Inject constructor(
     suspend fun removeBasketItem(requestBody: RemoveBasketItemReq) =
         withContext(Dispatchers.IO) {
             restService.removeProduct(requestBody)
-    }
+        }
 
     suspend fun clearBasket(basketClearReq: BasketClearReq) =
         withContext(Dispatchers.IO) {
@@ -160,6 +160,12 @@ class DataManager @Inject constructor(
 
     fun readChosenCityId() =
         sPrefsService.readChosenCity().id
+
+    fun writeSelectedMarketCategory(id: Int) =
+        sPrefsService.writeSelectedMarketCategory(id)
+
+    fun readSelectedMarketCategory() =
+        sPrefsService.readSelectedMarketCategory()
 
     suspend fun writeBuildingAddress(address: String) =
         withContext(Dispatchers.IO) {

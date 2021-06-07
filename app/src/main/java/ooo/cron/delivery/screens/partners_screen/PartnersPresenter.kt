@@ -97,6 +97,30 @@ class PartnersPresenter @Inject constructor(
         view?.showPartnerProducts(productCategoriesModel)
     }
 
+    override fun onBasketClicked() {
+        partner.schedule?.let { schedule ->
+            val openTime =
+                if (schedule.begin.isNotEmpty())
+                    schedule.begin.split(':')
+                        .map { it.toInt() }
+                else
+                    listOf(0, 0, 0)
+
+            val closeTime =
+                if (schedule.end.isNotEmpty())
+                    schedule.end.split(':')
+                        .map { it.toInt() }
+                else listOf(23, 59, 59)
+
+            view?.navigateBasket(
+                openTime[0],
+                openTime[1],
+                closeTime[0],
+                closeTime[1]
+            )
+        }
+    }
+
     override fun minusClick(
         product: PartnerProductsRes,
         quantity: Int

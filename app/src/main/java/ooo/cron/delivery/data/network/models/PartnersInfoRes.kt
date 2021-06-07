@@ -18,5 +18,6 @@ data class PartnersInfoRes(
     var minAmountDelivery: Int?,
     var rating: Float,
     var feedbackCount: Int,
-    var marketCategoryId: Int
+    var marketCategoryId: Int,
+    val schedule: Schedule
 )

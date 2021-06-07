@@ -16,7 +16,8 @@ data class Partner(
     val minAmountOrder: Double = 0.0,
     val minAmountDelivery: Double = 0.0,
     val rating: Float = 0f,
-    val feedbackCount: Int = 0
+    val feedbackCount: Int = 0,
+    val schedule: Schedule
 ) {
     companion object {
          val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Partner>() {

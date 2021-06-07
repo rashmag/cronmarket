@@ -42,6 +42,7 @@ class OrderingActivity : BaseActivity(), OrderContract.View {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         initViewPager()
+        onBackClick()
         onOrderClick()
     }
 
@@ -76,6 +77,11 @@ class OrderingActivity : BaseActivity(), OrderContract.View {
             }
         }.attach()
     }
+
+    private fun onBackClick() =
+        binding.ivBack.setOnClickListener {
+            onBackPressed()
+        }
 
     override fun getBasketId() {
         orderReq.basketId = presenter.getBasketId()

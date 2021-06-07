@@ -3,11 +3,10 @@ package ooo.cron.delivery.data
 import ooo.cron.delivery.data.network.RestService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import ooo.cron.delivery.data.network.SPrefsService
-import ooo.cron.delivery.data.network.models.Basket
-import ooo.cron.delivery.data.network.models.City
-import ooo.cron.delivery.data.network.models.RefreshableToken
+import ooo.cron.delivery.data.network.models.*
 import ooo.cron.delivery.data.network.request.*
 import retrofit2.Call
 import retrofit2.Response
@@ -133,6 +132,16 @@ class DataManager @Inject constructor(
         withContext(Dispatchers.IO) {
             restService.decreaseProductInBasket(editor)
         }
+
+    suspend fun editPersonsQuantity(persons: BasketPersonsReq) =
+        withContext(Dispatchers.IO) {
+            restService.editPersonsCount(persons)
+        }
+
+    suspend fun removeBasketItem(requestBody: RemoveBasketItemReq) =
+        withContext(Dispatchers.IO) {
+            restService.removeProduct(requestBody)
+    }
 
     suspend fun clearBasket(basketClearReq: BasketClearReq) =
         withContext(Dispatchers.IO) {

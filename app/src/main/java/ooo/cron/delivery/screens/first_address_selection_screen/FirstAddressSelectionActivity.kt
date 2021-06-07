@@ -221,7 +221,8 @@ class FirstAddressSelectionActivity :
     }
 
     override fun navigateMainScreen() {
-        startActivity(Intent(this, MainActivity::class.java))
+        if (!isFromOrderingScreen)
+            startActivity(Intent(this, MainActivity::class.java))
         finish()
     }
 

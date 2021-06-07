@@ -268,6 +268,8 @@ class MainActivity : BaseActivity(), MainContract.View {
                     item.isSelected = item == clickedView
                 }
 
+                clickedView == binding.vgMainMenu.tvDrawerMenuItemShops
+
                 when (clickedView) {
                     binding.vgMainMenu.tvDrawerMenuItemAboutUs -> startAboutServiceFragment()
                 }

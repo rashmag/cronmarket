@@ -251,9 +251,9 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
             else
                 View.GONE
 
-        with(View.OnClickListener {
-            startActivity(Intent(this@PartnersActivity, BasketActivity::class.java))
-        }) {
+        with(
+            View.OnClickListener { presenter.onBasketClicked() }
+        ) {
             binding.vgPartnerBasket.setOnClickListener(this)
             binding.btnPartnerBasketPrice.setOnClickListener(this)
         }
@@ -268,6 +268,26 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
 
     override fun showChangeAddressScreen() {
         startActivity(Intent(this, FirstAddressSelectionActivity::class.java))
+    }
+
+    override fun navigateBasket(
+        openHours: Int,
+        openMinutes: Int,
+        closeHours: Int,
+        closeMinutes: Int
+    ) {
+        startActivity(
+            Intent(this@PartnersActivity, BasketActivity::class.java)
+                .putExtra(
+                    BasketActivity.PARTNER_OPEN_HOURS, openHours,
+                ).putExtra(
+                    BasketActivity.PARTNER_OPEN_MINUTES, openMinutes
+                ).putExtra(
+                    BasketActivity.PARTNER_CLOSE_HOURS, closeHours
+                ).putExtra(
+                    BasketActivity.PARTNER_CLOSE_MINUTES, closeMinutes
+                )
+        )
     }
 
     override fun onProductClick(product: PartnerProductsRes) {

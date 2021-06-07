@@ -27,6 +27,13 @@ interface PartnersContract {
         fun showChangeAddressDialog()
 
         fun showChangeAddressScreen()
+
+        fun navigateBasket(
+            openHours: Int,
+            openMinutes: Int,
+            closeHours: Int,
+            closeMinutes: Int
+        )
     }
 
     interface Presenter : MvpPresenter<View> {
@@ -36,6 +43,8 @@ interface PartnersContract {
 
         fun requiredAddressDialogAccepted()
         fun requiredAddressDialogDeclined()
+
+        fun onBasketClicked()
 
         fun minusClick(
             product: PartnerProductsRes,

@@ -22,6 +22,7 @@ class SplashScreenActivity : BaseActivity() {
 
         Handler(Looper.getMainLooper()).postDelayed({
             startActivity(Intent(this, FirstAddressSelectionActivity::class.java))
+            finish()
         }, 1000)
     }
 }

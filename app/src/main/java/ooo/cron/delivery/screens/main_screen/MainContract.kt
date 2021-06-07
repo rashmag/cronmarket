@@ -29,6 +29,7 @@ interface MainContract {
         fun navigateLoginActivity()
         fun navigatePartnerScreen(partnerId: String)
         fun startAboutServiceFragment()
+        fun startVacanciesFragment()
     }
 
     interface Presenter : MvpPresenter<View> {

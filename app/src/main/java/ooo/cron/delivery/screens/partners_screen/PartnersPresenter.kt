@@ -121,6 +121,10 @@ class PartnersPresenter @Inject constructor(
         }
     }
 
+    override fun productClick(product: PartnerProductsRes) {
+        view?.showProductInfo(product)
+    }
+
     override fun minusClick(
         product: PartnerProductsRes,
         quantity: Int
@@ -207,15 +211,15 @@ class PartnersPresenter @Inject constructor(
 
             if (partner.marketCategoryId == 1) {
                 var dishId = UUID.randomUUID().toString()
-                basketContent?.forEach { basketDish ->
-                    var isSameDish = basketDish.productId == product.id
-                    basketDish.dishAdditives.forEach { basketAdditive ->
-                        additives.forEach { selectedAdditive ->
-                            isSameDish = basketAdditive.id == selectedAdditive.id
-                        }
-                    }
-                    if (isSameDish) {
-                        dishId = basketDish.id
+
+                basketContent?.filter {
+                    it.productId == product.id
+                }?.forEach {
+                    if (it.dishAdditives.isNullOrEmpty() && additives.isNullOrEmpty() ||
+                        it.dishAdditives.toSet() == additives.toSet()
+                    ) {
+                        dishId = it.id
+                        return@forEach
                     }
                 }
 

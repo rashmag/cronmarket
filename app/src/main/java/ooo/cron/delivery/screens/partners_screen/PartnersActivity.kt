@@ -270,6 +270,13 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         startActivity(Intent(this, FirstAddressSelectionActivity::class.java))
     }
 
+    override fun showProductInfo(product: PartnerProductsRes) {
+        ProductBottomSheetDialog(
+            this, product,
+            presenter::plusClick
+        ).show()
+    }
+
     override fun navigateBasket(
         openHours: Int,
         openMinutes: Int,
@@ -291,8 +298,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
     }
 
     override fun onProductClick(product: PartnerProductsRes) {
-        val productBottomSheetDialog = ProductBottomSheetDialog(this, product)
-        productBottomSheetDialog.show()
+        presenter.productClick(product)
     }
 
     override fun onPlusClick(

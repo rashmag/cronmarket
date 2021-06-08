@@ -19,6 +19,8 @@ class AdditiveRecyclerAdapter(
     private val additives: List<PartnerProductsRes.Additive>
 ) : RecyclerView.Adapter<AdditiveRecyclerAdapter.ViewHolder>() {
 
+    private val checkedAdditives = mutableMapOf<Int, PartnerProductsRes.Additive>()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.item_additive, parent, false)
@@ -28,19 +30,37 @@ class AdditiveRecyclerAdapter(
     override fun getItemCount() = additives.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindAdditive(additives[position])
+        holder.bindAdditive(additives[position], position)
     }
 
+    fun getCheckedAdditives() =
+        checkedAdditives.values.toList()
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val binding = ItemAdditiveBinding.bind(itemView)
 
-        fun bindAdditive(additive: PartnerProductsRes.Additive) {
+        fun bindAdditive(
+            additive: PartnerProductsRes.Additive,
+            position: Int
+        ) {
+
             var additiveText = additive.name
             if (additive.cost != 0)
                 additiveText += " +${additive.cost}₽"
 
             binding.tvAdditive.text = additiveText
+
+            if (binding.chkAdditive.isChecked)
+                checkedAdditives[position] = additive
+            else
+                checkedAdditives.remove(position)
+
+            binding.chkAdditive.setOnCheckedChangeListener { buttonView, isChecked ->
+                if (isChecked)
+                    checkedAdditives[position] = additive
+                else
+                    checkedAdditives.remove(position)
+            }
         }
     }
 }

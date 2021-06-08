@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import ooo.cron.delivery.R
+import ooo.cron.delivery.data.network.models.BasketDishAdditive
 import ooo.cron.delivery.data.network.models.PartnerProductsRes
 import ooo.cron.delivery.data.network.models.RequireAdditiveModel
 import ooo.cron.delivery.databinding.DialogProductInfoBinding
@@ -24,8 +25,18 @@ import ooo.cron.delivery.screens.partners_screen.RequireAdditivesAdapter
 
 
 
-class ProductBottomSheetDialog(context: Context, private val product: PartnerProductsRes) :
-    BottomSheetDialog(context, R.style.BottomSheetDialogTheme),
+class ProductBottomSheetDialog(
+    context: Context,
+    private val product: PartnerProductsRes,
+    private val onAddClick: (
+        product: PartnerProductsRes,
+        additives: List<BasketDishAdditive>,
+        quantity: Int
+    ) -> Unit
+) :
+    BottomSheetDialog(
+        context, R.style.BottomSheetDialogTheme
+    ),
     AdditivesAdapter.OnRequireAdditivesListener {
 
 
@@ -65,7 +76,7 @@ class ProductBottomSheetDialog(context: Context, private val product: PartnerPro
 
                     tvCost.text =
                         (tvCost.text.toString()
-                            .toInt() + product.cost).toString()
+                            .toDouble() + product.cost).toString()
                 }
             }
 
@@ -79,7 +90,7 @@ class ProductBottomSheetDialog(context: Context, private val product: PartnerPro
 
                     tvCost.text =
                         (tvCost.text.toString()
-                            .toInt() - product.cost).toString()
+                            .toDouble() - product.cost).toString()
                 }
             }
 
@@ -100,6 +111,19 @@ class ProductBottomSheetDialog(context: Context, private val product: PartnerPro
             } else {
                 vgAdditives.visibility =
                     android.view.View.GONE
+            }
+
+            btnAdd.setOnClickListener {
+                val additives =
+                    (rvRequireAdditives.adapter as RequireAdditivesAdapter).getCheckedAdditives() +
+                            (rvAdditives.adapter as AdditiveRecyclerAdapter).getCheckedAdditives()
+
+                onAddClick(
+                    product,
+                    additives.map { BasketDishAdditive(it.id, it.name, it.cost.toDouble()) },
+                    tvPortionCount.text.toString().toInt()
+                )
+                dismiss()
             }
         }
     }

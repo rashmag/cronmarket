@@ -28,6 +28,8 @@ interface PartnersContract {
 
         fun showChangeAddressScreen()
 
+        fun showProductInfo(product: PartnerProductsRes)
+
         fun navigateBasket(
             openHours: Int,
             openMinutes: Int,
@@ -45,6 +47,8 @@ interface PartnersContract {
         fun requiredAddressDialogDeclined()
 
         fun onBasketClicked()
+
+        fun productClick(product: PartnerProductsRes)
 
         fun minusClick(
             product: PartnerProductsRes,

@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="16dp"
     android:layout_marginStart="36dp"
+    android:layout_marginTop="16dp"
     android:layout_marginEnd="36dp"
     android:background="@drawable/bg_basket_counter">
 
@@ -42,6 +42,16 @@
         app:layout_constraintEnd_toStartOf="@id/sw_basket_persons"
         app:layout_constraintStart_toEndOf="@id/tv_basket_persons"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/pb_persons_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/vg_basket_counter"
+        app:layout_constraintEnd_toEndOf="@id/vg_basket_counter"
+        app:layout_constraintStart_toStartOf="@id/vg_basket_counter"
+        app:layout_constraintTop_toTopOf="@id/vg_basket_counter" />
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/sw_basket_persons"

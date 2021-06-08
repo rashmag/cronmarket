@@ -97,6 +97,34 @@ class PartnersPresenter @Inject constructor(
         view?.showPartnerProducts(productCategoriesModel)
     }
 
+    override fun onBasketClicked() {
+        partner.schedule?.let { schedule ->
+            val openTime =
+                if (schedule.begin.isNotEmpty())
+                    schedule.begin.split(':')
+                        .map { it.toInt() }
+                else
+                    listOf(0, 0, 0)
+
+            val closeTime =
+                if (schedule.end.isNotEmpty())
+                    schedule.end.split(':')
+                        .map { it.toInt() }
+                else listOf(23, 59, 59)
+
+            view?.navigateBasket(
+                openTime[0],
+                openTime[1],
+                closeTime[0],
+                closeTime[1]
+            )
+        }
+    }
+
+    override fun productClick(product: PartnerProductsRes) {
+        view?.showProductInfo(product)
+    }
+
     override fun minusClick(
         product: PartnerProductsRes,
         quantity: Int
@@ -183,15 +211,15 @@ class PartnersPresenter @Inject constructor(
 
             if (partner.marketCategoryId == 1) {
                 var dishId = UUID.randomUUID().toString()
-                basketContent?.forEach { basketDish ->
-                    var isSameDish = basketDish.productId == product.id
-                    basketDish.dishAdditives.forEach { basketAdditive ->
-                        additives.forEach { selectedAdditive ->
-                            isSameDish = basketAdditive.id == selectedAdditive.id
-                        }
-                    }
-                    if (isSameDish) {
-                        dishId = basketDish.id
+
+                basketContent?.filter {
+                    it.productId == product.id
+                }?.forEach {
+                    if (it.dishAdditives.isNullOrEmpty() && additives.isNullOrEmpty() ||
+                        it.dishAdditives.toSet() == additives.toSet()
+                    ) {
+                        dishId = it.id
+                        return@forEach
                     }
                 }
 

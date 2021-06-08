@@ -222,6 +222,8 @@
     <string name="accept">Подтвердить</string>
     <string name="cancel">Отмена</string>
     <string name="order_repeat_title">Повторить</string>
+    <string name="basket_make_order">Оформить заказ</string>
+    <string name="price">%1$s₽</string>
     <string name="contacts_for_cooperation_title">По вопросам сотрудничества:</string>
     <string name="contacts_said_lev_title">Гюльмагомедов Саид \nГюльмагомедович</string>
     <string name="contacts_said_lev_position_title">Руководитель отдела по работе с \nпартнёрами</string>
@@ -236,4 +238,21 @@
     <string name="magomed_email">magomed.g@cron.ooo</string>
     <string name="contacts_magomed_email_title">Эл.почта: <font color="#e66835">magomed.g@cron.ooo</font></string>
     <string name="contacts_title">Обратная связь</string>
+    <string name="vacancies_word_in_cron_delivery_title">Работа в CronДоставка</string>
+    <string name="vacancies_description_title">Наша команда доставки находится на передовой и в снег, и зной, и в гололед. Мы доставляем заказы и никогда не поднимаем цены для наших клиентов из-за погоды. Наши курьеры работают из нескольких комфортабельных офисов. \n\n\n В нашу команду принимаются лучшие, молодые и амбициозные.</string>
+    <string name="vacancies_every_week_payment_title">Еженедельные выплаты</string>
+    <string name="vacancies_every_week_payment_description">Средний ежедневный доход - 1000р.</string>
+    <string name="vacancies_bonuses_title">Бонусы</string>
+    <string name="vacancies_bonuses_description">Выполните 100 заказов за первый месяц и получите бонус.</string>
+    <string name="vacancies_fixed_pay_title">Фиксированная оплата за смену</string>
+    <string name="vacancies_fixed_pay_description">Даже если заказов мало, наши сотрудники получают фиксированную оплату за выход на смену.</string>
+    <string name="vacancies_delivery_transport_title">Выдача транспорта</string>
+    <string name="vacancies_delivery_transport_description">Мы выдаем своим курьерам велосипеды.</string>
+    <string name="vacancies_contacts_title">Контакты для связи</string>
+    <string name="vacancies_artem_title">Артем Абдулгалимов</string>
+    <string name="vacancies_position_title">Координатор курьерского сервиса</string>
+    <string name="vacancies_phones_title">Телефоны:</string>
+    <string name="vacancies_first_phone_title">8(928) 578–13–07</string>
+    <string name="vacancies_second_phone_title">8(988) 790–79–03</string>
+    <string name="become_courier_title">Стать курьером</string>
 </resources>

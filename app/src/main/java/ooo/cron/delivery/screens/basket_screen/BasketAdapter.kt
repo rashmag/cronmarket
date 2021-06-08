@@ -1,10 +1,15 @@
 package ooo.cron.delivery.screens.basket_screen
 
+import android.os.CountDownTimer
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import ooo.cron.delivery.R
+import ooo.cron.delivery.data.network.models.BasketDish
 import ooo.cron.delivery.data.network.models.BasketItem
 import ooo.cron.delivery.databinding.ItemBasketHeaderBinding
 import ooo.cron.delivery.databinding.ItemBasketPersonsBinding
@@ -16,11 +21,15 @@ import javax.inject.Inject
 /**
  * Created by Ramazan Gadzhikadiev on 10.05.2021.
  */
-class BasketAdapter @Inject constructor(
+class BasketAdapter @Inject constructor() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private var products: List<BasketDish> = listOf()
 
-    private var products: List<BasketItem> = listOf()
+    private var plusClick: (dish: BasketDish, extraQuantity: Int) -> Unit = { _, _ -> }
+    private var minusClick: (dish: BasketDish, unwantedQuantity: Int) -> Unit = { _, _ -> }
+
+    private var partnersEditClick: (quantity: Int) -> Unit = { _ -> }
+    private var persons = 0
 
     override fun getItemViewType(position: Int): Int =
         when (position) {
@@ -44,6 +53,8 @@ class BasketAdapter @Inject constructor(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ProductViewHolder)
             holder.bind(getProduct(position))
+        if (holder is PersonsViewHolder)
+            holder.bind(persons)
     }
 
     override fun getItemCount(): Int =
@@ -80,31 +91,46 @@ class BasketAdapter @Inject constructor(
     private fun getSpecialOffersPosition() = getPersonsPosition() + 1
 
     private fun getProductPositionRange(): IntRange {
-        val a = 1 .. products.size
+        val a = 1..products.size
         return a
     }
+
     private fun getProduct(position: Int) = products[position - 1]
 
-    fun setProducts(products: List<BasketItem>) {
+    fun setProducts(
+        products: List<BasketDish>,
+        persons: Int,
+        onPlusClick: (dish: BasketDish, extraQuantity: Int) -> Unit,
+        onMinusClick: (dish: BasketDish, unwantedQuantity: Int) -> Unit,
+        partnersEditClick: (quantity: Int) -> Unit
+    ) {
         this.products = products
+        this.plusClick = onPlusClick
+        this.minusClick = onMinusClick
+        this.partnersEditClick = partnersEditClick
+        this.persons = persons
     }
 
     inner class ProductViewHolder(private val binding: ItemBasketProductBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
+        lateinit var product: BasketDish
+
         private val timer = BasketCounterTimer()
 
-        fun bind(product: BasketItem) {
+        fun bind(product: BasketDish) {
+            this.product = product
+
             binding.tvBasketProductName.text = product.name
             binding.vgBasketCounter.tvBasketCounterQuantity.text = product.quantity.toString()
-            binding.tvBasketProductAmount.text = product.getAmount().toString()
-
-            binding.vgBasketCounter.ivBasketCounterMinus.setOnClickListener {
-                TODO()
-            }
+            binding.tvBasketProductAmount.text = (product.cost * product.quantity).toString()
 
             binding.vgBasketCounter.ivBasketCounterPlus.setOnClickListener {
-                TODO()
+                plusClick(product, 1)
+            }
+
+            binding.vgBasketCounter.ivBasketCounterMinus.setOnClickListener {
+                minusClick(product, 1)
             }
 
             Glide.with(itemView.context)
@@ -117,9 +143,87 @@ class BasketAdapter @Inject constructor(
         headerBinding: ItemBasketHeaderBinding
     ) : RecyclerView.ViewHolder(headerBinding.root)
 
-    private class PersonsViewHolder(
-        personsBinding: ItemBasketPersonsBinding
-    ) : RecyclerView.ViewHolder(personsBinding.root)
+    private inner class PersonsViewHolder(
+        private val binding: ItemBasketPersonsBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
+
+        var timer: CountDownTimer? = null
+        var currentQuantity = 0
+
+        fun bind(quantity: Int) {
+            currentQuantity = quantity
+            binding.swBasketPersons.apply {
+                if (quantity > 0)
+                    isChecked = quantity > 0
+                else
+                    binding.vgBasketCounter.ivBasketCounterMinus.visibility = View.INVISIBLE
+
+                if (quantity == 20)
+                    binding.vgBasketCounter.ivBasketCounterPlus.visibility = View.INVISIBLE
+                setOnCheckedChangeListener { _, isChecked ->
+                    if (isChecked)
+                        binding.vgBasketCounter.root.visibility = View.VISIBLE
+                    else
+                        binding.vgBasketCounter.root.visibility = View.INVISIBLE
+                }
+            }
+
+            binding.vgBasketCounter.tvBasketCounterQuantity.text = currentQuantity.toString()
+
+            if (quantity > 0)
+                binding.vgBasketCounter.root.visibility = View.VISIBLE
+            else
+                binding.vgBasketCounter.root.visibility = View.INVISIBLE
+
+            binding.vgBasketCounter.ivBasketCounterMinus.setOnClickListener {
+                if (currentQuantity > 0) currentQuantity--
+                if (currentQuantity == 0)
+                    it.visibility = View.INVISIBLE
+                else
+                    it.visibility = View.VISIBLE
+
+                if (!binding.vgBasketCounter.ivBasketCounterPlus.isVisible) {
+                    binding.vgBasketCounter.ivBasketCounterPlus.visibility = View.VISIBLE
+                }
+                editQuantity(currentQuantity)
+            }
+
+            binding.vgBasketCounter.ivBasketCounterPlus.setOnClickListener {
+                if (currentQuantity <= 20) currentQuantity++
+
+                if (++currentQuantity == 20)
+                    it.visibility = View.INVISIBLE
+                else
+                    it.visibility = View.VISIBLE
+
+                if (!binding.vgBasketCounter.ivBasketCounterMinus.isVisible) {
+                    binding.vgBasketCounter.ivBasketCounterMinus.visibility = View.VISIBLE
+                }
+
+                editQuantity(currentQuantity)
+            }
+        }
+
+        private fun editQuantity(quantity: Int) {
+            binding.vgBasketCounter.tvBasketCounterQuantity.text = quantity.toString()
+            timer?.cancel()
+            timer = object : CountDownTimer(900, 900) {
+                override fun onTick(millisUntilFinished: Long) {
+                    Log.d(
+                        this::class.simpleName,
+                        "persons quantity changed"
+                    )
+                }
+
+                override fun onFinish() {
+                    binding.vgBasketCounter.root.visibility = View.INVISIBLE
+                    binding.pbPersonsProgress.visibility = View.VISIBLE
+                    partnersEditClick(currentQuantity)
+                }
+            }
+            timer!!.start()
+        }
+    }
 
     private class SpecialOffersBinding(
         specialOffersBinding: ItemBasketSpecialOffersBinding

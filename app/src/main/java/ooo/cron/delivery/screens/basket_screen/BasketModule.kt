@@ -4,6 +4,8 @@ import android.view.LayoutInflater
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import ooo.cron.delivery.databinding.ActivityBasketBinding
 
 /**
@@ -24,5 +26,10 @@ interface BasketModule {
         @BasketScope
         fun provideBinding(inflater: LayoutInflater) =
             ActivityBasketBinding.inflate(inflater)
+
+        @Provides
+        @BasketScope
+        fun provideScope() =
+            CoroutineScope(Dispatchers.Main)
     }
 }

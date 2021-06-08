@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.google.android.material.tabs.TabLayout
 import nl.psdcompany.duonavigationdrawer.widgets.DuoDrawerToggle
 import ooo.cron.delivery.App
@@ -18,7 +19,9 @@ import ooo.cron.delivery.screens.first_address_selection_screen.FirstAddressSele
 import ooo.cron.delivery.screens.login_screen.LoginActivity
 import ooo.cron.delivery.screens.market_category_screen.MarketCategoryFragment
 import ooo.cron.delivery.screens.partners_screen.PartnersActivity
+import ooo.cron.delivery.screens.vacancies_screen.VacanciesFragment
 import javax.inject.Inject
+
 
 class MainActivity : BaseActivity(), MainContract.View {
 
@@ -135,6 +138,7 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
     override fun startAboutServiceFragment() {
+        setToolbarTitleVisibility(true, getString(R.string.drawer_menu_item_about_us))
         supportFragmentManager.beginTransaction().replace(
             R.id.container_main,
             AboutServiceFragment()
@@ -146,6 +150,14 @@ class MainActivity : BaseActivity(), MainContract.View {
         supportFragmentManager.beginTransaction().replace(
             R.id.container_main,
             ContactsFragment()
+        ).commit()
+    }
+
+    override fun startVacanciesFragment() {
+        setToolbarTitleVisibility(true, getString(R.string.become_courier_title))
+        supportFragmentManager.beginTransaction().replace(
+            R.id.container_main,
+            VacanciesFragment()
         ).commit()
     }
 
@@ -268,12 +280,12 @@ class MainActivity : BaseActivity(), MainContract.View {
                     item.isSelected = item == clickedView
                 }
 
-                when (clickedView) {
-                    binding.vgMainMenu.tvDrawerMenuItemAboutUs -> startAboutServiceFragment()
-                }
+                clickedView == binding.vgMainMenu.tvDrawerMenuItemShops
 
                 when (clickedView) {
+                    binding.vgMainMenu.tvDrawerMenuItemAboutUs -> startAboutServiceFragment()
                     binding.vgMainMenu.tvDrawerMenuItemContacts -> startContactsFragment()
+                    binding.vgMainMenu.tvDrawerMenuItemVacancies -> startVacanciesFragment()
                 }
                 onClick(clickedView)
             }
@@ -286,6 +298,12 @@ class MainActivity : BaseActivity(), MainContract.View {
         binding.ivMainSearch.visibility = visibility
         binding.tvMainUserAddress.visibility = visibility
         binding.vgMainContinueLastSession.visibility = visibility
+
+        if (isVisible) {
+            val params = binding.vgMainContent.layoutParams as CoordinatorLayout.LayoutParams
+            params.behavior = null
+            binding.vgMainContent.layoutParams = params
+        }
         binding.tvMainTitle.text = title
         binding.tvMainTitle.visibility = if (isVisible) View.VISIBLE else View.GONE
     }

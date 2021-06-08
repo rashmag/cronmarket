@@ -26,14 +26,20 @@ class RequireAdditivesAdapter(
     requireAdditivesList
 ) {
 
-    override fun viewHolder(view: View) = ViewHolder(view)
+    private val checkedAdditives = mutableMapOf<Int, PartnerProductsRes.Additive>()
 
+    fun getCheckedAdditives() =
+        checkedAdditives.values.toList()
+
+    override fun viewHolder(view: View) = ViewHolder(view)
 
     inner class ViewHolder(view: View) : SectionRecyclerViewHolder(view) {
 
         override fun bindSectionListAdapter(recyclerView: RecyclerView, position: Int) {
             recyclerView.adapter =
-                AdditivesAdapter(requireAdditivesList[position].additiveList, listener)
+                AdditivesAdapter(requireAdditivesList[position].additiveList, listener) {
+                    checkedAdditives[position] = it
+                }
         }
 
     }
@@ -43,7 +49,8 @@ class RequireAdditivesAdapter(
 
 class AdditivesAdapter(
     private val requireAdditivesList: List<PartnerProductsRes.Additive>,
-    private val listener: OnRequireAdditivesListener
+    private val listener: OnRequireAdditivesListener,
+    private val onChecked: (additive: PartnerProductsRes.Additive) -> Unit
 ) : RecyclerView.Adapter<AdditivesAdapter.ViewHolder>() {
 
     private var checkedPosition = 0
@@ -58,6 +65,7 @@ class AdditivesAdapter(
     override fun getItemCount() = requireAdditivesList.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        onChecked(requireAdditivesList[checkedPosition])
         val item = requireAdditivesList[position]
         with(holder) {
             rbAdditives.apply {

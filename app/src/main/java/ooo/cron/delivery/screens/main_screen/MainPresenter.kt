@@ -59,6 +59,7 @@ class MainPresenter @Inject constructor(
 
     override fun onTabSelected(position: Int) {
         view?.startMarketCategoryFragment(marketCategories!![position])
+        dataManager.writeSelectedMarketCategory(marketCategories!![position].id)
     }
 
     override fun onClickAddress() {
@@ -175,6 +176,7 @@ class MainPresenter @Inject constructor(
     }
 
     private fun showMarketCategories(chosenCategory: MarketCategory) {
+        dataManager.writeSelectedMarketCategory(chosenCategory.id)
         view?.showMarketCategories(marketCategories!!)
         view?.startMarketCategoryFragment(chosenCategory)
         view?.removeMarketCategoriesProgress()
@@ -185,6 +187,8 @@ class MainPresenter @Inject constructor(
             if (dataManager.readChosenCity().id == user?.user?.lastDeliveryCityId) {
                 val lastBoughtMarketCategoryPosition =
                     marketCategories!!.indexOfFirst { it.id == user?.user?.lastMarketCategoryId }
+                if (lastBoughtMarketCategoryPosition != -1)
+                    dataManager.writeSelectedMarketCategory(user!!.user!!.lastMarketCategoryId)
                 view?.selectMarketCategory(
                     if (lastBoughtMarketCategoryPosition == -1) 0
                     else lastBoughtMarketCategoryPosition

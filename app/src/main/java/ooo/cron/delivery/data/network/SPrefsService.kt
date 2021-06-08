@@ -25,6 +25,14 @@ class SPrefsService @Inject constructor(
             sharedPreferences.getString(CITY_KLADR_ID, "")!!
         )
 
+    fun writeSelectedMarketCategory(id: Int) =
+        sharedPreferences.edit()
+            .putInt(MARKET_CATEGORY_ID, id)
+            .commit()
+
+    fun readSelectedMarketCategory() =
+        sharedPreferences.getString(MARKET_CATEGORY_ID, EMPTY_UUID)
+
     fun writeBuildingAddress(address: String) =
         sharedPreferences.edit()
             .putString(STREET_WITH_BUILDING, address)
@@ -72,7 +80,6 @@ class SPrefsService @Inject constructor(
             .commit()
 
 
-
     companion object {
         const val EMPTY_UUID = "00000000-0000-0000-0000-000000000000"
 
@@ -87,5 +94,7 @@ class SPrefsService @Inject constructor(
 
         const val ACCESS_TOKEN = "access_token"
         const val REFRESH_TOKEN = "refresh_token"
+
+        const val MARKET_CATEGORY_ID = "market_category_id"
     }
 }

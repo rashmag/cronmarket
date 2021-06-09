@@ -16,7 +16,7 @@ interface BasketContract {
         fun showConnectionErrorScreen()
 
         fun showClearBasketDialog()
-        fun navigateMakeOrderScreen()
+        fun navigateMakeOrderScreen(amount: Double)
 
         fun updateBasketAmount(price: String)
 

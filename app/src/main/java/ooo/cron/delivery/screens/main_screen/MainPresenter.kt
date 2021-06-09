@@ -52,6 +52,8 @@ class MainPresenter @Inject constructor(
                     basketPartnerId = basket.body()?.partnerId ?: DataManager.EMPTY_UUID
                     view?.showContinueLastSession()
                 }
+            } else {
+                view?.hideContinueLastSession()
             }
 
         }
@@ -77,6 +79,10 @@ class MainPresenter @Inject constructor(
         if (user == null)
             return view?.navigateLoginActivity() ?: Unit
 
+        view?.showLogOutDialog()
+    }
+
+    override fun onLogOutApplied() {
         val token = dataManager.readToken()
         if (user != null && token.refreshToken.isNotEmpty()) {
             mainScope.launch {

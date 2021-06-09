@@ -191,7 +191,7 @@ class BasketAdapter @Inject constructor() : RecyclerView.Adapter<RecyclerView.Vi
             binding.vgBasketCounter.ivBasketCounterPlus.setOnClickListener {
                 if (currentQuantity <= 20) currentQuantity++
 
-                if (++currentQuantity == 20)
+                if (currentQuantity == 20)
                     it.visibility = View.INVISIBLE
                 else
                     it.visibility = View.VISIBLE

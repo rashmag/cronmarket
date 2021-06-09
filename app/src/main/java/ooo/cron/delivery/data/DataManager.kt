@@ -161,8 +161,8 @@ class DataManager @Inject constructor(
     fun readChosenCityId() =
         sPrefsService.readChosenCity().id
 
-    fun writeSelectedMarketCategory(id: Int) =
-        sPrefsService.writeSelectedMarketCategory(id)
+    fun writeSelectedMarketCategory(category: MarketCategory) =
+        sPrefsService.writeSelectedMarketCategory(category)
 
     fun readSelectedMarketCategory() =
         sPrefsService.readSelectedMarketCategory()

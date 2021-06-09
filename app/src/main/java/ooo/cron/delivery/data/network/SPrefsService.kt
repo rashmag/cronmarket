@@ -2,6 +2,7 @@ package ooo.cron.delivery.data.network
 
 import android.content.SharedPreferences
 import ooo.cron.delivery.data.network.models.City
+import ooo.cron.delivery.data.network.models.MarketCategory
 import ooo.cron.delivery.data.network.models.RefreshableToken
 import javax.inject.Inject
 
@@ -25,13 +26,17 @@ class SPrefsService @Inject constructor(
             sharedPreferences.getString(CITY_KLADR_ID, "")!!
         )
 
-    fun writeSelectedMarketCategory(id: Int) =
+    fun writeSelectedMarketCategory(category: MarketCategory) =
         sharedPreferences.edit()
-            .putInt(MARKET_CATEGORY_ID, id)
+            .putInt(MARKET_CATEGORY_ID, category.id)
+            .putString(MARKET_CATEGORY_NAME, category.categoryName)
             .commit()
 
     fun readSelectedMarketCategory() =
-        sharedPreferences.getString(MARKET_CATEGORY_ID, EMPTY_UUID)
+        MarketCategory(
+            sharedPreferences.getInt(MARKET_CATEGORY_ID, 1),
+            sharedPreferences.getString(MARKET_CATEGORY_NAME, "Рестораны")!!
+        )
 
     fun writeBuildingAddress(address: String) =
         sharedPreferences.edit()
@@ -96,5 +101,6 @@ class SPrefsService @Inject constructor(
         const val REFRESH_TOKEN = "refresh_token"
 
         const val MARKET_CATEGORY_ID = "market_category_id"
+        const val MARKET_CATEGORY_NAME = "market_category_name"
     }
 }

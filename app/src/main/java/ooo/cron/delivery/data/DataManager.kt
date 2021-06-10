@@ -148,6 +148,11 @@ class DataManager @Inject constructor(
             restService.clearBasket(basketClearReq)
         }
 
+    suspend fun getStableVersion() =
+        withContext(Dispatchers.IO) {
+            restService.getStableVersion()
+        }
+
     suspend fun writeChosenCity(city: City) =
         withContext(Dispatchers.IO) {
             sPrefsService.writeChosenCity(city)

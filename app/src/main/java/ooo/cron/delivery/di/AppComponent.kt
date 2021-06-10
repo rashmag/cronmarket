@@ -16,6 +16,7 @@ import ooo.cron.delivery.screens.ordering_screen.delivery_details_fragment.Deliv
 import ooo.cron.delivery.screens.ordering_screen.order_cost_fragment.OrderCostComponent
 import ooo.cron.delivery.screens.partners_screen.PartnersActivity
 import ooo.cron.delivery.screens.partners_screen.PartnersComponent
+import ooo.cron.delivery.screens.splash_screen.SplashScreenComponent
 import javax.inject.Singleton
 
 /**
@@ -26,6 +27,7 @@ import javax.inject.Singleton
 @Component(modules = [AppModule::class])
 interface AppComponent {
 
+    fun splashScreenBuilder(): SplashScreenComponent.Builder
     fun mainComponentBuilder(): MainComponent.Builder
     fun baseErrorComponentBuilder(): BaseErrorComponent.Builder
     fun firstAddressSelectionBuilder(): FirstAddressSelectionComponent.Builder

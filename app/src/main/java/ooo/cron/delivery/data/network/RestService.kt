@@ -135,6 +135,9 @@ interface RestService {
         @Body basketClearReq: BasketClearReq
     ): Basket
 
+    @GET("/api/v1/SystemInfo/version")
+    suspend fun getStableVersion(): String
+
     companion object {
         const val PARTNERS_PAGINATION_LIMIT = 15
     }

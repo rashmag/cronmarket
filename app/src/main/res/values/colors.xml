@@ -9,6 +9,7 @@
     <color name="main_dark">#F65F1E</color>
 
     <color name="errors">#DE350B</color>
+    <color name="errors_true">#00875A</color>
 
     <color name="white">#FFFFFF</color>
     <color name="grey2">#F8F9FA</color>

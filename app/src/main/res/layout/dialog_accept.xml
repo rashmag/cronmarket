@@ -7,7 +7,8 @@
     android:paddingStart="26dp"
     android:paddingTop="24dp"
     android:paddingEnd="26dp"
-    android:paddingBottom="24dp">
+    android:paddingBottom="24dp"
+    >
 
     <ImageView
         android:id="@+id/iv_accept_warning"
@@ -15,6 +16,7 @@
         android:layout_height="wrap_content"
         android:contentDescription="@string/common_warning_description"
         android:src="@drawable/ic_warning"
+        app:layout_constraintVertical_bias="0"
         app:layout_constraintTop_toTopOf="@id/tv_accept_title"
         app:layout_constraintBottom_toBottomOf="@id/tv_accept_title"
         app:layout_constraintStart_toStartOf="parent"/>
@@ -27,6 +29,7 @@
         android:layout_marginEnd="9dp"
         android:textColor="@color/grey90"
         android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@id/iv_accept_warning"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

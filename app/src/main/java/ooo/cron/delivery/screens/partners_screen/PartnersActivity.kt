@@ -215,7 +215,6 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
 
         binding.nestedscrollview.post {
             binding.nestedscrollview.smoothScrollTo(x, y)
-            binding.nestedscrollview.setScrollingEnabled(true)
         }
     }
 
@@ -316,7 +315,6 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         var isShow = false
         var scrollRange = -1
 
-        binding.nestedscrollview.setScrollingEnabled(false)
         binding.appbar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { barLayout, verticalOffset ->
             if (scrollRange == -1) {
                 scrollRange = barLayout?.totalScrollRange!!
@@ -331,7 +329,6 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
                 isShow = false
             }
 
-            binding.nestedscrollview.setScrollingEnabled(isShow)
 
         })
     }

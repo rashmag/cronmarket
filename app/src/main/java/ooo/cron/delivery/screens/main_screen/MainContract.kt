@@ -40,5 +40,6 @@ interface MainContract {
         fun onProfileClick()
         fun onLogInLogOutClick()
         fun continueLastSessionCLick()
+        fun getMarketCategory(): String?
     }
 }

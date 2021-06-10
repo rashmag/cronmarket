@@ -283,6 +283,7 @@ class MainActivity : BaseActivity(), MainContract.View {
                 clickedView == binding.vgMainMenu.tvDrawerMenuItemShops
 
                 when (clickedView) {
+//                    binding.vgMainMenu.tvDrawerMenuItemShops -> startMarketCategoryFragment(presenter.getMarketCategory())
                     binding.vgMainMenu.tvDrawerMenuItemAboutUs -> startAboutServiceFragment()
                     binding.vgMainMenu.tvDrawerMenuItemContacts -> startContactsFragment()
                     binding.vgMainMenu.tvDrawerMenuItemVacancies -> startVacanciesFragment()

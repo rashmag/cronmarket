@@ -133,7 +133,7 @@ class DeliveryDetailsFragment : BaseFragment(), DeliveryDetailsContract.View {
     private fun showTimePickerDialog() {
         val calendar = Calendar.getInstance()
         val openCalendar = Calendar.getInstance()
-        openCalendar.set(Calendar.HOUR_OF_DAY, PARTNER_OPEN_HOURS)
+        openCalendar.set(Calendar.HOUR_OF_DAY, PARTNER_OPEN_HOURS + 1)
         openCalendar.set(Calendar.MINUTE, PARTNER_OPEN_MINUTES)
 
         val closeCalendar = Calendar.getInstance()

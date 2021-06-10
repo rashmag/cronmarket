@@ -31,9 +31,7 @@ class OrderingActivity : BaseActivity(), OrderContract.View {
 
     private val orderReq = OrderReq()
 
-    var isRequestParametersValid: Boolean
-        get() = false
-        set(value) {}
+    var isRequestParametersValid: Boolean = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,7 +50,11 @@ class OrderingActivity : BaseActivity(), OrderContract.View {
             setOnClickListener {
                 applyChanges()
                 if (isRequestParametersValid)
-                    presenter.sendOrder()
+                    if (binding.vpOrdering.currentItem == 0) {
+                        binding.vpOrdering.setCurrentItem(1, true)
+                    } else {
+                        presenter.sendOrder()
+                    }
             }
 
         }

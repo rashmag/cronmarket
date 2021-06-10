@@ -88,10 +88,12 @@ class BasketActivity : BaseActivity(), BasketContract.View {
         )
     }
 
-    override fun navigateMakeOrderScreen() {
+    override fun navigateMakeOrderScreen(amount: Double) {
         startActivity(
-            Intent(this, OrderingActivity::class.java)
-                .putExtras(intent!!.extras!!)
+            Intent(this, OrderingActivity::class.java).apply {
+                putExtras(intent!!.extras!!)
+                putExtra(AMOUNT, amount)
+            }
         )
     }
 
@@ -108,5 +110,6 @@ class BasketActivity : BaseActivity(), BasketContract.View {
         const val PARTNER_OPEN_MINUTES = "PARTNER_OPEN_MINUTES"
         const val PARTNER_CLOSE_HOURS = "PARTNER_CLOSE_HOURS"
         const val PARTNER_CLOSE_MINUTES = "PARTNER_CLOSE_MINUTES"
+        const val AMOUNT = "AMOUNT"
     }
 }

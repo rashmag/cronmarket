@@ -52,6 +52,8 @@ class MainPresenter @Inject constructor(
                     basketPartnerId = basket.body()?.partnerId ?: DataManager.EMPTY_UUID
                     view?.showContinueLastSession()
                 }
+            } else {
+                view?.hideContinueLastSession()
             }
 
         }
@@ -59,7 +61,7 @@ class MainPresenter @Inject constructor(
 
     override fun onTabSelected(position: Int) {
         view?.startMarketCategoryFragment(marketCategories!![position])
-        dataManager.writeSelectedMarketCategory(marketCategories!![position].id)
+        dataManager.writeSelectedMarketCategory(marketCategories!![position])
     }
 
     override fun onClickAddress() {
@@ -77,6 +79,10 @@ class MainPresenter @Inject constructor(
         if (user == null)
             return view?.navigateLoginActivity() ?: Unit
 
+        view?.showLogOutDialog()
+    }
+
+    override fun onLogOutApplied() {
         val token = dataManager.readToken()
         if (user != null && token.refreshToken.isNotEmpty()) {
             mainScope.launch {
@@ -176,7 +182,7 @@ class MainPresenter @Inject constructor(
     }
 
     private fun showMarketCategories(chosenCategory: MarketCategory) {
-        dataManager.writeSelectedMarketCategory(chosenCategory.id)
+        dataManager.writeSelectedMarketCategory(chosenCategory)
         view?.showMarketCategories(marketCategories!!)
         view?.startMarketCategoryFragment(chosenCategory)
         view?.removeMarketCategoriesProgress()
@@ -188,7 +194,7 @@ class MainPresenter @Inject constructor(
                 val lastBoughtMarketCategoryPosition =
                     marketCategories!!.indexOfFirst { it.id == user?.user?.lastMarketCategoryId }
                 if (lastBoughtMarketCategoryPosition != -1)
-                    dataManager.writeSelectedMarketCategory(user!!.user!!.lastMarketCategoryId)
+                    dataManager.writeSelectedMarketCategory(marketCategories!![lastBoughtMarketCategoryPosition])
                 view?.selectMarketCategory(
                     if (lastBoughtMarketCategoryPosition == -1) 0
                     else lastBoughtMarketCategoryPosition

@@ -19,8 +19,10 @@ interface MainContract {
         fun showAuthorizedUser(username: String)
         fun showUnauthorizedUser()
         fun showContinueLastSession()
+        fun hideContinueLastSession()
         fun removeMarketCategoriesProgress()
         fun showNotAuthorizedMessage()
+        fun showLogOutDialog()
         fun startMarketCategoryFragment(category: MarketCategory)
         fun startContactsFragment()
         fun reopenMainScreen()
@@ -39,6 +41,7 @@ interface MainContract {
         fun onClickAddress()
         fun onProfileClick()
         fun onLogInLogOutClick()
+        fun onLogOutApplied()
         fun continueLastSessionCLick()
         fun getMarketCategory(): String?
     }

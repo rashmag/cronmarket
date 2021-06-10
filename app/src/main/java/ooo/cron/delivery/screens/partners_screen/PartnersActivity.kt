@@ -46,6 +46,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
 
     private lateinit var partnerId: String
 
+    private var nestedScrollViewConfigured = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         injectDependencies()
@@ -54,9 +55,13 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         setContentView(binding.root)
         partnerId = intent.getStringExtra(EXTRA_PARTNER_ID) as String
         setTitleVisibility()
-        presenter.getPartnerInfo()
+//        presenter.getPartnerInfo()
         onProductRecyclerViewScrollChanged()
+    }
 
+    override fun onStart() {
+        super.onStart()
+        presenter.getPartnerInfo()
     }
 
     private fun onProductRecyclerViewScrollChanged() {
@@ -137,18 +142,21 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
                     )
                     nestedscrollview.layoutParams = scrollViewParams
 
-                    val collapsingParams =
-                        CollapsingToolbarLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
-                    collapsingParams.collapseMode =
-                        CollapsingToolbarLayout.LayoutParams.COLLAPSE_MODE_OFF
-                    toolbar.layoutParams = collapsingParams
+                    if (!nestedScrollViewConfigured) {
+                        val collapsingParams =
+                            CollapsingToolbarLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+                        collapsingParams.collapseMode =
+                            CollapsingToolbarLayout.LayoutParams.COLLAPSE_MODE_OFF
+                        toolbar.layoutParams = collapsingParams
+
+                        nestedScrollViewConfigured = true
+                    }
 
 
                     val appBarParams = CoordinatorLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
                     appBarParams.height = LinearLayout.LayoutParams.WRAP_CONTENT
 
                     appbar.layoutParams = appBarParams
-
                 }
             }
         }

@@ -70,6 +70,12 @@ class MainActivity : BaseActivity(), MainContract.View {
         ).show()
     }
 
+    override fun showLogOutDialog() {
+        LogOutDialog(
+            presenter::onLogOutApplied
+        ).show(supportFragmentManager, LogOutDialog::class.simpleName)
+    }
+
     override fun showMarketCategories(categories: List<MarketCategory>) {
         binding.tlMainMarketCategories.apply {
             clear()
@@ -124,6 +130,10 @@ class MainActivity : BaseActivity(), MainContract.View {
 
     override fun showContinueLastSession() {
         binding.vgMainContinueLastSession.visibility = View.VISIBLE
+    }
+
+    override fun hideContinueLastSession() {
+        binding.vgMainContinueLastSession.visibility = View.GONE
     }
 
     override fun startMarketCategoryFragment(category: MarketCategory) {

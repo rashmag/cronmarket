@@ -163,7 +163,7 @@ class BasketPresenter @Inject constructor(
     }
 
     override fun clickMakeOrder() {
-        view?.navigateMakeOrderScreen()
+        view?.navigateMakeOrderScreen(basket?.amount ?: 0.0)
     }
 
     private fun deserializeDishes() =

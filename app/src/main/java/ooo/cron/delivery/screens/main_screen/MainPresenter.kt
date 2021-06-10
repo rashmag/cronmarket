@@ -204,7 +204,7 @@ class MainPresenter @Inject constructor(
     }
 
 
-    override fun getMarketCategory(): String? {
+    override fun getMarketCategory(): MarketCategory {
         return dataManager.readSelectedMarketCategory()
     }
 }

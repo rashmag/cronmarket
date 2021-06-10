@@ -189,6 +189,7 @@
             android:background="@drawable/bg_edit_text_selector"
             android:hint="+7 (___) ___-__-__"
             android:inputType="phone"
+            android:enabled="false"
             android:maxLength="18"
             android:clickable="false"
             android:focusable="false"

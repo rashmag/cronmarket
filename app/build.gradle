@@ -34,8 +34,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            //TODO(Add production URL)
-            buildConfigField "String", "BASE_URL", "\"ADD_PRODUCTION_URL\""
+            buildConfigField "String", "BASE_URL", "\"https://api.crondostavka.ru\""
         }
 
         debug {

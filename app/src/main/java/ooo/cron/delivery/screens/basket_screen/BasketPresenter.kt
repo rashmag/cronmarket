@@ -11,7 +11,6 @@ import ooo.cron.delivery.data.network.models.RemoveBasketItemReq
 import ooo.cron.delivery.data.network.request.BasketClearReq
 import ooo.cron.delivery.data.network.request.BasketEditorReq
 import ooo.cron.delivery.screens.base_mvp.BaseMvpPresenter
-import ooo.cron.delivery.screens.main_screen.MainScope
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import javax.inject.Inject
@@ -71,7 +70,8 @@ class BasketPresenter @Inject constructor(
                         roundingMode = RoundingMode.CEILING
                     }
 
-                    view?.updateBasketAmount(formatter.format(basket!!.amount))                },
+                    view?.updateBasketAmount(formatter.format(basket!!.amount))
+                },
                 {
                     view?.showConnectionErrorScreen()
                 },
@@ -103,7 +103,8 @@ class BasketPresenter @Inject constructor(
                         roundingMode = RoundingMode.CEILING
                     }
 
-                    view?.updateBasketAmount(formatter.format(basket!!.amount))                },
+                    view?.updateBasketAmount(formatter.format(basket!!.amount))
+                },
                 {
                     view?.showConnectionErrorScreen()
                 },
@@ -130,15 +131,18 @@ class BasketPresenter @Inject constructor(
                 roundingMode = RoundingMode.CEILING
             }
 
-            view?.updateBasketAmount(formatter.format(basket!!.amount))        }
+            view?.updateBasketAmount(formatter.format(basket!!.amount))
+        }
     }
 
     override fun removeItemClicked(product: BasketDish) {
         mainScope.launch {
-            basket = dataManager.removeBasketItem(RemoveBasketItemReq(
-                product.id,
-                basket!!.id
-            ))
+            basket = dataManager.removeBasketItem(
+                RemoveBasketItemReq(
+                    product.id,
+                    basket!!.id
+                )
+            )
             view?.updateBasket(deserializeDishes(), basket!!.cutleryCount)
         }
     }
@@ -163,6 +167,11 @@ class BasketPresenter @Inject constructor(
     }
 
     override fun clickMakeOrder() {
+        if (dataManager.readToken().refreshToken.isEmpty()) {
+            view?.navigateAuthorization()
+            return
+        }
+
         view?.navigateMakeOrderScreen(basket?.amount ?: 0.0)
     }
 

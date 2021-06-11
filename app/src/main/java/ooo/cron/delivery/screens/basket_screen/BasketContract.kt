@@ -1,6 +1,5 @@
 package ooo.cron.delivery.screens.basket_screen
 
-import ooo.cron.delivery.data.network.models.Basket
 import ooo.cron.delivery.data.network.models.BasketDish
 import ooo.cron.delivery.screens.base_mvp.MvpPresenter
 import ooo.cron.delivery.screens.base_mvp.MvpView
@@ -17,6 +16,7 @@ interface BasketContract {
 
         fun showClearBasketDialog()
         fun navigateMakeOrderScreen(amount: Double)
+        fun navigateAuthorization()
 
         fun updateBasketAmount(price: String)
 

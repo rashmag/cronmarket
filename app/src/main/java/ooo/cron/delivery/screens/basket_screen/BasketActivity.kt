@@ -1,9 +1,7 @@
 package ooo.cron.delivery.screens.basket_screen
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -11,11 +9,10 @@ import kotlinx.android.synthetic.main.activity_basket.*
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.BasketDish
-import ooo.cron.delivery.data.network.models.BasketItem
 import ooo.cron.delivery.databinding.ActivityBasketBinding
 import ooo.cron.delivery.screens.BaseActivity
+import ooo.cron.delivery.screens.login_screen.LoginActivity
 import ooo.cron.delivery.screens.ordering_screen.OrderingActivity
-import java.util.*
 import javax.inject.Inject
 
 /**
@@ -95,6 +92,10 @@ class BasketActivity : BaseActivity(), BasketContract.View {
                 putExtra(AMOUNT, amount)
             }
         )
+    }
+
+    override fun navigateAuthorization() {
+        startActivity(Intent(this, LoginActivity::class.java))
     }
 
     override fun updateBasketAmount(price: String) {

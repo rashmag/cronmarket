@@ -4,6 +4,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import okhttp3.ResponseBody
 import ooo.cron.delivery.data.DataManager
+import ooo.cron.delivery.data.network.request.OrderReq
 import ooo.cron.delivery.screens.base_mvp.BaseMvpPresenter
 import retrofit2.Response
 import javax.inject.Inject
@@ -28,11 +29,13 @@ class OrderPresenter @Inject constructor(
         mainScope.launch {
             withErrorsHandle(
                 {
-                    dataManager.sendOrder(
-                        "Bearer ${dataManager.readToken().accessToken}",
-                        view?.getOrderReq()!!
-                    )
-                        .handleOrderResponse()
+                    view?.let {
+
+                        dataManager.sendOrder(
+                            "Bearer ${dataManager.readToken().accessToken}",
+                            getOrderReq()
+                        ).handleOrderResponse()
+                    }
                 },
                 { view?.showConnectionErrorScreen() },
                 { view?.showAnyErrorScreen() }
@@ -40,6 +43,14 @@ class OrderPresenter @Inject constructor(
         }
     }
 
+    private fun getOrderReq(): OrderReq {
+        var orderReq = view!!.getOrderReq()
+        return orderReq.copy(
+            deliverAtTime = if (orderReq.deliverAtTime?.isBlank() == true)
+                null
+            else orderReq.deliverAtTime
+        )
+    }
 
     private fun Response<ResponseBody>.handleOrderResponse() {
         if (isSuccessful) {
@@ -49,7 +60,7 @@ class OrderPresenter @Inject constructor(
         }
     }
 
-     fun getDeliveryCityId(): String? {
+    fun getDeliveryCityId(): String? {
         return dataManager.readChosenCityId()
     }
 }

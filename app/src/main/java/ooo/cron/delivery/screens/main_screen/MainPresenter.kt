@@ -202,4 +202,9 @@ class MainPresenter @Inject constructor(
             }
         }
     }
+
+
+    override fun getMarketCategory(): MarketCategory {
+        return dataManager.readSelectedMarketCategory()
+    }
 }

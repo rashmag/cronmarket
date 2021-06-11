@@ -18,6 +18,10 @@ import javax.inject.Inject
 
 class OrderCostFragment : BaseFragment(), OrderCostContract.View {
 
+    companion object {
+        var AMOUNT = -1.0
+    }
+
     @Inject
     lateinit var presenter: OrderCostPresenter
 
@@ -44,5 +48,13 @@ class OrderCostFragment : BaseFragment(), OrderCostContract.View {
         savedInstanceState: Bundle?
     ): View? {
         return binding.root
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        AMOUNT = requireActivity().intent.getDoubleExtra("AMOUNT", -1.0)
+        binding.tvCostGoods.text = String.format(resources.getString(R.string.price), AMOUNT)
+        binding.tvAllCost.text = String.format(resources.getString(R.string.price), AMOUNT + 99)
     }
 }

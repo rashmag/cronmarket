@@ -124,9 +124,9 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
                     .load(logo)
                     .into(ivPartnersLogo)
 
-                if (mainWinImg != null) {
+                if (partnerCardImg != null) {
                     Glide.with(binding.root)
-                        .load(partnerInfo.mainWinImg)
+                        .load(partnerInfo.partnerCardImg)
                         .centerCrop()
                         .into(backdrop)
                 } else {
@@ -322,6 +322,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
     private fun setTitleVisibility() {
         var isShow = false
         var scrollRange = -1
+
         binding.appbar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { barLayout, verticalOffset ->
             if (scrollRange == -1) {
                 scrollRange = barLayout?.totalScrollRange!!
@@ -335,6 +336,8 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
                 binding.tvTitle.animate().alpha(0f).setDuration(600).start()
                 isShow = false
             }
+
+
         })
     }
 
@@ -345,6 +348,5 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
 
     companion object {
         const val EXTRA_PARTNER_ID = "partnerId"
-        const val SPAN_COUNT = 2
     }
 }

@@ -58,6 +58,7 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="16dp"
                         android:layout_marginBottom="16dp"
+                        android:layout_marginTop="8dp"
                         app:layout_collapseMode="pin">
 
                         <ImageView
@@ -113,22 +114,27 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="-50dp"
-            android:background="@drawable/bg_partners_scroll_view_rounded"
-            android:orientation="vertical"
-            app:layout_anchor="@id/appbar"
-            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="-50dp"-->
+<!--            android:background="@drawable/bg_partners_scroll_view_rounded"-->
+<!--            android:orientation="vertical"-->
+<!--            app:layout_anchor="@id/appbar"-->
+<!--            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">-->
 
 
             <androidx.core.widget.NestedScrollView
                 android:id="@+id/nestedscrollview"
+                android:fillViewport="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fillViewport="true"
-                app:layout_constraintTop_toTopOf="parent">
+                android:layout_marginTop="-50dp"
+                android:background="@drawable/bg_partners_scroll_view_rounded"
+                android:orientation="vertical"
+                app:layout_anchor="@id/appbar"
+
+                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -273,7 +279,7 @@
             </androidx.core.widget.NestedScrollView>
 
 
-        </LinearLayout>
+<!--        </LinearLayout>-->
 
         <include
             android:id="@+id/vg_partners_activity_progress"

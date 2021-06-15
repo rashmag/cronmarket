@@ -17,5 +17,6 @@ data class OrderReq(
     var flat: String? = null,
     var deliverAtTime: String? = null,
     var saveAddress: Boolean? = null,
-    var discount: Int? = null
+    var discount: Int? = null,
+    var paymentMethodId: Int = 1
 )

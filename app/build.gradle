@@ -99,4 +99,8 @@ dependencies {
     //Section RecyclerView
     def section_recycler_view = '0.0.2'
     implementation "com.github.fajaragungpramana:section-recyclerview:$section_recycler_view"
+
+    //Tinkoff Acquiring
+    def tinkoff_acquiring_version = '2.3.2'
+    implementation "ru.tinkoff.acquiring:ui:$tinkoff_acquiring_version"
 }

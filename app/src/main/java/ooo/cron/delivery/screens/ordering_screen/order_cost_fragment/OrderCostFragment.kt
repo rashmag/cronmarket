@@ -57,4 +57,8 @@ class OrderCostFragment : BaseFragment(), OrderCostContract.View {
         binding.tvCostGoods.text = String.format(resources.getString(R.string.price), AMOUNT)
         binding.tvAllCost.text = String.format(resources.getString(R.string.price), AMOUNT + 99)
     }
+
+    fun getPaymentType() =
+        binding.spinnerPaymentMethod.selectedItem.toString()
+
 }

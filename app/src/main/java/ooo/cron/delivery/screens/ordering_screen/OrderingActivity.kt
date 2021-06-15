@@ -1,18 +1,23 @@
 package ooo.cron.delivery.screens.ordering_screen
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import androidx.core.content.ContextCompat
 import com.google.android.material.tabs.TabLayoutMediator
-import kotlinx.android.synthetic.main.activity_ordering.*
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.request.OrderReq
 import ooo.cron.delivery.databinding.ActivityOrderingBinding
 import ooo.cron.delivery.screens.BaseActivity
+import ooo.cron.delivery.screens.basket_screen.BasketActivity
 import ooo.cron.delivery.screens.ordering_screen.delivery_details_fragment.DeliveryDetailsFragment
+import ooo.cron.delivery.screens.ordering_screen.order_cost_fragment.OrderCostFragment
 import ooo.cron.delivery.utils.Utils
+import ru.tinkoff.acquiring.sdk.TinkoffAcquiring
+import ru.tinkoff.acquiring.sdk.models.options.screen.PaymentOptions
 import javax.inject.Inject
 
 /*
@@ -44,6 +49,26 @@ class OrderingActivity : BaseActivity(), OrderContract.View {
         onOrderClick()
     }
 
+    override fun onStart() {
+        super.onStart()
+        presenter.onCreateView()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            presenter.paymentSucceed(
+                data!!.getLongExtra(
+                    TinkoffAcquiring.EXTRA_PAYMENT_ID, -1L
+                )
+            )
+        }
+
+        if (resultCode == TinkoffAcquiring.RESULT_ERROR) {
+            presenter.paymentFailed()
+        }
+    }
+
     private fun onOrderClick() {
         binding.btnOrder.apply {
             text = getString(R.string.order_title)
@@ -68,10 +93,10 @@ class OrderingActivity : BaseActivity(), OrderContract.View {
     }
 
     private fun initViewPager() {
-        vp_ordering.adapter = OrderingViewPagerAdapter(this)
+        binding.vpOrdering.adapter = OrderingViewPagerAdapter(this)
 
 
-        TabLayoutMediator(tl_ordering, vp_ordering) { tab, position ->
+        TabLayoutMediator(binding.tlOrdering, binding.vpOrdering) { tab, position ->
             tab.text = when (position) {
                 0 -> getString(R.string.delivery_details_title)
                 1 -> getString(R.string.order_costs_title)
@@ -149,6 +174,8 @@ class OrderingActivity : BaseActivity(), OrderContract.View {
             btnOrder.setOnClickListener {
                 onBackPressed()
             }
+
+            BasketActivity.stopActivity()
         }
     }
 
@@ -169,5 +196,37 @@ class OrderingActivity : BaseActivity(), OrderContract.View {
                 onOrderClick()
             }
         }
+    }
+
+    override fun hideProgress() {
+        binding.vgProgress.root.visibility = View.GONE
+    }
+
+    override fun getPaymentType(): String =
+        (supportFragmentManager.findFragmentByTag("f" + 1) as OrderCostFragment)
+            .getPaymentType()
+
+    override fun getCashPaymentType(): String =
+        resources.getStringArray(R.array.payment_method_array)[CASH_PAYMENT_TYPE_INDEX]
+
+    override fun getCardPaymentType(): String =
+        resources.getStringArray(R.array.payment_method_array)[CARD_PAYMENT_TYPE_INDEX]
+
+    override fun openPaymentScreen(paymentOptions: PaymentOptions) {
+        TinkoffAcquiring(
+            getString(R.string.tinkoff_terminal_key),
+            getString(R.string.tinkoff_terminal_password),
+            getString(R.string.tinkoff_terminal_public_key)
+        ).openPaymentScreen(
+            this,
+            paymentOptions,
+            TINKOFF_PAYMENT_REQUEST_CODE
+        )
+    }
+
+    companion object {
+        private const val TINKOFF_PAYMENT_REQUEST_CODE = 1000
+        private const val CASH_PAYMENT_TYPE_INDEX = 0
+        private const val CARD_PAYMENT_TYPE_INDEX = 1
     }
 }

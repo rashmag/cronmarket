@@ -144,4 +144,11 @@
 
     </LinearLayout>
 
+    <include
+        layout="@layout/layout_progress"
+        android:id="@+id/vg_progress"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

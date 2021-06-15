@@ -1,5 +1,6 @@
 package ooo.cron.delivery.screens.basket_screen
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -36,6 +37,7 @@ class BasketActivity : BaseActivity(), BasketContract.View {
             .build()
             .inject(this)
         presenter.attachView(this)
+        initActivity(this)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
@@ -112,5 +114,17 @@ class BasketActivity : BaseActivity(), BasketContract.View {
         const val PARTNER_CLOSE_HOURS = "PARTNER_CLOSE_HOURS"
         const val PARTNER_CLOSE_MINUTES = "PARTNER_CLOSE_MINUTES"
         const val AMOUNT = "AMOUNT"
+
+        private lateinit var activity: Activity
+        private fun initActivity(activity: Activity) {
+            if (!this::activity.isInitialized || this.activity != activity)
+                this.activity = activity
+        }
+
+        fun stopActivity() {
+            if (::activity.isInitialized) {
+                activity.finish()
+            }
+        }
     }
 }

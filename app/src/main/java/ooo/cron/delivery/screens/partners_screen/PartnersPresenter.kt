@@ -82,6 +82,9 @@ class PartnersPresenter @Inject constructor(
                     }
                     view?.removeProgress()
                     view?.showPartnerProducts(productCategoriesModel)
+                    view?.updateBasketPreview(basketContent?.sumBy { it.quantity } ?: 0,
+                        String.format("%.2f", basket?.amount ?: 0.00 ))
+
                 },
                 { view?.showConnectionErrorScreen() },
                 { view?.showAnyErrorScreen() }

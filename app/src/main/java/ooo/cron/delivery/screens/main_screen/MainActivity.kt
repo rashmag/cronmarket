@@ -45,9 +45,9 @@ class MainActivity : BaseActivity(), MainContract.View {
         presenter.onCreateView()
     }
 
-    override fun onStart() {
-        super.onStart()
-        presenter.onStartView()
+    override fun onResume() {
+        super.onResume()
+        presenter.onResumeView()
     }
 
     override fun onDestroy() {
@@ -306,7 +306,8 @@ class MainActivity : BaseActivity(), MainContract.View {
     private fun setToolbarTitleVisibility(isVisible: Boolean, title: String?) {
         val visibility = if (isVisible) View.GONE else View.VISIBLE
         binding.abMain.visibility = visibility
-        binding.ivMainSearch.visibility = visibility
+        //TODO("Change View.GONE on visibility")
+        binding.ivMainSearch.visibility = View.GONE
         binding.tvMainUserAddress.visibility = visibility
         binding.vgMainContinueLastSession.visibility = visibility
 

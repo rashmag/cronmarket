@@ -35,7 +35,7 @@ class MainPresenter @Inject constructor(
 
     }
 
-    override fun onStartView() {
+    override fun onResumeView() {
         mainScope.launch {
             defineAddress()
             if (marketCategories == null) {

@@ -83,7 +83,7 @@ class PartnersPresenter @Inject constructor(
                     view?.removeProgress()
                     view?.showPartnerProducts(productCategoriesModel)
                     view?.updateBasketPreview(basketContent?.sumBy { it.quantity } ?: 0,
-                        String.format("%.2f", basket?.amount ?: 0.00 ))
+                        String.format("%.2f", basket?.amount ?: 0.00))
 
                 },
                 { view?.showConnectionErrorScreen() },
@@ -211,55 +211,52 @@ class PartnersPresenter @Inject constructor(
                 )
                 return@launch
             }
+            var dishId = UUID.randomUUID().toString()
 
-            if (partner.marketCategoryId == 1) {
-                var dishId = UUID.randomUUID().toString()
-
-                basketContent?.filter {
-                    it.productId == product.id
-                }?.forEach {
-                    if (it.dishAdditives.isNullOrEmpty() && additives.isNullOrEmpty() ||
-                        it.dishAdditives.toSet() == additives.toSet()
-                    ) {
-                        dishId = it.id
-                        return@forEach
-                    }
+            basketContent?.filter {
+                it.productId == product.id
+            }?.forEach {
+                if (it.dishAdditives.isNullOrEmpty() && additives.isNullOrEmpty() ||
+                    it.dishAdditives.toSet() == additives.toSet()
+                ) {
+                    dishId = it.id
+                    return@forEach
                 }
-
-                val addingProduct = BasketDish(
-                    dishId,
-                    product.id,
-                    product.name,
-                    quantity,
-                    product.cost,
-                    product.photo,
-                    additives
-                )
-                val basketEditor = BasketEditorReq(
-                    basket?.id ?: DataManager.EMPTY_UUID,
-                    partner.id,
-                    partner.marketCategoryId,
-                    Gson().toJson(addingProduct)
-                )
-
-                withErrorsHandle(
-                    {
-                        val accessToken = dataManager.readToken().accessToken
-                        basket = if (accessToken.isNotEmpty())
-                            dataManager.increaseProductInBasket("Bearer $accessToken", basketEditor)
-                        else
-                            dataManager.increaseProductInBasket(basketEditor)
-                        dataManager.writeUserBasket(basket!!.id)
-                        basketContent = deserializeDishes()
-                        mergeBasketIntoProducts()
-                        view?.showPartnerProducts(productCategoriesModel)
-                        view?.updateBasketPreview(basketContent?.sumBy { it.quantity } ?: 0,
-                            String.format("%.2f", basket!!.amount))
-                    },
-                    { view?.showConnectionErrorScreen() },
-                    { view?.showAnyErrorScreen() }
-                )
             }
+
+            val addingProduct = BasketDish(
+                dishId,
+                product.id,
+                product.name,
+                quantity,
+                product.cost,
+                product.photo,
+                additives
+            )
+            val basketEditor = BasketEditorReq(
+                basket?.id ?: DataManager.EMPTY_UUID,
+                partner.id,
+                partner.marketCategoryId,
+                Gson().toJson(addingProduct)
+            )
+
+            withErrorsHandle(
+                {
+                    val accessToken = dataManager.readToken().accessToken
+                    basket = if (accessToken.isNotEmpty())
+                        dataManager.increaseProductInBasket("Bearer $accessToken", basketEditor)
+                    else
+                        dataManager.increaseProductInBasket(basketEditor)
+                    dataManager.writeUserBasket(basket!!.id)
+                    basketContent = deserializeDishes()
+                    mergeBasketIntoProducts()
+                    view?.showPartnerProducts(productCategoriesModel)
+                    view?.updateBasketPreview(basketContent?.sumBy { it.quantity } ?: 0,
+                        String.format("%.2f", basket!!.amount))
+                },
+                { view?.showConnectionErrorScreen() },
+                { view?.showAnyErrorScreen() }
+            )
         }
     }
 
@@ -293,9 +290,7 @@ class PartnersPresenter @Inject constructor(
             body()!!.id != DataManager.EMPTY_UUID
         ) {
             basket = body()
-            if (basket?.marketCategoryId == 1) {
-                basketContent = deserializeDishes()
-            }
+            basketContent = deserializeDishes()
             if (basket!!.partnerId == partner.id)
                 view?.updateBasketPreview(
                     basketContent?.sumBy { it.quantity } ?: 0,

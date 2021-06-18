@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,9 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fillViewport="true"
-        android:layout_marginBottom="120dp"
-        app:layout_constraintBottom_toTopOf="@id/vg_basket"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintBottom_toTopOf="@id/vg_basket">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -99,7 +98,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/vg_basket"
         android:layout_width="match_parent"
@@ -111,15 +109,19 @@
 
         <TextView
             android:id="@+id/tv_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
             android:textColor="@color/grey90"
             android:textSize="20sp"
             android:textStyle="bold"
+            android:maxLines="2"
+            android:ellipsize="end"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tv_cost"
+            app:layout_constraintHorizontal_bias="0"
             tools:text="Суп куриный" />
 
 
@@ -196,10 +198,10 @@
             android:text="Добавить"
             android:textAllCaps="false"
             android:textColor="@color/grey2"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/vd_add_product"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/vd_add_product"
-            app:layout_constraintTop_toBottomOf="@id/tv_cost" />
+            app:layout_constraintTop_toTopOf="@id/vd_add_product" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

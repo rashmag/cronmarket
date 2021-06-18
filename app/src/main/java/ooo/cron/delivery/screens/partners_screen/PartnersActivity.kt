@@ -280,7 +280,8 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
 
     override fun showProductInfo(product: PartnerProductsRes) {
         ProductBottomSheetDialog(
-            this, product,
+            this,
+            product,
             presenter::plusClick
         ).show()
     }

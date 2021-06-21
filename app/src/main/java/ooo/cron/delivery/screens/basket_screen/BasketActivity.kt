@@ -32,6 +32,7 @@ class BasketActivity : BaseActivity(), BasketContract.View {
     protected lateinit var binding: ActivityBasketBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         App.appComponent.basketComponentBuilder()
             .inflater(layoutInflater)
             .build()

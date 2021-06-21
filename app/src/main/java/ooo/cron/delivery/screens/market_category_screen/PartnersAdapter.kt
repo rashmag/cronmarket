@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide
 import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.Partner
 import ooo.cron.delivery.databinding.ItemMarketCategoryPartnerBinding
+import java.util.*
 
 /**
  * Created by Ramazan Gadzhikadiev on 22.04.2021.
@@ -86,7 +87,12 @@ class PartnersAdapter(private val onClick: (partnerId: String) -> Unit) :
 
         fun bind(partner: Partner, onClick: (partnerId: String) -> Unit) {
 
-            binding.root.setOnClickListener{ onClick(partner.id) }
+            binding.root.setOnClickListener {
+                if (partner.isOpen())
+                    onClick(partner.id)
+                else
+                    null
+            }
 
             binding.tvMarketCategoryPartnerTitle.text = partner.name
             binding.tvMarketCategoryPartnerShortDescription.text = partner.shortDescription
@@ -96,6 +102,18 @@ class PartnersAdapter(private val onClick: (partnerId: String) -> Unit) :
                     R.string.market_category_partner_min_price,
                     partner.minAmountOrder.toInt()
                 )
+
+            if (partner.isOpen()) {
+                binding.tvClosed.visibility = View.GONE
+            } else {
+                binding.tvClosed.visibility = View.VISIBLE
+
+                val openTime = partner.openTime()
+                binding.tvClosed.text = binding.root.context.getString(
+                    R.string.partner_closed,
+                    "${openTime[0]}:${openTime[1]}"
+                )
+            }
 
             loadImage(partner)
             loadLogo(partner)

@@ -24,6 +24,7 @@
 
     <color name="true_dark">#006644</color>
     <color name="true_light">#E3FCEF</color>
+    <color name="false_color">#DE350B</color>
     <color name="false_light">#FFEBE6</color>
     <color name="question_light">#FFFAE6</color>
 

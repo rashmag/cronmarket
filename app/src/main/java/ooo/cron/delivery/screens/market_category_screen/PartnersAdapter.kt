@@ -109,9 +109,13 @@ class PartnersAdapter(private val onClick: (partnerId: String) -> Unit) :
                 binding.tvClosed.visibility = View.VISIBLE
 
                 val openTime = partner.openTime()
+                val openHours =
+                    if (openTime[0]/10 > 0) openTime[0] else "0${openTime[0]}"
+                val openMinutes =
+                    if (openTime[1]/10 > 0) openTime[1] else "0${openTime[1]}"
                 binding.tvClosed.text = binding.root.context.getString(
                     R.string.partner_closed,
-                    "${openTime[0]}:${openTime[1]}"
+                    "${openHours}:${openMinutes}"
                 )
             }
 

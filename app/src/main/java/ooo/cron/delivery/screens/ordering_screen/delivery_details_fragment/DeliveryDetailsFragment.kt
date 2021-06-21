@@ -146,7 +146,18 @@ class DeliveryDetailsFragment : BaseFragment(), DeliveryDetailsContract.View {
                 chooseCalendar.set(Calendar.HOUR_OF_DAY, hour)
                 chooseCalendar.set(Calendar.MINUTE, minute)
 
-                if (openCalendar.after(chooseCalendar) || closeCalendar.before(chooseCalendar)) {
+                val hourAfterCurrentCalendar = Calendar.getInstance().apply {
+                    set(Calendar.HOUR_OF_DAY, get(Calendar.HOUR_OF_DAY) + 1)
+                }
+
+                val isOpenTimeError = openCalendar.after(chooseCalendar)
+                val isHourAfterCurrentTimeError = hourAfterCurrentCalendar.after(chooseCalendar)
+                val isCLoseTimeError = closeCalendar.before(chooseCalendar)
+
+                if (isOpenTimeError ||
+                    isCLoseTimeError ||
+                    isHourAfterCurrentTimeError
+                ) {
                     binding.etDeliveryTime.background =
                         ContextCompat.getDrawable(requireContext(), R.drawable.bg_edit_text_error)
                     binding.tvError.apply {

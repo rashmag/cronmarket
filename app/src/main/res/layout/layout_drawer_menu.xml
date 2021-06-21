@@ -130,6 +130,7 @@
         android:layout_marginStart="36dp"
         android:paddingStart="19dp"
         android:paddingEnd="19dp"
+        android:visibility="gone"
         android:background="@drawable/bg_drawer_menu_item"
         android:drawableStart="@drawable/ic_drawer_settings"
         android:text="@string/drawer_menu_settings"
@@ -139,7 +140,7 @@
     <androidx.appcompat.widget.AppCompatTextView
         style="@style/DrawerMenuItem"
         android:id="@+id/tv_drawer_profile_log_in_out"
-        android:layout_width="204dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginStart="36dp"

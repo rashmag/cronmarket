@@ -56,9 +56,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
                         android:layout_marginEnd="16dp"
                         android:layout_marginBottom="16dp"
-                        android:layout_marginTop="8dp"
                         app:layout_collapseMode="pin">
 
                         <ImageView
@@ -111,39 +111,13 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </androidx.appcompat.widget.Toolbar>
-            </com.google.android.material.appbar.CollapsingToolbarLayout>
-
-
-        </com.google.android.material.appbar.AppBarLayout>
-
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="-50dp"-->
-<!--            android:background="@drawable/bg_partners_scroll_view_rounded"-->
-<!--            android:orientation="vertical"-->
-<!--            app:layout_anchor="@id/appbar"-->
-<!--            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">-->
-
-
-            <androidx.core.widget.NestedScrollView
-                android:id="@+id/nestedscrollview"
-                android:fillViewport="true"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="-50dp"
-                android:background="@drawable/bg_partners_scroll_view_rounded"
-                android:orientation="vertical"
-                app:layout_anchor="@id/appbar"
-
-                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
-
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/vg_partner_info"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
                     android:background="@drawable/bg_partners_scroll_view_rounded">
-
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/iv_partners_logo"
@@ -248,40 +222,80 @@
 
 
                     </LinearLayout>
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_categories"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="36dp"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginEnd="36dp"
-                        android:orientation="horizontal"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        app:layout_constraintTop_toBottomOf="@id/vg_rating"
-                        tools:listitem="@layout/item_market_category_tag" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_product"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="32dp"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginEnd="32dp"
-                        android:layout_marginBottom="16dp"
-                        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/rv_categories"
-                        app:spanCount="2"
-                        tools:listitem="@layout/item_partner_product" />
-
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
 
-            </androidx.core.widget.NestedScrollView>
+
+        </com.google.android.material.appbar.AppBarLayout>
 
 
-<!--        </LinearLayout>-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_categories"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="36dp"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:layout_constraintTop_toBottomOf="@id/vg_rating"
+            tools:listitem="@layout/item_market_category_tag" />
+
+        <!--        <LinearLayout-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginTop="-50dp"-->
+        <!--            android:background="@drawable/bg_partners_scroll_view_rounded"-->
+        <!--            android:orientation="vertical"-->
+        <!--            app:layout_anchor="@id/appbar"-->
+        <!--            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">-->
+
+
+        <!--        <androidx.core.widget.NestedScrollView-->
+        <!--            android:id="@+id/nestedscrollview"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginTop="50dp"-->
+        <!--            android:fillViewport="true"-->
+        <!--            android:orientation="vertical"-->
+        <!--            app:layout_anchor="@id/appbar"-->
+
+        <!--            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">-->
+
+
+        <!--            <androidx.constraintlayout.widget.ConstraintLayout-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="match_parent">-->
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_product"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="16dp"
+            android:fillViewport="true"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_anchor="@id/appbar"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:spanCount="2"
+
+            tools:listitem="@layout/item_partner_product" />
+
+        <!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+
+        <!--        </androidx.core.widget.NestedScrollView>-->
+
+
+        <!--        </LinearLayout>-->
 
         <include
             android:id="@+id/vg_partners_activity_progress"
@@ -294,8 +308,8 @@
         android:id="@+id/vg_partner_basket"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:visibility="gone"
-        android:layout_gravity="bottom|center_horizontal">
+        android:layout_gravity="bottom|center_horizontal"
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/iv_partner_basket"
@@ -315,29 +329,29 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:textColor="@color/grey90"
-            android:textStyle="normal"
             android:textSize="12sp"
+            android:textStyle="normal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/iv_partner_basket"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="@string/partner_basket"/>
+            tools:text="@string/partner_basket" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_partner_basket_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="36dp"
-            android:paddingEnd="28dp"
-            android:paddingStart="28dp"
             android:backgroundTint="@color/main_dark"
+            android:paddingStart="28dp"
+            android:paddingEnd="28dp"
             android:textColor="@color/white"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@id/tv_partner_basket"
             app:layout_constraintHorizontal_bias="1"
-            tools:text="101900₽"/>
+            app:layout_constraintStart_toEndOf="@id/tv_partner_basket"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="101900₽" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

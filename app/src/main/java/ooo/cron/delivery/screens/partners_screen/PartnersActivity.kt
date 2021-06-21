@@ -1,7 +1,9 @@
 package ooo.cron.delivery.screens.partners_screen
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
@@ -10,6 +12,7 @@ import android.widget.*
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.appbar.AppBarLayout
@@ -67,18 +70,24 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
     private fun onProductRecyclerViewScrollChanged() {
         ViewCompat.setNestedScrollingEnabled(binding.rvProduct, false)
         binding.rvProduct.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                val visiblePosition =
-                    (recyclerView.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                val layoutManger = recyclerView.layoutManager as LinearLayoutManager
+
+                val visiblePosition = layoutManger.findFirstVisibleItemPosition()
+                val firstCompletelyVisiblePosition = layoutManger.findFirstCompletelyVisibleItemPosition()
 
                 val categoryAdapter = binding.rvCategories.adapter as PartnerCategoryAdapter
-
-
                 if (visiblePosition > -1) {
-                    val categoryId = categoryAdapter.getCategoryId(visiblePosition)
-                    categoryAdapter.setSelected(categoryId)
-                    binding.rvCategories.smoothScrollToPosition(visiblePosition)
+                    if (firstCompletelyVisiblePosition == -1) {
+                        binding.rvCategories.smoothScrollToPosition(visiblePosition)
+                        val categoryId = categoryAdapter.getCategoryId(visiblePosition)
+                        categoryAdapter.setSelected(categoryId)
+                    } else {
+                        binding.rvCategories.smoothScrollToPosition(firstCompletelyVisiblePosition)
+                    }
                 }
             }
         })
@@ -140,7 +149,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
                         0,
                         0
                     )
-                    nestedscrollview.layoutParams = scrollViewParams
+                    rvProduct.layoutParams = scrollViewParams
 
                     if (!nestedScrollViewConfigured) {
                         val collapsingParams =
@@ -216,14 +225,15 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
      */
 
     override fun onCategoryClick(position: Int) {
-        val originalPos = IntArray(2)
-        binding.rvProduct.getChildAt(position).getLocationInWindow(originalPos)
-        val x = originalPos[0]
-        val y = originalPos[1]
-
-        binding.nestedscrollview.post {
-            binding.nestedscrollview.smoothScrollTo(x, y)
-        }
+        binding.rvProduct.smoothScrollToPosition(position)
+//        val originalPos = IntArray(2)
+//        binding.rvProduct.getChildAt(position).getLocationInWindow(originalPos)
+//        val x = originalPos[0]
+//        val y = originalPos[1]
+//
+//        binding.nestedscrollview.post {
+//            binding.nestedscrollview.smoothScrollTo(x, y)
+//        }
     }
 
     override fun removeProgress() {
@@ -332,9 +342,12 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
             if (scrollRange + verticalOffset == 0) {
                 binding.tvTitle.text = binding.tvPartnersName.text
                 binding.tvTitle.animate().alpha(1f).setDuration(600).start()
+                binding.vgPartnerInfo.animate().alpha(0f).setDuration(600).start()
                 isShow = true
             } else if (isShow) {
                 binding.tvTitle.animate().alpha(0f).setDuration(600).start()
+                binding.vgPartnerInfo.animate().alpha(1f).setDuration(600).start()
+
                 isShow = false
             }
 

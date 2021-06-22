@@ -44,6 +44,7 @@
             android:focusable="false"
             android:hint="@string/delivery_details_enter_address_title"
             android:textColorHint="@color/grey50"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_address_delivery" />
@@ -195,6 +196,7 @@
             android:inputType="phone"
             android:maxLength="18"
             android:textColorHint="@color/grey50"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_number" />
@@ -223,6 +225,7 @@
             android:background="@drawable/bg_edit_text_selector"
             android:gravity="top"
             android:textColorHint="@color/grey50"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_comments" />

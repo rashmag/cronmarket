@@ -9,6 +9,8 @@
         android:id="@+id/tb_basket"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        app:contentInsetStart="0dp"
+        app:contentInsetEnd="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -21,6 +23,7 @@
                 android:id="@+id/iv_basket_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="31dp"
                 android:contentDescription="@string/common_navigate_on_screen_before"
                 android:src="@drawable/ic_arrow_back_circle_with_shadow"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -46,6 +49,7 @@
                 android:id="@+id/iv_basket_urn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="29dp"
                 android:contentDescription="@string/basket_clear"
                 android:src="@drawable/ic_basket_urn"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -93,13 +97,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_basket_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="36dp"
             android:textSize="28sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
+            android:textFontWeight="600"
             android:textColor="@color/grey90"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -8,6 +8,9 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.BasketDish
 import ooo.cron.delivery.data.network.models.BasketItem
@@ -16,6 +19,7 @@ import ooo.cron.delivery.databinding.ItemBasketPersonsBinding
 import ooo.cron.delivery.databinding.ItemBasketProductBinding
 import ooo.cron.delivery.databinding.ItemBasketSpecialOffersBinding
 import ooo.cron.delivery.utils.BasketCounterTimer
+import ooo.cron.delivery.utils.dipToPixels
 import javax.inject.Inject
 
 /**
@@ -123,7 +127,10 @@ class BasketAdapter @Inject constructor() : RecyclerView.Adapter<RecyclerView.Vi
 
             binding.tvBasketProductName.text = product.name
             binding.vgBasketCounter.tvBasketCounterQuantity.text = product.quantity.toString()
-            binding.tvBasketProductAmount.text = (product.cost * product.quantity).toString()
+            binding.tvBasketProductAmount.text = itemView.context.getString(
+                R.string.price,
+                (product.cost * product.quantity).toInt().toString()
+            )
 
             binding.vgBasketCounter.ivBasketCounterPlus.setOnClickListener {
                 plusClick(product, 1)
@@ -135,6 +142,14 @@ class BasketAdapter @Inject constructor() : RecyclerView.Adapter<RecyclerView.Vi
 
             Glide.with(itemView.context)
                 .load(product.photoUri)
+                .apply(RequestOptions().apply {
+                    transform(
+                        CenterCrop(),
+                        RoundedCorners(
+                            itemView.context.resources.dipToPixels(3f).toInt()
+                        )
+                    )
+                })
                 .into(binding.ivBasketProduct)
         }
     }

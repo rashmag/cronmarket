@@ -34,4 +34,6 @@
 
     <color name="main_market_categories_background">@color/grey2</color>
     <color name="main_market_categories_inactive_underscore">@color/grey30</color>
+    <color name="address_input_stroke_color_empty">#DEE2E6</color>
+    <color name="address_input_stroke_color_not_empty">#ADB5BD</color>
 </resources>

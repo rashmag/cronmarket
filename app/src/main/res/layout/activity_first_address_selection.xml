@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/tv_first_address_selection_title"
@@ -41,7 +41,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="36dp"
         android:text="@string/first_address_selection_address_title"
         android:textColor="@color/grey70"
@@ -53,35 +53,28 @@
         app:layout_constraintTop_toBottomOf="@id/spinner_first_address_selection_city"
         app:layout_constraintVertical_bias="0" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_first_address_selection_address"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+    <EditText
+        android:id="@+id/et_first_address_selection_address"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginStart="36dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="36dp"
-        app:boxStrokeColor="@color/grey40"
-        app:boxStrokeWidth="2dp"
+        android:background="@drawable/bg_address_selection_input_empty"
+        android:hint="@string/enter_address"
+        android:inputType="text"
+        android:lines="1"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:textColor="@color/grey90"
+        android:textColorHint="@color/grey50"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_first_address_selection_address_title"
-        app:layout_constraintVertical_bias="0">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_first_address_selection_address"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="8dp"
-            android:lines="1"
-            android:maxLines="1"
-            android:inputType="text"
-            android:singleLine="true"
-            android:textColor="@color/grey90"
-            android:textSize="16sp" />
-    </com.google.android.material.textfield.TextInputLayout>
+        app:layout_constraintVertical_bias="0" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/vg_first_address_selection_message"
@@ -93,7 +86,7 @@
         android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/til_first_address_selection_address">
+        app:layout_constraintTop_toBottomOf="@id/et_first_address_selection_address">
 
         <ImageView
             android:id="@+id/iv_first_address_selection_message"
@@ -178,10 +171,10 @@
     <include
         android:id="@+id/vg_first_address_selection_cities_progress"
         layout="@layout/layout_progress"
-        tools:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

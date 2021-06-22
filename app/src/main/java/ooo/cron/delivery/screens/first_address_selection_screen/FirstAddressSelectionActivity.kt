@@ -274,6 +274,10 @@ class FirstAddressSelectionActivity :
 
     private fun configureAddressField() {
         binding.etFirstAddressSelectionAddress.doAfterTextChanged {
+            binding.etFirstAddressSelectionAddress.background = if (it?.isNotEmpty() == true)
+                ContextCompat.getDrawable(this, R.drawable.bg_address_selection_input_not_empty)
+            else
+                ContextCompat.getDrawable(this, R.drawable.bg_address_selection_input_empty)
             updateAddressesPopupTimer?.cancel()
             updateAddressesPopupTimer = startNewAddressUpdateTimer {
                 presenter.onAddressChanged(it.toString())

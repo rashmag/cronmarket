@@ -18,8 +18,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:background="@color/grey2"
+        android:orientation="vertical"
         android:tag="content">
 
         <androidx.appcompat.widget.Toolbar
@@ -57,8 +57,8 @@
                     android:layout_marginEnd="30dp"
                     android:contentDescription="@string/main_search"
                     android:padding="8dp"
-                    android:visibility="gone"
                     android:src="@drawable/ic_main_search"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -68,15 +68,15 @@
                     android:id="@+id/tv_main_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:textColor="@color/grey90"
-                    android:textStyle="bold"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginStart="18dp"
                     android:layout_marginEnd="36dp"
-                    android:layout_marginStart="18dp"/>
+                    android:textColor="@color/grey90"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.appcompat.widget.Toolbar>
@@ -90,8 +90,7 @@
                 android:id="@+id/ab_main"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/main_market_categories_background"
-                >
+                android:background="@color/main_market_categories_background">
 
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tl_main_market_categories"
@@ -100,13 +99,14 @@
                     android:layout_height="35dp"
                     android:layout_marginBottom="3dp"
                     android:background="@color/main_market_categories_background"
-                    app:tabBackground="@drawable/bg_main_market_categories"
-                    app:tabContentStart="@dimen/main_market_categories_left_space"
-                    app:tabMode="scrollable"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_scrollFlags="scroll|enterAlways|snap"/>
+                    app:layout_scrollFlags="scroll|enterAlways|snap"
+                    app:tabBackground="@drawable/bg_main_market_categories"
+                    app:tabContentStart="@dimen/main_market_categories_left_space"
+                    app:tabMode="scrollable"
+                    app:tabPaddingStart="-1dp" />
 
             </com.google.android.material.appbar.AppBarLayout>
 
@@ -145,24 +145,24 @@
             android:layout_height="wrap_content"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_main_continue_last_session"
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="36dp"
                 android:layout_marginEnd="36dp"
                 android:backgroundTint="@color/main_dark"
-                android:text="@string/main_continue_last_session"
-                android:textColor="@color/white"
-                android:textAllCaps="false"
-                android:textStyle="bold"
-                android:textSize="16sp"
                 android:elevation="16dp"
-                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:text="@string/main_continue_last_session"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
         </androidx.cardview.widget.CardView>
 

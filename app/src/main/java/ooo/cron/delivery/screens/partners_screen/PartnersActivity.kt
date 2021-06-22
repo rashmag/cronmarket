@@ -58,12 +58,11 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         setContentView(binding.root)
         partnerId = intent.getStringExtra(EXTRA_PARTNER_ID) as String
         setTitleVisibility()
-//        presenter.getPartnerInfo()
         onProductRecyclerViewScrollChanged()
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onResume() {
+        super.onResume()
         presenter.getPartnerInfo()
     }
 

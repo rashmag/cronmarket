@@ -7,17 +7,18 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingBottom="10dp">
 
-<!--        <Spinner-->
-<!--            android:id="@+id/spinner_choose_save_address"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="36dp"-->
-<!--            android:layout_marginTop="16dp"-->
-<!--            android:layout_marginEnd="36dp"-->
-<!--            android:background="@drawable/bg_first_address_selection_city"-->
-<!--            app:layout_constraintTop_toTopOf="parent" />-->
+        <!--        <Spinner-->
+        <!--            android:id="@+id/spinner_choose_save_address"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginStart="36dp"-->
+        <!--            android:layout_marginTop="16dp"-->
+        <!--            android:layout_marginEnd="36dp"-->
+        <!--            android:background="@drawable/bg_first_address_selection_city"-->
+        <!--            app:layout_constraintTop_toTopOf="parent" />-->
 
 
         <TextView
@@ -40,8 +41,8 @@
             android:layout_marginTop="4dp"
             android:layout_marginEnd="36dp"
             android:background="@drawable/bg_edit_text_selector"
-            android:hint="@string/delivery_details_enter_address_title"
             android:focusable="false"
+            android:hint="@string/delivery_details_enter_address_title"
             android:textColorHint="@color/grey50"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -153,17 +154,17 @@
         </LinearLayout>
 
 
-<!--        <CheckBox-->
-<!--            android:id="@+id/chk_save_address"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="36dp"-->
-<!--            android:layout_marginTop="8dp"-->
-<!--            android:enabled="false"-->
-<!--            android:text="@string/delivery_details_save_address_title"-->
-<!--            android:textSize="16sp"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/vg_address_details" />-->
+        <!--        <CheckBox-->
+        <!--            android:id="@+id/chk_save_address"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginStart="36dp"-->
+        <!--            android:layout_marginTop="8dp"-->
+        <!--            android:enabled="false"-->
+        <!--            android:text="@string/delivery_details_save_address_title"-->
+        <!--            android:textSize="16sp"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toBottomOf="@id/vg_address_details" />-->
 
 
         <TextView
@@ -187,12 +188,12 @@
             android:layout_marginTop="4dp"
             android:layout_marginEnd="36dp"
             android:background="@drawable/bg_edit_text_selector"
+            android:clickable="false"
+            android:enabled="false"
+            android:focusable="false"
             android:hint="+7 (___) ___-__-__"
             android:inputType="phone"
-            android:enabled="false"
             android:maxLength="18"
-            android:clickable="false"
-            android:focusable="false"
             android:textColorHint="@color/grey50"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -255,15 +256,19 @@
                 android:id="@+id/rg_delivery_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
                 android:orientation="horizontal">
 
                 <RadioButton
                     android:id="@+id/rb_fast"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="1"
                     android:background="@drawable/bg_delivery_time_selector"
                     android:button="@null"
-                    android:elevation="6dp"
+                    android:checked="true"
+                    android:elevation="3dp"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp"
                     android:text="@string/delivery_details_soon_as_possible_title"
@@ -273,13 +278,15 @@
 
                 <RadioButton
                     android:id="@+id/rb_in_time"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="4dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="1"
                     android:background="@drawable/bg_delivery_time_selector"
                     android:button="@null"
-                    android:elevation="6dp"
+                    android:elevation="3dp"
                     android:paddingStart="12dp"
                     android:paddingTop="6dp"
                     android:paddingEnd="12dp"
@@ -297,10 +304,10 @@
             android:id="@+id/vg_choose_delivery_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:orientation="vertical"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="8dp"
             app:layout_constraintTop_toBottomOf="@id/vg_delivery_time">
 
 
@@ -322,30 +329,31 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="36dp"
                 android:background="@drawable/bg_edit_text_selector"
-                android:hint="18:00"
                 android:clickable="false"
                 android:focusable="false"
+                android:hint="18:00"
                 android:inputType="phone"
                 android:maxLength="18"
                 android:textColorHint="@color/grey50"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_number" />
+
             <TextView
                 android:id="@+id/tv_error"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="36dp"
                 android:layout_marginEnd="36dp"
-                android:textColor="@color/errors"
                 android:drawableStart="@drawable/ic_error"
-                android:textSize="12sp"
-                android:minLines="2"
                 android:drawablePadding="4dp"
+                android:minLines="2"
+                android:textColor="@color/errors"
+                android:textSize="12sp"
                 android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/et_phone"/>
+                app:layout_constraintTop_toBottomOf="@id/et_phone" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

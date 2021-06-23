@@ -82,31 +82,55 @@
         </androidx.appcompat.widget.Toolbar>
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/vg_main_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:background="@android:color/background_light"
+            >
 
             <com.google.android.material.appbar.AppBarLayout
                 android:id="@+id/ab_main"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/main_market_categories_background">
+                android:layout_height="300dp"
+                android:background="@color/grey2"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/tl_main_market_categories"
-                    style="@style/Widget.App.TabLayout.MarketCategories"
+                <com.google.android.material.appbar.CollapsingToolbarLayout
+                    android:id="@+id/collapsing"
                     android:layout_width="match_parent"
-                    android:layout_height="35dp"
-                    android:layout_marginBottom="3dp"
-                    android:background="@color/main_market_categories_background"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_scrollFlags="scroll|enterAlways|snap"
-                    app:tabBackground="@drawable/bg_main_market_categories"
-                    app:tabContentStart="@dimen/main_market_categories_left_space"
-                    app:tabMode="scrollable"
-                    app:tabPaddingStart="-1dp" />
+                    android:layout_height="match_parent"
+                    app:contentScrim="@color/grey2"
+                    app:expandedTitleGravity="center|bottom"
+                    app:expandedTitleMarginEnd="64dp"
+                    app:expandedTitleMarginStart="48dp"
+                    app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.tabs.TabLayout
+                            android:id="@+id/tl_main_market_categories"
+                            style="@style/Widget.App.TabLayout.MarketCategories"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:layout_marginBottom="3dp"
+                            android:background="@color/main_market_categories_background"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_scrollFlags="scroll|enterAlways|snap"
+                            app:tabBackground="@drawable/bg_main_market_categories"
+                            app:tabContentStart="@dimen/main_market_categories_left_space"
+                            app:tabMode="scrollable"
+                            app:tabPaddingStart="-1dp" />
+
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </com.google.android.material.appbar.CollapsingToolbarLayout>
 
             </com.google.android.material.appbar.AppBarLayout>
 
@@ -120,6 +144,7 @@
                     android:id="@+id/container_main"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:background="@color/grey2"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -130,6 +155,7 @@
                     layout="@layout/layout_progress"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

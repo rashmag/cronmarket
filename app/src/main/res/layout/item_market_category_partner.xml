@@ -1,47 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="269dp"
+    android:layout_height="wrap_content"
     android:layout_marginStart="36dp"
-    android:layout_marginEnd="36dp"
     android:layout_marginTop="8dp"
+    android:layout_marginEnd="36dp"
     android:layout_marginBottom="8dp"
     android:elevation="6dp"
     app:cardCornerRadius="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingBottom="16dp">
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_closed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
             android:layout_margin="12dp"
             android:background="@drawable/bg_closed_partner_message"
+            android:paddingStart="12dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="4dp"
             android:textColor="@color/false_color"
-            android:textStyle="bold"
             android:textSize="12sp"
+            android:textStyle="bold"
             android:visibility="gone"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            tools:text="@string/partner_closed"
-            />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/partner_closed" />
 
         <ImageView
             android:id="@+id/iv_market_category_partner"
             android:layout_width="0dp"
             android:layout_height="171dp"
-            android:scaleType="centerCrop"
             android:contentDescription="@string/market_category_partner_image_description"
+            android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -52,9 +51,9 @@
             android:layout_height="48dp"
             android:layout_marginStart="12dp"
             android:layout_marginBottom="12dp"
-            android:visibility="gone"
             android:background="@color/grey90"
             android:scaleType="centerCrop"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@id/iv_market_category_partner"
             app:layout_constraintStart_toStartOf="@id/iv_market_category_partner"
             app:shapeAppearance="@style/CircleImageView" />
@@ -63,11 +62,11 @@
             android:id="@+id/tv_market_category_partner_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="12dp"
-            android:maxLines="2"
             android:ellipsize="end"
+            android:maxLines="2"
             android:textColor="@color/grey90"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -75,7 +74,7 @@
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/iv_market_category_partner"
-            tools:text="Breakfast and coffee bar" />
+            tools:text="Breakfast and coffee barBreakfast and coffee barBreakfast and coffee bar" />
 
         <TextView
             android:id="@+id/tv_market_category_partner_short_description"
@@ -83,10 +82,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:textColor="@color/grey50"
             android:textSize="14sp"
-            android:maxLines="1"
-            android:ellipsize="end"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="parent"
@@ -99,8 +98,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_marginTop="12dp"
-            android:src="@drawable/ic_market_category_partner_rating"
             android:contentDescription="@string/market_category_rating_description"
+            android:src="@drawable/ic_market_category_partner_rating"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_market_category_partner_short_description" />
@@ -123,8 +122,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="14dp"
-            android:src="@drawable/ic_market_category_partner_min_price"
             android:contentDescription="@string/market_category_min_price_description"
+            android:src="@drawable/ic_market_category_partner_min_price"
             app:layout_constraintBottom_toBottomOf="@id/iv_market_category_partner_rating"
             app:layout_constraintStart_toEndOf="@id/tv_market_category_partner_rating"
             app:layout_constraintTop_toTopOf="@id/iv_market_category_partner_rating" />

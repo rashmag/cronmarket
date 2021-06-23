@@ -95,6 +95,11 @@ class PartnersAdapter(private val onClick: (partnerId: String) -> Unit) :
             }
 
             binding.tvMarketCategoryPartnerTitle.text = partner.name
+            binding.tvMarketCategoryPartnerShortDescription.visibility =
+                if (partner.shortDescription.isNullOrEmpty())
+                    View.GONE
+                else
+                    View.VISIBLE
             binding.tvMarketCategoryPartnerShortDescription.text = partner.shortDescription
             binding.tvMarketCategoryPartnerRating.text = partner.rating.toString()
             binding.tvMarketCategoryPartnerMinPrice.text =
@@ -110,9 +115,9 @@ class PartnersAdapter(private val onClick: (partnerId: String) -> Unit) :
 
                 val openTime = partner.openTime()
                 val openHours =
-                    if (openTime[0]/10 > 0) openTime[0] else "0${openTime[0]}"
+                    if (openTime[0] / 10 > 0) openTime[0] else "0${openTime[0]}"
                 val openMinutes =
-                    if (openTime[1]/10 > 0) openTime[1] else "0${openTime[1]}"
+                    if (openTime[1] / 10 > 0) openTime[1] else "0${openTime[1]}"
                 binding.tvClosed.text = binding.root.context.getString(
                     R.string.partner_closed,
                     "${openHours}:${openMinutes}"

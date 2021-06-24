@@ -156,7 +156,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
                     val collapsingParams =
                         appbar.layoutParams as CollapsingToolbarLayout.LayoutParams
                     collapsingParams.collapseMode =
-                        CollapsingToolbarLayout.LayoutParams.COLLAPSE_MODE_PIN
+                        CollapsingToolbarLayout.LayoutParams.COLLAPSE_MODE_OFF
                     appbar.layoutParams = collapsingParams
                     appbar.setExpanded(false)
 

@@ -16,25 +16,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingBottom="16dp">
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tv_closed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="12dp"
-            android:background="@drawable/bg_closed_partner_message"
-            android:paddingStart="12dp"
-            android:paddingTop="4dp"
-            android:paddingEnd="12dp"
-            android:paddingBottom="4dp"
-            android:textColor="@color/false_color"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="@string/partner_closed" />
-
         <ImageView
             android:id="@+id/iv_market_category_partner"
             android:layout_width="0dp"
@@ -140,6 +121,25 @@
             app:layout_constraintStart_toEndOf="@id/iv_market_category_partner_min_price"
             app:layout_constraintTop_toTopOf="@id/iv_market_category_partner_rating"
             tools:text="от 500 Р." />
+
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_closed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:background="@drawable/bg_closed_partner_message"
+            android:paddingStart="12dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="4dp"
+            android:textColor="@color/false_color"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/partner_closed" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

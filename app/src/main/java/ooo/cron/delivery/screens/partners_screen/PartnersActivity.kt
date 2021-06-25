@@ -1,9 +1,7 @@
 package ooo.cron.delivery.screens.partners_screen
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
@@ -12,7 +10,6 @@ import android.widget.*
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.appbar.AppBarLayout
@@ -76,7 +73,8 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
                 val layoutManger = recyclerView.layoutManager as LinearLayoutManager
 
                 val visiblePosition = layoutManger.findFirstVisibleItemPosition()
-                val firstCompletelyVisiblePosition = layoutManger.findFirstCompletelyVisibleItemPosition()
+                val firstCompletelyVisiblePosition =
+                    layoutManger.findFirstCompletelyVisibleItemPosition()
 
                 val categoryAdapter = binding.rvCategories.adapter as PartnerCategoryAdapter
                 if (visiblePosition > -1) {
@@ -138,27 +136,31 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
                         .centerCrop()
                         .into(backdrop)
                 } else {
+
+                    binding.vgPartnerInfo.animate().alpha(0f).setDuration(600).start()
+
+
+//                    val scrollViewParams =
+//                        CoordinatorLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+//                    scrollViewParams.setMargins(
+//                        0,
+//                        resources.getDimensionPixelSize(R.dimen.nested_scroll_view_top_margin),
+//                        0,
+//                        0
+//                    )
+//                    rvProduct.layoutParams = scrollViewParams
+
+//                    if (!nestedScrollViewConfigured) {
+
+                    val collapsingParams =
+                        appbar.layoutParams as CollapsingToolbarLayout.LayoutParams
+                    collapsingParams.collapseMode =
+                        CollapsingToolbarLayout.LayoutParams.COLLAPSE_MODE_OFF
+                    appbar.layoutParams = collapsingParams
                     appbar.setExpanded(false)
 
-                    val scrollViewParams =
-                        LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
-                    scrollViewParams.setMargins(
-                        0,
-                        resources.getDimensionPixelSize(R.dimen.nested_scroll_view_top_margin),
-                        0,
-                        0
-                    )
-                    rvProduct.layoutParams = scrollViewParams
-
-                    if (!nestedScrollViewConfigured) {
-                        val collapsingParams =
-                            CollapsingToolbarLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
-                        collapsingParams.collapseMode =
-                            CollapsingToolbarLayout.LayoutParams.COLLAPSE_MODE_OFF
-                        toolbar.layoutParams = collapsingParams
-
-                        nestedScrollViewConfigured = true
-                    }
+                    nestedScrollViewConfigured = true
+//                    }
 
 
                     val appBarParams = CoordinatorLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
@@ -225,14 +227,6 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
 
     override fun onCategoryClick(position: Int) {
         binding.rvProduct.smoothScrollToPosition(position)
-//        val originalPos = IntArray(2)
-//        binding.rvProduct.getChildAt(position).getLocationInWindow(originalPos)
-//        val x = originalPos[0]
-//        val y = originalPos[1]
-//
-//        binding.nestedscrollview.post {
-//            binding.nestedscrollview.smoothScrollTo(x, y)
-//        }
     }
 
     override fun removeProgress() {
@@ -338,15 +332,20 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
                 scrollRange = barLayout?.totalScrollRange!!
             }
 
+
+            if (scrollRange + verticalOffset < 150) {
+                binding.vgPartnerInfo.animate().alpha(0f).setDuration(600).start()
+            } else if(!isShow)  {
+                binding.vgPartnerInfo.animate().alpha(1f).setDuration(600).start()
+            }
+
+
             if (scrollRange + verticalOffset == 0) {
                 binding.tvTitle.text = binding.tvPartnersName.text
                 binding.tvTitle.animate().alpha(1f).setDuration(600).start()
-                binding.vgPartnerInfo.animate().alpha(0f).setDuration(600).start()
                 isShow = true
             } else if (isShow) {
                 binding.tvTitle.animate().alpha(0f).setDuration(600).start()
-                binding.vgPartnerInfo.animate().alpha(1f).setDuration(600).start()
-
                 isShow = false
             }
 

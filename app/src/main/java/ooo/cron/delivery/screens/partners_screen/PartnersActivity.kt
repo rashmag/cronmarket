@@ -6,9 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
-import android.widget.*
+import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.Toast
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -24,6 +26,7 @@ import ooo.cron.delivery.screens.AcceptDialog
 import ooo.cron.delivery.screens.BaseActivity
 import ooo.cron.delivery.screens.basket_screen.BasketActivity
 import ooo.cron.delivery.screens.first_address_selection_screen.FirstAddressSelectionActivity
+import ooo.cron.delivery.utils.CustomLayoutManager
 import ooo.cron.delivery.utils.ProductBottomSheetDialog
 import java.util.*
 import javax.inject.Inject
@@ -48,12 +51,32 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
 
     private var nestedScrollViewConfigured = false
 
+    private lateinit var productsLayoutManager : CustomLayoutManager
+
+    var scrollRange = -1
+    var overScroll = -1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         injectDependencies()
         presenter.attachView(this)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         partnerId = intent.getStringExtra(EXTRA_PARTNER_ID) as String
+
+        productsLayoutManager = object : CustomLayoutManager(this) {
+            override fun scrollVerticallyBy(
+                dy: Int,
+                recycler: RecyclerView.Recycler?,
+                state: RecyclerView.State?
+            ): Int {
+                 scrollRange = super.scrollVerticallyBy(dy, recycler, state)
+                 overScroll  = dy - scrollRange
+
+                productsLayoutManager.setScrollEnabled(overScroll < 0)
+                return scrollRange
+            }
+        }
+
         setTitleVisibility()
         onProductRecyclerViewScrollChanged()
     }
@@ -64,11 +87,11 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
     }
 
     private fun onProductRecyclerViewScrollChanged() {
-        ViewCompat.setNestedScrollingEnabled(binding.rvProduct, false)
         binding.rvProduct.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
+
 
                 val layoutManger = recyclerView.layoutManager as LinearLayoutManager
 
@@ -236,10 +259,12 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
     override fun showPartnerProducts(
         productCategoriesModel: ArrayList<ProductCategoryModel>
     ) {
+
+        productsLayoutManager.setScrollEnabled(false)
         binding.run {
             vgMainView.removeView(binding.vgPartnersActivityProgress.root)
             rvProduct.apply {
-                layoutManager = LinearLayoutManager(this@PartnersActivity)
+                layoutManager = productsLayoutManager
                 adapter = PartnerProductAdapter(productCategoriesModel, this@PartnersActivity)
             }
         }
@@ -335,7 +360,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
 
             if (scrollRange + verticalOffset < 150) {
                 binding.vgPartnerInfo.animate().alpha(0f).setDuration(600).start()
-            } else if(!isShow)  {
+            } else if (!isShow) {
                 binding.vgPartnerInfo.animate().alpha(1f).setDuration(600).start()
             }
 
@@ -349,8 +374,10 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
                 isShow = false
             }
 
+            productsLayoutManager.setScrollEnabled(isShow)
 
         })
+
     }
 
     override fun onDestroy() {

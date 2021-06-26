@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -91,8 +92,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="8dp"
-                            android:visibility="gone"
                             android:src="@drawable/ic_favorite"
+                            android:visibility="gone"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@id/iv_search"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -102,8 +103,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="8dp"
-                            android:visibility="gone"
                             android:src="@drawable/ic_search_circle"
+                            android:visibility="gone"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -243,33 +244,6 @@
             app:layout_constraintTop_toBottomOf="@id/vg_rating"
             tools:listitem="@layout/item_market_category_tag" />
 
-        <!--        <LinearLayout-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginTop="-50dp"-->
-        <!--            android:background="@drawable/bg_partners_scroll_view_rounded"-->
-        <!--            android:orientation="vertical"-->
-        <!--            app:layout_anchor="@id/appbar"-->
-        <!--            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">-->
-
-
-        <!--        <androidx.core.widget.NestedScrollView-->
-        <!--            android:id="@+id/nestedscrollview"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginTop="50dp"-->
-        <!--            android:fillViewport="true"-->
-        <!--            android:orientation="vertical"-->
-        <!--            app:layout_anchor="@id/appbar"-->
-
-        <!--            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">-->
-
-
-        <!--            <androidx.constraintlayout.widget.ConstraintLayout-->
-        <!--                android:layout_width="match_parent"-->
-        <!--                android:layout_height="match_parent">-->
-
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_product"
             android:layout_width="match_parent"
@@ -278,24 +252,15 @@
             android:layout_marginTop="50dp"
             android:layout_marginEnd="32dp"
             android:layout_marginBottom="16dp"
-            android:fillViewport="true"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:layout_anchor="@id/appbar"
-            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
             app:spanCount="2"
 
             tools:listitem="@layout/item_partner_product" />
-
-        <!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
-
-
-        <!--        </androidx.core.widget.NestedScrollView>-->
-
-
-        <!--        </LinearLayout>-->
 
         <include
             android:id="@+id/vg_partners_activity_progress"

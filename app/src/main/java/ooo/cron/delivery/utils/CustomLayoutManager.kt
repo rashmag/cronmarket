@@ -13,7 +13,7 @@ open class CustomLayoutManager(context: Context) : LinearLayoutManager(context) 
     private var isScrollEnabled = true;
 
 
-    public fun setScrollEnabled(flag: Boolean) {
+    fun setScrollEnabled(flag: Boolean) {
         this.isScrollEnabled = flag;
     }
 

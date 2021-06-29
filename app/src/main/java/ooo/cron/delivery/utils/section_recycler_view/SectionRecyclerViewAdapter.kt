@@ -18,7 +18,7 @@ abstract class SectionRecyclerViewAdapter<VH : SectionRecyclerViewHolder, M : Se
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH =
         viewHolder(
             LayoutInflater.from(parent.context).inflate(
-                R.layout.adapter_section_recyclerview,
+                R.layout.item_adapter_section_recycerview,
                 parent,
                 false
             )

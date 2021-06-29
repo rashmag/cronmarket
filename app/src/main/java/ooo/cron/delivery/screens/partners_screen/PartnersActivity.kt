@@ -12,6 +12,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.appbar.AppBarLayout
@@ -51,7 +52,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
 
     private var nestedScrollViewConfigured = false
 
-    private lateinit var productsLayoutManager : CustomLayoutManager
+    private lateinit var productsLayoutManager: CustomLayoutManager
 
     var scrollRange = -1
     var overScroll = -1
@@ -69,10 +70,10 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
                 recycler: RecyclerView.Recycler?,
                 state: RecyclerView.State?
             ): Int {
-                 scrollRange = super.scrollVerticallyBy(dy, recycler, state)
-                 overScroll  = dy - scrollRange
+                scrollRange = super.scrollVerticallyBy(dy, recycler, state)
+                overScroll = dy - scrollRange
 
-                productsLayoutManager.setScrollEnabled(overScroll < 0)
+//                productsLayoutManager.setScrollEnabled(overScroll < 0)
                 return scrollRange
             }
         }
@@ -107,6 +108,9 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
                         categoryAdapter.setSelected(categoryId)
                     } else {
                         binding.rvCategories.smoothScrollToPosition(firstCompletelyVisiblePosition)
+                        val categoryId =
+                            categoryAdapter.getCategoryId(firstCompletelyVisiblePosition)
+                        categoryAdapter.setSelected(categoryId)
                     }
                 }
             }
@@ -163,18 +167,6 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
                     binding.vgPartnerInfo.animate().alpha(0f).setDuration(600).start()
 
 
-//                    val scrollViewParams =
-//                        CoordinatorLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
-//                    scrollViewParams.setMargins(
-//                        0,
-//                        resources.getDimensionPixelSize(R.dimen.nested_scroll_view_top_margin),
-//                        0,
-//                        0
-//                    )
-//                    rvProduct.layoutParams = scrollViewParams
-
-//                    if (!nestedScrollViewConfigured) {
-
                     val collapsingParams =
                         appbar.layoutParams as CollapsingToolbarLayout.LayoutParams
                     collapsingParams.collapseMode =
@@ -183,7 +175,6 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
                     appbar.setExpanded(false)
 
                     nestedScrollViewConfigured = true
-//                    }
 
 
                     val appBarParams = CoordinatorLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
@@ -196,6 +187,23 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         onBackButtonClick()
         onInfoButtonClick(partnerInfo)
         onRatingClick()
+    }
+
+    private fun collapseToolbar() {
+        productsLayoutManager.setScrollEnabled(true)
+
+        if (!nestedScrollViewConfigured) {
+            binding.vgPartnerInfo.animate().alpha(0f).setDuration(600).start()
+            binding.appbar.setExpanded(false)
+            binding.tvTitle.text = binding.tvPartnersName.text
+            binding.tvTitle.animate().alpha(1f).setDuration(600).start()
+//
+//
+//            val appBarParams = CoordinatorLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+//            appBarParams.height = LinearLayout.LayoutParams.WRAP_CONTENT
+//            binding.appbar.layoutParams = appBarParams
+            nestedScrollViewConfigured = true
+        }
     }
 
     private fun onRatingClick() {
@@ -243,13 +251,14 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         }
     }
 
-    /**
-     * т.к. наш recyclerView находится в NestedScrollView
-     * скроллить до нужного нам итема мы будем по позиции этого итема
-     */
-
     override fun onCategoryClick(position: Int) {
-        binding.rvProduct.smoothScrollToPosition(position)
+        collapseToolbar()
+
+        val smoothScroller = object : LinearSmoothScroller(this) {
+            override fun getVerticalSnapPreference() = SNAP_TO_START
+        }
+        smoothScroller.targetPosition = position
+        productsLayoutManager.startSmoothScroll(smoothScroller)
     }
 
     override fun removeProgress() {
@@ -371,11 +380,12 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
                 isShow = true
             } else if (isShow) {
                 binding.tvTitle.animate().alpha(0f).setDuration(600).start()
+
                 isShow = false
             }
 
-            productsLayoutManager.setScrollEnabled(isShow)
-
+            productsLayoutManager.setScrollEnabled(scrollRange + verticalOffset == 0)
+            println("scrollRange ${scrollRange + verticalOffset == 0}")
         })
 
     }

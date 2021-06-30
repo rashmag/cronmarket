@@ -92,14 +92,14 @@
             <com.google.android.material.appbar.AppBarLayout
                 android:id="@+id/ab_main"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="wrap_content"
                 android:background="@color/grey2"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
                 <com.google.android.material.appbar.CollapsingToolbarLayout
                     android:id="@+id/collapsing"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     app:contentScrim="@color/grey2"
                     app:expandedTitleGravity="center|bottom"
                     app:expandedTitleMarginEnd="64dp"
@@ -126,7 +126,23 @@
                             app:tabMode="scrollable"
                             app:tabPaddingStart="-1dp" />
 
-
+                        <ooo.cron.delivery.screens.main_screen.special_offers_view.ImageSlider
+                            android:id="@+id/image_slider"
+                            android:layout_width="0dp"
+                            android:layout_height="135dp"
+                            android:clipToPadding="false"
+                            app:iss_corner_radius="8"
+                            app:iss_auto_cycle="true"
+                            app:iss_period="1500"
+                            app:iss_delay="0"
+                            app:iss_text_align="CENTER"
+                            app:iss_title_background="@drawable/gradient"
+                            app:iss_error_image="@drawable/error"
+                            app:iss_selected_dot="@drawable/default_selected_dot"
+                            app:iss_unselected_dot="@drawable/default_unselected_dot"
+                            app:layout_constraintTop_toBottomOf="@id/tl_main_market_categories"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"/>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 

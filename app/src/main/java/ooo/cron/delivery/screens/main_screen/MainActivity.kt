@@ -6,20 +6,27 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.setPadding
+import androidx.viewpager2.widget.MarginPageTransformer
 import com.google.android.material.tabs.TabLayout
+import kotlinx.android.synthetic.main.activity_login.view.*
 import nl.psdcompany.duonavigationdrawer.widgets.DuoDrawerToggle
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.MarketCategory
+import ooo.cron.delivery.data.network.models.Promotion
 import ooo.cron.delivery.databinding.ActivityMainBinding
 import ooo.cron.delivery.screens.BaseActivity
 import ooo.cron.delivery.screens.about_service_screen.AboutServiceFragment
 import ooo.cron.delivery.screens.contacts_screen.ContactsFragment
 import ooo.cron.delivery.screens.first_address_selection_screen.FirstAddressSelectionActivity
 import ooo.cron.delivery.screens.login_screen.LoginActivity
+import ooo.cron.delivery.screens.main_screen.special_offers_view.constants.ScaleTypes
+import ooo.cron.delivery.screens.main_screen.special_offers_view.models.SlideModel
 import ooo.cron.delivery.screens.market_category_screen.MarketCategoryFragment
 import ooo.cron.delivery.screens.partners_screen.PartnersActivity
 import ooo.cron.delivery.screens.vacancies_screen.VacanciesFragment
+import ooo.cron.delivery.utils.dipToPixels
 import javax.inject.Inject
 
 
@@ -145,6 +152,8 @@ class MainActivity : BaseActivity(), MainContract.View {
 
             }
         ).commit()
+
+        presenter.onStartMarketCategory()
     }
 
     override fun startAboutServiceFragment() {
@@ -195,6 +204,37 @@ class MainActivity : BaseActivity(), MainContract.View {
                 putExtra(PartnersActivity.EXTRA_PARTNER_ID, partnerId)
             }
         )
+    }
+
+    override fun showSpecialOffers(promotions: List<Promotion>) {
+        val imageList = ArrayList<SlideModel>() // Create image list
+        imageList.add(SlideModel("https://bit.ly/37Rn50u", "Baby Owl", ScaleTypes.CENTER_CROP))
+        imageList.add(
+            SlideModel(
+                "https://bit.ly/2BteuF2",
+                "Elephants and tigers may become extinct."
+            )
+        )
+        imageList.add(
+            SlideModel(
+                "https://bit.ly/3fLJf72",
+                "The population of elephants is decreasing in the world."
+            )
+        )
+        binding.imageSlider.viewPager?.pageMargin = resources.dipToPixels(16f).toInt()
+        binding.imageSlider.viewPager?.clipToPadding = false
+
+        binding.imageSlider.viewPager?.setPadding(
+            resources.dipToPixels(36f).toInt(),
+            0,
+            resources.dipToPixels(36f).toInt(),
+            0
+        )
+        binding.imageSlider.setImageList(imageList)
+    }
+
+    override fun hideSpecialOffers() {
+        //TODO
     }
 
     private fun injectDependencies() =
@@ -293,7 +333,9 @@ class MainActivity : BaseActivity(), MainContract.View {
                 clickedView == binding.vgMainMenu.tvDrawerMenuItemShops
 
                 when (clickedView) {
-                    binding.vgMainMenu.tvDrawerMenuItemShops -> startMarketCategoryFragment(presenter.getMarketCategory())
+                    binding.vgMainMenu.tvDrawerMenuItemShops -> startMarketCategoryFragment(
+                        presenter.getMarketCategory()
+                    )
                     binding.vgMainMenu.tvDrawerMenuItemAboutUs -> startAboutServiceFragment()
                     binding.vgMainMenu.tvDrawerMenuItemContacts -> startContactsFragment()
                     binding.vgMainMenu.tvDrawerMenuItemVacancies -> startVacanciesFragment()

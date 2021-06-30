@@ -103,4 +103,12 @@ dependencies {
     //Tinkoff Acquiring
     def tinkoff_acquiring_version = '2.3.2'
     implementation "ru.tinkoff.acquiring:ui:$tinkoff_acquiring_version"
+
+    //Android Image Slider
+    def image_slider_version = '1.0.1'
+    implementation "com.github.akshaaatt:Sliding-Carousel:$image_slider_version"
+
+    //Pager indicator
+    def indicatorVersion ='1.0.3'
+    implementation "com.romandanylyk:pageindicatorview:$indicatorVersion"
 }

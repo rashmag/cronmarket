@@ -254,11 +254,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
     override fun onCategoryClick(position: Int) {
         collapseToolbar()
 
-        val smoothScroller = object : LinearSmoothScroller(this) {
-            override fun getVerticalSnapPreference() = SNAP_TO_START
-        }
-        smoothScroller.targetPosition = position
-        productsLayoutManager.startSmoothScroll(smoothScroller)
+        binding.rvProduct.smoothScrollToPosition(position)
     }
 
     override fun removeProgress() {

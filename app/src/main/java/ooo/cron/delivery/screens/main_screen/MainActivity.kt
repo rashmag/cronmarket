@@ -4,9 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.setPadding
+import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.MarginPageTransformer
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_login.view.*
@@ -230,7 +232,7 @@ class MainActivity : BaseActivity(), MainContract.View {
             resources.dipToPixels(36f).toInt(),
             0
         )
-        binding.imageSlider.setImageList(imageList)
+        binding.imageSlider.setImageList(imageList, ScaleTypes.CENTER_INSIDE)
     }
 
     override fun hideSpecialOffers() {

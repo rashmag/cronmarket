@@ -129,7 +129,7 @@
                         <ooo.cron.delivery.screens.main_screen.special_offers_view.ImageSlider
                             android:id="@+id/image_slider"
                             android:layout_width="0dp"
-                            android:layout_height="135dp"
+                            android:layout_height="wrap_content"
                             android:clipToPadding="false"
                             app:iss_corner_radius="8"
                             app:iss_auto_cycle="true"

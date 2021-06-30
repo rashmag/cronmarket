@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.viewpager.widget.PagerAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.FitCenter
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ooo.cron.delivery.R
 import ooo.cron.delivery.screens.main_screen.special_offers_view.constants.ActionTypes
@@ -16,6 +17,7 @@ import ooo.cron.delivery.screens.main_screen.special_offers_view.constants.Scale
 import ooo.cron.delivery.screens.main_screen.special_offers_view.interfaces.ItemClickListener
 import ooo.cron.delivery.screens.main_screen.special_offers_view.interfaces.TouchListener
 import ooo.cron.delivery.screens.main_screen.special_offers_view.models.SlideModel
+import ooo.cron.delivery.utils.dipToPixels
 
 /**
  * Created by Deniz Coşkun on 6/23/2020.
@@ -60,6 +62,8 @@ class ViewPagerAdapter(
     private var itemClickListener: ItemClickListener? = null
     private var touchListener: TouchListener? = null
 
+    private lateinit var container: ViewGroup
+
     override fun isViewFromObject(view: View, obj: Any): Boolean {
         return view == obj
     }
@@ -69,6 +73,9 @@ class ViewPagerAdapter(
     }
 
     override fun instantiateItem(container: ViewGroup, position: Int): View {
+
+        this.container = container
+
         val itemView = layoutInflater!!.inflate(R.layout.pager_row, container, false)
 
         val imageView = itemView.findViewById<ImageView>(R.id.image_view)
@@ -82,7 +89,7 @@ class ViewPagerAdapter(
             Glide.with(itemView).load(imageList!![position].imagePath!!)
         } else {
             Glide.with(itemView).load(imageList!![position].imageUrl!!)
-        }.transform(CenterCrop(), RoundedCorners(radius))
+        }.transform(FitCenter(), RoundedCorners(radius))
             .placeholder(placeholder)
             .error(errorImage)
             .into(imageView)
@@ -107,7 +114,15 @@ class ViewPagerAdapter(
     }
 
     override fun getPageWidth(position: Int): Float {
-        return 0.8f
+
+        val context = layoutInflater?.context
+
+        val parentWidth = container.width -
+                (context?.resources?.dipToPixels(72f)?.toInt() ?: 240)
+
+
+        val a = context?.resources?.dipToPixels(240f) ?: 240f
+        return a / parentWidth
     }
 
     /**

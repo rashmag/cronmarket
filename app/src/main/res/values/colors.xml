@@ -15,6 +15,7 @@
     <color name="grey2">#F8F9FA</color>
     <color name="grey5">#F1F3F5</color>
     <color name="grey10">#E9ECEF</color>
+    <color name="grey20">#DEE2E6</color>
     <color name="grey30">#CED4DA</color>
     <color name="grey40">#ADB5BD</color>
     <color name="grey50">#868E96</color>
@@ -36,4 +37,9 @@
     <color name="main_market_categories_inactive_underscore">@color/grey30</color>
     <color name="address_input_stroke_color_empty">#DEE2E6</color>
     <color name="address_input_stroke_color_not_empty">#ADB5BD</color>
+
+    <color name="light_font">#FBFBFB</color>
+    <color name="grey_font">#ff9e9e9e</color>
+    <color name="text_shadow">#7F000000</color>
+    <color name="text_shadow_white">#FFFFFF</color>
 </resources>

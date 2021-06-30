@@ -12,3 +12,6 @@ fun Resources.dipToPixels(dip: Float) = TypedValue.applyDimension(
     dip,
     displayMetrics
 )
+
+fun Resources.pixelsToDip(px: Float) =
+        px / displayMetrics.density

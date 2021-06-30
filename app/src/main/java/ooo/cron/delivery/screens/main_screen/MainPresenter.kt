@@ -9,6 +9,7 @@ import ooo.cron.delivery.data.network.models.*
 import ooo.cron.delivery.data.network.request.LogOutReq
 import ooo.cron.delivery.screens.base_mvp.BaseMvpPresenter
 import retrofit2.Response
+import java.lang.Exception
 import javax.inject.Inject
 
 /**
@@ -206,5 +207,24 @@ class MainPresenter @Inject constructor(
 
     override fun getMarketCategory(): MarketCategory {
         return dataManager.readSelectedMarketCategory()
+    }
+
+    override fun onStartMarketCategory() {
+        loadSpecialOrders()
+    }
+
+    private fun loadSpecialOrders() {
+        mainScope.launch {
+            try {
+                val specialOffers = dataManager.getSpecialOffers()
+                if (specialOffers.isEmpty())
+                    view?.hideSpecialOffers()
+                else {
+                    view?.showSpecialOffers(specialOffers)
+                }
+            } catch (e: Exception) {
+                view?.hideSpecialOffers()
+            }
+        }
     }
 }

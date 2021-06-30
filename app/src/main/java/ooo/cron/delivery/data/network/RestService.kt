@@ -138,6 +138,9 @@ interface RestService {
     @GET("/api/v1/SystemInfo/version")
     suspend fun getStableVersion(): String
 
+    @GET("/api/v1/MainWindow/promotions")
+    suspend fun getSpecialOffers(): PromotionsResponse
+
     companion object {
         const val PARTNERS_PAGINATION_LIMIT = 15
     }

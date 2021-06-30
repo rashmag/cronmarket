@@ -1,6 +1,7 @@
 package ooo.cron.delivery.screens.main_screen
 
 import ooo.cron.delivery.data.network.models.MarketCategory
+import ooo.cron.delivery.data.network.models.Promotion
 import ooo.cron.delivery.data.network.models.User
 import ooo.cron.delivery.screens.base_mvp.MvpPresenter
 import ooo.cron.delivery.screens.base_mvp.MvpView
@@ -32,6 +33,8 @@ interface MainContract {
         fun navigatePartnerScreen(partnerId: String)
         fun startAboutServiceFragment()
         fun startVacanciesFragment()
+        fun showSpecialOffers(promotions: List<Promotion>)
+        fun hideSpecialOffers()
     }
 
     interface Presenter : MvpPresenter<View> {
@@ -44,5 +47,6 @@ interface MainContract {
         fun onLogOutApplied()
         fun continueLastSessionCLick()
         fun getMarketCategory(): MarketCategory
+        fun onStartMarketCategory()
     }
 }

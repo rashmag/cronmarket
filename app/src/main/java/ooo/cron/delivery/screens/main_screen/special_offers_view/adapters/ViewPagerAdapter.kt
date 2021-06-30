@@ -89,7 +89,7 @@ class ViewPagerAdapter(
             Glide.with(itemView).load(imageList!![position].imagePath!!)
         } else {
             Glide.with(itemView).load(imageList!![position].imageUrl!!)
-        }.transform(FitCenter(), RoundedCorners(radius))
+        }.transform(CenterCrop(), RoundedCorners(radius))
             .placeholder(placeholder)
             .error(errorImage)
             .into(imageView)

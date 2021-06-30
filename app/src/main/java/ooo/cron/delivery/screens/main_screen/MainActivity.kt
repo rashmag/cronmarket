@@ -4,14 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.view.setPadding
-import androidx.viewpager.widget.ViewPager
-import androidx.viewpager2.widget.MarginPageTransformer
+import com.google.android.material.appbar.AppBarLayout.ScrollingViewBehavior
 import com.google.android.material.tabs.TabLayout
-import kotlinx.android.synthetic.main.activity_login.view.*
 import nl.psdcompany.duonavigationdrawer.widgets.DuoDrawerToggle
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
@@ -23,7 +19,6 @@ import ooo.cron.delivery.screens.about_service_screen.AboutServiceFragment
 import ooo.cron.delivery.screens.contacts_screen.ContactsFragment
 import ooo.cron.delivery.screens.first_address_selection_screen.FirstAddressSelectionActivity
 import ooo.cron.delivery.screens.login_screen.LoginActivity
-import ooo.cron.delivery.screens.main_screen.special_offers_view.constants.ScaleTypes
 import ooo.cron.delivery.screens.main_screen.special_offers_view.models.SlideModel
 import ooo.cron.delivery.screens.market_category_screen.MarketCategoryFragment
 import ooo.cron.delivery.screens.partners_screen.PartnersActivity
@@ -151,9 +146,14 @@ class MainActivity : BaseActivity(), MainContract.View {
             R.id.container_main,
             MarketCategoryFragment().apply {
                 arguments = marketCategoryArguments(category)
-
             }
         ).commit()
+
+        if (binding.vgMainContent.layoutParams is CoordinatorLayout.LayoutParams) {
+            (binding.vgMainContent.layoutParams as CoordinatorLayout.LayoutParams).behavior =
+                ScrollingViewBehavior()
+            binding.vgMainContent.requestLayout()
+        }
 
         presenter.onStartMarketCategory()
     }
@@ -209,20 +209,6 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
     override fun showSpecialOffers(promotions: List<Promotion>) {
-        val imageList = ArrayList<SlideModel>() // Create image list
-        imageList.add(SlideModel("https://bit.ly/37Rn50u", "Baby Owl", ScaleTypes.CENTER_CROP))
-        imageList.add(
-            SlideModel(
-                "https://bit.ly/2BteuF2",
-                "Elephants and tigers may become extinct."
-            )
-        )
-        imageList.add(
-            SlideModel(
-                "https://bit.ly/3fLJf72",
-                "The population of elephants is decreasing in the world."
-            )
-        )
         binding.imageSlider.viewPager?.pageMargin = resources.dipToPixels(16f).toInt()
         binding.imageSlider.viewPager?.clipToPadding = false
 
@@ -232,7 +218,7 @@ class MainActivity : BaseActivity(), MainContract.View {
             resources.dipToPixels(36f).toInt(),
             0
         )
-        binding.imageSlider.setImageList(imageList, ScaleTypes.CENTER_INSIDE)
+        binding.imageSlider.setImageList(promotions.map { SlideModel(it.imgUri, "") })
     }
 
     override fun hideSpecialOffers() {
@@ -266,7 +252,7 @@ class MainActivity : BaseActivity(), MainContract.View {
         setOnLoginLogOut()
 
         configureMenuItemsClick {
-            //TODO()
+            //TODO
         }
 
         binding.vgMainMenu.tvDrawerMenuItemShops.isSelected = true
@@ -331,8 +317,6 @@ class MainActivity : BaseActivity(), MainContract.View {
                 menuItems.forEach { item ->
                     item.isSelected = item == clickedView
                 }
-
-                clickedView == binding.vgMainMenu.tvDrawerMenuItemShops
 
                 when (clickedView) {
                     binding.vgMainMenu.tvDrawerMenuItemShops -> startMarketCategoryFragment(

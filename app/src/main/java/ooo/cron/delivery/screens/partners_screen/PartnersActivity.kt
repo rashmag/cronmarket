@@ -14,6 +14,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.SmoothScroller
 import com.bumptech.glide.Glide
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.CollapsingToolbarLayout
@@ -254,7 +255,15 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
     override fun onCategoryClick(position: Int) {
         collapseToolbar()
 
-        binding.rvProduct.smoothScrollToPosition(position)
+
+        val smoothScroller: SmoothScroller = object : LinearSmoothScroller(this) {
+            override fun getVerticalSnapPreference(): Int {
+                return SNAP_TO_START
+            }
+        }
+        smoothScroller.targetPosition = position
+
+        binding.rvProduct.layoutManager?.startSmoothScroll(smoothScroller)
     }
 
     override fun removeProgress() {

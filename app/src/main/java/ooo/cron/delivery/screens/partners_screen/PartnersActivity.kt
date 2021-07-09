@@ -9,7 +9,6 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
@@ -220,9 +219,9 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
     }
 
     private fun onRatingClick() {
-        binding.tvRating.setOnClickListener {
-            Toast.makeText(this, "Переход на экран отзывов", Toast.LENGTH_SHORT).show()
-        }
+//        binding.tvRating.setOnClickListener {
+//            Toast.makeText(this, "Переход на экран отзывов", Toast.LENGTH_SHORT).show()
+//        }
     }
 
     private fun onBackButtonClick() {
@@ -276,6 +275,12 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         smoothScroller.targetPosition = position
 
         binding.rvProduct.layoutManager?.startSmoothScroll(smoothScroller)
+
+        val centerOfScreen = binding.rvCategories.width / 3
+        (binding.rvCategories.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(
+            position,
+            centerOfScreen
+        )
     }
 
     override fun removeProgress() {

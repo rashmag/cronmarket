@@ -1,7 +1,5 @@
 package ooo.cron.delivery.screens.partners_screen
 
-import android.os.CountDownTimer
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +10,6 @@ import ooo.cron.delivery.databinding.ItemPartnerProductBinding
 import ooo.cron.delivery.utils.BasketCounterTimer
 import ooo.cron.delivery.utils.section_recycler_view.SectionRecyclerViewAdapter
 import ooo.cron.delivery.utils.section_recycler_view.SectionRecyclerViewHolder
-import java.util.*
 
 /*
  * Created by Muhammad on 08.05.2021
@@ -205,16 +202,24 @@ class CategoryAdapter(
 
 }
 
-class PartnerProductAdapter(
-    var productCategoryModel: List<ProductCategoryModel>,
-    private val listener: CategoryAdapter.OnProductClickListener
-) :
-    SectionRecyclerViewAdapter<PartnerProductAdapter.ViewHolder, ProductCategoryModel>(
-        productCategoryModel
-    ) {
+class PartnerProductAdapter :
+    SectionRecyclerViewAdapter<PartnerProductAdapter.ViewHolder, ProductCategoryModel>() {
+
+    private var productCategoryModel = ArrayList<ProductCategoryModel>()
+    private lateinit var listener: CategoryAdapter.OnProductClickListener
+
+    fun setData(productCategoryModel: List<ProductCategoryModel>) {
+        this.productCategoryModel = productCategoryModel as ArrayList<ProductCategoryModel>
+        notifyDataSetChanged()
+    }
+
+    fun setProductClickListener(listener: CategoryAdapter.OnProductClickListener) {
+        this.listener = listener
+    }
+
+    override fun getSectionList(): List<ProductCategoryModel> = productCategoryModel
 
     override fun viewHolder(view: View) = ViewHolder(view)
-
 
     inner class ViewHolder(view: View) : SectionRecyclerViewHolder(view) {
 

@@ -7,14 +7,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.github.fajaragungpramana.sectionrecyclerview.Section
 import ooo.cron.delivery.R
 
-abstract class SectionRecyclerViewAdapter<VH : SectionRecyclerViewHolder, M : Section>(
-    private var listSection: List<M>
-) :
+abstract class SectionRecyclerViewAdapter<VH : SectionRecyclerViewHolder, M : Section> :
     RecyclerView.Adapter<VH>() {
+
+    abstract fun getSectionList(): List<M>
 
     protected abstract fun viewHolder(view: View): VH
 
-    override fun getItemCount() = listSection.size
+    override fun getItemCount() = getSectionList().size
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH =
         viewHolder(
             LayoutInflater.from(parent.context).inflate(
@@ -25,7 +25,7 @@ abstract class SectionRecyclerViewAdapter<VH : SectionRecyclerViewHolder, M : Se
         )
 
     override fun onBindViewHolder(holder: VH, position: Int) {
-        holder.bindSectionTitle(listSection[position].titleSection, position)
+        holder.bindSectionTitle(getSectionList()[position].titleSection, position)
     }
 
     override fun getItemId(position: Int) = position.toLong()

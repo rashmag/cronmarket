@@ -55,6 +55,8 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
 
     private lateinit var productsLayoutManager: CustomLayoutManager
 
+    private lateinit var productsAdapter: PartnerProductAdapter
+
     var scrollRange = -1
     var overScroll = -1
 
@@ -81,6 +83,16 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
 
         setTitleVisibility()
         onProductRecyclerViewScrollChanged()
+        initPartnerRecyclerView()
+    }
+
+    private fun initPartnerRecyclerView() {
+        productsAdapter = PartnerProductAdapter()
+        productsAdapter.setProductClickListener(this)
+        binding.rvProduct.apply {
+            layoutManager = productsLayoutManager
+            adapter = productsAdapter
+        }
     }
 
     override fun onResume() {
@@ -277,10 +289,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         productsLayoutManager.setScrollEnabled(false)
         binding.run {
             vgMainView.removeView(binding.vgPartnersActivityProgress.root)
-            rvProduct.apply {
-                layoutManager = productsLayoutManager
-                adapter = PartnerProductAdapter(productCategoriesModel, this@PartnersActivity)
-            }
+            productsAdapter.setData(productCategoriesModel)
         }
     }
 

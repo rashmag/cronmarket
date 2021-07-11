@@ -49,13 +49,14 @@ class MainPresenter @Inject constructor(
             if (basketId != DataManager.EMPTY_UUID) {
                 val basket = dataManager.getBasket(basketId)
                 if (basket.isSuccessful) {
-                    view
                     basketPartnerId = basket.body()?.partnerId ?: DataManager.EMPTY_UUID
+                    view?.shouldLastBasketSessionBeVisible(true)
                     view?.showContinueLastSession()
+                    return@launch
                 }
-            } else {
-                view?.hideContinueLastSession()
             }
+            view?.shouldLastBasketSessionBeVisible(false)
+            view?.hideContinueLastSession()
 
         }
     }

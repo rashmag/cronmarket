@@ -19,6 +19,7 @@ interface MainContract {
         fun selectMarketCategory(position: Int)
         fun showAuthorizedUser(username: String)
         fun showUnauthorizedUser()
+        fun shouldLastBasketSessionBeVisible(boolean: Boolean)
         fun showContinueLastSession()
         fun hideContinueLastSession()
         fun removeMarketCategoriesProgress()

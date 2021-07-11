@@ -35,6 +35,8 @@ class MainActivity : BaseActivity(), MainContract.View {
     @Inject
     lateinit var binding: ActivityMainBinding
 
+    private var shouldLastBasketSessionBeVisible = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         injectDependencies()
         presenter.attachView(this)
@@ -130,6 +132,10 @@ class MainActivity : BaseActivity(), MainContract.View {
         binding.vgMainMenu.tvDrawerProfileLogInOut.setCompoundDrawablesWithIntrinsicBounds(
             R.drawable.ic_drawer_log_out, 0, 0, 0
         )
+    }
+
+    override fun shouldLastBasketSessionBeVisible(boolean: Boolean) {
+        this.shouldLastBasketSessionBeVisible = boolean
     }
 
     override fun showContinueLastSession() {
@@ -337,7 +343,11 @@ class MainActivity : BaseActivity(), MainContract.View {
         //TODO("Change View.GONE on visibility")
         binding.ivMainSearch.visibility = View.GONE
         binding.tvMainUserAddress.visibility = visibility
-        binding.vgMainContinueLastSession.visibility = visibility
+        binding.vgMainContinueLastSession.visibility =
+            if (shouldLastBasketSessionBeVisible && !isVisible)
+                View.VISIBLE
+            else
+                View.GONE
 
         if (isVisible) {
             val params = binding.vgMainContent.layoutParams as CoordinatorLayout.LayoutParams

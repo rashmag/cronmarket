@@ -206,58 +206,69 @@ class PartnersPresenter @Inject constructor(
                                 basketContent?.sumBy { it.quantity } ?: 0,
                                 String.format("%.2f", basket!!.amount)
                             )
+                            increaseProductInBasket(product, additives, quantity)
                         }
                     }
                 )
                 return@launch
             }
-            var dishId = UUID.randomUUID().toString()
 
-            basketContent?.filter {
-                it.productId == product.id
-            }?.forEach {
-                if (it.dishAdditives.isNullOrEmpty() && additives.isNullOrEmpty() ||
-                    it.dishAdditives.toSet() == additives.toSet()
-                ) {
-                    dishId = it.id
-                    return@forEach
-                }
-            }
+            increaseProductInBasket(product, additives, quantity)
 
-            val addingProduct = BasketDish(
-                dishId,
-                product.id,
-                product.name,
-                quantity,
-                product.cost,
-                product.photo,
-                additives
-            )
-            val basketEditor = BasketEditorReq(
-                basket?.id ?: DataManager.EMPTY_UUID,
-                partner.id,
-                partner.marketCategoryId,
-                Gson().toJson(addingProduct)
-            )
-
-            withErrorsHandle(
-                {
-                    val accessToken = dataManager.readToken().accessToken
-                    basket = if (accessToken.isNotEmpty())
-                        dataManager.increaseProductInBasket("Bearer $accessToken", basketEditor)
-                    else
-                        dataManager.increaseProductInBasket(basketEditor)
-                    dataManager.writeUserBasket(basket!!.id)
-                    basketContent = deserializeDishes()
-                    mergeBasketIntoProducts()
-                    view?.showPartnerProducts(productCategoriesModel)
-                    view?.updateBasketPreview(basketContent?.sumBy { it.quantity } ?: 0,
-                        String.format("%.2f", basket!!.amount))
-                },
-                { view?.showConnectionErrorScreen() },
-                { view?.showAnyErrorScreen() }
-            )
         }
+    }
+
+    private suspend fun increaseProductInBasket(
+        product: PartnerProductsRes,
+        additives: List<BasketDishAdditive>,
+        quantity: Int
+    ) {
+        var dishId = UUID.randomUUID().toString()
+
+        basketContent?.filter {
+            it.productId == product.id
+        }?.forEach {
+            if (it.dishAdditives.isNullOrEmpty() && additives.isNullOrEmpty() ||
+                it.dishAdditives.toSet() == additives.toSet()
+            ) {
+                dishId = it.id
+                return@forEach
+            }
+        }
+
+        val addingProduct = BasketDish(
+            dishId,
+            product.id,
+            product.name,
+            quantity,
+            product.cost,
+            product.photo,
+            additives
+        )
+        val basketEditor = BasketEditorReq(
+            basket?.id ?: DataManager.EMPTY_UUID,
+            partner.id,
+            partner.marketCategoryId,
+            Gson().toJson(addingProduct)
+        )
+
+        withErrorsHandle(
+            {
+                val accessToken = dataManager.readToken().accessToken
+                basket = if (accessToken.isNotEmpty())
+                    dataManager.increaseProductInBasket("Bearer $accessToken", basketEditor)
+                else
+                    dataManager.increaseProductInBasket(basketEditor)
+                dataManager.writeUserBasket(basket!!.id)
+                basketContent = deserializeDishes()
+                mergeBasketIntoProducts()
+                view?.showPartnerProducts(productCategoriesModel)
+                view?.updateBasketPreview(basketContent?.sumBy { it.quantity } ?: 0,
+                    String.format("%.2f", basket!!.amount))
+            },
+            { view?.showConnectionErrorScreen() },
+            { view?.showAnyErrorScreen() }
+        )
     }
 
     private fun Response<List<PartnerProductsRes>>.handlePartnerProducts() {

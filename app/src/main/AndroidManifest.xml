@@ -1,19 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="ooo.cron.delivery">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
 
     <application
         android:name=".App"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".screens.main_screen.MainActivity">
+        android:theme="@style/AppTheme"
+        tools:replace="android:allowBackup">
+
+        <activity android:name=".screens.main_screen.MainActivity" />
+
+        <activity android:name=".screens.any_error_screen.AnyErrorActivity" />
+
+        <activity android:name=".screens.connection_error_screen.ConnectionErrorActivity" />
+
+        <activity android:name=".screens.first_address_selection_screen.FirstAddressSelectionActivity"
+            android:windowSoftInputMode="adjustResize"/>
+
+        <activity android:name=".screens.login_screen.LoginActivity" />
+
+        <activity android:name=".screens.partners_screen.PartnersActivity" />
+
+        <activity android:name=".screens.basket_screen.BasketActivity"/>
+
+        <activity android:name=".screens.ordering_screen.OrderingActivity"
+            android:windowSoftInputMode="adjustPan"/>
+
+        <activity android:name=".screens.splash_screen.SplashScreenActivity"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

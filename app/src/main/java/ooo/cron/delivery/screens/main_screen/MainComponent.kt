@@ -1,5 +1,7 @@
 package ooo.cron.delivery.screens.main_screen
 
+import android.view.LayoutInflater
+import dagger.BindsInstance
 import dagger.Subcomponent
 
 /**
@@ -14,6 +16,10 @@ interface MainComponent {
 
     @Subcomponent.Builder
     interface Builder {
+
+        @BindsInstance
+        fun bindInflater(inflater: LayoutInflater): Builder
+
         fun build(): MainComponent
     }
 }

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="36dp"
+            android:textStyle="bold"
+            android:text="@string/contacts_for_cooperation_title"
+            android:textColor="@color/grey90"
+            android:textSize="18sp" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="36dp"
+            android:textStyle="bold"
+            android:text="@string/contacts_said_lev_title"
+            android:textColor="@color/grey90"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:layout_marginEnd="36dp"
+            android:text="@string/contacts_said_lev_position_title"
+            android:textColor="@color/grey70"
+            android:textSize="14sp" />
+
+
+        <TextView
+            android:id="@+id/tv_said_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="36dp"
+            android:text="@string/contacts_said_lev_phone_title"
+            android:textColor="@color/grey90"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_said_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="36dp"
+            android:text="@string/contacts_said_lev_email_title"
+            android:textColor="@color/grey90"
+            android:textSize="14sp" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="36dp"
+            android:textStyle="bold"
+            android:text="@string/contacts_magomed_title"
+            android:textColor="@color/grey90"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:layout_marginEnd="36dp"
+            android:text="@string/contacts_magomed_position_title"
+            android:textColor="@color/grey70"
+            android:textSize="14sp" />
+
+
+        <TextView
+            android:id="@+id/tv_magomed_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="36dp"
+            android:text="@string/contacts_magomed_phone_title"
+            android:textColor="@color/grey90"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_magomed_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="36dp"
+            android:text="@string/contacts_magomed_email_title"
+            android:textColor="@color/grey90"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

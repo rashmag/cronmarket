@@ -1,3 +1,265 @@
 <resources>
-    <string name="app_name">Delivery</string>
+    <string name="app_name">CronMarket</string>
+
+    <string name="common_gps_disabled">Похоже, что GPS выключен. Вы хотите включить GPS</string>
+    <string name="common_yes">Да</string>
+    <string name="common_no">Нет</string>
+    <string name="common_user_not_authorized">Пользователь не авторизован</string>
+
+    <string name="base_error_icon_description">Иконка ошибки</string>
+
+    <string name="any_error_title">Что-то пошло не так</string>
+    <string name="any_error_message">В работе приложения произошла ошибка.\nПопробуйте снова, и при повторной ошибке \n обратитесь в техподдержку.</string>
+    <string name="any_error_submit_text">Попробовать снова</string>
+
+    <string name="connection_error_title">Отсутствует интернет соединение</string>
+    <string name="connection_error_message">Приложение не может связаться с \n сервером. Возможно у вас остутствует \n интернет соединение.</string>
+    <string name="connection_error_submit_text">Попробовать снова</string>
+
+    <string name="first_address_selection_title">Укажите адрес доставки</string>
+    <string name="first_address_selection_address_title">Адрес доставки</string>
+    <string name="first_address_selection_info_message">Укажите адрес доставки, чтобы мы были уверенны, что можем доставить до вас заказ</string>
+    <string name="first_address_selection_success_message">Отлично! Давайте приступим к покупкам.</string>
+    <string name="first_address_selection_error_message">К сожалению в городе %1$s пока нет нашей доставки. Выберите город из списка выше</string>
+    <string name="first_address_selection_location_error_message">К сожалению ваш адрес не был определен, введите пожалуйста адрес вручную</string>
+    <string name="first_address_selection_warning_message">К сожалению по данному адресу мы пока не можем доставить заказ. Но вы можете посмотреть наше приложение и заказать по другому адресу</string>
+    <string name="first_address_selection_info_description">Информационное сообщение</string>
+    <string name="first_address_selection_find_location">Определить моё местоположение</string>
+    <string name="first_address_selection_start_shopping">Перейти к покупкам</string>
+    <string name="first_address_selection_access_location_permission_title">Местоположение пользователя</string>
+    <string name="first_address_selection_access_location_permission_description">Доступ к местоположению пользователя необходим для определения адреса доставки</string>
+    <string name="first_address_selection_access_location_permission_ok">Ок</string>
+
+    <string name="main_special_offers_title">Акции от крон доставки</string>
+    <string name="main_address_incorrect">Укажите адрес доставки</string>
+    <string name="main_search">Поиск</string>
+
+    <string name="market_category_special_offers">Акции от CronДоставки</string>
+    <string name="market_category_all_tags">Все</string>
+    <string name="market_category_other_tags">…</string>
+    <string name="market_category_partner_common_rating">0.0</string>
+    <string name="market_category_rating_description">Рэйтинг</string>
+    <string name="market_category_min_price_description">Минимальная стоимость заказа</string>
+    <string name="market_category_partner_image_description">Изображение партнера</string>
+    <string name="market_category_partner_min_price">от %1$d₽</string>
+
+    <string name="navigation_drawer_open">navigation_drawer_open</string>
+    <string name="navigation_drawer_close">navigation_drawer_close</string>
+
+    <string name="drawer_logo_image_description">Логотип крон доставка</string>
+    <string name="drawer_profile_image_description">Профиль</string>
+
+    <string name="drawer_menu_item_shops">Магазины</string>
+    <string name="drawer_menu_item_contacts">Связаться с нами</string>
+    <string name="drawer_menu_item_about_us">О сервисе</string>
+    <string name="drawer_menu_item_vacancies">Стать курьером</string>
+    <string name="drawer_menu_settings">Настройки</string>
+    <string name="drawer_log_in">Вход / Регистрация</string>
+    <string name="drawer_log_out">Выйти из профиля</string>
+    <string name="drawer_profile_name_unauthorized">Вход \nне выполнен</string>
+
+    <string name="enter_phone_title">Укажите номер</string>
+    <string name="confirm_phone_title">Подтвердите номер</string>
+    <string name="whats_your_name_title">Как вас зовут?</string>
+    <string name="enter_your_name_title">Введите ваше имя, чтобы мы могли к вам правильно обращаться</string>
+    <string name="code_from_sms_title">Код из смс</string>
+    <string name="your_name_title">Ваше имя</string>
+    <string name="sms_sent_title">На номер %1$s отправлено СМС с кодом подтверждения. Введите его, чтобы войти</string>
+    <string name="enter_phone_for_auth_title">Введите номер телефона для авторизации</string>
+    <string name="next_title">Далее</string>
+    <string name="confirm_title">Подтвердить</string>
+    <string name="done_title">Готово</string>
+    <string name="privacy_policy_text"><font color="#212529">Продолжая, я подтверждаю, что согласен с
+    </font> <font color="#0000ff"><u>правилами, условиями и политикой конфидециальности.</u></font></string>
+
+    <string name="repeat_sent_code_title">Выслать код повторно можно через %1$d сек</string>
+    <string name="enter_phone_repeat_send_code_title"><u>Выслать код повторно</u></string>
+
+    <string name="partners_activity_min_order_template">заказ от %1$d \u20BD</string>
+    <string name="partners_activity_free_delivery_template">от %1$d \u20BD бесплатно</string>
+    <string name="partners_activity_close_title">Закрыть</string>
+
+
+    <string name="delivery_details_address_title">Адрес доставки</string>
+    <string name="delivery_details_enter_address_title">Введите адрес</string>
+    <string name="delivery_details_entrance_title">Подъезд</string>
+    <string name="delivery_details_floor_title">Этаж</string>
+    <string name="delivery_details_flat_title">Квартира</string>
+    <string name="delivery_details_save_address_title">Сохранить адрес</string>
+    <string name="delivery_details_phone_number_title">Номер телефона</string>
+    <string name="delivery_details_comments_to_order_title">Комментарий к заказу</string>
+    <string name="delivery_details_delivery_time_title">Время доставки</string>
+    <string name="delivery_details_soon_as_possible_title">Как можно скорее</string>
+    <string name="delivery_details_in_time_title">Ко времени</string>
+    <string name="delivery_details_title">Детали доставки</string>
+    <string name="order_costs_title">Стоимость заказа</string>
+    <string name="delivery_details_choose_delivery_time_title">Выберите время доставки</string>
+
+    <string name="order_cost_payment_method_title">Способ оплаты</string>
+    <string name="order_cost_promo_code_title">Промокод</string>
+    <string name="order_cost_enter_promo_code_title">Введите промокод</string>
+    <string name="order_cost_apply_title">Применить</string>
+    <string name="cost_of_goods_title">Стоимость товаров:</string>
+    <string name="cost_of_delivery_title">Стоимость доставки:</string>
+    <string name="order_cost_discount_title">Скидка:</string>
+    <string name="all_cost_title">Итого к оплате:</string>
+    <string name="order_title">Заказать</string>
+
+    <string name="delivery_time_error_title">Не раньше чем через час после открытия и за пол часа до закрытия</string>
+
+    <string-array name="payment_method_array">
+        <item>Наличными при получении</item>
+        <item>Онлайн оплата с карты</item>
+    </string-array>
+
+
+    <string name="ordering_pay_status_done">Ваш заказ принят.</string>
+    <string name="ordering_pay_status_done_details_title">Спасибо! Мы доставим вам заказ в ближайшее время.</string>
+    <string name="ordering_pay_status_error">Ваш платёж не прошёл.</string>
+    <string name="ordering_pay_status_error_detail_title">Не удалось произвести платёж. Попробуйте снова, или обратитесь в <u>техподдержку</u>.</string>
+
+
+
+    <string name="enter_phone_privacy_policy_text">Настоящая Политика конфиденциальности персональных данных (далее – Политика конфиденциальности), действует в отношении всей информации, которую собирает общество с ограниченной ответственностью «КРОН» (далее — Исполнитель) в лице мобильного приложения «CronДоставка» (далее – Мобильное приложение), которую может получить о Пользователе во время использования им Мобильного приложения.
+
+ТЕРМИНЫ И ОПРЕДЕЛЕНИЯ
+В Политике конфиденциальности используются следующие термины:
+1.1. Персональные данные – любая информация, относящаяся прямо или косвенно к определенному или к определяемому физическому лицу (Далее – «Пользователю»).
+1.2. Пользователь – любое физическое лицо, предоставившее «Название ИП» свои персональные данные посредством регистрации и использования Мобильного приложения.
+1.3. Обработка персональных данных – любое действие или совокупность действий, совершаемых с использованием средств автоматизации или без использования таких средств с персональными данными, включая сбор, запись, систематизацию, накопление, хранение, уточнение (обновление, изменение), извлечение, использование, передачу (распространение, предоставление, доступ), обезличивание, блокирование, удаление, уничтожение персональных данных.
+1.4. Конфиденциальность персональных данных – обязательное для соблюдения лицами, получившими доступ к персональным данным, требование не допускать их распространения без согласия субъекта персональных данных или наличия иного законного основания.
+1.5. Продукция – продукция или товар, которую Пользователь заказывает в Мобильном приложении.
+ОБЩИЕ ПОЛОЖЕНИЯ
+2.1. Использование Пользователем Мобильного приложения означает согласие с настоящей Политикой конфиденциальности и условиями обработки персональных данных Пользователя.
+2.2. Если Пользователь не согласен с условиями Политики конфиденциальности, то Пользователю необходимо прекратить использование данного Мобильного приложения.
+2.3 Политика конфиденциальности действует в отношении всей информации, которую Исполнитель может получить от Пользователя во время использования им Мобильного приложения.
+2.4. Исполнитель вправе единолично и в любое время изменить Политику конфиденциальности, опубликовав соответствующее изменение. Настоящая Политика не может быть изменена, кроме как посредством опубликования измененного документа на данном сайте — http://crondostav.ru/privacy_policy/ .
+2.5. Исполнитель не проверяет достоверность персональных данных, предоставляемых Пользователем.
+ПРЕДМЕТ ПОЛИТИКИ КОНФИДЕНЦИАЛЬНОСТИ.
+3.1. Настоящая Политика конфиденциальности устанавливает обязательства Исполнителя по неразглашению и обеспечению режима защиты конфиденциальности персональных данных, которые Пользователь предоставил по запросу Исполнителя при регистрации и оформлении заказа на доставку Продукции в Мобильном приложении.
+3.2. Персональные данные, разрешенные к обработке в рамках настоящей Политики конфиденциальности, предоставляются пользователем путем заполнения им регистрационной формы или оформлением заказа на доставку Продукции включают в себя следующую информацию:
+3.2.1. Имя Пользователя.
+3.2.2. Контактный номер телефона.
+3.2.3. Адрес доставки Продукции.
+3.3. Пользователь обязуется следить за тем, чтобы предоставляемые им данные были актуальны и точны, и своевременно обновлять предоставляемые данные в случае их изменений.
+3.4. Регистрируясь, пользователь дает согласие на получение и обработку следующих данных, собираемых Исполнителем:
+3.4.1. История заказов.
+3.4.2. Адреса Пользователя.
+3.4.3. Информация о мнении Пользователя о различных услугах и Продукции, в случае проведения дополнительных опросов Исполнителем, и в котором Пользователю предлагается выразить свое мнение.
+3.4.4. Сведения о действиях Пользователя и личных предпочтениях при использовании Мобильного приложения.
+ЦЕЛИ СБОРА ПЕРСОНАЛЬНЫХ ДАННЫХ ПОЛЬЗОВАТЕЛЯ.
+4.1. Персональные данные Пользователя Исполнитель может использовать в следующих целях:
+4.1.1. Идентификации Пользователя, зарегистрированного в Мобильном приложении для его дальнейшей авторизации, оформлении заказа и других действий.
+4.1.2. Предоставления Пользователю доступа к персонализированным ресурсам Мобильного приложения.
+4.1.3. Определение места нахождения Пользователя для предотвращения мошенничества и обеспечения безопасности.
+4.1.4. Обработки и получения платежей.
+4.1.5. Подтверждении полноты и достоверности персональных данных, предоставляемых Пользователем.
+4.1.6. Создании учетной записи Пользователя для совершения им покупок.
+4.1.7. Для внутреннего анализа и исследований в целях улучшения Мобильного приложения, а также Продукции, доставки и других услуг.
+4.1.8. Для установления с Пользователем обратной связи.
+4.1.9. Для предоставления Пользователю эффективной технической поддержки при возникновении проблем, связанных с использованием Мобильного приложения.
+4.1.10. Предоставления Пользователю с его согласия специальных предложений, новостных рассылок, акций и других сведений от Исполнителя.
+СПОСОБЫ И СРОКИ ОБРАБОТКИ ПЕРСОНАЛЬНОЙ ИНФОРМАЦИИ
+5.1. Обработка персональных данных Пользователя осуществляется без ограничения срока, любым законным способом, в том числе в информационных системах персональных данных с использованием средств автоматизации или без использования таких средств.
+5.2. Пользователь соглашается с тем, что Исполнитель вправе передавать персональные данные третьим лицам, в частности, курьерским службам, операторам электросвязи, операторам программ поощрения лояльности исключительно в целях выполнения заказа Пользователя.
+5.3. Персональные данные Пользователя могут быть переданы уполномоченным органам государственной власти Российской Федерации только по основаниям и в порядке, установленным законодательством Российской Федерации.
+5.4. При утрате или разглашении персональных данных Исполнитель информирует Пользователя об утрате или разглашении персональных данных.
+5.5. Исполнитель принимает необходимые организационные и технические меры для защиты персональной информации Пользователя от неправомерного или случайного доступа, уничтожения, изменения, блокирования, копирования, распространения, а также от иных неправомерных действий третьих лиц.
+5.6. Исполнитель совместно с Пользователем принимает все необходимые меры по предотвращению убытков или иных отрицательных последствий, вызванных утратой или разглашением персональных данных Пользователя.
+ОБЯЗАТЕЛЬСТВА СТОРОН
+6.1. Пользователь вправе:
+6.1.1. Предоставить информацию о персональных данных, необходимую для пользования Мобильным приложением.
+6.1.2. Обновить, дополнить предоставленную информацию о персональных данных в случае изменения данной информации.
+6.2. Исполнитель обязан:
+6.2.1. Использовать полученную информацию исключительно для целей и способами, указанными в п. 4 настоящей Политики конфиденциальности.
+6.2.2. Обеспечить хранение конфиденциальной информации в тайне, не разглашать без предварительного письменного разрешения Пользователя, а также не осуществлять продажу, обмен, опубликование, либо разглашение иными возможными способами переданных персональных данных Пользователя, за исключением отдельно оговоренных случаев в настоящей Политики конфиденциальности.
+6.2.4. Осуществить блокирование персональных данных, относящихся к соответствующему Пользователю, с момента обращения или запроса Пользователя или его законного представителя либо уполномоченного органа по защите прав субъектов персональных данных на период проверки, в случае выявления недостоверных персональных данных или неправомерных действий.
+ОТВЕТСТВЕННОСТЬ СТОРОН
+7.1. Исполнитель не несет ответственность за убытки, понесенные Пользователем в связи с неправомерным использованием персональных данных, в соответствии с законодательством Российской Федерации, за исключением отдельно оговоренных случаем в Политике конфиденциальности.
+7.2. В случае утраты или разглашения конфиденциальной информации Исполнитель не несёт ответственность, если данная конфиденциальная информация:
+7.2.1. Стала публичным достоянием до её утраты или разглашения.
+7.2.2. Была получена от третьей стороны до момента её получения Исполнителем.
+7.2.3. Была разглашена с согласия Пользователя.
+РАЗРЕШЕНИЕ СПОРОВ
+8.1. До обращения в суд с иском по спорам, возникающим из отношений между Пользователем и Исполнителем, обязательным является предъявление претензии (письменного предложения о добровольном урегулировании спора).
+8.2. Получатель претензии в течение 30 календарных дней со дня получения претензии, письменно уведомляет заявителя претензии о результатах рассмотрения претензии.
+8.3. При не достижении соглашения спор будет передан на рассмотрение в судебный орган в соответствии с действующим законодательством Российской Федерации.
+8.4. К настоящей Политике конфиденциальности и отношениям между Пользователем и Исполнителем применяется действующее законодательство Российской Федерации.
+ДОПОЛНИТЕЛЬНЫЕ УСЛОВИЯ
+9.1. Исполнитель вправе вносить изменения или дополнения в настоящую Политику конфиденциальности единолично, без согласия и уведомления Пользователя.
+9.2. Новая Политика конфиденциальности вступает в силу с момента ее размещения по адресу «http://crondostav.ru/privacy_policy/», если иное не предусмотрено новой редакцией Политики конфиденциальности.
+КОНТАКТНАЯ ИНФОРМАЦИЯ
+10.1. Адрес организации: Россия, Республика Дагестан, город Махачкала, улица Ирчи Казака, 11 А
+10.2. Телефон: 8 965 417 39 04, Email: krosstom@yandex.ru</string>
+    <string name="basket_title">Корзина</string>
+    <string name="common_navigate_on_screen_before">Перейти на предыдущий экран</string>
+    <string name="basket_clear">Очистить корзину</string>
+    <string name="basket_order_title">Ваш заказ</string>
+    <string name="basket_portions">Количество \nприборов</string>
+    <string name="basket_counter_minus">Уменьшить количество</string>
+    <string name="basket_counter_plus">Увеличить количество</string>
+    <string name="basket_item_image_description">Изображение блюда</string>
+    <string name="main_continue_last_session">Продолжить покупки</string>
+    <string name="partner_basket">В корзине %1$d товаров \nна сумму:</string>
+    <string name="partner_basket_price">%1$s₽</string>
+    <string name="partner_product_image">Изображение продукта</string>
+    <string name="partner_product_decrease_quantity">Уменьшить количество на 1</string>
+    <string name="partner_product_increase_product">Увеличить количество на 1</string>
+    <string name="about_service_advantages_title">Наши основные преимущества</string>
+    <string name="about_service_other_products_title">Еда, продукты и любые товары</string>
+    <string name="about_service_other_products_description">В нашем приложение вы можете заказать еду уже сейчас. За это лето мы добавим продукты, книги, аптеки и косметику и т.д. Также будем рады если вы сообщите нам что бы вы хотели видеть у нас в ассортименте.</string>
+    <string name="about_service_delivery_title">Доставим клиенту заказ вовремя</string>
+    <string name="about_service_delivery_description">С помощью команды наших курьеров мы доставляем любой заказ по городу за 30-60 мин.</string>
+    <string name="about_service_interface_title">Простой интерфейс</string>
+    <string name="about_service_interface_description">Наше приложение позволяет за несколько кликов сделать заказ в любой категории ассортимента и получить его очень быстро с доставкой до двери.</string>
+    <string name="about_service_support_title">Поддержка 24/7</string>
+    <string name="about_service_support_description">Вы можете связаться с нами и получить ответ по интересующей вас информации.</string>
+    <string name="about_our_service_title">Наш сервис</string>
+    <string name="about_our_service_description">Наша площадка работает для того чтобы наши клиенты получили возможность не выходя из дома и комфортно получать все что они закажут. Потому что мы считаем что в наше время и при нашем ритме жизни, мы не должны терять время на походы в магазины. Наш сервис освобождает ваше время.</string>
+    <string name="common_warning_description">Важное сообщение</string>
+    <string name="accept_warning_message">Нельзя заказать товары из разных заведений. Подтверждая вы удалите все товары из корзины.</string>
+    <string name="accept">Подтвердить</string>
+    <string name="cancel">Отмена</string>
+    <string name="order_repeat_title">Повторить</string>
+    <string name="basket_make_order">Оформить заказ</string>
+    <string name="price">%1$s₽</string>
+    <string name="contacts_for_cooperation_title">По вопросам сотрудничества:</string>
+    <string name="contacts_said_lev_title">Гюльмагомедов Саид \nГюльмагомедович</string>
+    <string name="contacts_said_lev_position_title">Руководитель отдела по работе с \nпартнёрами</string>
+    <string name="contacts_said_lev_phone_title">Телефон: <font color="#e66835">8(965) 417-39-04</font></string>
+    <string name="said_lev_phone">8(965) 417–39–04</string>
+    <string name="said_lev_email">gsg@cron.ooo</string>
+    <string name="contacts_said_lev_email_title">Эл.почта: <font color="#e66835">gsg@cron.ooo</font></string>
+    <string name="contacts_magomed_title">Гаджиев Магомед Рамазанович</string>
+    <string name="contacts_magomed_position_title">Старший менеджер отдела по работе с \nклиентами</string>
+    <string name="contacts_magomed_phone_title">Телефон: <font color="#e66835">8(928) 514-79-23</font></string>
+    <string name="magomed_phone">8(928) 514–79–23</string>
+    <string name="magomed_email">magomed.g@cron.ooo</string>
+    <string name="contacts_magomed_email_title">Эл.почта: <font color="#e66835">magomed.g@cron.ooo</font></string>
+    <string name="contacts_title">Связаться с нами</string>
+    <string name="vacancies_word_in_cron_delivery_title">Работа в CronДоставка</string>
+    <string name="vacancies_description_title">Наша команда доставки находится на передовой и в снег, и зной, и в гололед. Мы доставляем заказы и никогда не поднимаем цены для наших клиентов из-за погоды. Наши курьеры работают из нескольких комфортабельных офисов. \n\n\n В нашу команду принимаются лучшие, молодые и амбициозные.</string>
+    <string name="vacancies_every_week_payment_title">Еженедельные выплаты</string>
+    <string name="vacancies_every_week_payment_description">Средний ежедневный доход - 1000р.</string>
+    <string name="vacancies_bonuses_title">Бонусы</string>
+    <string name="vacancies_bonuses_description">Выполните 100 заказов за первый месяц и получите бонус.</string>
+    <string name="vacancies_fixed_pay_title">Фиксированная оплата за смену</string>
+    <string name="vacancies_fixed_pay_description">Даже если заказов мало, наши сотрудники получают фиксированную оплату за выход на смену.</string>
+    <string name="vacancies_delivery_transport_title">Выдача транспорта</string>
+    <string name="vacancies_delivery_transport_description">Мы выдаем своим курьерам велосипеды.</string>
+    <string name="vacancies_contacts_title">Контакты для связи</string>
+    <string name="vacancies_artem_title">Артем Абдулгалимов</string>
+    <string name="vacancies_position_title">Координатор курьерского сервиса</string>
+    <string name="vacancies_phones_title">Телефоны:</string>
+    <string name="vacancies_first_phone_title">8(928) 578–13–07</string>
+    <string name="vacancies_second_phone_title">8(988) 790–79–03</string>
+    <string name="become_courier_title">Стать курьером</string>
+
+    <string name="tinkoff_terminal_key">1616764866032DEMO</string>
+    <string name="tinkoff_terminal_password">37qcj6mk92hv5r8b</string>
+    <string name="tinkoff_terminal_public_key">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAv5yse9ka3ZQE0feuGtemYv3IqOlLck8zHUM7lTr0za6lXTszRSXfUO7jMb+L5C7e2QNFs+7sIX2OQJ6a+HG8kr+jwJ4tS3cVsWtd9NXpsU40PE4MeNr5RqiNXjcDxA+L4OsEm/BlyFOEOh2epGyYUd5/iO3OiQFRNicomT2saQYAeqIwuELPs1XpLk9HLx5qPbm8fRrQhjeUD5TLO8b+4yCnObe8vy/BMUwBfq+ieWADIjwWCMp2KTpMGLz48qnaD9kdrYJ0iyHqzb2mkDhdIzkim24A3lWoYitJCBrrB2xM05sm9+OdCI1f7nPNJbl5URHobSwR94IRGT7CJcUjvwIDAQAB</string>
+    <string name="partner_closed">Заведение в данный момент закрыто\nОткроется в %1$s</string>
+    <string name="enter_address">Введите адрес</string>
+
+    <string name="left">LEFT</string>
 </resources>

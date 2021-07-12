@@ -7,6 +7,10 @@ import dagger.Provides
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import ooo.cron.delivery.BuildConfig
+import ooo.cron.delivery.data.DataManager
+import ooo.cron.delivery.data.network.RestService
+import ooo.cron.delivery.data.network.SPrefsService
+import ooo.cron.delivery.data.network.errors.ApiErrorsUtils
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -41,6 +45,27 @@ class AppModule {
 
     @Provides
     @Singleton
+    fun provideRestService(retrofit: Retrofit): RestService =
+        retrofit.create(RestService::class.java)
+
+    @Provides
+    @Singleton
     fun providePreferences(context: Context): SharedPreferences =
         context.getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE)
+
+    @Provides
+    @Singleton
+    fun provideSPrefsService(sharedPreferences: SharedPreferences) =
+        SPrefsService(sharedPreferences)
+
+    @Provides
+    @Singleton
+    fun provideDataManager(restService: RestService, sPrefsService: SPrefsService) =
+        DataManager(restService, sPrefsService)
+
+    @Provides
+    @Singleton
+    fun provideApiErrorUtils(): ApiErrorsUtils {
+        return ApiErrorsUtils()
+    }
 }

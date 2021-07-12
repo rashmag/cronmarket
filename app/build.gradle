@@ -11,8 +11,8 @@ android {
         applicationId "ooo.cron.delivery"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        versionCode 20
+        versionName "3.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -38,7 +38,7 @@ android {
         }
 
         debug {
-            buildConfigField "String", "BASE_URL", "\"https://staging-api.crondostav.ru/\""
+            buildConfigField "String", "BASE_URL", "\"https://api.crondostavka.ru/\""
         }
     }
 }

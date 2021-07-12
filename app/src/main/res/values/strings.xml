@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Delivery</string>
+    <string name="app_name">CronMarket</string>
 
     <string name="common_gps_disabled">Похоже, что GPS выключен. Вы хотите включить GPS</string>
     <string name="common_yes">Да</string>

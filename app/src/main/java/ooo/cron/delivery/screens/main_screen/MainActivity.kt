@@ -1,10 +1,13 @@
 package ooo.cron.delivery.screens.main_screen
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.google.android.material.appbar.AppBarLayout.ScrollingViewBehavior
 import com.google.android.material.tabs.TabLayout
@@ -37,6 +40,17 @@ class MainActivity : BaseActivity(), MainContract.View {
 
     private var shouldLastBasketSessionBeVisible = false
 
+    private var isFromPartnerScreen = false
+
+    private val partnerActivityLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result: ActivityResult ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            isFromPartnerScreen = true
+        }
+
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         injectDependencies()
         presenter.attachView(this)
@@ -53,12 +67,20 @@ class MainActivity : BaseActivity(), MainContract.View {
 
     override fun onResume() {
         super.onResume()
-        presenter.onResumeView()
+        presenter.onResumeView(isFromPartnerScreen)
+        isFromPartnerScreen = false
     }
 
     override fun onDestroy() {
         super.onDestroy()
         presenter.detachView()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (resultCode == PartnersActivity.RESULT_CODE)
+            isFromPartnerScreen = true
+
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun showSavedAddress(address: String) {
@@ -207,10 +229,16 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
     override fun navigatePartnerScreen(partnerId: String) {
-        startActivity(Intent(this, PartnersActivity::class.java)
-            .apply {
-                putExtra(PartnersActivity.EXTRA_PARTNER_ID, partnerId)
-            }
+//        partnerActivityLauncher.launch(
+//
+//        )
+
+        startActivityForResult(
+            Intent(this, PartnersActivity::class.java)
+                .apply {
+                    putExtra(PartnersActivity.EXTRA_PARTNER_ID, partnerId)
+                },
+            PartnersActivity.RESULT_CODE
         )
     }
 

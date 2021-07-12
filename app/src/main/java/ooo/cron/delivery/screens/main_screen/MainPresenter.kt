@@ -36,7 +36,7 @@ class MainPresenter @Inject constructor(
 
     }
 
-    override fun onResumeView() {
+    override fun onResumeView(isFromPartnerScreen: Boolean) {
         mainScope.launch {
             defineAddress()
             if (marketCategories == null) {
@@ -44,7 +44,7 @@ class MainPresenter @Inject constructor(
                 showMarketCategories(marketCategories!!.first())
             }
 
-            loadUser(dataManager.readToken())
+            loadUser(dataManager.readToken(), isFromPartnerScreen)
             val basketId = dataManager.readUserBasket()
             if (basketId != DataManager.EMPTY_UUID) {
                 val basket = dataManager.getBasket(basketId)
@@ -114,11 +114,11 @@ class MainPresenter @Inject constructor(
         { view?.showAnyErrorScreen() }
     )
 
-    private suspend fun loadUser(token: RefreshableToken) {
+    private suspend fun loadUser(token: RefreshableToken, isFromPartnerScreen: Boolean) {
         val response = dataManager.getUser("Bearer ${token.accessToken}")
 
         if (response.isSuccessful) {
-            updateUser(response)
+            updateUser(response, isFromPartnerScreen)
             return
         }
 
@@ -137,13 +137,13 @@ class MainPresenter @Inject constructor(
         }
     }
 
-    private suspend fun Response<RefreshableToken>.handleRefreshToken() {
+    private suspend fun Response<RefreshableToken>.handleRefreshToken(isFromPartnerScreen: Boolean = false) {
         if (isSuccessful) {
             dataManager.writeToken(body()!!)
 
             val userResponse = dataManager.getUser("Bearer ${body()!!.accessToken}")
             if (userResponse.isSuccessful)
-                return updateUser(userResponse)
+                return updateUser(userResponse, isFromPartnerScreen)
         }
 
         if (code() == 400 || code() == 401) {
@@ -161,10 +161,11 @@ class MainPresenter @Inject constructor(
     private fun writeBasketId(response: Response<UserResponse>) =
         dataManager.writeUserBasket(response.body()?.basket?.id ?: DataManager.EMPTY_UUID)
 
-    private fun updateUser(response: Response<UserResponse>) {
+    private fun updateUser(response: Response<UserResponse>, isFromPartnerScreen: Boolean) {
         handleBasket(response)
         showAuthorizeUser(response)
-        selectMarketCategory()
+        if (!isFromPartnerScreen)
+            selectMarketCategory()
     }
 
     private fun showAuthorizeUser(response: Response<UserResponse>) {

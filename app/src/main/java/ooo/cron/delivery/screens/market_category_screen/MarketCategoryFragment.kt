@@ -94,10 +94,11 @@ class MarketCategoryFragment() : BaseFragment(),
     }
 
     override fun navigatePartnerScreen(partnerId: String) {
-        startActivity(Intent(context!!, PartnersActivity::class.java)
+        startActivityForResult(Intent(requireContext(), PartnersActivity::class.java)
             .apply {
                 putExtra(PartnersActivity.EXTRA_PARTNER_ID, partnerId)
-            }
+            },
+            PartnersActivity.RESULT_CODE
         )
     }
 
@@ -111,7 +112,7 @@ class MarketCategoryFragment() : BaseFragment(),
     private fun configurePartnersList() {
         binding.rvMarketCategoryPartners.setHasFixedSize(false)
         binding.rvMarketCategoryPartners.layoutManager =
-            LinearLayoutManager(context!!, LinearLayoutManager.VERTICAL, false)
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.rvMarketCategoryPartners.adapter = PartnersAdapter {
             presenter.onPartnerClicked(it)
         }

@@ -40,7 +40,7 @@ interface MainContract {
 
     interface Presenter : MvpPresenter<View> {
         fun onCreateView()
-        fun onResumeView()
+        fun onResumeView(isFromPartnerScreen: Boolean)
         fun onTabSelected(position:Int)
         fun onClickAddress()
         fun onProfileClick()

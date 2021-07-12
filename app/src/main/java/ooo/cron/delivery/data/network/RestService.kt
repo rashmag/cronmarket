@@ -97,7 +97,8 @@ interface RestService {
     @POST("/api/v1/Order")
     suspend fun sendOrder(
         @Header("Authorization") token: String,
-        @Body orderReq: OrderReq): Response<ResponseBody>
+        @Body orderReq: OrderReq
+    ): Response<ResponseBody>
 
     @GET("/api/v1/Basket")
     suspend fun getBasket(
@@ -139,7 +140,8 @@ interface RestService {
     suspend fun getStableVersion(): String
 
     @GET("/api/v1/MainWindow/promotions")
-    suspend fun getSpecialOffers(): PromotionsResponse
+    suspend fun getSpecialOffers(@Query("CityId") cityId: String)
+            : PromotionsResponse
 
     companion object {
         const val PARTNERS_PAGINATION_LIMIT = 15

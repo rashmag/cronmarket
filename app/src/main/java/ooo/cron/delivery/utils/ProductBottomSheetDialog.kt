@@ -133,7 +133,10 @@ class ProductBottomSheetDialog(
             btnAdd.setOnClickListener {
                 val additives = if (rvRequireAdditives.adapter is RequireAdditivesAdapter)
                     (rvRequireAdditives.adapter as RequireAdditivesAdapter).getCheckedAdditives() +
-                            (rvAdditives.adapter as AdditiveRecyclerAdapter).getCheckedAdditives()
+                            if (rvAdditives.adapter is AdditiveRecyclerAdapter)
+                                (rvAdditives.adapter as AdditiveRecyclerAdapter)
+                                    .getCheckedAdditives()
+                            else listOf()
                 else listOf()
 
                 onAddClick(

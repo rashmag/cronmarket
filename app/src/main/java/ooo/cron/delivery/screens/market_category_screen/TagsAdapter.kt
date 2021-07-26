@@ -32,7 +32,10 @@ class TagsAdapter(
     override fun getItemViewType(position: Int): Int =
         when (position) {
             0 -> ViewHolder.AllTagsViewHolder.VIEW_TYPE
-            itemCount - 1 -> ViewHolder.OtherTagsViewHolder.VIEW_TYPE
+            itemCount - 1 -> if (tagsToShow!!.tags.size > tagsToShow!!.visibleTagsCount)
+                ViewHolder.OtherTagsViewHolder.VIEW_TYPE
+            else
+                ViewHolder.TagViewHolder.VIEW_TYPE
             else -> ViewHolder.TagViewHolder.VIEW_TYPE
         }
 
@@ -104,10 +107,14 @@ class TagsAdapter(
             popupMenu.menu.clear()
 
         tagsToShow?.let { tags ->
-            tags.tags.subList(
-                tagsToShow!!.visibleTagsCount,
-                tagsToShow!!.tags.size
-            ).forEach { tag ->
+            if (tags.visibleTagsCount < tags.tags.size) {
+                tags.tags.subList(
+                    tags.visibleTagsCount,
+                    tags.tags.size
+                )
+            } else {
+                tags.tags
+            }.forEach { tag ->
                 popupMenu.menu.add(tag.name)
             }
 

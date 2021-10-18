@@ -4,6 +4,8 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">@color/brand</color>
 
+    <color name="background">#E5E5E5</color>
+
     <color name="brand">#F65F1E</color>
     <color name="brand_light">#ED926B</color>
     <color name="main_dark">#F65F1E</color>

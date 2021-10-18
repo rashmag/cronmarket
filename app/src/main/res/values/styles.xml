@@ -50,11 +50,6 @@
         <item name="cornerSize">5%</item>
     </style>
 
-    <style name="CircleImageLogo">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">50%</item>
-    </style>
-
     <style name="CircleImageViewCategory">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">10%</item>

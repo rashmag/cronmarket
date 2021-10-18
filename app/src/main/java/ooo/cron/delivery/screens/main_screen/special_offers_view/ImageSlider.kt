@@ -113,7 +113,6 @@ class ImageSlider @JvmOverloads constructor(
         viewPager!!.adapter = viewPagerAdapter
         imageCount = imageList.size
         if (imageList.isNotEmpty()){
-            setupDots(imageList.size)
             if (autoCycle) {
                 stopSliding()
                 startSliding()

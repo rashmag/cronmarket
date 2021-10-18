@@ -68,7 +68,6 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-
                 <TextView
                     android:id="@+id/tv_main_title"
                     android:layout_width="match_parent"
@@ -134,8 +133,9 @@
                             android:id="@+id/special_offers_title"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="32dp"
-                            android:layout_marginTop="24dp"
+                            android:layout_marginTop="16dp"
+                            android:textStyle="normal"
+                            android:layout_marginStart="16dp"
                             android:text="@string/main_special_offers_title"
                             android:textColor="@color/grey90"
                             android:textFontWeight="600"
@@ -149,8 +149,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
                             android:clipToPadding="false"
+                            app:iss_corner_radius="15"
                             app:iss_auto_cycle="true"
-                            app:iss_corner_radius="8"
                             app:iss_delay="0"
                             app:iss_error_image="@drawable/error"
                             app:iss_period="1500"

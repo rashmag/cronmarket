@@ -71,9 +71,14 @@ class MarketCategoryFragment() : BaseFragment(),
             throw Exception("$ARGUMENT_MARKET_CATEGORY_NAME $ARGUMENT_NOT_PROVIDED_EXCEPTION_MESSAGE")
         }
 
+    override fun getMarketCategoryImg(): String? = arguments
+        ?.getString(ARGUMENT_MARKET_CATEGORY_IMAGE)
+        ?: kotlin.run {
+            throw Exception("$ARGUMENT_MARKET_CATEGORY_IMAGE $ARGUMENT_NOT_PROVIDED_EXCEPTION_MESSAGE")
+        }
+
     override fun showTags(tags: TagsResult) {
         tagsAdapter.update(tags)
-        tagsAdapter.notifyDataSetChanged()
     }
 
     override fun showPartners(
@@ -127,6 +132,7 @@ class MarketCategoryFragment() : BaseFragment(),
     companion object {
         const val ARGUMENT_MARKET_CATEGORY_ID = "MARKET_CATEGORY_ID"
         const val ARGUMENT_MARKET_CATEGORY_NAME = "MARKET_CATEGORY_NAME"
+        const val ARGUMENT_MARKET_CATEGORY_IMAGE = "MARKET_CATEGORY_IMAGE"
         val ARGUMENT_NOT_PROVIDED_EXCEPTION_MESSAGE = "is not provided to ${this::class.java.name}"
     }
 

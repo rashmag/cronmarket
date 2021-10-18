@@ -73,7 +73,8 @@ class MarketCategoryPresenter @Inject constructor(
                 try {
                     marketCategory = MarketCategory(
                         it.getMarketCategoryId()!!,
-                        it.getMarketCategoryName()!!
+                        it.getMarketCategoryName()!!,
+                        it.getMarketCategoryImg()!!
                     )
                 } catch (e: Exception) {
                     it.showAnyErrorScreen()

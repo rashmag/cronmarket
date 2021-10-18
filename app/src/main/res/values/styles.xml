@@ -50,6 +50,11 @@
         <item name="cornerSize">50%</item>
     </style>
 
+    <style name="CircleImageViewCategory">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">10%</item>
+    </style>
+
     <style name="DrawerMenuItem">
         <item name="android:drawablePadding">15dp</item>
         <item name="paddingStart">19dp</item>

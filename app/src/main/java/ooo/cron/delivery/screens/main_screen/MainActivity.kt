@@ -247,9 +247,9 @@ class MainActivity : BaseActivity(), MainContract.View {
         binding.imageSlider.viewPager?.clipToPadding = false
 
         binding.imageSlider.viewPager?.setPadding(
-            resources.dipToPixels(36f).toInt(),
+            resources.dipToPixels(16f).toInt(),
             0,
-            resources.dipToPixels(36f).toInt(),
+            resources.dipToPixels(16f).toInt(),
             0
         )
         binding.imageSlider.setImageList(promotions.map { SlideModel(it.imgUri, "") })

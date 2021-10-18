@@ -15,7 +15,7 @@ data class Partner(
     val mainWinImg: String = "",
     val partnerCardImg: String = "",
     val minAmountOrder: Double = 0.0,
-    val minAmountDelivery: Double = 0.0,
+    val minAmountDelivery: Double?,
     val rating: Float = 0f,
     val feedbackCount: Int = 0,
     val schedule: Schedule

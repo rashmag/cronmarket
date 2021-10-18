@@ -1,5 +1,6 @@
 package ooo.cron.delivery.screens.main_screen
 
+import android.util.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
@@ -32,10 +33,6 @@ class MainPresenter @Inject constructor(
         mainScope.cancel()
     }
 
-    override fun onCreateView() {
-
-    }
-
     override fun onResumeView(isFromPartnerScreen: Boolean) {
         mainScope.launch {
             defineAddress()
@@ -61,9 +58,9 @@ class MainPresenter @Inject constructor(
         }
     }
 
-    override fun onTabSelected(position: Int) {
-        view?.startMarketCategoryFragment(marketCategories!![position])
-        dataManager.writeSelectedMarketCategory(marketCategories!![position])
+    override fun onMarketCategoryClicked(category: MarketCategory) {
+        view?.startMarketCategoryFragment(category)
+        dataManager.writeSelectedMarketCategory(category)
     }
 
     override fun onClickAddress() {
@@ -109,7 +106,7 @@ class MainPresenter @Inject constructor(
     }
 
     private suspend fun loadMarketCategories(cityId: String) = withErrorsHandle(
-        { dataManager.getMarketCategories(cityId).handleMarketCategories() },
+        { dataManager.getMarketCategories(cityId).handleMarketCategories()},
         { view?.showConnectionErrorScreen() },
         { view?.showAnyErrorScreen() }
     )
@@ -198,14 +195,9 @@ class MainPresenter @Inject constructor(
                     marketCategories!!.indexOfFirst { it.id == user?.user?.lastMarketCategoryId }
                 if (lastBoughtMarketCategoryPosition != -1)
                     dataManager.writeSelectedMarketCategory(marketCategories!![lastBoughtMarketCategoryPosition])
-                view?.selectMarketCategory(
-                    if (lastBoughtMarketCategoryPosition == -1) 0
-                    else lastBoughtMarketCategoryPosition
-                )
             }
         }
     }
-
 
     override fun getMarketCategory(): MarketCategory {
         return dataManager.readSelectedMarketCategory()

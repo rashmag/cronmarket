@@ -19,7 +19,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
+        android:background="@color/grey2"
         android:orientation="vertical"
         android:tag="content">
 
@@ -28,8 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:contentInsetStart="0dp"
-            app:contentInsetEnd="0dp"
-            >
+            app:contentInsetEnd="0dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -47,8 +46,8 @@
                     android:gravity="start|center_vertical"
                     android:lines="1"
                     app:contentInsetStart="0dp"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="12dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12sp"
                     android:text="@string/main_address_incorrect"
                     android:textColor="@color/grey90"
                     android:textSize="14sp"
@@ -93,8 +92,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="@android:color/background_light"
-            >
+            android:background="@android:color/background_light">
 
             <com.google.android.material.appbar.AppBarLayout
                 android:id="@+id/ab_main"
@@ -117,20 +115,21 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
-                        <com.google.android.material.tabs.TabLayout
-                            android:id="@+id/tl_main_market_categories"
-                            style="@style/Widget.App.TabLayout.MarketCategories"
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_main_market_category"
                             android:layout_width="match_parent"
-                            android:layout_height="35dp"
-                            android:background="@color/main_market_categories_background"
+                            android:layout_height="wrap_content"
+                            android:background="@color/white"
+                            android:clipToPadding="false"
+                            android:paddingStart="4dp"
+                            android:paddingEnd="4dp"
+                            android:paddingBottom="4dp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:layout_scrollFlags="scroll|enterAlways|snap"
-                            app:tabBackground="@drawable/bg_main_market_categories"
-                            app:tabContentStart="@dimen/main_market_categories_left_space"
-                            app:tabMode="scrollable"
-                            app:tabPaddingStart="-1dp" />
+                            tools:layout_height="100dp"
+                            tools:listitem="@layout/item_main_market_category" />
+
 
                         <TextView
                             android:id="@+id/special_offers_title"
@@ -141,11 +140,10 @@
                             android:layout_marginStart="16dp"
                             android:text="@string/main_special_offers_title"
                             android:textColor="@color/grey90"
-                            android:textSize="18sp"
                             android:textFontWeight="600"
-                            app:layout_constraintTop_toBottomOf="@id/tl_main_market_categories"
+                            android:textSize="18sp"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"/>
+                            app:layout_constraintTop_toBottomOf="@id/rv_main_market_category" />
 
                         <ooo.cron.delivery.screens.main_screen.special_offers_view.ImageSlider
                             android:id="@+id/image_slider"
@@ -155,16 +153,16 @@
                             android:clipToPadding="false"
                             app:iss_corner_radius="15"
                             app:iss_auto_cycle="true"
-                            app:iss_period="1500"
                             app:iss_delay="0"
+                            app:iss_error_image="@drawable/error"
+                            app:iss_period="1500"
+                            app:iss_selected_dot="@drawable/ic_slider_indicator_selected"
                             app:iss_text_align="CENTER"
                             app:iss_title_background="@drawable/gradient"
-                            app:iss_error_image="@drawable/error"
-                            app:iss_selected_dot="@drawable/ic_slider_indicator_selected"
                             app:iss_unselected_dot="@drawable/ic_slider_indicator_unselected"
-                            app:layout_constraintTop_toBottomOf="@id/special_offers_title"
+                            app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"/>
+                            app:layout_constraintTop_toBottomOf="@id/special_offers_title" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -175,7 +173,8 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/vg_main_content"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:background="@color/grey2">
 
                 <FrameLayout
                     android:id="@+id/container_main"

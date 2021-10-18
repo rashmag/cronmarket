@@ -47,7 +47,7 @@
 
     <style name="CircleImageView">
         <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">50%</item>
+        <item name="cornerSize">5%</item>
     </style>
 
     <style name="DrawerMenuItem">

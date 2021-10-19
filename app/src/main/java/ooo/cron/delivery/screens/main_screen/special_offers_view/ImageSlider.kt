@@ -35,10 +35,7 @@ class ImageSlider @JvmOverloads constructor(
     ConstraintLayout(context, attrs, defStyleAttr) {
 
     var viewPager: ViewPager? = null
-    private var pagerDots: LinearLayout? = null
     private var viewPagerAdapter: ViewPagerAdapter? = null
-
-    private var dots: Array<ImageView?>? = null
 
     private var currentPage = 0
     private var imageCount = 0
@@ -63,7 +60,6 @@ class ImageSlider @JvmOverloads constructor(
     init {
         LayoutInflater.from(getContext()).inflate(R.layout.image_slider, this, true)
         viewPager = findViewById(R.id.view_pager)
-        pagerDots = findViewById(R.id.pager_dots)
 
         val typedArray = context.theme.obtainStyledAttributes(
             attrs,
@@ -131,52 +127,10 @@ class ImageSlider @JvmOverloads constructor(
         viewPager!!.adapter = viewPagerAdapter
         imageCount = imageList.size
         if (imageList.isNotEmpty()){
-            setupDots(imageList.size)
             if (autoCycle) {
                 startSliding()
             }
         }
-    }
-
-    private fun setupDots(size: Int) {
-        println(indicatorAlign)
-        pagerDots!!.gravity = getGravityFromAlign(indicatorAlign)
-        pagerDots!!.removeAllViews()
-        dots = arrayOfNulls(size)
-
-        for (i in 0 until size) {
-            dots!![i] = ImageView(context)
-            dots!![i]!!.setImageDrawable(ContextCompat.getDrawable(context, unselectedDot))
-            val params = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-            params.setMargins(8, 0, 8, 0)
-            pagerDots!!.addView(dots!![i], params)
-        }
-        dots!![0]!!.setImageDrawable(ContextCompat.getDrawable(context, selectedDot))
-
-        viewPager!!.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-
-            override fun onPageScrolled(
-                position: Int,
-                positionOffset: Float,
-                positionOffsetPixels: Int
-            ) {
-            }
-
-            override fun onPageSelected(position: Int) {
-                currentPage = position
-                for (dot in dots!!) {
-                    dot!!.setImageDrawable(ContextCompat.getDrawable(context, unselectedDot))
-                }
-                dots!![position]!!.setImageDrawable(ContextCompat.getDrawable(context, selectedDot))
-                if (itemChangeListener != null) itemChangeListener!!.onItemChanged(position)
-            }
-
-            override fun onPageScrollStateChanged(state: Int) {}
-        })
-
     }
 
     /**

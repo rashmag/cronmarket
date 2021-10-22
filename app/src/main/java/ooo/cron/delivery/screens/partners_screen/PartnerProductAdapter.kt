@@ -53,7 +53,7 @@ class CategoryAdapter(
             binding.run {
                 with(product) {
                     tvProductName.text = name
-                    tvCost.text = cost.toString()
+                    tvCost.text = "$cost ₽"
                     tvGram.text = portionSize
 
                     updateCounter(inBasketQuantity)

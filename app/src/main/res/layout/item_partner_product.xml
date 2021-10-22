@@ -69,23 +69,28 @@
 
         <FrameLayout
             android:id="@+id/vg_cost"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            app:iss_corner_radius="15"
+            android:layout_margin="15dp"
             android:layout_marginBottom="16dp"
             android:background="@drawable/bg_partner_product_item_price_rounded_corners"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.482"
             app:layout_constraintStart_toStartOf="parent">
+
 
             <TextView
                 android:id="@+id/tv_cost"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_height="33dp"
                 android:layout_marginTop="4dp"
-                android:layout_marginEnd="8dp"
                 android:layout_marginBottom="4dp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:drawableLeft="@drawable/ic_cart"
+                android:drawablePadding="12dp"
                 android:textColor="@color/grey90"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -95,9 +100,22 @@
                 android:id="@+id/vg_add_product"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+
+                android:layout_gravity="center"
                 android:background="@drawable/bg_partner_add_product_rounded_corners"
                 android:orientation="horizontal"
                 android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/iv_plus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:contentDescription="@string/partner_product_increase_product"
+                    android:padding="6dp"
+                    android:src="@drawable/ic_plus"
+                    android:textColor="@color/white"
+                    android:textSize="22sp" />
 
                 <ImageView
                     android:id="@+id/iv_minus"
@@ -120,17 +138,6 @@
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     tools:ignore="HardcodedText" />
-
-                <ImageView
-                    android:id="@+id/iv_plus"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:contentDescription="@string/partner_product_increase_product"
-                    android:padding="6dp"
-                    android:src="@drawable/ic_plus"
-                    android:textColor="@color/white"
-                    android:textSize="22sp" />
 
 
             </LinearLayout>

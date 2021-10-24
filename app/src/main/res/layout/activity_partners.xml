@@ -29,7 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
-                app:contentScrim="@color/grey2"
+                app:contentScrim="@color/white"
                 app:expandedTitleGravity="center|bottom"
                 app:expandedTitleMarginEnd="64dp"
                 app:expandedTitleMarginStart="48dp"
@@ -57,16 +57,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="4dp"
                         android:layout_marginEnd="16dp"
-                        android:layout_marginBottom="16dp"
                         app:layout_collapseMode="pin">
 
                         <ImageView
                             android:id="@+id/iv_back"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="8dp"
+                            android:layout_width="65dp"
+                            android:layout_height="65dp"
                             android:src="@drawable/ic_arrow_back_circle"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -78,7 +76,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
                             android:layout_marginEnd="8dp"
-                            android:layout_marginBottom="8dp"
+                            android:layout_marginBottom="4dp"
 
                             android:textColor="@color/grey90"
                             android:textStyle="bold"

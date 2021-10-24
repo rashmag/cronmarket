@@ -193,6 +193,9 @@ class OrderPresenter @Inject constructor(
             )
         }
 
+    private fun Int.inCoins() =
+        (this * 100).toLong()
+
     private fun Double.inCoins() =
         (this * 100).toLong()
 }

@@ -15,7 +15,7 @@ data class BasketDish(
     @SerializedName("Quantity")
     val quantity: Int,
     @SerializedName("Cost")
-    val cost: Double,
+    val cost: Int,
     @SerializedName("PhotoUri")
     val photoUri: String,
     @SerializedName("Additives")

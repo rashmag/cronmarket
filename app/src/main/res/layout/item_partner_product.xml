@@ -3,20 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="256dp"
     android:layout_margin="8dp"
+    app:cardElevation="0.8dp"
     app:cardCornerRadius="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_product"
             android:layout_width="match_parent"
             android:layout_height="108dp"
+            android:layout_margin="8dp"
             android:contentDescription="@string/partner_product_image"
             android:scaleType="centerCrop"
+            app:shapeAppearance="@style/CircleImageView"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@mipmap/ic_launcher" />
 
@@ -26,13 +29,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="8dp"
-            android:gravity="center"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="4dp"
+            android:gravity="start|top"
             android:maxLines="2"
-            android:minLines="2"
+            android:minLines="1"
             android:textColor="@color/black"
             android:textSize="12sp"
             android:textStyle="bold"
@@ -40,20 +43,20 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iv_product"
-            tools:text="Сет из 6 видов шашлыков
-
-" />
+            tools:text="Сет из 6 видов шашлыков" />
 
         <TextView
             android:id="@+id/tv_gram"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="8dp"
             android:layout_marginBottom="8dp"
-            android:textColor="@color/grey50"
-            android:textSize="10sp"
-            app:layout_constraintBottom_toTopOf="@+id/vg_cost"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:gravity="center|start"
+            android:textColor="@color/grey70"
+            android:textSize="12sp"
+            android:textStyle="normal"
+            app:layout_constraintTop_toBottomOf="@id/tv_product_name"
             app:layout_constraintStart_toStartOf="parent"
             tools:text="450 г" />
 
@@ -71,26 +74,27 @@
             android:id="@+id/vg_cost"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:iss_corner_radius="15"
-            android:layout_margin="15dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
             android:background="@drawable/bg_partner_product_item_price_rounded_corners"
+            app:iss_corner_radius="15"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.482"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.0">
 
 
             <TextView
                 android:id="@+id/tv_cost"
                 android:layout_width="wrap_content"
                 android:layout_height="33dp"
+                android:layout_gravity="center"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
-                android:gravity="center"
-                android:layout_gravity="center"
                 android:drawableLeft="@drawable/ic_cart"
                 android:drawablePadding="12dp"
+                android:gravity="center"
                 android:textColor="@color/grey90"
                 android:textSize="18sp"
                 android:textStyle="bold"

@@ -168,10 +168,6 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
                             minAmountDelivery
                         )
 
-                Glide.with(binding.root)
-                    .load(logo)
-                    .into(ivPartnersLogo)
-
                 if (partnerCardImg != null) {
                     Glide.with(binding.root)
                         .load(partnerInfo.partnerCardImg)

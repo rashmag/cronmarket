@@ -86,6 +86,8 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         setTitleVisibility()
         onProductRecyclerViewScrollChanged()
         initPartnerRecyclerView()
+
+        presenter.getPartnerInfo()
     }
 
     private fun initPartnerRecyclerView() {
@@ -99,7 +101,6 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
 
     override fun onResume() {
         super.onResume()
-        presenter.getPartnerInfo()
     }
 
     private fun onProductRecyclerViewScrollChanged() {

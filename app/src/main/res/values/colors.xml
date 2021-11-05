@@ -44,4 +44,7 @@
     <color name="grey_font">#ff9e9e9e</color>
     <color name="text_shadow">#7F000000</color>
     <color name="text_shadow_white">#FFFFFF</color>
+
+    <!-- Choose city screen -->
+    <color name="button_go_buy_color">#FF4C30</color>
 </resources>

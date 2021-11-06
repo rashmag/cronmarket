@@ -82,8 +82,8 @@ class MarketCategoryPresenter @Inject constructor(
         }
     }
 
-    override fun onPartnerClicked(partnerId: String) {
-        view?.navigatePartnerScreen(partnerId)
+    override fun onPartnerClicked(partnerId: String, isOpen: Boolean) {
+        view?.navigatePartnerScreen(partnerId, isOpen)
     }
 
     private suspend fun initCity() {

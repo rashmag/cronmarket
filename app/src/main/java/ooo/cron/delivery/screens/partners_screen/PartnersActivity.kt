@@ -1,6 +1,5 @@
 package ooo.cron.delivery.screens.partners_screen
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,8 +9,8 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.activity.result.ActivityResult
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
@@ -39,8 +38,6 @@ import javax.inject.Inject
  * Created by Muhammad on 02.05.2021
  */
 
-
-
 class PartnersActivity : BaseActivity(), PartnersContract.View,
     PartnerCategoryAdapter.OnCategoryClickListener, CategoryAdapter.OnProductClickListener {
 
@@ -51,6 +48,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
     lateinit var binding: ActivityPartnersBinding
 
     private lateinit var partnerId: String
+    private var isOpen: Boolean ?= null
 
     private var nestedScrollViewConfigured = false
 
@@ -68,6 +66,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         setResult(RESULT_CODE)
         setContentView(binding.root)
         partnerId = intent.getStringExtra(EXTRA_PARTNER_ID) as String
+        isOpen = intent.getBooleanExtra(EXTRA_IS_OPEN, false)
 
         productsLayoutManager = object : CustomLayoutManager(this) {
             override fun scrollVerticallyBy(
@@ -77,6 +76,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
             ): Int {
                 scrollRange = super.scrollVerticallyBy(dy, recycler, state)
                 overScroll = dy - scrollRange
+                showBottomCloseShopError()
 
 //                productsLayoutManager.setScrollEnabled(overScroll < 0)
                 return scrollRange
@@ -84,6 +84,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         }
 
         setTitleVisibility()
+        showCloseShopError()
         onProductRecyclerViewScrollChanged()
         initPartnerRecyclerView()
 
@@ -91,7 +92,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
     }
 
     private fun initPartnerRecyclerView() {
-        productsAdapter = PartnerProductAdapter()
+        productsAdapter = PartnerProductAdapter(isOpen!!)
         productsAdapter.setProductClickListener(this)
         binding.rvProduct.apply {
             layoutManager = productsLayoutManager
@@ -406,7 +407,14 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
             productsLayoutManager.setScrollEnabled(scrollRange + verticalOffset == 0)
             println("scrollRange ${scrollRange + verticalOffset == 0}")
         })
+    }
 
+    private fun showCloseShopError(){
+        binding.tvCloseShopError.isVisible = isOpen == false
+    }
+
+    private fun showBottomCloseShopError(){
+        binding.scrolledErrorContainer.isVisible = isOpen == false
     }
 
     override fun onDestroy() {
@@ -418,5 +426,6 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         const val RESULT_CODE = 1
 
         const val EXTRA_PARTNER_ID = "partnerId"
+        const val EXTRA_IS_OPEN = "is_open"
     }
 }

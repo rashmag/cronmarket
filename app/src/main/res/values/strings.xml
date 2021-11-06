@@ -262,4 +262,7 @@
     <string name="enter_address">Введите адрес</string>
 
     <string name="left">LEFT</string>
+
+    <!-- Partners screen -->
+    <string name="partners_screen_error_close_shop_text">Заведение в данный момент закрыто\n Откроется в 11:00</string>
 </resources>

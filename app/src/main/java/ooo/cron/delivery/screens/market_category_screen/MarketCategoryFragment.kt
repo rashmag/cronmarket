@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import ooo.cron.delivery.App
 import ooo.cron.delivery.data.network.models.Partner
 import ooo.cron.delivery.data.network.models.TagsResult
@@ -98,10 +97,11 @@ class MarketCategoryFragment() : BaseFragment(),
         (binding.rvMarketCategoryPartners.adapter as PartnersAdapter).submitList(pagedList)
     }
 
-    override fun navigatePartnerScreen(partnerId: String) {
+    override fun navigatePartnerScreen(partnerId: String, isOpen: Boolean) {
         startActivityForResult(Intent(requireContext(), PartnersActivity::class.java)
             .apply {
                 putExtra(PartnersActivity.EXTRA_PARTNER_ID, partnerId)
+                putExtra(PartnersActivity.EXTRA_IS_OPEN, isOpen)
             },
             PartnersActivity.RESULT_CODE
         )
@@ -118,8 +118,8 @@ class MarketCategoryFragment() : BaseFragment(),
         binding.rvMarketCategoryPartners.setHasFixedSize(false)
         binding.rvMarketCategoryPartners.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        binding.rvMarketCategoryPartners.adapter = PartnersAdapter {
-            presenter.onPartnerClicked(it)
+        binding.rvMarketCategoryPartners.adapter = PartnersAdapter{
+            presenter.onPartnerClicked(it.id, it.isOpen())
         }
     }
 

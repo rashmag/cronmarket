@@ -4,6 +4,7 @@ import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import ooo.cron.delivery.data.DataManager
+import ooo.cron.delivery.data.network.SPrefsService
 import ooo.cron.delivery.data.network.models.*
 import ooo.cron.delivery.data.network.request.BasketClearReq
 import ooo.cron.delivery.data.network.request.BasketEditorReq
@@ -20,6 +21,7 @@ import javax.inject.Inject
 class PartnersPresenter @Inject constructor(
     private val dataManager: DataManager,
     private val mainScope: CoroutineScope,
+    private val sharedPref: SPrefsService
 ) :
     BaseMvpPresenter<PartnersContract.View>(), PartnersContract.Presenter {
 
@@ -332,4 +334,12 @@ class PartnersPresenter @Inject constructor(
     private fun deserializeDishes() =
         Gson().fromJson(basket!!.content, Array<BasketDish>::class.java)
             .asList()
+
+    fun saveIsOpen(isOpen: Boolean){
+        sharedPref.saveIsOpen(isOpen)
+    }
+
+    fun getIsOpen(): Boolean{
+        return sharedPref.getIsOpen()
+    }
 }

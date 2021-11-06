@@ -66,7 +66,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         setResult(RESULT_CODE)
         setContentView(binding.root)
         partnerId = intent.getStringExtra(EXTRA_PARTNER_ID) as String
-        isOpen = intent.getBooleanExtra(EXTRA_IS_OPEN, false)
+        presenter.saveIsOpen(intent.getBooleanExtra(EXTRA_IS_OPEN, false))
 
         productsLayoutManager = object : CustomLayoutManager(this) {
             override fun scrollVerticallyBy(
@@ -92,7 +92,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
     }
 
     private fun initPartnerRecyclerView() {
-        productsAdapter = PartnerProductAdapter(isOpen!!)
+        productsAdapter = PartnerProductAdapter(presenter.getIsOpen())
         productsAdapter.setProductClickListener(this)
         binding.rvProduct.apply {
             layoutManager = productsLayoutManager
@@ -410,11 +410,11 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
     }
 
     private fun showCloseShopError(){
-        binding.tvCloseShopError.isVisible = isOpen == false
+        binding.tvCloseShopError.isVisible = presenter.getIsOpen() == false
     }
 
     private fun showBottomCloseShopError(){
-        binding.scrolledErrorContainer.isVisible = isOpen == false
+        binding.scrolledErrorContainer.isVisible = presenter.getIsOpen() == false
     }
 
     override fun onDestroy() {

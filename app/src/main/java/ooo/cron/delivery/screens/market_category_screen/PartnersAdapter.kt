@@ -86,13 +86,6 @@ class PartnersAdapter(private val onClick: (partner: Partner) -> Unit) :
 
         fun bind(partner: Partner, onClick: (partner: Partner) -> Unit) {
 
-//            binding.root.setOnClickListener {
-//                if (partner.isOpen())
-//                    onClick(partner.id)
-//                else
-//                    null
-//            }
-
             binding.root.setOnClickListener {
                 onClick(partner)
             }

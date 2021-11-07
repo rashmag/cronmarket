@@ -211,15 +211,11 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
     override fun navigatePartnerScreen(partnerId: String) {
-//        partnerActivityLauncher.launch(
-//
-//        )
 
         startActivityForResult(
             Intent(this, PartnersActivity::class.java)
                 .apply {
                     putExtra(PartnersActivity.EXTRA_PARTNER_ID, partnerId)
-                    putExtra(PartnersActivity.EXTRA_IS_OPEN, presenter.setIsOpen())
                 },
             PartnersActivity.RESULT_CODE
         )

@@ -20,8 +20,7 @@ import javax.inject.Inject
 @PartnersScope
 class PartnersPresenter @Inject constructor(
     private val dataManager: DataManager,
-    private val mainScope: CoroutineScope,
-    private val sharedPref: SPrefsService
+    private val mainScope: CoroutineScope
 ) :
     BaseMvpPresenter<PartnersContract.View>(), PartnersContract.Presenter {
 
@@ -334,12 +333,4 @@ class PartnersPresenter @Inject constructor(
     private fun deserializeDishes() =
         Gson().fromJson(basket!!.content, Array<BasketDish>::class.java)
             .asList()
-
-    fun saveIsOpen(isOpen: Boolean){
-        sharedPref.saveIsOpen(isOpen)
-    }
-
-    fun getIsOpen(): Boolean{
-        return sharedPref.getIsOpen()
-    }
 }

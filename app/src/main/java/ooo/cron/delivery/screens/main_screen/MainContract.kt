@@ -47,6 +47,5 @@ interface MainContract {
         fun continueLastSessionCLick()
         fun getMarketCategory(): MarketCategory
         fun onStartMarketCategory()
-        fun setIsOpen(): Boolean
     }
 }

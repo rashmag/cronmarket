@@ -82,8 +82,8 @@ class MarketCategoryPresenter @Inject constructor(
         }
     }
 
-    override fun onPartnerClicked(partnerId: String, isOpen: Boolean) {
-        view?.navigatePartnerScreen(partnerId, isOpen)
+    override fun onPartnerClicked(partnerId: String, isOpen: Boolean, openHours: Int?, openMinutes: Int?) {
+        view?.navigatePartnerScreen(partnerId, isOpen, openHours, openMinutes)
     }
 
     private suspend fun initCity() {

@@ -21,8 +21,7 @@ import javax.inject.Inject
 @MainScope
 class MainPresenter @Inject constructor(
     private val dataManager: DataManager,
-    private val mainScope: CoroutineScope,
-    private val sharedPref: SPrefsService
+    private val mainScope: CoroutineScope
 ) :
     BaseMvpPresenter<MainContract.View>(), MainContract.Presenter {
 
@@ -222,9 +221,5 @@ class MainPresenter @Inject constructor(
                 view?.hideSpecialOffers()
             }
         }
-    }
-
-    override fun setIsOpen(): Boolean{
-        return sharedPref.getIsOpen()
     }
 }

@@ -30,6 +30,7 @@ import ooo.cron.delivery.screens.basket_screen.BasketActivity
 import ooo.cron.delivery.screens.first_address_selection_screen.FirstAddressSelectionActivity
 import ooo.cron.delivery.utils.CustomLayoutManager
 import ooo.cron.delivery.utils.ProductBottomSheetDialog
+import ooo.cron.delivery.utils.extensions.startBottomAnimate
 import java.util.*
 import javax.inject.Inject
 
@@ -49,6 +50,8 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
 
     private lateinit var partnerId: String
     private var isOpen: Boolean ?= null
+    private var openHours: Int ?= null
+    private var openMinutes: Int ?= null
 
     private var nestedScrollViewConfigured = false
 
@@ -65,8 +68,11 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         super.onCreate(savedInstanceState)
         setResult(RESULT_CODE)
         setContentView(binding.root)
+
         partnerId = intent.getStringExtra(EXTRA_PARTNER_ID) as String
-        presenter.saveIsOpen(intent.getBooleanExtra(EXTRA_IS_OPEN, false))
+        isOpen = intent.getBooleanExtra(EXTRA_IS_OPEN, true)
+        openHours = intent.getIntExtra(EXTRA_OPEN_HOURS, 0)
+        openMinutes = intent.getIntExtra(EXTRA_OPEN_MINUTES, 0)
 
         productsLayoutManager = object : CustomLayoutManager(this) {
             override fun scrollVerticallyBy(
@@ -76,9 +82,10 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
             ): Int {
                 scrollRange = super.scrollVerticallyBy(dy, recycler, state)
                 overScroll = dy - scrollRange
-                showBottomCloseShopError()
 
-//                productsLayoutManager.setScrollEnabled(overScroll < 0)
+                if(overScroll < 0) binding.scrolledErrorContainer.visibility = View.GONE
+                else showBottomCloseShopError()
+
                 return scrollRange
             }
         }
@@ -92,16 +99,12 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
     }
 
     private fun initPartnerRecyclerView() {
-        productsAdapter = PartnerProductAdapter(presenter.getIsOpen())
+        productsAdapter = PartnerProductAdapter(isOpen == true)
         productsAdapter.setProductClickListener(this)
         binding.rvProduct.apply {
             layoutManager = productsLayoutManager
             adapter = productsAdapter
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
     }
 
     private fun onProductRecyclerViewScrollChanged() {
@@ -410,11 +413,19 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
     }
 
     private fun showCloseShopError(){
-        binding.tvCloseShopError.isVisible = presenter.getIsOpen() == false
+        binding.tvCloseShopError.isVisible = isOpen == false
+        binding.tvCloseShopError.text = binding.root.context.getString(
+            R.string.partner_closed,
+            "${openHours}:${openMinutes}" + "0" // TODO: исправить прибавление 0
+        )
     }
 
     private fun showBottomCloseShopError(){
-        binding.scrolledErrorContainer.isVisible = presenter.getIsOpen() == false
+        binding.scrolledErrorContainer.startBottomAnimate(isOpen == false)
+        binding.tvScrollShopError.text = binding.root.context.getString(
+            R.string.partner_closed,
+            "${openHours}:${openMinutes}" + "0" // TODO: исправить прибавление 0
+        )
     }
 
     override fun onDestroy() {
@@ -427,5 +438,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
 
         const val EXTRA_PARTNER_ID = "partnerId"
         const val EXTRA_IS_OPEN = "is_open"
+        const val EXTRA_OPEN_HOURS = "open_hours"
+        const val EXTRA_OPEN_MINUTES = "open_minutes"
     }
 }

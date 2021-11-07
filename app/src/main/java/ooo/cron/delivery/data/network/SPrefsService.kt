@@ -86,14 +86,6 @@ class SPrefsService @Inject constructor(
             .remove(REFRESH_TOKEN)
             .commit()
 
-    fun saveIsOpen(isOpen: Boolean) =
-        sharedPreferences.edit()
-            .putBoolean(IS_OPEN, isOpen)
-            .commit()
-
-    fun getIsOpen() =
-        sharedPreferences.getBoolean(IS_OPEN, false)
-
     companion object {
         const val EMPTY_UUID = "00000000-0000-0000-0000-000000000000"
 
@@ -112,7 +104,5 @@ class SPrefsService @Inject constructor(
         const val MARKET_CATEGORY_ID = "market_category_id"
         const val MARKET_CATEGORY_NAME = "market_category_name"
         const val MARKET_CATEGORY_IMAGE = "market_category_image"
-
-        const val IS_OPEN = "is_open"
     }
 }

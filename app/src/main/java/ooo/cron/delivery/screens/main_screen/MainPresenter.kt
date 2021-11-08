@@ -47,14 +47,16 @@ class MainPresenter @Inject constructor(
                 val basket = dataManager.getBasket(basketId)
                 if (basket.isSuccessful) {
                     basketPartnerId = basket.body()?.partnerId ?: DataManager.EMPTY_UUID
-                    view?.shouldLastBasketSessionBeVisible(true)
-                    view?.showContinueLastSession()
+                    if(basket.body()?.amount?.toInt() == EMPTY_BASKET_COUNT){
+                        view?.shouldLastBasketSessionBeVisible(false)
+                        view?.hideContinueLastSession()
+                    }else{
+                        view?.shouldLastBasketSessionBeVisible(true)
+                        view?.showContinueLastSession()
+                    }
                     return@launch
                 }
             }
-            view?.shouldLastBasketSessionBeVisible(false)
-            view?.hideContinueLastSession()
-
         }
     }
 
@@ -220,5 +222,9 @@ class MainPresenter @Inject constructor(
                 view?.hideSpecialOffers()
             }
         }
+    }
+
+    private companion object{
+        private const val EMPTY_BASKET_COUNT = 0
     }
 }

@@ -35,6 +35,7 @@ interface MainContract {
         fun startVacanciesFragment()
         fun showSpecialOffers(promotions: List<Promotion>)
         fun hideSpecialOffers()
+        fun showBasketAmount(basketAmount: String)
     }
 
     interface Presenter : MvpPresenter<View> {
@@ -47,5 +48,6 @@ interface MainContract {
         fun continueLastSessionCLick()
         fun getMarketCategory(): MarketCategory
         fun onStartMarketCategory()
+        fun getBasketAmount(basketAmount: String)
     }
 }

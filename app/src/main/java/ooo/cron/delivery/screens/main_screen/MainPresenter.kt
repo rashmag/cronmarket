@@ -207,6 +207,12 @@ class MainPresenter @Inject constructor(
         loadSpecialOrders()
     }
 
+    override fun getBasketAmount(basketAmount: String) {
+        mainScope.launch {
+            view?.showBasketAmount(String.format("%.2f", user?.basket?.amount ?: 0.00))
+        }
+    }
+
     private fun loadSpecialOrders() {
         mainScope.launch {
             try {

@@ -85,16 +85,9 @@ class ProductBottomSheetDialog(
                 .into(ivProduct)
 
             ivPlus.setOnClickListener {
-                if (tvPortionCount.text != "10") {
-                    tvPortionCount.text =
-                        (tvPortionCount.text.toString()
-                            .toInt() + 1).toString()
+                tvPortionCount.text = (tvPortionCount.text.toString().toInt() + 1).toString()
 
-
-                    tvCost.text =
-                        (tvCost.text.toString()
-                            .toDouble() + product.cost).toString()
-                }
+                tvCost.text = (tvCost.text.toString().toDouble() + product.cost).toString()
             }
 
 

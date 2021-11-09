@@ -1,6 +1,5 @@
 package ooo.cron.delivery.screens.main_screen
 
-import android.util.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
@@ -53,6 +52,7 @@ class MainPresenter @Inject constructor(
                     }else{
                         view?.shouldLastBasketSessionBeVisible(true)
                         view?.showContinueLastSession()
+                        view?.showBasketAmount((basket.body()?.amount?.toInt()).toString() + RUBLE_ICON)
                     }
                     return@launch
                 }
@@ -209,12 +209,6 @@ class MainPresenter @Inject constructor(
         loadSpecialOrders()
     }
 
-    override fun getBasketAmount(basketAmount: String) {
-        mainScope.launch {
-            view?.showBasketAmount(String.format("%.2f", user?.basket?.amount ?: 0.00))
-        }
-    }
-
     private fun loadSpecialOrders() {
         mainScope.launch {
             try {
@@ -232,5 +226,6 @@ class MainPresenter @Inject constructor(
 
     private companion object{
         private const val EMPTY_BASKET_COUNT = 0
+        private const val RUBLE_ICON = "₽"
     }
 }

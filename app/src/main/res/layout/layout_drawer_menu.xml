@@ -11,7 +11,7 @@
         android:layout_width="182dp"
         android:layout_height="30dp"
         android:layout_marginStart="36dp"
-        android:layout_marginTop="7dp"
+        android:layout_marginTop="62dp"
         android:contentDescription="@string/drawer_logo_image_description"
         android:src="@drawable/ic_logo_big"
         app:layout_constraintStart_toStartOf="parent"
@@ -55,46 +55,43 @@
         app:layout_constraintTop_toBottomOf="@id/divider_top" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        style="@style/DrawerMenuItem"
         android:id="@+id/tv_drawer_menu_item_contacts"
+        style="@style/DrawerMenuItem"
         android:layout_width="204dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:background="@drawable/bg_drawer_menu_item"
+        android:drawableStart="@drawable/ic_drawer_menu_item_contacts"
         android:paddingStart="19dp"
         android:paddingEnd="19dp"
-        android:background="@drawable/bg_drawer_menu_item"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="36dp"
-        android:drawableStart="@drawable/ic_drawer_menu_item_contacts"
         android:text="@string/drawer_menu_item_contacts"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_drawer_menu_item_shops" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        style="@style/DrawerMenuItem"
         android:id="@+id/tv_drawer_menu_item_about_us"
+        style="@style/DrawerMenuItem"
         android:layout_width="204dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:background="@drawable/bg_drawer_menu_item"
+        android:drawableStart="@drawable/ic_drawer_menu_item_about_us"
         android:paddingStart="19dp"
         android:paddingEnd="19dp"
-        android:background="@drawable/bg_drawer_menu_item"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="36dp"
-        android:drawableStart="@drawable/ic_drawer_menu_item_about_us"
         android:text="@string/drawer_menu_item_about_us"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_drawer_menu_item_contacts" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        style="@style/DrawerMenuItem"
         android:id="@+id/tv_drawer_menu_item_vacancies"
+        style="@style/DrawerMenuItem"
         android:layout_width="204dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:background="@drawable/bg_drawer_menu_item"
+        android:drawableStart="@drawable/ic_drawer_menu_item_vacancies"
         android:paddingStart="19dp"
         android:paddingEnd="19dp"
-        android:background="@drawable/bg_drawer_menu_item"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="36dp"
-        android:drawableStart="@drawable/ic_drawer_menu_item_vacancies"
         android:text="@string/drawer_menu_item_vacancies"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_drawer_menu_item_about_us" />
@@ -114,43 +111,41 @@
         android:id="@+id/divider_bottom"
         android:layout_width="0dp"
         android:layout_height="2dp"
-        android:layout_marginTop="17dp"
-        android:background="@color/grey2"
+        android:layout_marginBottom="32dp"
         android:alpha="0.5"
+        android:background="@color/grey2"
         app:layout_constraintBottom_toTopOf="@id/tv_drawer_settings"
-        app:layout_constraintStart_toStartOf="@id/tv_drawer_menu_item_shops"
-        app:layout_constraintEnd_toEndOf="@id/tv_drawer_menu_item_shops"/>
+        app:layout_constraintEnd_toEndOf="@id/tv_drawer_menu_item_shops"
+        app:layout_constraintStart_toStartOf="@id/tv_drawer_menu_item_shops" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        style="@style/DrawerMenuItem"
         android:id="@+id/tv_drawer_settings"
+        style="@style/DrawerMenuItem"
         android:layout_width="204dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:layout_marginStart="36dp"
-        android:paddingStart="19dp"
-        android:paddingEnd="19dp"
-        android:visibility="gone"
         android:background="@drawable/bg_drawer_menu_item"
         android:drawableStart="@drawable/ic_drawer_settings"
-        android:text="@string/drawer_menu_settings"
-        app:layout_constraintBottom_toTopOf="@id/tv_drawer_profile_log_in_out"
-        app:layout_constraintStart_toStartOf="parent"/>
-
-    <androidx.appcompat.widget.AppCompatTextView
-        style="@style/DrawerMenuItem"
-        android:id="@+id/tv_drawer_profile_log_in_out"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="36dp"
-        android:layout_marginBottom="76dp"
-        android:background="@drawable/bg_drawer_menu_item"
         android:paddingStart="19dp"
         android:paddingEnd="19dp"
+        android:text="@string/drawer_menu_settings"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/tv_drawer_profile_log_in_out"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_drawer_profile_log_in_out"
+        style="@style/DrawerMenuItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginBottom="82dp"
+        android:background="@drawable/bg_drawer_menu_item"
         android:drawableStart="@drawable/ic_drawer_log_in"
+        android:paddingStart="19dp"
+        android:paddingEnd="19dp"
         android:text="@string/drawer_log_in"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

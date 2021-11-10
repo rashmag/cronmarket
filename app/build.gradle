@@ -11,8 +11,8 @@ android {
         applicationId "ooo.cron.delivery"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 21
-        versionName "3.2"
+        versionCode 28
+        versionName "3.5"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -90,6 +90,8 @@ dependencies {
     //Phone Mask
     def phone_mask_version = '3.4.2'
     implementation "com.redmadrobot:inputmask:$phone_mask_version"
+
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:2.7"
 
 
     //Circle ImageView

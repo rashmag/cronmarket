@@ -2,6 +2,7 @@
 
 <nl.psdcompany.duonavigationdrawer.views.DuoDrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -27,7 +28,8 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:contentInsetStart="0dp"
-            >
+            app:contentInsetEnd="0dp"
+            android:background="@color/white">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -36,24 +38,24 @@
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_main_user_address"
                     android:layout_width="0dp"
-                    android:layout_height="32dp"
-                    android:layout_marginEnd="36dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="16dp"
                     android:background="@drawable/bg_main_address_incorrect"
                     android:drawableStart="@drawable/ic_main_address"
                     android:drawablePadding="6dp"
+                    android:ellipsize="end"
                     android:gravity="start|center_vertical"
+                    android:lines="1"
+                    app:contentInsetStart="0dp"
                     android:paddingStart="12dp"
                     android:paddingEnd="12sp"
-                    android:lines="1"
-                    android:ellipsize="end"
                     android:text="@string/main_address_incorrect"
                     android:textColor="@color/grey90"
                     android:textSize="14sp"
-
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/iv_main_search"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"/>
 
                 <ImageView
                     android:id="@+id/iv_main_search"
@@ -68,16 +70,16 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-
                 <TextView
                     android:id="@+id/tv_main_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="18dp"
-                    android:layout_marginEnd="36dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="16dp"
                     android:textColor="@color/grey90"
                     android:textSize="18sp"
                     android:textStyle="bold"
+                    app:contentInsetStart="0dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -91,8 +93,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="@android:color/background_light"
-            >
+            android:background="@android:color/background_light">
 
             <com.google.android.material.appbar.AppBarLayout
                 android:id="@+id/ab_main"
@@ -115,34 +116,37 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
-                        <com.google.android.material.tabs.TabLayout
-                            android:id="@+id/tl_main_market_categories"
-                            style="@style/Widget.App.TabLayout.MarketCategories"
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_main_market_category"
                             android:layout_width="match_parent"
-                            android:layout_height="35dp"
-                            android:background="@color/main_market_categories_background"
+                            android:layout_height="wrap_content"
+                            android:background="@color/white"
+                            android:clipToPadding="false"
+                            android:paddingStart="4dp"
+                            android:paddingEnd="4dp"
+                            android:paddingBottom="4dp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:layout_scrollFlags="scroll|enterAlways|snap"
-                            app:tabBackground="@drawable/bg_main_market_categories"
-                            app:tabContentStart="@dimen/main_market_categories_left_space"
-                            app:tabMode="scrollable"
-                            app:tabPaddingStart="-1dp" />
+                            tools:layout_height="100dp"
+                            tools:listitem="@layout/item_main_market_category" />
+
 
                         <TextView
                             android:id="@+id/special_offers_title"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="24dp"
-                            android:layout_marginStart="36dp"
+                            android:layout_marginTop="12dp"
+                            android:textStyle="bold"
+                            android:layout_marginStart="16dp"
                             android:text="@string/main_special_offers_title"
-                            android:textColor="@color/grey90"
-                            android:textSize="18sp"
                             android:textFontWeight="600"
-                            app:layout_constraintTop_toBottomOf="@id/tl_main_market_categories"
+                            android:letterSpacing="0.05"
+                            android:textSize="17sp"
+                            android:ellipsize="end"
+                            android:maxLines="2"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"/>
+                            app:layout_constraintTop_toBottomOf="@id/rv_main_market_category" />
 
                         <ooo.cron.delivery.screens.main_screen.special_offers_view.ImageSlider
                             android:id="@+id/image_slider"
@@ -150,18 +154,18 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
                             android:clipToPadding="false"
-                            app:iss_corner_radius="8"
+                            app:iss_corner_radius="15"
                             app:iss_auto_cycle="true"
-                            app:iss_period="1500"
                             app:iss_delay="0"
+                            app:iss_error_image="@drawable/error"
+                            app:iss_period="1500"
+                            app:iss_selected_dot="@drawable/ic_slider_indicator_selected"
                             app:iss_text_align="CENTER"
                             app:iss_title_background="@drawable/gradient"
-                            app:iss_error_image="@drawable/error"
-                            app:iss_selected_dot="@drawable/ic_slider_indicator_selected"
                             app:iss_unselected_dot="@drawable/ic_slider_indicator_unselected"
-                            app:layout_constraintTop_toBottomOf="@id/special_offers_title"
+                            app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"/>
+                            app:layout_constraintTop_toBottomOf="@id/special_offers_title" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -172,7 +176,8 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/vg_main_content"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:background="@color/grey2">
 
                 <FrameLayout
                     android:id="@+id/container_main"

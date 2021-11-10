@@ -28,9 +28,7 @@ class CategoryAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindProduct(position)
-        holder.itemView.setOnClickListener {
-            listener.onProductClick(productCategoryModel[position])
-        }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
@@ -42,18 +40,81 @@ class CategoryAdapter(
             )
         )
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
 
         private val binding = ItemPartnerProductBinding.bind(view)
 
         private val timer = BasketCounterTimer()
+        init {
+            view.setOnClickListener {
+                listener.onProductClick(productCategoryModel[adapterPosition])
+            }
+
+            binding.tvCost.setOnClickListener {
+                val product = productCategoryModel[adapterPosition]
+                if (product.additives.isNullOrEmpty() &&
+                    product.requiredAdditiveGroups.isNullOrEmpty()
+                ) {
+                    val currentQuantity = binding.tvPortionCount.text.toString().toInt() + 1
+                    updateCounter(currentQuantity)
+
+                    when(defineQuantityChangeStatus(currentQuantity, product.inBasketQuantity)) {
+                        QuantityChangeStatus.INCREASED->increaseProduct(product, currentQuantity)
+                        QuantityChangeStatus.NO_CHANGES->updateCounter(currentQuantity)
+                        else ->{}
+                    }
+                } else {
+                    listener.onProductClick(product)
+                }
+            }
+
+            binding.ivPlus.setOnClickListener {
+                val product = productCategoryModel[adapterPosition]
+                if (product.additives.isNullOrEmpty() &&
+                    product.requiredAdditiveGroups.isNullOrEmpty()
+                ) {
+                    val currentQuantity = binding.tvPortionCount.text.toString().toInt() + 1
+                    updateCounter(currentQuantity)
+
+                    when(defineQuantityChangeStatus(currentQuantity, product.inBasketQuantity)){
+                        QuantityChangeStatus.INCREASED -> increaseProduct(product, currentQuantity)
+                        QuantityChangeStatus.DECREASED ->  restartTimer {
+                            listener.onMinusClick(
+                                product,
+                                product.inBasketQuantity - currentQuantity
+                            )
+                        }
+                        QuantityChangeStatus.NO_CHANGES -> updateCounter(currentQuantity)
+                    }
+                }
+                else {
+                    listener.onProductClick(product)
+                }
+            }
+
+            binding.ivMinus.setOnClickListener {
+                val product = productCategoryModel[adapterPosition]
+                val currentQuantity = binding.tvPortionCount.text.toString().toInt() - 1
+                updateCounter(currentQuantity)
+
+                when(defineQuantityChangeStatus(currentQuantity, product.inBasketQuantity)){
+                    QuantityChangeStatus.INCREASED -> increaseProduct(product, currentQuantity)
+                    QuantityChangeStatus.DECREASED -> restartTimer {
+                        listener.onMinusClick(product, product.inBasketQuantity - currentQuantity)
+                    }
+                    QuantityChangeStatus.NO_CHANGES ->{timer.cancel()
+                    updateCounter(currentQuantity)}
+                }
+
+            }
+        }
 
         fun bindProduct(position: Int) {
             val product = productCategoryModel[position]
             binding.run {
                 with(product) {
                     tvProductName.text = name
-                    tvCost.text = cost.toString()
+                    tvCost.text = "$cost ₽"
                     tvGram.text = portionSize
 
                     updateCounter(inBasketQuantity)
@@ -61,76 +122,6 @@ class CategoryAdapter(
                     com.bumptech.glide.Glide.with(root)
                         .load(photo)
                         .into(ivProduct)
-                }
-            }
-
-            binding.tvCost.setOnClickListener {
-                if (product.additives.isNullOrEmpty() &&
-                    product.requiredAdditiveGroups.isNullOrEmpty()
-                ) {
-                    var currentQuantity = binding.tvPortionCount.text.toString().toInt() + 1
-                    updateCounter(currentQuantity)
-
-                    val quantityChangeStatus =
-                        defineQuantityChangeStatus(currentQuantity, product.inBasketQuantity)
-
-                    if (quantityChangeStatus == QuantityChangeStatus.INCREASED)
-                        increaseProduct(product, currentQuantity)
-
-                    if (quantityChangeStatus == QuantityChangeStatus.NO_CHANGES)
-                        updateCounter(currentQuantity)
-                } else {
-                    listener.onProductClick(product)
-                }
-            }
-
-            binding.ivPlus.setOnClickListener {
-                if (product.additives.isNullOrEmpty() &&
-                    product.requiredAdditiveGroups.isNullOrEmpty()
-                ) {
-                    var currentQuantity = binding.tvPortionCount.text.toString().toInt() + 1
-                    updateCounter(currentQuantity)
-
-                    val quantityChangeStatus =
-                        defineQuantityChangeStatus(currentQuantity, product.inBasketQuantity)
-
-                    if (quantityChangeStatus == QuantityChangeStatus.INCREASED)
-                        increaseProduct(product, currentQuantity)
-
-                    if (quantityChangeStatus == QuantityChangeStatus.DECREASED) {
-                        restartTimer {
-                            listener.onMinusClick(
-                                product,
-                                product.inBasketQuantity - currentQuantity
-                            )
-                        }
-                    }
-
-                    if (quantityChangeStatus == QuantityChangeStatus.NO_CHANGES)
-                        updateCounter(currentQuantity)
-                } else {
-                    listener.onProductClick(product)
-                }
-            }
-
-            binding.ivMinus.setOnClickListener {
-                var currentQuantity = binding.tvPortionCount.text.toString().toInt() - 1
-                updateCounter(currentQuantity)
-
-                val quantityChangeStatus =
-                    defineQuantityChangeStatus(currentQuantity, product.inBasketQuantity)
-
-                if (quantityChangeStatus == QuantityChangeStatus.INCREASED)
-                    increaseProduct(product, currentQuantity)
-
-                if (quantityChangeStatus == QuantityChangeStatus.DECREASED)
-                    restartTimer {
-                        listener.onMinusClick(product, product.inBasketQuantity - currentQuantity)
-                    }
-
-                if (quantityChangeStatus == QuantityChangeStatus.NO_CHANGES) {
-                    timer.cancel()
-                    updateCounter(currentQuantity)
                 }
             }
         }

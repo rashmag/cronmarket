@@ -11,18 +11,7 @@
         android:focusableInTouchMode="false"
         android:clickable="false"
         android:layout_width="match_parent"
-        android:layout_height="135dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/pager_dots"/>
-
-    <LinearLayout
-        android:id="@+id/pager_dots"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@android:color/transparent"
-        android:orientation="horizontal"
-        android:paddingTop="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        android:layout_height="170dp"
+        app:layout_constraintTop_toTopOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

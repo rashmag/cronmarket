@@ -32,7 +32,10 @@ class TagsAdapter(
     override fun getItemViewType(position: Int): Int =
         when (position) {
             0 -> ViewHolder.AllTagsViewHolder.VIEW_TYPE
-            itemCount - 1 -> ViewHolder.OtherTagsViewHolder.VIEW_TYPE
+            itemCount - 1 -> if (tagsToShow!!.tags.size > tagsToShow!!.visibleTagsCount)
+                ViewHolder.OtherTagsViewHolder.VIEW_TYPE
+            else
+                ViewHolder.TagViewHolder.VIEW_TYPE
             else -> ViewHolder.TagViewHolder.VIEW_TYPE
         }
 
@@ -65,7 +68,7 @@ class TagsAdapter(
         }
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, @SuppressLint("RecyclerView") position: Int) {
         if (holder is ViewHolder.TagViewHolder)
             tagsToShow?.let { tags ->
                 (holder.itemView as TextView).apply {
@@ -104,10 +107,14 @@ class TagsAdapter(
             popupMenu.menu.clear()
 
         tagsToShow?.let { tags ->
-            tags.tags.subList(
-                tagsToShow!!.visibleTagsCount,
-                tagsToShow!!.tags.size
-            ).forEach { tag ->
+            if (tags.visibleTagsCount < tags.tags.size) {
+                tags.tags.subList(
+                    tags.visibleTagsCount,
+                    tags.tags.size
+                )
+            } else {
+                tags.tags
+            }.forEach { tag ->
                 popupMenu.menu.add(tag.name)
             }
 
@@ -163,12 +170,18 @@ class TagsAdapter(
         if (position == selectedTagPosition ||
             (position == itemCount - 1 && selectedTagPosition >= itemCount)
         ) {
-            elevation = 0f
-            setBackgroundResource(R.drawable.bg_market_category_tag_selected_item)
+            if ((this as TextView).text == context.getString(R.string.market_category_other_tags)) {
+                setBackgroundResource(R.drawable.bg_market_category_tag_other)
+                this.setTextColor(resources.getColor(R.color.white))
+            } else {
+                setBackgroundResource(R.drawable.bg_market_category_tag_selected_item)
+                this.setTextColor(resources.getColor(R.color.brand))
+            }
         } else {
-            elevation = context!!.resources.dipToPixels(6f)
             setBackgroundResource(R.drawable.bg_market_category_tag_not_selected_item)
-        }
+            elevation = 1f
+            (this as TextView).setTextColor(resources.getColor(R.color.black))
+            }
     }
 
     sealed class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

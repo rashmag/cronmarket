@@ -16,7 +16,6 @@ interface MainContract {
         fun showConnectionErrorScreen()
         fun showSavedAddress(address: String)
         fun showMarketCategories(categories: List<MarketCategory>)
-        fun selectMarketCategory(position: Int)
         fun showAuthorizedUser(username: String)
         fun showUnauthorizedUser()
         fun shouldLastBasketSessionBeVisible(boolean: Boolean)
@@ -39,9 +38,8 @@ interface MainContract {
     }
 
     interface Presenter : MvpPresenter<View> {
-        fun onCreateView()
         fun onResumeView(isFromPartnerScreen: Boolean)
-        fun onTabSelected(position:Int)
+        fun onMarketCategoryClicked(category: MarketCategory)
         fun onClickAddress()
         fun onProfileClick()
         fun onLogInLogOutClick()

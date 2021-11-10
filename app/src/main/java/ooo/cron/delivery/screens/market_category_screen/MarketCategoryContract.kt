@@ -12,6 +12,7 @@ interface MarketCategoryContract {
     interface View: MvpView {
         fun getMarketCategoryId(): Int?
         fun getMarketCategoryName(): String?
+        fun getMarketCategoryImg(): String?
 
         fun showTags(tags: TagsResult)
 

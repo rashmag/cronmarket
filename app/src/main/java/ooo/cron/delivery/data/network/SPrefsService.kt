@@ -30,12 +30,14 @@ class SPrefsService @Inject constructor(
         sharedPreferences.edit()
             .putInt(MARKET_CATEGORY_ID, category.id)
             .putString(MARKET_CATEGORY_NAME, category.categoryName)
+            .putString(MARKET_CATEGORY_IMAGE, category.categoryImgUri)
             .commit()
 
     fun readSelectedMarketCategory() =
         MarketCategory(
             sharedPreferences.getInt(MARKET_CATEGORY_ID, 1),
-            sharedPreferences.getString(MARKET_CATEGORY_NAME, "Рестораны")!!
+            sharedPreferences.getString(MARKET_CATEGORY_NAME, "")!!,
+            sharedPreferences.getString(MARKET_CATEGORY_IMAGE, "")!!
         )
 
     fun writeBuildingAddress(address: String) =
@@ -102,5 +104,6 @@ class SPrefsService @Inject constructor(
 
         const val MARKET_CATEGORY_ID = "market_category_id"
         const val MARKET_CATEGORY_NAME = "market_category_name"
+        const val MARKET_CATEGORY_IMAGE = "market_category_image"
     }
 }

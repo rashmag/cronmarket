@@ -9,8 +9,8 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.appbar.AppBarLayout.ScrollingViewBehavior
-import com.google.android.material.tabs.TabLayout
 import nl.psdcompany.duonavigationdrawer.widgets.DuoDrawerToggle
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
@@ -39,7 +39,6 @@ class MainActivity : BaseActivity(), MainContract.View {
     lateinit var binding: ActivityMainBinding
 
     private var shouldLastBasketSessionBeVisible = false
-
     private var isFromPartnerScreen = false
 
     private val partnerActivityLauncher = registerForActivityResult(
@@ -57,12 +56,18 @@ class MainActivity : BaseActivity(), MainContract.View {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         configureAppBar()
-
         configureNavigationDrawer()
-
+        configureMarketCategoriesList()
         setContinueLastSessionClickListener()
+    }
 
-        presenter.onCreateView()
+    private fun configureMarketCategoriesList() {
+        binding.rvMainMarketCategory.setHasFixedSize(true)
+        binding.rvMainMarketCategory.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        binding.rvMainMarketCategory.adapter = MainMarketCategoryAdapter {
+            presenter.onMarketCategoryClicked(it)
+        }
     }
 
     override fun onResume() {
@@ -105,30 +110,7 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
     override fun showMarketCategories(categories: List<MarketCategory>) {
-        binding.tlMainMarketCategories.apply {
-            clear()
-            fillTabs(categories)
-            addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-                override fun onTabSelected(tab: TabLayout.Tab?) {
-                    presenter.onTabSelected(tab!!.position)
-                }
-
-                override fun onTabUnselected(tab: TabLayout.Tab?) {
-                    Log.d(MainActivity::class.simpleName, "tab ${tab?.text} unselected")
-                }
-
-                override fun onTabReselected(tab: TabLayout.Tab?) {
-                    Log.d(MainActivity::class.simpleName, "tab ${tab?.text} reselected")
-                }
-            })
-        }
-    }
-
-    override fun selectMarketCategory(position: Int) {
-        binding.tlMainMarketCategories.getTabAt(position)?.let {
-            if (!it.isSelected)
-                it.select()
-        }
+        (binding.rvMainMarketCategory.adapter as MainMarketCategoryAdapter).submitList(categories)
     }
 
     override fun showAuthorizedUser(username: String) {
@@ -247,9 +229,9 @@ class MainActivity : BaseActivity(), MainContract.View {
         binding.imageSlider.viewPager?.clipToPadding = false
 
         binding.imageSlider.viewPager?.setPadding(
-            resources.dipToPixels(36f).toInt(),
+            resources.dipToPixels(16f).toInt(),
             0,
-            resources.dipToPixels(36f).toInt(),
+            resources.dipToPixels(16f).toInt(),
             0
         )
         binding.imageSlider.setImageList(promotions.map { SlideModel(it.imgUri, "") })
@@ -317,16 +299,6 @@ class MainActivity : BaseActivity(), MainContract.View {
         }
     }
 
-    private fun TabLayout.clear() {
-        if (tabCount > 0)
-            removeAllTabs()
-    }
-
-    private fun TabLayout.fillTabs(categories: List<MarketCategory>) =
-        categories.forEach { category ->
-            addTab(newTab().setText(category.categoryName))
-        }
-
     private fun marketCategoryArguments(category: MarketCategory) = Bundle().apply {
         putString(
             MarketCategoryFragment.ARGUMENT_MARKET_CATEGORY_NAME,
@@ -335,6 +307,10 @@ class MainActivity : BaseActivity(), MainContract.View {
         putInt(
             MarketCategoryFragment.ARGUMENT_MARKET_CATEGORY_ID,
             category.id
+        )
+        putString(
+            MarketCategoryFragment.ARGUMENT_MARKET_CATEGORY_IMAGE,
+            category.categoryImgUri
         )
     }
 

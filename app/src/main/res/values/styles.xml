@@ -47,7 +47,17 @@
 
     <style name="CircleImageView">
         <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">5%</item>
+    </style>
+
+    <style name="CircleImageLogo">
+        +        <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="CircleImageViewCategory">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">10%</item>
     </style>
 
     <style name="DrawerMenuItem">
@@ -77,4 +87,5 @@
         <item name="android:textStyle">bold</item>
         <item name="fontFamily">@font/sf_pro_text_semibold</item>
     </style>
+
 </resources>

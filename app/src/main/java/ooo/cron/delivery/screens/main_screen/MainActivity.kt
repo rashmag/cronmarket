@@ -110,7 +110,10 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
     override fun showMarketCategories(categories: List<MarketCategory>) {
-        (binding.rvMainMarketCategory.adapter as MainMarketCategoryAdapter).submitList(categories)
+        with(binding.rvMainMarketCategory) {
+            (adapter as MainMarketCategoryAdapter).submitList(null)
+            (adapter as MainMarketCategoryAdapter).submitList(categories)
+        }
     }
 
     override fun showAuthorizedUser(username: String) {

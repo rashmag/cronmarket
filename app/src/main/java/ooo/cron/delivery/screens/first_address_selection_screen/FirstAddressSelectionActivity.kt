@@ -222,7 +222,7 @@ class FirstAddressSelectionActivity :
 
     override fun navigateMainScreen() {
         if (!isFromOrderingScreen)
-            startActivity(Intent(this, MainActivity::class.java))
+            onBackPressed()
         finish()
     }
 

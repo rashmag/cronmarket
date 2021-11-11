@@ -24,6 +24,7 @@ class MainPresenter @Inject constructor(
 ) :
     BaseMvpPresenter<MainContract.View>(), MainContract.Presenter {
 
+    private var currentChosenCity: String? = null
     private var marketCategories: List<MarketCategory>? = null
     private var user: UserResponse? = null
     private var basketPartnerId: String = DataManager.EMPTY_UUID
@@ -36,7 +37,8 @@ class MainPresenter @Inject constructor(
     override fun onResumeView(isFromPartnerScreen: Boolean) {
         mainScope.launch {
             defineAddress()
-            if (marketCategories == null) {
+            if (currentChosenCity != dataManager.readChosenCity().id) {
+                currentChosenCity = dataManager.readChosenCity().id
                 loadMarketCategories(dataManager.readChosenCity().id)
                 showMarketCategories(marketCategories!!.first())
             }
@@ -64,9 +66,7 @@ class MainPresenter @Inject constructor(
     }
 
     override fun onClickAddress() {
-        mainScope.launch {
             view?.navigateFirstAddressSelection()
-        }
     }
 
     override fun onProfileClick() {

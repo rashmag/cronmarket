@@ -35,6 +35,11 @@ class MainMarketCategoryAdapter(private val onClick: (category: MarketCategory) 
 
     }
 
+    override fun submitList(list: List<MarketCategory>?) {
+        selectedCategoryPosition = 0
+        super.submitList(list)
+    }
+
     inner class MainMarketCategoryViewHolder(item: View) : RecyclerView.ViewHolder(item) {
         init {
             item.setOnClickListener {
@@ -50,7 +55,7 @@ class MainMarketCategoryAdapter(private val onClick: (category: MarketCategory) 
             binding.tvMainMarketCategory.text = category.categoryName
             loadCategoryImg(category)
 
-            if (selectedCategoryPosition == layoutPosition) {
+            if (selectedCategoryPosition == adapterPosition) {
                 binding.ivMainMarketCategory.setStrokeWidthResource(R.dimen.main_market_categories_selected_stroke_width)
                 binding.tvMainMarketCategory.setTextColor(itemView.resources.getColor(R.color.brand))
             } else {

@@ -48,6 +48,8 @@ class ProductBottomSheetDialog(
     private lateinit var binding: DialogProductInfoBinding
     private var additiveList = ArrayList<RequireAdditiveModel>()
 
+    var portionPriceCount = 0.0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DialogProductInfoBinding.bind(
@@ -84,10 +86,13 @@ class ProductBottomSheetDialog(
                 )
                 .into(ivProduct)
 
+            portionPriceCount = product.cost.toDouble()
+
             ivPlus.setOnClickListener {
                 tvPortionCount.text = (tvPortionCount.text.toString().toInt() + 1).toString()
 
-                tvCost.text = (tvCost.text.toString().toDouble() + product.cost).toString()
+                portionPriceCount += product.cost
+                tvCost.text = portionPriceCount.toString()
             }
 
 

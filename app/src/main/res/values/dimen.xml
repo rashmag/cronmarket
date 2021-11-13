@@ -7,4 +7,40 @@
     <dimen name="basket_trash_margin">8dp</dimen>
     <dimen name="main_market_categories_selected_stroke_width">1.5dp</dimen>
     <dimen name="main_market_categories_stroke_width">0dp</dimen>
+
+    <!-- Text sizes -->
+    <dimen name="text_min_8">8sp</dimen>
+    <dimen name="text_min_10">10sp</dimen>
+    <dimen name="text_min_12">12sp</dimen>
+    <dimen name="text_normal">14sp</dimen>
+    <dimen name="text_middle_16">16sp</dimen>
+    <dimen name="text_middle_18">18sp</dimen>
+    <dimen name="text_max_20">20sp</dimen>
+    <dimen name="text_max_24">24sp</dimen>
+    <dimen name="text_max_28">28sp</dimen>
+    <dimen name="text_max_32">32sp</dimen>
+
+
+    <!-- Margin & Padding Dimens -->
+    <dimen name="dimen_4">4dp</dimen>
+    <dimen name="dimen_6">6dp</dimen>
+    <dimen name="dimen_8">8dp</dimen>
+    <dimen name="dimen_10">10dp</dimen>
+    <dimen name="dimen_12">12dp</dimen>
+    <dimen name="dimen_16">16dp</dimen>
+    <dimen name="dimen_20">20dp</dimen>
+    <dimen name="dimen_24">24dp</dimen>
+    <dimen name="dimen_28">28dp</dimen>
+    <dimen name="dimen_32">32dp</dimen>
+    <dimen name="dimen_38">38dp</dimen>
+    <dimen name="dimen_40">40dp</dimen>
+    <dimen name="dimen_56">56dp</dimen>
+
+
+    <!-- Corner Radius -->
+    <dimen name="radius_3">3dp</dimen>
+    <dimen name="radius_4">4dp</dimen>
+    <dimen name="radius_8">8dp</dimen>
+    <dimen name="radius_12">12dp</dimen>
+    <dimen name="radius_16">16dp</dimen>
 </resources>

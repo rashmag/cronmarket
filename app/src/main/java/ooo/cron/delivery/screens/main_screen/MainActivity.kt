@@ -345,7 +345,7 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
     override fun showBasketAmount(basketAmount: String) {
-        binding.tvBasketAmount.text = basketAmount
+        binding.tvBasketAmount.text = getString(R.string.main_btn_amount, basketAmount)
     }
 
     private fun setToolbarTitleVisibility(isVisible: Boolean, title: String?) {

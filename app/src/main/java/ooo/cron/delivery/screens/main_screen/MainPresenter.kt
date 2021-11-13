@@ -54,7 +54,7 @@ class MainPresenter @Inject constructor(
                     }else{
                         view?.shouldLastBasketSessionBeVisible(true)
                         view?.showContinueLastSession()
-                        view?.showBasketAmount((basket.body()?.amount?.toInt()).toString() + RUBLE_ICON)
+                        view?.showBasketAmount((basket.body()?.amount?.toInt()).toString())
                     }
                     return@launch
                 }
@@ -226,6 +226,5 @@ class MainPresenter @Inject constructor(
 
     private companion object{
         private const val EMPTY_BASKET_COUNT = 0
-        private const val RUBLE_ICON = "₽"
     }
 }

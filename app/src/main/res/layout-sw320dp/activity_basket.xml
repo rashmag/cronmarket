@@ -101,7 +101,7 @@
             android:id="@+id/tv_basket_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="36dp"
+            android:layout_marginEnd="12dp"
             android:textSize="20sp"
             android:textStyle="normal"
             android:textFontWeight="600"

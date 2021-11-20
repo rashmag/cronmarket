@@ -413,18 +413,24 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
     }
 
     private fun showCloseShopError(){
+        val hours = if((openHours?.div(10) ?: 0) > 0) openHours else "0$openHours"
+        val minutes = if((openMinutes?.div(10) ?: 0) > 0) openMinutes else "0$openMinutes"
+
         binding.tvCloseShopError.isVisible = isOpen == false
         binding.tvCloseShopError.text = binding.root.context.getString(
             R.string.partner_closed,
-            "${openHours}:${openMinutes}" + "0" // TODO: исправить прибавление 0
+            "${hours}:${minutes}"
         )
     }
 
     private fun showBottomCloseShopError(){
+        val hours = if((openHours?.div(10) ?: 0) > 0) openHours else "0$openHours"
+        val minutes = if((openMinutes?.div(10) ?: 0) > 0) openMinutes else "0$openMinutes"
+
         binding.scrolledErrorContainer.startBottomAnimate(isOpen == false)
         binding.tvScrollShopError.text = binding.root.context.getString(
             R.string.partner_closed,
-            "${openHours}:${openMinutes}" + "0" // TODO: исправить прибавление 0
+            "${hours}:${minutes}"
         )
     }
 

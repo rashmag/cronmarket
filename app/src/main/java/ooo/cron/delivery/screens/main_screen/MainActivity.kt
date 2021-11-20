@@ -110,7 +110,10 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
     override fun showMarketCategories(categories: List<MarketCategory>) {
-        (binding.rvMainMarketCategory.adapter as MainMarketCategoryAdapter).submitList(categories)
+        with(binding.rvMainMarketCategory) {
+            (adapter as MainMarketCategoryAdapter).submitList(null)
+            (adapter as MainMarketCategoryAdapter).submitList(categories)
+        }
     }
 
     override fun showAuthorizedUser(username: String) {
@@ -199,7 +202,9 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
     override fun navigateFirstAddressSelection() {
-        startActivity(Intent(this, FirstAddressSelectionActivity::class.java))
+        val intent = Intent(this, FirstAddressSelectionActivity::class.java)
+        intent.putExtra(FLAG, true)
+        startActivity(intent)
     }
 
     override fun navigateAddressSelection() {
@@ -357,5 +362,9 @@ class MainActivity : BaseActivity(), MainContract.View {
         }
         binding.tvMainTitle.text = title
         binding.tvMainTitle.visibility = if (isVisible) View.VISIBLE else View.GONE
+    }
+
+    companion object {
+        const val FLAG = "flag"
     }
 }

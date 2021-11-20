@@ -11,6 +11,7 @@ import ooo.cron.delivery.data.DataManager
 import ooo.cron.delivery.data.network.RestService
 import ooo.cron.delivery.data.network.SPrefsService
 import ooo.cron.delivery.data.network.errors.ApiErrorsUtils
+import ooo.cron.delivery.data.network.models.BasketGlobalModel
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -68,4 +69,8 @@ class AppModule {
     fun provideApiErrorUtils(): ApiErrorsUtils {
         return ApiErrorsUtils()
     }
+
+    @Provides
+    @Singleton
+    fun provideBasketGlobalModel() = BasketGlobalModel()
 }

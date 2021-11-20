@@ -4,8 +4,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import okhttp3.ResponseBody
 import ooo.cron.delivery.data.DataManager
-import ooo.cron.delivery.data.network.models.Basket
-import ooo.cron.delivery.data.network.models.Basket.Companion.deserializeDishes
+import ooo.cron.delivery.data.network.models.BasketGlobalModel
+import ooo.cron.delivery.data.network.models.BasketGlobalModel.Companion.deserializeDishes
 import ooo.cron.delivery.data.network.request.OrderReq
 import ooo.cron.delivery.screens.base_mvp.BaseMvpPresenter
 import retrofit2.Response
@@ -29,16 +29,11 @@ import kotlin.collections.ArrayList
 
 class OrderPresenter @Inject constructor(
     private val dataManager: DataManager,
-    private val mainScope: CoroutineScope
+    private val mainScope: CoroutineScope,
+    private var basket: BasketGlobalModel
 ) : BaseMvpPresenter<OrderContract.View>(), OrderContract.Presenter {
 
-    protected lateinit var basket: Basket
-
     override fun onCreateView() {
-        if (::basket.isInitialized) {
-            view?.hideProgress()
-            return
-        }
 
         mainScope.launch {
             withErrorsHandle(
@@ -154,7 +149,7 @@ class OrderPresenter @Inject constructor(
         view?.openPaymentScreen(paymentOptions)
     }
 
-    private fun Response<Basket>.handleBasketResponse() {
+    private fun Response<BasketGlobalModel>.handleBasketResponse() {
         if (isSuccessful) basket = body()!!
     }
 

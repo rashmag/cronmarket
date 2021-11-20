@@ -4,10 +4,7 @@ import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import ooo.cron.delivery.data.DataManager
-import ooo.cron.delivery.data.network.models.Basket
-import ooo.cron.delivery.data.network.models.BasketDish
-import ooo.cron.delivery.data.network.models.BasketPersonsReq
-import ooo.cron.delivery.data.network.models.RemoveBasketItemReq
+import ooo.cron.delivery.data.network.models.*
 import ooo.cron.delivery.data.network.request.BasketClearReq
 import ooo.cron.delivery.data.network.request.BasketEditorReq
 import ooo.cron.delivery.screens.base_mvp.BaseMvpPresenter
@@ -19,13 +16,12 @@ import javax.inject.Inject
  * Created by Ramazan Gadzhikadiev on 10.05.2021.
  */
 class BasketPresenter @Inject constructor(
-    val dataManager: DataManager,
-    val mainScope: CoroutineScope
+    private val dataManager: DataManager,
+    private val mainScope: CoroutineScope,
+    private var basket: BasketGlobalModel
 ) :
     BaseMvpPresenter<BasketContract.View>(),
     BasketContract.Presenter {
-
-    private var basket: Basket? = null
 
     override fun onStartView() {
         mainScope.launch {

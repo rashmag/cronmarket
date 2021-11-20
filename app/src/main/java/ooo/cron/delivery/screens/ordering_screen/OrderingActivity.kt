@@ -38,8 +38,11 @@ class OrderingActivity : BaseActivity(), OrderContract.View {
 
     var isRequestParametersValid: Boolean = false
 
+//    private var basketModel: Basket ?= null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+//        basketModel = intent.getParcelableExtra(BASKET_MODEL)
+
         initDependencies()
         presenter.attachView(this)
         super.onCreate(savedInstanceState)
@@ -228,5 +231,7 @@ class OrderingActivity : BaseActivity(), OrderContract.View {
         private const val TINKOFF_PAYMENT_REQUEST_CODE = 1000
         private const val CASH_PAYMENT_TYPE_INDEX = 0
         private const val CARD_PAYMENT_TYPE_INDEX = 1
+
+        private const val BASKET_MODEL = "BASKET_MODEL"
     }
 }

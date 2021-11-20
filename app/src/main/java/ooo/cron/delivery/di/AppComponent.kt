@@ -14,7 +14,6 @@ import ooo.cron.delivery.screens.market_category_screen.MarketCategoryComponent
 import ooo.cron.delivery.screens.ordering_screen.OrderComponent
 import ooo.cron.delivery.screens.ordering_screen.delivery_details_fragment.DeliveryDetailsComponent
 import ooo.cron.delivery.screens.ordering_screen.order_cost_fragment.OrderCostComponent
-import ooo.cron.delivery.screens.partners_screen.PartnersActivity
 import ooo.cron.delivery.screens.partners_screen.PartnersComponent
 import ooo.cron.delivery.screens.splash_screen.SplashScreenComponent
 import javax.inject.Singleton

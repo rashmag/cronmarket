@@ -93,6 +93,7 @@ class BasketActivity : BaseActivity(), BasketContract.View {
             Intent(this, OrderingActivity::class.java).apply {
                 putExtras(intent!!.extras!!)
                 putExtra(AMOUNT, amount)
+//                putExtra(BASKET_MODEL, basket)
             }
         )
     }
@@ -115,6 +116,7 @@ class BasketActivity : BaseActivity(), BasketContract.View {
         const val PARTNER_CLOSE_HOURS = "PARTNER_CLOSE_HOURS"
         const val PARTNER_CLOSE_MINUTES = "PARTNER_CLOSE_MINUTES"
         const val AMOUNT = "AMOUNT"
+        const val BASKET_MODEL = "BASKET_MODEL"
 
         private lateinit var activity: Activity
         private fun initActivity(activity: Activity) {

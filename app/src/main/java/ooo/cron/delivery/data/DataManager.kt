@@ -118,7 +118,7 @@ class DataManager @Inject constructor(
     suspend fun getSpecialOffers(cityId: String) =
         restService.getSpecialOffers(cityId).promotions
 
-    suspend fun getBasket(basketId: String): Response<Basket> =
+    suspend fun getBasket(basketId: String): Response<BasketGlobalModel> =
         restService.getBasket(basketId)
 
     suspend fun increaseProductInBasket(token: String, editor: BasketEditorReq) =

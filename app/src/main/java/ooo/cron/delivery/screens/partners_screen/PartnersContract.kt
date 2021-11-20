@@ -34,7 +34,8 @@ interface PartnersContract {
             openHours: Int,
             openMinutes: Int,
             closeHours: Int,
-            closeMinutes: Int
+            closeMinutes: Int,
+            basket: Basket?
         )
     }
 

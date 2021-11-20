@@ -26,7 +26,7 @@ class PartnersPresenter @Inject constructor(
     private lateinit var categoryRes: List<PartnerCategoryRes.Categories>
     private lateinit var partner: PartnersInfoRes
     private val productCategoriesModel = ArrayList<ProductCategoryModel>()
-    private var basket: BasketGlobalModel? = null
+    private var basket: Basket? = null
     private var basketContent: List<BasketDish>? = null
 
     override fun getPartnerInfo() {
@@ -119,7 +119,8 @@ class PartnersPresenter @Inject constructor(
                 openTime[0],
                 openTime[1],
                 closeTime[0],
-                closeTime[1]
+                closeTime[1],
+                basket
             )
         }
     }
@@ -296,7 +297,7 @@ class PartnersPresenter @Inject constructor(
         }
     }
 
-    private fun Response<BasketGlobalModel>.handleBasket() {
+    private fun Response<Basket>.handleBasket() {
         if (isSuccessful && body() != null &&
             body()!!.id != DataManager.EMPTY_UUID
         ) {

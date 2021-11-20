@@ -18,7 +18,7 @@ import javax.inject.Inject
 class BasketPresenter @Inject constructor(
     private val dataManager: DataManager,
     private val mainScope: CoroutineScope,
-    private var basket: BasketGlobalModel
+    private var basket: Basket
 ) :
     BaseMvpPresenter<BasketContract.View>(),
     BasketContract.Presenter {
@@ -168,7 +168,7 @@ class BasketPresenter @Inject constructor(
             return
         }
 
-        view?.navigateMakeOrderScreen(basket?.amount ?: 0.0)
+        view?.navigateMakeOrderScreen(basket?.amount ?: 0.0, basket)
     }
 
     private fun deserializeDishes() =

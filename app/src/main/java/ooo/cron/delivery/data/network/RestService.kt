@@ -103,38 +103,38 @@ interface RestService {
     @GET("/api/v1/Basket")
     suspend fun getBasket(
         @Query("BasketId") basketId: String
-    ): Response<BasketGlobalModel>
+    ): Response<Basket>
 
     @POST("/api/v1/Basket/inc_product")
     suspend fun increaseProductInBasket(
         @Body editor: BasketEditorReq
-    ): BasketGlobalModel
+    ): Basket
 
     @POST("/api/v1/Basket/inc_product")
     suspend fun increaseProductInBasket(
         @Header("Authorization") token: String,
         @Body editor: BasketEditorReq
-    ): BasketGlobalModel
+    ): Basket
 
     @POST("/api/v1/Basket/dec_product")
     suspend fun decreaseProductInBasket(
         @Body editor: BasketEditorReq
-    ): BasketGlobalModel
+    ): Basket
 
     @POST("/api/v1/Basket/cutlery")
     suspend fun editPersonsCount(
         @Body persons: BasketPersonsReq
-    ): BasketGlobalModel
+    ): Basket
 
     @POST("/api/v1/Basket/remove_product")
     suspend fun removeProduct(
         @Body requestBody: RemoveBasketItemReq
-    ): BasketGlobalModel
+    ): Basket
 
     @POST("/api/v1/Basket/clear")
     suspend fun clearBasket(
         @Body basketClearReq: BasketClearReq
-    ): BasketGlobalModel
+    ): Basket
 
     @GET("/api/v1/SystemInfo/version")
     suspend fun getStableVersion(): String

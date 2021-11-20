@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import com.google.android.material.tabs.TabLayoutMediator
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
+import ooo.cron.delivery.data.network.models.Basket
 import ooo.cron.delivery.data.network.request.OrderReq
 import ooo.cron.delivery.databinding.ActivityOrderingBinding
 import ooo.cron.delivery.screens.BaseActivity
@@ -38,10 +39,10 @@ class OrderingActivity : BaseActivity(), OrderContract.View {
 
     var isRequestParametersValid: Boolean = false
 
-//    private var basketModel: Basket ?= null
+    private var basketModel: Basket?= null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-//        basketModel = intent.getParcelableExtra(BASKET_MODEL)
+        basketModel = intent.getParcelableExtra(BASKET_MODEL)
 
         initDependencies()
         presenter.attachView(this)
@@ -89,10 +90,13 @@ class OrderingActivity : BaseActivity(), OrderContract.View {
     }
 
     private fun initDependencies() {
-        App.appComponent.orderingComponentBuilder()
-            .buildInstance(layoutInflater)
-            .build()
-            .inject(this)
+        basketModel?.let {
+            App.appComponent.orderingComponentBuilder()
+                .buildInstance(layoutInflater)
+                .basketModel(it)
+                .build()
+                .inject(this)
+        }
     }
 
     private fun initViewPager() {

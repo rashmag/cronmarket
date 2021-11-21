@@ -4,14 +4,6 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    signingConfigs {
-        release {
-            storeFile file('C:\\Users\\Maya\\Downloads\\cron_delivery.jks')
-            storePassword 'U4uFU0vn'
-            keyAlias 'key0'
-            keyPassword 'k7p06c2g'
-        }
-    }
     compileSdkVersion 30
     buildToolsVersion "30.0.0"
 
@@ -40,19 +32,17 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
-            shrinkResources true
+            minifyEnabled false
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-
             buildConfigField "String", "BASE_URL", "\"https://api.crondostavka.ru\""
         }
 
         debug {
-            minifyEnabled true
-            shrinkResources true
+            minifyEnabled false
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField "String", "BASE_URL", "\"https://api.crondostavka.ru/\""
-            signingConfig signingConfigs.release
         }
     }
 }

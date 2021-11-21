@@ -20,118 +20,113 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
-#If the @SerializedName annotation is used
--keepclassmembers,allowobfuscation class * {
-    @com.google.gson.annotations.SerializedName <fields>;
-}
-
--keep,allowobfuscation interface com.google.gson.annotations.SerializedName
+-keep public class ooo.cron.delivery.data.network.models.**
 
 # If the @SerializedName annotation is not used
--keepclassmembers class ooo.cron.delivery.data.network.models.City {
-  !transient <fields>;
+-keep class ooo.cron.delivery.data.network.models.City {
+  *;
+}
+
+-keep class ooo.cron.delivery.data.network.models.SuggestAddress {
+  *;
+}
+
+ -keep class ooo.cron.delivery.data.network.models.Basket {
+   *;
+}
+
+-keep class ooo.cron.delivery.data.network.models.BasketDish {
+  *;
+}
+
+-keep class ooo.cron.delivery.data.network.models.BasketDishAdditive {
+  *;
  }
 
- -keepclassmembers class ooo.cron.delivery.data.network.models.SuggestAddress {
-  !transient <fields>;
+-keep class ooo.cron.delivery.data.network.models.BasketItem {
+  *;
  }
 
- -keepclassmembers class ooo.cron.delivery.data.network.models.Basket {
-   !transient <fields>;
+-keep class ooo.cron.delivery.data.network.models.BasketPersonsReq {
+  *;
  }
 
--keepclassmembers class ooo.cron.delivery.data.network.models.BasketDish {
-  !transient <fields>;
+-keep class ooo.cron.delivery.data.network.models.MarketCategory {
+  *;
  }
 
--keepclassmembers class ooo.cron.delivery.data.network.models.BasketDishAdditive {
-  !transient <fields>;
+-keep class ooo.cron.delivery.data.network.models.Pagination {
+  *;
  }
 
--keepclassmembers class ooo.cron.delivery.data.network.models.BasketItem {
-  !transient <fields>;
+-keep class ooo.cron.delivery.data.network.models.Partner {
+  *;
  }
 
--keepclassmembers class ooo.cron.delivery.data.network.models.BasketPersonsReq {
-  !transient <fields>;
+-keep class ooo.cron.delivery.data.network.models.PartnerCategoryRes {
+  *;
  }
 
--keepclassmembers class ooo.cron.delivery.data.network.models.MarketCategory {
-  !transient <fields>;
+-keep class ooo.cron.delivery.data.network.models.PartnerProductsRes {
+  *;
  }
 
--keepclassmembers class ooo.cron.delivery.data.network.models.Pagination {
-  !transient <fields>;
+-keep class ooo.cron.delivery.data.network.models.PartnerResult {
+  *;
  }
 
--keepclassmembers class ooo.cron.delivery.data.network.models.Partner {
-  !transient <fields>;
+-keep class ooo.cron.delivery.data.network.models.PartnersInfoRes {
+  *;
  }
 
--keepclassmembers class ooo.cron.delivery.data.network.models.PartnerCategoryRes {
-  !transient <fields>;
+-keep class ooo.cron.delivery.data.network.models.ProductCategoryModel {
+  *;
  }
 
--keepclassmembers class ooo.cron.delivery.data.network.models.PartnerProductsRes {
-  !transient <fields>;
+-keep class ooo.cron.delivery.data.network.models.Promotion {
+  *;
  }
 
--keepclassmembers class ooo.cron.delivery.data.network.models.PartnerResult {
-  !transient <fields>;
+-keep class ooo.cron.delivery.data.network.models.PromotionsResponse {
+  *;
  }
 
--keepclassmembers class ooo.cron.delivery.data.network.models.PartnersInfoRes {
-  !transient <fields>;
+-keep class ooo.cron.delivery.data.network.models.RefreshableToken {
+  *;
  }
 
--keepclassmembers class ooo.cron.delivery.data.network.models.ProductCategoryModel {
-  !transient <fields>;
+-keep class ooo.cron.delivery.data.network.models.RemoveBasketItemReq {
+  *;
  }
 
--keepclassmembers class ooo.cron.delivery.data.network.models.Promotion {
-  !transient <fields>;
+-keep class ooo.cron.delivery.data.network.models.RequireAdditiveModel {
+  *;
  }
 
--keepclassmembers class ooo.cron.delivery.data.network.models.PromotionsResponse {
-  !transient <fields>;
+-keep class ooo.cron.delivery.data.network.models.Schedule {
+  *;
  }
 
--keepclassmembers class ooo.cron.delivery.data.network.models.RefreshableToken {
-  !transient <fields>;
+-keep class ooo.cron.delivery.data.network.models.SuggestAddress {
+  *;
  }
 
--keepclassmembers class ooo.cron.delivery.data.network.models.RemoveBasketItemReq {
-  !transient <fields>;
+-keep class ooo.cron.delivery.data.network.models.Tag {
+  *;
  }
 
--keepclassmembers class ooo.cron.delivery.data.network.models.RequireAdditiveModel {
-  !transient <fields>;
+-keep class ooo.cron.delivery.data.network.models.TagsResult {
+  *;
  }
 
--keepclassmembers class ooo.cron.delivery.data.network.models.Schedule {
-  !transient <fields>;
+-keep class ooo.cron.delivery.data.network.models.TimeSpan {
+  *;
  }
 
--keepclassmembers class ooo.cron.delivery.data.network.models.SuggestAddress {
-  !transient <fields>;
+-keep class ooo.cron.delivery.data.network.models.User {
+  *;
  }
 
--keepclassmembers class ooo.cron.delivery.data.network.models.Tag {
-  !transient <fields>;
- }
-
--keepclassmembers class ooo.cron.delivery.data.network.models.TagsResult {
-  !transient <fields>;
- }
-
--keepclassmembers class ooo.cron.delivery.data.network.models.TimeSpan {
-  !transient <fields>;
- }
-
--keepclassmembers class ooo.cron.delivery.data.network.models.User {
-  !transient <fields>;
- }
-
--keepclassmembers class ooo.cron.delivery.data.network.models.UserResponse {
-  !transient <fields>;
+-keep class ooo.cron.delivery.data.network.models.UserResponse {
+  *;
  }

@@ -90,13 +90,11 @@ class OrderingActivity : BaseActivity(), OrderContract.View {
     }
 
     private fun initDependencies() {
-        basketModel?.let {
-            App.appComponent.orderingComponentBuilder()
-                .buildInstance(layoutInflater)
-                .basketModel(it)
-                .build()
-                .inject(this)
-        }
+        App.appComponent.orderingComponentBuilder()
+            .buildInstance(layoutInflater)
+            .basketModel(basketModel)
+            .build()
+            .inject(this)
     }
 
     private fun initViewPager() {

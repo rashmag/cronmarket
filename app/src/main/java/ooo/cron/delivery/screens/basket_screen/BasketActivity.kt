@@ -36,13 +36,12 @@ class BasketActivity : BaseActivity(), BasketContract.View {
 
         val basketModel = intent.getParcelableExtra<Basket>(BASKET_MODEL)
 
-        if (basketModel != null) {
-            App.appComponent.basketComponentBuilder()
-                .inflater(layoutInflater)
-                .basketModel(basketModel)
-                .build()
-                .inject(this)
-        }
+        App.appComponent.basketComponentBuilder()
+            .inflater(layoutInflater)
+            .basketModel(basketModel)
+            .build()
+            .inject(this)
+
         presenter.attachView(this)
         initActivity(this)
         super.onCreate(savedInstanceState)

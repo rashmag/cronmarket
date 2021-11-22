@@ -22,7 +22,7 @@ interface BasketComponent {
         fun inflater(inflater: LayoutInflater): Builder
 
         @BindsInstance
-        fun basketModel(basket: Basket): Builder
+        fun basketModel(basket: Basket?): Builder
 
         fun build(): BasketComponent
     }

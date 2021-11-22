@@ -18,7 +18,7 @@ import javax.inject.Inject
 class BasketPresenter @Inject constructor(
     private val dataManager: DataManager,
     private val mainScope: CoroutineScope,
-    private var basket: Basket
+    private var basket: Basket?
 ) :
     BaseMvpPresenter<BasketContract.View>(),
     BasketContract.Presenter {

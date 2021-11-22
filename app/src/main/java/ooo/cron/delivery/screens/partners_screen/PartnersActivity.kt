@@ -83,7 +83,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
                 scrollRange = super.scrollVerticallyBy(dy, recycler, state)
                 overScroll = dy - scrollRange
 
-                if(overScroll < 0) binding.scrolledErrorContainer.visibility = View.GONE
+                if(overScroll < 0) binding.scrolledErrorContainer?.visibility = View.GONE
                 else showBottomCloseShopError()
 
                 return scrollRange
@@ -416,8 +416,8 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         val hours = if((openHours?.div(10) ?: 0) > 0) openHours else "0$openHours"
         val minutes = if((openMinutes?.div(10) ?: 0) > 0) openMinutes else "0$openMinutes"
 
-        binding.tvCloseShopError.isVisible = isOpen == false
-        binding.tvCloseShopError.text = binding.root.context.getString(
+        binding.tvCloseShopError?.isVisible = isOpen == false
+        binding.tvCloseShopError?.text = binding.root.context.getString(
             R.string.partner_closed,
             "${hours}:${minutes}"
         )
@@ -427,8 +427,8 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         val hours = if((openHours?.div(10) ?: 0) > 0) openHours else "0$openHours"
         val minutes = if((openMinutes?.div(10) ?: 0) > 0) openMinutes else "0$openMinutes"
 
-        binding.scrolledErrorContainer.startBottomAnimate(isOpen == false)
-        binding.tvScrollShopError.text = binding.root.context.getString(
+        binding.scrolledErrorContainer?.startBottomAnimate(isOpen == false)
+        binding.tvScrollShopError?.text = binding.root.context.getString(
             R.string.partner_closed,
             "${hours}:${minutes}"
         )

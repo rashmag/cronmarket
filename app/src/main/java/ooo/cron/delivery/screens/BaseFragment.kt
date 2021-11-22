@@ -10,10 +10,10 @@ import ooo.cron.delivery.screens.connection_error_screen.ConnectionErrorActivity
 abstract class BaseFragment : Fragment() {
 
     fun showAnyErrorScreen() {
-        AnyErrorActivity.show(context!!)
+        AnyErrorActivity.show(requireContext())
     }
 
     fun showConnectionErrorScreen() {
-        ConnectionErrorActivity.show(context!!)
+        ConnectionErrorActivity.show(requireContext())
     }
 }

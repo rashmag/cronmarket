@@ -18,7 +18,7 @@
 
     <string name="first_address_selection_title">Укажите адрес доставки</string>
     <string name="first_address_selection_address_title">Адрес доставки</string>
-    <string name="first_address_selection_info_message">Укажите адрес доставки, чтобы мы были уверенны, что можем доставить до вас заказ</string>
+    <string name="first_address_selection_info_message">Укажите адрес доставки чтобы мы были уверены, что можем доставить Ваш заказ</string>
     <string name="first_address_selection_success_message">Отлично! Давайте приступим к покупкам.</string>
     <string name="first_address_selection_error_message">К сожалению в городе %1$s пока нет нашей доставки. Выберите город из списка выше</string>
     <string name="first_address_selection_location_error_message">К сожалению ваш адрес не был определен, введите пожалуйста адрес вручную</string>
@@ -33,6 +33,7 @@
     <string name="main_special_offers_title"><font color="#212529" >Акции от </font><font color="#FF4C30">Cron</font><font color="#212529">Market</font></string>
     <string name="main_address_incorrect">Укажите адрес доставки</string>
     <string name="main_search">Поиск</string>
+    <string name="main_btn_amount">%s ₽</string>
 
     <string name="market_category_special_offers">Акции от CronДоставки</string>
     <string name="market_category_all_tags">Все заведения</string>

@@ -1,6 +1,5 @@
 package ooo.cron.delivery.screens.main_screen
 
-import android.util.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
@@ -24,6 +23,7 @@ class MainPresenter @Inject constructor(
 ) :
     BaseMvpPresenter<MainContract.View>(), MainContract.Presenter {
 
+    private var currentChosenCity: String? = null
     private var marketCategories: List<MarketCategory>? = null
     private var user: UserResponse? = null
     private var basketPartnerId: String = DataManager.EMPTY_UUID
@@ -36,7 +36,8 @@ class MainPresenter @Inject constructor(
     override fun onResumeView(isFromPartnerScreen: Boolean) {
         mainScope.launch {
             defineAddress()
-            if (marketCategories == null) {
+            if (currentChosenCity != dataManager.readChosenCity().id) {
+                currentChosenCity = dataManager.readChosenCity().id
                 loadMarketCategories(dataManager.readChosenCity().id)
                 showMarketCategories(marketCategories!!.first())
             }
@@ -47,14 +48,17 @@ class MainPresenter @Inject constructor(
                 val basket = dataManager.getBasket(basketId)
                 if (basket.isSuccessful) {
                     basketPartnerId = basket.body()?.partnerId ?: DataManager.EMPTY_UUID
-                    view?.shouldLastBasketSessionBeVisible(true)
-                    view?.showContinueLastSession()
+                    if(basket.body()?.amount?.toInt() == EMPTY_BASKET_COUNT){
+                        view?.shouldLastBasketSessionBeVisible(false)
+                        view?.hideContinueLastSession()
+                    }else{
+                        view?.shouldLastBasketSessionBeVisible(true)
+                        view?.showContinueLastSession()
+                        view?.showBasketAmount((basket.body()?.amount?.toInt()).toString())
+                    }
                     return@launch
                 }
             }
-            view?.shouldLastBasketSessionBeVisible(false)
-            view?.hideContinueLastSession()
-
         }
     }
 
@@ -64,9 +68,7 @@ class MainPresenter @Inject constructor(
     }
 
     override fun onClickAddress() {
-        mainScope.launch {
             view?.navigateFirstAddressSelection()
-        }
     }
 
     override fun onProfileClick() {
@@ -220,5 +222,9 @@ class MainPresenter @Inject constructor(
                 view?.hideSpecialOffers()
             }
         }
+    }
+
+    private companion object{
+        private const val EMPTY_BASKET_COUNT = 0
     }
 }

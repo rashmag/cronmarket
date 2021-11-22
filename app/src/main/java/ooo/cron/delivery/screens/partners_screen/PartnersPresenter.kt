@@ -120,7 +120,8 @@ class PartnersPresenter @Inject constructor(
                 openTime[0],
                 openTime[1],
                 closeTime[0],
-                closeTime[1]
+                closeTime[1],
+                basket
             )
         }
     }

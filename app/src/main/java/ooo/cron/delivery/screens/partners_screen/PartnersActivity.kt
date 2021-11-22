@@ -350,7 +350,8 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         openHours: Int,
         openMinutes: Int,
         closeHours: Int,
-        closeMinutes: Int
+        closeMinutes: Int,
+        basket: Basket?
     ) {
         startActivity(
             Intent(this@PartnersActivity, BasketActivity::class.java)
@@ -362,6 +363,8 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
                     BasketActivity.PARTNER_CLOSE_HOURS, closeHours
                 ).putExtra(
                     BasketActivity.PARTNER_CLOSE_MINUTES, closeMinutes
+                ).putExtra(
+                    BasketActivity.BASKET_MODEL, basket
                 )
         )
     }

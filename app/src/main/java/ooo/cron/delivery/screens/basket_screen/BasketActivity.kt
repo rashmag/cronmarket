@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_basket.*
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
+import ooo.cron.delivery.data.network.models.Basket
 import ooo.cron.delivery.data.network.models.BasketDish
 import ooo.cron.delivery.databinding.ActivityBasketBinding
 import ooo.cron.delivery.screens.BaseActivity
@@ -33,10 +34,14 @@ class BasketActivity : BaseActivity(), BasketContract.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
+        val basketModel = intent.getParcelableExtra<Basket>(BASKET_MODEL)
+
         App.appComponent.basketComponentBuilder()
             .inflater(layoutInflater)
+            .basketModel(basketModel)
             .build()
             .inject(this)
+
         presenter.attachView(this)
         initActivity(this)
         super.onCreate(savedInstanceState)
@@ -88,11 +93,12 @@ class BasketActivity : BaseActivity(), BasketContract.View {
         )
     }
 
-    override fun navigateMakeOrderScreen(amount: Double) {
+    override fun navigateMakeOrderScreen(amount: Double, basket: Basket?) {
         startActivity(
             Intent(this, OrderingActivity::class.java).apply {
                 putExtras(intent!!.extras!!)
                 putExtra(AMOUNT, amount)
+                putExtra(BASKET_MODEL, basket)
             }
         )
     }
@@ -115,6 +121,7 @@ class BasketActivity : BaseActivity(), BasketContract.View {
         const val PARTNER_CLOSE_HOURS = "PARTNER_CLOSE_HOURS"
         const val PARTNER_CLOSE_MINUTES = "PARTNER_CLOSE_MINUTES"
         const val AMOUNT = "AMOUNT"
+        const val BASKET_MODEL = "BASKET_MODEL"
 
         private lateinit var activity: Activity
         private fun initActivity(activity: Activity) {

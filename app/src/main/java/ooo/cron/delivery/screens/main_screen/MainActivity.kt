@@ -216,9 +216,6 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
     override fun navigatePartnerScreen(partnerId: String) {
-//        partnerActivityLauncher.launch(
-//
-//        )
 
         startActivityForResult(
             Intent(this, PartnersActivity::class.java)

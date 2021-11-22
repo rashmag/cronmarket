@@ -5,6 +5,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import okhttp3.ResponseBody
 import ooo.cron.delivery.data.DataManager
+import ooo.cron.delivery.data.network.SPrefsService
 import ooo.cron.delivery.data.network.models.*
 import ooo.cron.delivery.data.network.request.LogOutReq
 import ooo.cron.delivery.screens.base_mvp.BaseMvpPresenter
@@ -19,7 +20,7 @@ import javax.inject.Inject
 @MainScope
 class MainPresenter @Inject constructor(
     private val dataManager: DataManager,
-    private val mainScope: CoroutineScope,
+    private val mainScope: CoroutineScope
 ) :
     BaseMvpPresenter<MainContract.View>(), MainContract.Presenter {
 

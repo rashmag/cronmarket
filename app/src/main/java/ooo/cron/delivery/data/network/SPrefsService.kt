@@ -86,7 +86,6 @@ class SPrefsService @Inject constructor(
             .remove(REFRESH_TOKEN)
             .commit()
 
-
     companion object {
         const val EMPTY_UUID = "00000000-0000-0000-0000-000000000000"
 

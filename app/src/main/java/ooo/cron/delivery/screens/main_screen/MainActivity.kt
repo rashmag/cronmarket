@@ -27,6 +27,7 @@ import ooo.cron.delivery.screens.market_category_screen.MarketCategoryFragment
 import ooo.cron.delivery.screens.partners_screen.PartnersActivity
 import ooo.cron.delivery.screens.vacancies_screen.VacanciesFragment
 import ooo.cron.delivery.utils.dipToPixels
+import ooo.cron.delivery.utils.extensions.startBottomAnimate
 import javax.inject.Inject
 
 
@@ -146,11 +147,11 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
     override fun showContinueLastSession() {
-        binding.vgMainContinueLastSession.visibility = View.VISIBLE
+        binding.vgMainContinueLastSession.startBottomAnimate(true)
     }
 
     override fun hideContinueLastSession() {
-        binding.vgMainContinueLastSession.visibility = View.GONE
+        binding.vgMainContinueLastSession.startBottomAnimate(false)
     }
 
     override fun startMarketCategoryFragment(category: MarketCategory) {

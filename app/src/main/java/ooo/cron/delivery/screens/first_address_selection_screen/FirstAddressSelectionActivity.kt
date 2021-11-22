@@ -221,8 +221,11 @@ class FirstAddressSelectionActivity :
     }
 
     override fun navigateMainScreen() {
-        if (!isFromOrderingScreen)
+        if (this.intent.getBooleanExtra(FLAG, false)) {
             onBackPressed()
+        } else if (isFromOrderingScreen){
+            onBackPressed()
+        } else startActivity(Intent(this, MainActivity::class.java))
         finish()
     }
 
@@ -416,5 +419,6 @@ class FirstAddressSelectionActivity :
         const val REQUEST_LOCATION_PERIOD_IN_MILLIS = 10_000L
         const val REQUEST_LOCATION_DISTANCE_IN_METERS = 20F
         const val ADDRESS_TYPE_WAITING_IN_MILLIS = 300L
+        const val FLAG = "flag"
     }
 }

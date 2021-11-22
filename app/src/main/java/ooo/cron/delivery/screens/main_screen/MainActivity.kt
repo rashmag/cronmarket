@@ -3,7 +3,6 @@ package ooo.cron.delivery.screens.main_screen
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
@@ -345,6 +344,10 @@ class MainActivity : BaseActivity(), MainContract.View {
                 onClick(clickedView)
             }
         }
+    }
+
+    override fun showBasketAmount(basketAmount: String) {
+        binding.tvBasketAmount.text = getString(R.string.main_btn_amount, basketAmount)
     }
 
     private fun setToolbarTitleVisibility(isVisible: Boolean, title: String?) {

@@ -33,6 +33,7 @@
     <string name="main_special_offers_title"><font color="#212529" >Акции от </font><font color="#FF4C30">Cron</font><font color="#212529">Market</font></string>
     <string name="main_address_incorrect">Укажите адрес доставки</string>
     <string name="main_search">Поиск</string>
+    <string name="main_btn_amount">%s ₽</string>
 
     <string name="market_category_special_offers">Акции от CronДоставки</string>
     <string name="market_category_all_tags">Все заведения</string>

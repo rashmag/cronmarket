@@ -35,6 +35,7 @@ interface MainContract {
         fun startVacanciesFragment()
         fun showSpecialOffers(promotions: List<Promotion>)
         fun hideSpecialOffers()
+        fun showBasketAmount(basketAmount: String)
     }
 
     interface Presenter : MvpPresenter<View> {

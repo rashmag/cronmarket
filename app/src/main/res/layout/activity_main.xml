@@ -213,21 +213,38 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
-            <com.google.android.material.button.MaterialButton
+            <FrameLayout
                 android:id="@+id/btn_main_continue_last_session"
-                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="36dp"
-                android:layout_marginEnd="36dp"
-                android:backgroundTint="@color/main_dark"
-                android:elevation="16dp"
-                android:gravity="center"
-                android:text="@string/main_continue_last_session"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:layout_height="50dp"
+                android:background="@drawable/button_continue_buy_corners"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginVertical="12dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_basket_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/basket_title"
+                    android:layout_gravity="center|left"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:drawableLeft="@drawable/ic_basket_white"
+                    android:drawablePadding="8dp"
+                    android:layout_marginStart="24dp"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_basket_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="10900₽"
+                    android:layout_gravity="center|right"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:layout_marginEnd="24dp"/>
+
+            </FrameLayout>
 
         </androidx.cardview.widget.CardView>
 

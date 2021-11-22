@@ -3,7 +3,6 @@ package ooo.cron.delivery.screens.main_screen
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
@@ -27,6 +26,7 @@ import ooo.cron.delivery.screens.market_category_screen.MarketCategoryFragment
 import ooo.cron.delivery.screens.partners_screen.PartnersActivity
 import ooo.cron.delivery.screens.vacancies_screen.VacanciesFragment
 import ooo.cron.delivery.utils.dipToPixels
+import ooo.cron.delivery.utils.extensions.startBottomAnimate
 import javax.inject.Inject
 
 
@@ -146,11 +146,11 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
     override fun showContinueLastSession() {
-        binding.vgMainContinueLastSession.visibility = View.VISIBLE
+        binding.vgMainContinueLastSession.startBottomAnimate(true)
     }
 
     override fun hideContinueLastSession() {
-        binding.vgMainContinueLastSession.visibility = View.GONE
+        binding.vgMainContinueLastSession.startBottomAnimate(false)
     }
 
     override fun startMarketCategoryFragment(category: MarketCategory) {
@@ -341,6 +341,10 @@ class MainActivity : BaseActivity(), MainContract.View {
                 onClick(clickedView)
             }
         }
+    }
+
+    override fun showBasketAmount(basketAmount: String) {
+        binding.tvBasketAmount.text = getString(R.string.main_btn_amount, basketAmount)
     }
 
     private fun setToolbarTitleVisibility(isVisible: Boolean, title: String?) {

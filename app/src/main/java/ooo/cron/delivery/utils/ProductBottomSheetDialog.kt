@@ -48,6 +48,9 @@ class ProductBottomSheetDialog(
     private lateinit var binding: DialogProductInfoBinding
     private var additiveList = ArrayList<RequireAdditiveModel>()
 
+    private var portionPriceCount = 0.0
+    private var portionCount = 1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DialogProductInfoBinding.bind(
@@ -70,9 +73,12 @@ class ProductBottomSheetDialog(
     }
 
     private fun initView() {
+
+        portionPriceCount = product.cost.toDouble()
+
         with(binding) {
             tvName.text = product.name
-            tvCost.text = product.cost.toString()
+            tvCost.text = portionPriceCount.toString()
             tvDescription.text = product.description
 
             Glide.with(binding.root)
@@ -85,32 +91,30 @@ class ProductBottomSheetDialog(
                 .into(ivProduct)
 
             ivPlus.setOnClickListener {
-                if (tvPortionCount.text != "10") {
-                    tvPortionCount.text =
-                        (tvPortionCount.text.toString()
-                            .toInt() + 1).toString()
+                portionCount += 1
+                tvPortionCount.text = portionCount.toString()
 
-
-                    tvCost.text =
-                        (tvCost.text.toString()
-                            .toDouble() + product.cost).toString()
-                }
+                portionPriceCount += product.cost
+                tvCost.text = portionPriceCount.toString()
             }
-
 
             ivMinus.setOnClickListener {
-                if (tvPortionCount.text != "1") {
-                    tvPortionCount.text =
-                        (tvPortionCount.text.toString()
-                            .toInt() - 1).toString()
+                // Кол-во порций
+                if(portionCount > 1) {
+                    portionCount -= 1
+                    tvPortionCount.text = portionCount.toString()
+                }else {
+                    portionCount = 1
+                }
 
-
-                    tvCost.text =
-                        (tvCost.text.toString()
-                            .toDouble() - product.cost).toString()
+                // Цена порции
+                if(portionPriceCount > product.cost) {
+                    portionPriceCount -= product.cost
+                    tvCost.text = portionPriceCount.toString()
+                }else{
+                    tvCost.text = portionPriceCount.toString()
                 }
             }
-
 
             product.requiredAdditiveGroups.forEach {
                 additiveList.add(RequireAdditiveModel(it.name, it.additives))

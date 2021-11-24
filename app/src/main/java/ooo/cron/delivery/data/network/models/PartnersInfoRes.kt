@@ -20,4 +20,20 @@ data class PartnersInfoRes(
     var feedbackCount: Int,
     var marketCategoryId: Int,
     val schedule: Schedule
-)
+) {
+
+    fun map() = Partner(
+        id = id,
+        name = name,
+        feedbackCount = feedbackCount,
+        fullDescription = fullDescription.orEmpty(),
+        shortDescription = shortDescription,
+        logo = logo,
+        mainWinImg = mainWinImg.orEmpty(),
+        partnerCardImg = partnerCardImg.orEmpty(),
+        minAmountDelivery = minAmountDelivery?.toDouble(),
+        minAmountOrder = minAmountOrder.toDouble(),
+        rating = rating,
+        schedule = schedule
+    )
+}

@@ -94,7 +94,10 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         showCloseShopError()
         onProductRecyclerViewScrollChanged()
         initPartnerRecyclerView()
+    }
 
+    override fun onResume() {
+        super.onResume()
         presenter.getPartnerInfo()
     }
 
@@ -313,11 +316,9 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         binding.tvPartnerBasket.text = getString(R.string.partner_basket, quantity)
         binding.btnPartnerBasketPrice.text = getString(R.string.partner_basket_price, basketPrice)
 
-        binding.vgPartnerBasket.visibility =
-            if (quantity > 0)
-                View.VISIBLE
-            else
-                View.GONE
+        binding.vgPartnerBasket.run {
+            startBottomAnimate(quantity > 0 && isOpen == true)
+        }
 
         with(
             View.OnClickListener { presenter.onBasketClicked() }

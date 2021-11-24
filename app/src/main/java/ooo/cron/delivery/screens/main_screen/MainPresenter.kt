@@ -5,7 +5,6 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import okhttp3.ResponseBody
 import ooo.cron.delivery.data.DataManager
-import ooo.cron.delivery.data.network.SPrefsService
 import ooo.cron.delivery.data.network.models.*
 import ooo.cron.delivery.data.network.request.LogOutReq
 import ooo.cron.delivery.screens.base_mvp.BaseMvpPresenter
@@ -44,19 +43,34 @@ class MainPresenter @Inject constructor(
             }
 
             loadUser(dataManager.readToken(), isFromPartnerScreen)
+
             val basketId = dataManager.readUserBasket()
+
             if (basketId != DataManager.EMPTY_UUID) {
-                val basket = dataManager.getBasket(basketId)
-                if (basket.isSuccessful) {
-                    basketPartnerId = basket.body()?.partnerId ?: DataManager.EMPTY_UUID
-                    if(basket.body()?.amount?.toInt() == EMPTY_BASKET_COUNT){
+
+                // todo СДЕЛАТЬ ПО-ЧЕЛОВЕЧЕСКИ ПОСЛЕ РЕФАКТОРИНГА (ЕСЛИ ОН ВООБЩЕ ПЛАНИРУЕТСЯ) p.s. это пздц
+                val basketResponse = dataManager.getBasket(basketId)
+
+                if (basketResponse.isSuccessful) {
+
+                    val basket = basketResponse.body()
+                    basketPartnerId = basket?.partnerId ?: DataManager.EMPTY_UUID
+
+                    val partnerInfoResponse = dataManager.getPartnersInfo(basketPartnerId)
+
+                    val partnerIsOpen = partnerInfoResponse.body()
+                        ?.map()
+                        ?.isOpen() ?: false
+
+                    if (partnerIsOpen.not() || basket?.amount?.toInt() == EMPTY_BASKET_COUNT) {
                         view?.shouldLastBasketSessionBeVisible(false)
                         view?.hideContinueLastSession()
-                    }else{
+                    } else{
                         view?.shouldLastBasketSessionBeVisible(true)
                         view?.showContinueLastSession()
-                        view?.showBasketAmount((basket.body()?.amount?.toInt()).toString())
+                        view?.showBasketAmount((basket?.amount?.toInt()).toString())
                     }
+
                     return@launch
                 }
             }

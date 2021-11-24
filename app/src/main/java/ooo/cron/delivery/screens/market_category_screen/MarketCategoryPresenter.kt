@@ -1,6 +1,7 @@
 package ooo.cron.delivery.screens.market_category_screen
 
 import androidx.paging.PageKeyedDataSource
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import ooo.cron.delivery.data.DataManager
@@ -8,7 +9,6 @@ import ooo.cron.delivery.data.network.RestService
 import ooo.cron.delivery.data.network.models.*
 import ooo.cron.delivery.screens.base_mvp.BaseMvpPresenter
 import retrofit2.Response
-import javax.inject.Inject
 
 /**
  * Created by Ramazan Gadzhikadiev on 22.04.2021.

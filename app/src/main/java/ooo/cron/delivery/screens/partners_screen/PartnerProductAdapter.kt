@@ -131,7 +131,7 @@ class CategoryAdapter(
 
         private fun updateCounter(quantity: Int) {
             binding.tvPortionCount.text = quantity.toString()
-            if (quantity <= 0) {
+            if (quantity <= 0 || !isOpen) {
                 binding.tvCost.visibility = View.VISIBLE
                 binding.vgAddProduct.visibility = View.INVISIBLE
                 return

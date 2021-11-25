@@ -132,7 +132,7 @@
         android:paddingEnd="@dimen/dimen_16"
         android:paddingVertical="@dimen/dimen_6"
         android:text="@string/first_address_selection_find_location"
-        android:textColor="@color/button_go_buy_color"
+        android:textColor="@color/orange_ff4c30"
         android:textSize="@dimen/text_min_12"
         app:layout_constraintBottom_toTopOf="@id/btn_first_address_selection_submit"
         app:layout_constraintEnd_toEndOf="parent"

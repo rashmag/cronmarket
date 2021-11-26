@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:background="@color/white">
 
 
     <androidx.appcompat.widget.AppCompatEditText
@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="30dp"
-        android:layout_marginVertical="30dp"
+        android:layout_marginVertical="24dp"
         android:background="@drawable/bg_main_address_correct"
         android:paddingHorizontal="10dp"
         android:paddingVertical="10dp"
@@ -20,17 +20,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/cont_delivery_address"
         tools:ignore="MissingConstraints" />
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cont_delivery_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/constraintLayout"
+        android:layout_marginVertical="@dimen/dimen_4"
+        app:layout_constraintBottom_toTopOf="@id/cont_delivery_time"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/et_comments"
+        app:layout_constraintVertical_bias="0.0"
         tools:ignore="MissingConstraints">
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -68,14 +72,14 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
+        android:id="@+id/cont_delivery_time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="77dp"
+        android:layout_marginTop="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_comments"
+        app:layout_constraintTop_toBottomOf="@id/cont_delivery_address"
         tools:ignore="MissingConstraints">
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -109,7 +113,6 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/gpay_payment"
         android:layout_width="wrap_content"
@@ -117,22 +120,29 @@
 
         android:layout_marginTop="9dp"
         android:text="GPay"
-        app:layout_constraintEnd_toStartOf="@id/bank_cart"
+        app:layout_constraintEnd_toStartOf="@+id/bank_cart_payment"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+        app:layout_constraintTop_toBottomOf="@id/cont_delivery_time"
         tools:ignore="MissingConstraints" />
 
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/bank_cart"
+        android:id="@+id/bank_cart_payment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:layout_marginTop="9dp"
-        android:layout_marginEnd="44dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bg_main_address_correct"
+        android:paddingHorizontal="@dimen/dimen_16"
         android:text="@string/bank_cart"
-        app:layout_constraintEnd_toStartOf="@id/cash_payment"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+        android:textAllCaps="false"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/cash_payment"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/gpay_payment"
+        app:layout_constraintTop_toBottomOf="@id/cont_delivery_time"
         tools:ignore="MissingConstraints" />
 
     <androidx.appcompat.widget.AppCompatButton
@@ -141,10 +151,16 @@
         android:layout_height="wrap_content"
 
         android:layout_marginTop="9dp"
-        android:layout_marginEnd="16dp"
+        android:background="@drawable/bg_main_address_correct"
+        android:paddingHorizontal="@dimen/dimen_16"
         android:text="@string/cash"
+        android:textAllCaps="false"
+        android:textSize="16dp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/bank_cart_payment"
+        app:layout_constraintTop_toBottomOf="@id/cont_delivery_time"
         tools:ignore="MissingConstraints" />
 
 
@@ -152,32 +168,35 @@
         android:id="@+id/vg_order"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginVertical="24dp"
+        android:layout_marginTop="24dp"
         android:background="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/bank_cart_payment">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_basket_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginStart="24dp"
             android:textColor="@color/black"
             android:textSize="24sp"
-            android:layout_marginStart="24dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/gpay_payment"
+            app:layout_constraintTop_toBottomOf="@id/gpay_payment"
             tools:text="10900₽" />
 
-        <com.google.android.material.button.MaterialButton
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btn_order"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="36dp"
-            android:layout_marginEnd="36dp"
+            android:layout_marginHorizontal="36dp"
             android:layout_marginVertical="6dp"
-            android:backgroundTint="@color/brand"
+            android:background="@drawable/bg_order_button"
+            android:gravity="center"
+            android:paddingVertical="12dp"
             android:text="@string/order_title"
             android:textAllCaps="false"
             android:textColor="@color/white"
@@ -185,6 +204,13 @@
             android:textStyle="bold" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="20dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

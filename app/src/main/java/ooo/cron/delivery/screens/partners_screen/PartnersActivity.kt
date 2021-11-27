@@ -341,9 +341,11 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
 
     override fun showProductInfo(product: PartnerProductsRes) {
         ProductBottomSheetDialog(
-            this,
-            product,
-            presenter::plusClick
+            mContext = this,
+            product = product,
+            onAddClick = presenter::plusClick,
+            onMinusClick = presenter::minusClick,
+            quantity = if (product.inBasketQuantity == EMPTY_QUANTITY) NUMBER_SERVINGS_ON_BOTTOM_SHEET else product.inBasketQuantity
         ).show()
     }
 
@@ -450,5 +452,8 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         const val EXTRA_IS_OPEN = "is_open"
         const val EXTRA_OPEN_HOURS = "open_hours"
         const val EXTRA_OPEN_MINUTES = "open_minutes"
+
+        private const val NUMBER_SERVINGS_ON_BOTTOM_SHEET = 1
+        private const val EMPTY_QUANTITY = 0
     }
 }

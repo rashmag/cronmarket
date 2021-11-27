@@ -13,7 +13,8 @@
         app:contentInsetEnd="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/white">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -23,9 +24,9 @@
                 android:id="@+id/iv_basket_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="31dp"
+                android:layout_marginStart="@dimen/dimen_16"
                 android:contentDescription="@string/common_navigate_on_screen_before"
-                android:src="@drawable/ic_arrow_back_circle_with_shadow"
+                android:src="@drawable/ic_arrow_left"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -34,10 +35,10 @@
                 android:id="@+id/tv_basket_toolbar_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="@dimen/dimen_24"
                 android:text="@string/basket_title"
                 android:textColor="@color/grey90"
-                android:textSize="16sp"
+                android:textSize="@dimen/text_middle_16"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -49,9 +50,9 @@
                 android:id="@+id/iv_basket_urn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="29dp"
+                android:layout_marginEnd="@dimen/dimen_16"
                 android:contentDescription="@string/basket_clear"
-                android:src="@drawable/ic_basket_urn"
+                android:src="@drawable/ic_trash"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -64,55 +65,61 @@
         android:id="@+id/rv_basket_content"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/cardView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tb_basket"
-        app:layout_constraintVertical_bias="0" />
+        app:layout_constraintTop_toBottomOf="@id/tb_basket" />
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/vg_basket_order"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/vg_basket_order"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <com.google.android.material.button.MaterialButton
-            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
-            android:id="@+id/btn_basket_order"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="28dp"
-            android:backgroundTint="@color/main_dark"
-            android:text="@string/basket_make_order"
-            android:textColor="@color/white"
-            android:textAllCaps="false"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_basket_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen_16"
+                android:layout_marginTop="@dimen/dimen_24"
+                android:layout_marginBottom="@dimen/dimen_24"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_max_20"
+                android:textStyle="bold"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="9384₽"
+                tools:visibility="visible" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_basket_amount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="12dp"
-            android:textSize="20sp"
-            android:textStyle="normal"
-            android:textFontWeight="600"
-            android:textColor="@color/grey90"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            tools:text="10190Р"
-            />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_basket_order"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen_16"
+                android:layout_marginTop="@dimen/dimen_12"
+                android:layout_marginEnd="@dimen/dimen_16"
+                android:layout_marginBottom="@dimen/dimen_12"
+                android:background="@drawable/go_buy_btn_corner"
+                android:text="@string/basket_make_order"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_middle_16"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tv_basket_amount"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
 

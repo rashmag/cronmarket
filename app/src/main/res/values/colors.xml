@@ -46,5 +46,5 @@
     <color name="text_shadow_white">#FFFFFF</color>
 
     <!-- Choose city screen -->
-    <color name="button_go_buy_color">#FF4C30</color>
+    <color name="orange_ff4c30">#FF4C30</color>
 </resources>

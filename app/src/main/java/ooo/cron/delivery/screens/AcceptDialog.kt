@@ -26,6 +26,7 @@ abstract class AcceptDialog(val onCancel: () -> Unit, val onAccept: () -> Unit) 
         binding = DialogAcceptBinding.inflate(inflater)
         binding.tvAcceptTitle.text = title
         binding.tvAcceptMessage.text = message
+        onCancel()
         binding.btnAccept.setOnClickListener {
             onAccept()
             dismiss()
@@ -35,9 +36,5 @@ abstract class AcceptDialog(val onCancel: () -> Unit, val onAccept: () -> Unit) 
             dismiss()
         }
         return binding.root
-    }
-
-    override fun onDismiss(dialog: DialogInterface) {
-        super.onDismiss(dialog)
     }
 }

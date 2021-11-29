@@ -4,7 +4,6 @@ import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import ooo.cron.delivery.data.DataManager
-import ooo.cron.delivery.data.network.SPrefsService
 import ooo.cron.delivery.data.network.models.*
 import ooo.cron.delivery.data.network.request.BasketClearReq
 import ooo.cron.delivery.data.network.request.BasketEditorReq
@@ -102,7 +101,7 @@ class PartnersPresenter @Inject constructor(
     }
 
     override fun onBasketClicked() {
-        partner.schedule?.let { schedule ->
+        partner.schedule.let { schedule ->
             val openTime =
                 if (schedule.begin.isNotEmpty())
                     schedule.begin.split(':')

@@ -37,7 +37,12 @@ class ProductBottomSheetDialog(
         product: PartnerProductsRes,
         additives: List<BasketDishAdditive>,
         quantity: Int
-    ) -> Unit
+    ) -> Unit,
+    private val onMinusClick: (
+        product: PartnerProductsRes,
+        quantity: Int
+    ) -> Unit,
+    private var quantity: Int
 ) :
     BottomSheetDialog(
         mContext, R.style.BottomSheetDialogTheme
@@ -49,7 +54,6 @@ class ProductBottomSheetDialog(
     private var additiveList = ArrayList<RequireAdditiveModel>()
 
     private var portionPriceCount = 0.0
-    private var portionCount = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,10 +78,11 @@ class ProductBottomSheetDialog(
 
     private fun initView() {
 
-        portionPriceCount = product.cost.toDouble()
+        portionPriceCount = quantity * product.cost.toDouble()
 
         with(binding) {
             tvName.text = product.name
+            tvPortionCount.text = quantity.toString()
             tvCost.text = portionPriceCount.toString()
             tvDescription.text = product.description
 
@@ -91,8 +96,8 @@ class ProductBottomSheetDialog(
                 .into(ivProduct)
 
             ivPlus.setOnClickListener {
-                portionCount += 1
-                tvPortionCount.text = portionCount.toString()
+                quantity += 1
+                tvPortionCount.text = quantity.toString()
 
                 portionPriceCount += product.cost
                 tvCost.text = portionPriceCount.toString()
@@ -100,11 +105,11 @@ class ProductBottomSheetDialog(
 
             ivMinus.setOnClickListener {
                 // Кол-во порций
-                if(portionCount > 1) {
-                    portionCount -= 1
-                    tvPortionCount.text = portionCount.toString()
+                if (quantity > 1) {
+                    quantity -= 1
+                    tvPortionCount.text = quantity.toString()
                 }else {
-                    portionCount = 1
+                    quantity = 1
                 }
 
                 // Цена порции
@@ -127,11 +132,9 @@ class ProductBottomSheetDialog(
                 rvAdditives.apply {
                     layoutManager = LinearLayoutManager(context)
                     adapter = AdditiveRecyclerAdapter(product.additives)
-
                 }
             } else {
-                vgAdditives.visibility =
-                    android.view.View.GONE
+                vgAdditives.visibility = View.GONE
             }
 
             btnAdd.setOnClickListener {
@@ -143,11 +146,18 @@ class ProductBottomSheetDialog(
                             else listOf()
                 else listOf()
 
-                onAddClick(
-                    product,
-                    additives.map { BasketDishAdditive(it.id, it.name, it.cost.toDouble()) },
-                    tvPortionCount.text.toString().toInt()
-                )
+                if (quantity > product.inBasketQuantity) {
+                    onAddClick(
+                        product,
+                        additives.map { BasketDishAdditive(it.id, it.name, it.cost.toDouble()) },
+                        quantity - product.inBasketQuantity
+                    )
+                } else {
+                    onMinusClick(
+                        product,
+                        product.inBasketQuantity - quantity
+                    )
+                }
                 dismiss()
             }
         }

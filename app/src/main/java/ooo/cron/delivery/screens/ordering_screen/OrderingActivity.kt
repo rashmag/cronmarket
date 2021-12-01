@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import com.google.android.material.tabs.TabLayoutMediator
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
+import ooo.cron.delivery.data.network.models.Basket
 import ooo.cron.delivery.data.network.request.OrderReq
 import ooo.cron.delivery.databinding.ActivityOrderingBinding
 import ooo.cron.delivery.screens.BaseActivity
@@ -38,8 +39,11 @@ class OrderingActivity : BaseActivity(), OrderContract.View {
 
     var isRequestParametersValid: Boolean = false
 
+    private var basketModel: Basket?= null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        basketModel = intent.getParcelableExtra(BASKET_MODEL)
+
         initDependencies()
         presenter.attachView(this)
         super.onCreate(savedInstanceState)
@@ -88,6 +92,7 @@ class OrderingActivity : BaseActivity(), OrderContract.View {
     private fun initDependencies() {
         App.appComponent.orderingComponentBuilder()
             .buildInstance(layoutInflater)
+            .basketModel(basketModel)
             .build()
             .inject(this)
     }
@@ -228,5 +233,7 @@ class OrderingActivity : BaseActivity(), OrderContract.View {
         private const val TINKOFF_PAYMENT_REQUEST_CODE = 1000
         private const val CASH_PAYMENT_TYPE_INDEX = 0
         private const val CARD_PAYMENT_TYPE_INDEX = 1
+
+        private const val BASKET_MODEL = "BASKET_MODEL"
     }
 }

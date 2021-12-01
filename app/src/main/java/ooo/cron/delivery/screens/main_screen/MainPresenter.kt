@@ -1,6 +1,5 @@
 package ooo.cron.delivery.screens.main_screen
 
-import android.util.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
@@ -20,7 +19,7 @@ import javax.inject.Inject
 @MainScope
 class MainPresenter @Inject constructor(
     private val dataManager: DataManager,
-    private val mainScope: CoroutineScope,
+    private val mainScope: CoroutineScope
 ) :
     BaseMvpPresenter<MainContract.View>(), MainContract.Presenter {
 
@@ -44,19 +43,37 @@ class MainPresenter @Inject constructor(
             }
 
             loadUser(dataManager.readToken(), isFromPartnerScreen)
+
             val basketId = dataManager.readUserBasket()
+
             if (basketId != DataManager.EMPTY_UUID) {
-                val basket = dataManager.getBasket(basketId)
-                if (basket.isSuccessful) {
-                    basketPartnerId = basket.body()?.partnerId ?: DataManager.EMPTY_UUID
-                    view?.shouldLastBasketSessionBeVisible(true)
-                    view?.showContinueLastSession()
+
+                // todo СДЕЛАТЬ ПО-ЧЕЛОВЕЧЕСКИ ПОСЛЕ РЕФАКТОРИНГА (ЕСЛИ ОН ВООБЩЕ ПЛАНИРУЕТСЯ) p.s. это пздц
+                val basketResponse = dataManager.getBasket(basketId)
+
+                if (basketResponse.isSuccessful) {
+
+                    val basket = basketResponse.body()
+                    basketPartnerId = basket?.partnerId ?: DataManager.EMPTY_UUID
+
+                    val partnerInfoResponse = dataManager.getPartnersInfo(basketPartnerId)
+
+                    val partnerIsOpen = partnerInfoResponse.body()
+                        ?.map()
+                        ?.isOpen() ?: false
+
+                    if (partnerIsOpen.not() || basket?.amount?.toInt() == EMPTY_BASKET_COUNT) {
+                        view?.shouldLastBasketSessionBeVisible(false)
+                        view?.hideContinueLastSession()
+                    } else{
+                        view?.shouldLastBasketSessionBeVisible(true)
+                        view?.showContinueLastSession()
+                        view?.showBasketAmount((basket?.amount?.toInt()).toString())
+                    }
+
                     return@launch
                 }
             }
-            view?.shouldLastBasketSessionBeVisible(false)
-            view?.hideContinueLastSession()
-
         }
     }
 
@@ -220,5 +237,9 @@ class MainPresenter @Inject constructor(
                 view?.hideSpecialOffers()
             }
         }
+    }
+
+    private companion object{
+        private const val EMPTY_BASKET_COUNT = 0
     }
 }

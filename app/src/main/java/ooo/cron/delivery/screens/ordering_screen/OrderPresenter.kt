@@ -29,16 +29,11 @@ import kotlin.collections.ArrayList
 
 class OrderPresenter @Inject constructor(
     private val dataManager: DataManager,
-    private val mainScope: CoroutineScope
+    private val mainScope: CoroutineScope,
+    private var basket: Basket?
 ) : BaseMvpPresenter<OrderContract.View>(), OrderContract.Presenter {
 
-    protected lateinit var basket: Basket
-
     override fun onCreateView() {
-        if (::basket.isInitialized) {
-            view?.hideProgress()
-            return
-        }
 
         mainScope.launch {
             withErrorsHandle(
@@ -81,16 +76,18 @@ class OrderPresenter @Inject constructor(
         return dataManager.readChosenCityId()
     }
 
-    private fun makeOrder(orderReq: OrderReq) {
+    private fun makeOrder(orderReq: OrderReq?) {
         mainScope.launch {
             withErrorsHandle(
                 {
                     view?.let {
 
-                        dataManager.sendOrder(
-                            "Bearer ${dataManager.readToken().accessToken}",
-                            orderReq
-                        ).handleOrderResponse()
+                        if (orderReq != null) {
+                            dataManager.sendOrder(
+                                "Bearer ${dataManager.readToken().accessToken}",
+                                orderReq
+                            ).handleOrderResponse()
+                        }
                     }
                 },
                 { view?.showConnectionErrorScreen() },
@@ -99,9 +96,9 @@ class OrderPresenter @Inject constructor(
         }
     }
 
-    private fun getPaidOrderRed(paymentId: Long): OrderReq {
+    private fun getPaidOrderRed(paymentId: Long): OrderReq? {
         val orderReq = getOrderReq()
-        return orderReq.copy(
+        return orderReq?.copy(
             comment = orderReq.comment +
                     "\n" +
                     " Номер платежа: $paymentId" +
@@ -110,9 +107,9 @@ class OrderPresenter @Inject constructor(
         )
     }
 
-    private fun getOrderReq(): OrderReq {
-        var orderReq = view!!.getOrderReq()
-        return orderReq.copy(
+    private fun getOrderReq(): OrderReq? {
+        val orderReq = view?.getOrderReq()
+        return orderReq?.copy(
             deliverAtTime = if (orderReq.deliverAtTime?.isBlank() == true)
                 null
             else orderReq.deliverAtTime,
@@ -169,11 +166,12 @@ class OrderPresenter @Inject constructor(
     private fun paymentId() =
         Calendar.getInstance().timeInMillis.toString()
 
-    private fun paymentAmountInCoins() =
-        (basket.amount + basket.deliveryCost).inCoins()
+    private fun paymentAmountInCoins() = basket?.run {
+        (amount + deliveryCost).inCoins()
+    } ?: 0
 
     private fun receiptItems() =
-        basket.deserializeDishes().map {
+        basket?.deserializeDishes()?.map {
             Item(
                 it.name,
                 it.cost.inCoins(),
@@ -181,13 +179,13 @@ class OrderPresenter @Inject constructor(
                 (it.cost * it.quantity).inCoins(),
                 Tax.NONE
             )
-        }.toMutableList().apply {
+        }?.toMutableList()?.apply {
             add(
                 Item(
                     "Доставка",
-                    basket.deliveryCost.inCoins(),
+                    basket?.deliveryCost?.inCoins(),
                     1.0,
-                    basket.deliveryCost.inCoins(),
+                    basket?.deliveryCost?.inCoins(),
                     Tax.NONE
                 )
             )

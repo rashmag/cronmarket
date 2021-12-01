@@ -19,7 +19,7 @@ import javax.inject.Inject
 @PartnersScope
 class PartnersPresenter @Inject constructor(
     private val dataManager: DataManager,
-    private val mainScope: CoroutineScope,
+    private val mainScope: CoroutineScope
 ) :
     BaseMvpPresenter<PartnersContract.View>(), PartnersContract.Presenter {
 
@@ -101,7 +101,7 @@ class PartnersPresenter @Inject constructor(
     }
 
     override fun onBasketClicked() {
-        partner.schedule?.let { schedule ->
+        partner.schedule.let { schedule ->
             val openTime =
                 if (schedule.begin.isNotEmpty())
                     schedule.begin.split(':')
@@ -119,7 +119,8 @@ class PartnersPresenter @Inject constructor(
                 openTime[0],
                 openTime[1],
                 closeTime[0],
-                closeTime[1]
+                closeTime[1],
+                basket
             )
         }
     }

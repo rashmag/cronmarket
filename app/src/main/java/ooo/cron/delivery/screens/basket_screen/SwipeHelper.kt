@@ -78,7 +78,7 @@ class SwipeHelper(
             val itemView = viewHolder.itemView
 
             if (delta == null)
-                delta = itemView.marginStart + itemView.width / 30
+                delta = itemView.marginStart + itemView.width / 5
 
             swipeDirection = if (dX > lastDx || lastDx == 0.0f)
                 Direction.TO_RIGHT

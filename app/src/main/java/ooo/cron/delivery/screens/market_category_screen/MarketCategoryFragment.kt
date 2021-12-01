@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import ooo.cron.delivery.App
 import ooo.cron.delivery.data.network.models.Partner
 import ooo.cron.delivery.data.network.models.TagsResult
@@ -98,10 +97,13 @@ class MarketCategoryFragment() : BaseFragment(),
         (binding.rvMarketCategoryPartners.adapter as PartnersAdapter).submitList(pagedList)
     }
 
-    override fun navigatePartnerScreen(partnerId: String) {
+    override fun navigatePartnerScreen(partnerId: String, isOpen: Boolean, openHours: Int?, openMinutes: Int?) {
         startActivityForResult(Intent(requireContext(), PartnersActivity::class.java)
             .apply {
                 putExtra(PartnersActivity.EXTRA_PARTNER_ID, partnerId)
+                putExtra(PartnersActivity.EXTRA_IS_OPEN, isOpen)
+                putExtra(PartnersActivity.EXTRA_OPEN_HOURS, openHours)
+                putExtra(PartnersActivity.EXTRA_OPEN_MINUTES, openMinutes)
             },
             PartnersActivity.RESULT_CODE
         )
@@ -118,8 +120,8 @@ class MarketCategoryFragment() : BaseFragment(),
         binding.rvMarketCategoryPartners.setHasFixedSize(false)
         binding.rvMarketCategoryPartners.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        binding.rvMarketCategoryPartners.adapter = PartnersAdapter {
-            presenter.onPartnerClicked(it)
+        binding.rvMarketCategoryPartners.adapter = PartnersAdapter{
+            presenter.onPartnerClicked(it.id, it.isOpen(), it.openTime()[HOURS], it.openTime()[MINUTES])
         }
     }
 
@@ -134,6 +136,8 @@ class MarketCategoryFragment() : BaseFragment(),
         const val ARGUMENT_MARKET_CATEGORY_NAME = "MARKET_CATEGORY_NAME"
         const val ARGUMENT_MARKET_CATEGORY_IMAGE = "MARKET_CATEGORY_IMAGE"
         val ARGUMENT_NOT_PROVIDED_EXCEPTION_MESSAGE = "is not provided to ${this::class.java.name}"
-    }
 
+        const val HOURS = 0
+        const val MINUTES = 1
+    }
 }

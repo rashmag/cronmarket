@@ -9,12 +9,15 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_basket.*
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
+import ooo.cron.delivery.data.network.models.Basket
 import ooo.cron.delivery.data.network.models.BasketDish
 import ooo.cron.delivery.databinding.ActivityBasketBinding
 import ooo.cron.delivery.screens.BaseActivity
 import ooo.cron.delivery.screens.login_screen.LoginActivity
 import ooo.cron.delivery.screens.ordering_screen.OrderingActivity
 import javax.inject.Inject
+import ooo.cron.delivery.utils.extensions.startBottomAnimate
+import ooo.cron.delivery.utils.itemdecoration.SpaceItemDecoration
 
 /**
  * Created by Ramazan Gadzhikadiev on 10.05.2021.
@@ -33,10 +36,14 @@ class BasketActivity : BaseActivity(), BasketContract.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
+        val basketModel = intent.getParcelableExtra<Basket>(BASKET_MODEL)
+
         App.appComponent.basketComponentBuilder()
             .inflater(layoutInflater)
+            .basketModel(basketModel)
             .build()
             .inject(this)
+
         presenter.attachView(this)
         initActivity(this)
         super.onCreate(savedInstanceState)
@@ -54,16 +61,25 @@ class BasketActivity : BaseActivity(), BasketContract.View {
             presenter.clickMakeOrder()
         }
 
-        val itemTouchHelper = ItemTouchHelper(SwipeHelper(this) { it ->
-            if (it is BasketAdapter.ProductViewHolder)
-                presenter.removeItemClicked(it.product)
-        })
-        itemTouchHelper.attachToRecyclerView(rv_basket_content)
+        initAdapter()
     }
 
     override fun onStart() {
         super.onStart()
         presenter.onStartView()
+    }
+
+    private fun initAdapter(){
+        rv_basket_content.addItemDecoration(
+            SpaceItemDecoration(
+                MARGIN_SPACING_VALUE_34
+            ))
+
+        val itemTouchHelper = ItemTouchHelper(SwipeHelper(this) {
+            if (it is BasketAdapter.ProductViewHolder)
+                presenter.removeItemClicked(it.product)
+        })
+        itemTouchHelper.attachToRecyclerView(rv_basket_content)
     }
 
     override fun updateBasket(basket: List<BasketDish>, personsQuantity: Int) {
@@ -88,11 +104,12 @@ class BasketActivity : BaseActivity(), BasketContract.View {
         )
     }
 
-    override fun navigateMakeOrderScreen(amount: Double) {
+    override fun navigateMakeOrderScreen(amount: Double, basket: Basket?) {
         startActivity(
             Intent(this, OrderingActivity::class.java).apply {
                 putExtras(intent!!.extras!!)
                 putExtra(AMOUNT, amount)
+                putExtra(BASKET_MODEL, basket)
             }
         )
     }
@@ -103,6 +120,7 @@ class BasketActivity : BaseActivity(), BasketContract.View {
 
     override fun updateBasketAmount(price: String) {
         binding.tvBasketAmount.text = getString(R.string.price, price)
+        binding.tvBasketAmount.startBottomAnimate(true)
     }
 
     override fun close() {
@@ -115,6 +133,9 @@ class BasketActivity : BaseActivity(), BasketContract.View {
         const val PARTNER_CLOSE_HOURS = "PARTNER_CLOSE_HOURS"
         const val PARTNER_CLOSE_MINUTES = "PARTNER_CLOSE_MINUTES"
         const val AMOUNT = "AMOUNT"
+        const val BASKET_MODEL = "BASKET_MODEL"
+
+        const val MARGIN_SPACING_VALUE_34 = 34
 
         private lateinit var activity: Activity
         private fun initActivity(activity: Activity) {

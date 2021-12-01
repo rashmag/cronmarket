@@ -20,7 +20,7 @@ import ooo.cron.delivery.utils.section_recycler_view.SectionRecyclerViewHolder
 class CategoryAdapter(
     private val productCategoryModel: List<PartnerProductsRes>,
     private val listener: OnProductClickListener,
-    private val recyclerViewPosition: Int
+    private val isOpen: Boolean
 ) :
     RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
 
@@ -46,32 +46,35 @@ class CategoryAdapter(
 
         private val timer = BasketCounterTimer()
         init {
-            view.setOnClickListener {
-                listener.onProductClick(productCategoryModel[adapterPosition])
-            }
+            if(isOpen) {
+                view.setOnClickListener {
+                    listener.onProductClick(productCategoryModel[bindingAdapterPosition])
+                }
 
-            binding.tvCost.setOnClickListener {
-                val product = productCategoryModel[adapterPosition]
-                if (product.additives.isNullOrEmpty() &&
-                    product.requiredAdditiveGroups.isNullOrEmpty()
-                ) {
-                    val currentQuantity = binding.tvPortionCount.text.toString().toInt() + 1
-                    updateCounter(currentQuantity)
+                binding.tvCost.setOnClickListener {
+                    val product = productCategoryModel[bindingAdapterPosition]
+                    if (product.additives.isEmpty() &&
+                            product.requiredAdditiveGroups.isEmpty()
+                    ) {
+                        val currentQuantity = binding.tvPortionCount.text.toString().toInt() + 1
+                        updateCounter(currentQuantity)
 
-                    when(defineQuantityChangeStatus(currentQuantity, product.inBasketQuantity)) {
-                        QuantityChangeStatus.INCREASED->increaseProduct(product, currentQuantity)
-                        QuantityChangeStatus.NO_CHANGES->updateCounter(currentQuantity)
-                        else ->{}
+                        when (defineQuantityChangeStatus(currentQuantity, product.inBasketQuantity)) {
+                            QuantityChangeStatus.INCREASED -> increaseProduct(product, currentQuantity)
+                            QuantityChangeStatus.NO_CHANGES -> updateCounter(currentQuantity)
+                            else -> {
+                            }
+                        }
+                    } else {
+                        listener.onProductClick(product)
                     }
-                } else {
-                    listener.onProductClick(product)
                 }
             }
 
             binding.ivPlus.setOnClickListener {
-                val product = productCategoryModel[adapterPosition]
-                if (product.additives.isNullOrEmpty() &&
-                    product.requiredAdditiveGroups.isNullOrEmpty()
+                val product = productCategoryModel[bindingAdapterPosition]
+                if (product.additives.isEmpty() &&
+                    product.requiredAdditiveGroups.isEmpty()
                 ) {
                     val currentQuantity = binding.tvPortionCount.text.toString().toInt() + 1
                     updateCounter(currentQuantity)
@@ -93,7 +96,7 @@ class CategoryAdapter(
             }
 
             binding.ivMinus.setOnClickListener {
-                val product = productCategoryModel[adapterPosition]
+                val product = productCategoryModel[bindingAdapterPosition]
                 val currentQuantity = binding.tvPortionCount.text.toString().toInt() - 1
                 updateCounter(currentQuantity)
 
@@ -128,7 +131,7 @@ class CategoryAdapter(
 
         private fun updateCounter(quantity: Int) {
             binding.tvPortionCount.text = quantity.toString()
-            if (quantity <= 0) {
+            if (quantity <= 0 || !isOpen) {
                 binding.tvCost.visibility = View.VISIBLE
                 binding.vgAddProduct.visibility = View.INVISIBLE
                 return
@@ -193,7 +196,7 @@ class CategoryAdapter(
 
 }
 
-class PartnerProductAdapter :
+class PartnerProductAdapter(private val isOpen: Boolean) :
     SectionRecyclerViewAdapter<PartnerProductAdapter.ViewHolder, ProductCategoryModel>() {
 
     private var productCategoryModel = ArrayList<ProductCategoryModel>()
@@ -216,7 +219,7 @@ class PartnerProductAdapter :
 
         override fun bindSectionListAdapter(recyclerView: RecyclerView, position: Int) {
             recyclerView.adapter =
-                CategoryAdapter(productCategoryModel[position].productList, listener, position)
+                CategoryAdapter(productCategoryModel[position].productList, listener, isOpen)
         }
     }
 }

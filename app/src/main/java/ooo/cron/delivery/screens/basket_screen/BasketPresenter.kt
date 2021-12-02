@@ -27,9 +27,10 @@ class BasketPresenter @Inject constructor(
         mainScope.launch {
             withErrorsHandle(
                 {
-                    val response = dataManager.getBasket(dataManager.readUserBasket())
+                    val response = dataManager.getBasket(dataManager.readUserBasketId())
                     if (response.isSuccessful) {
                         basket = response.body()!!
+                        dataManager.writeBasket(basket!!)
                     }
                 },
                 { view?.showConnectionErrorScreen() },

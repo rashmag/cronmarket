@@ -2,6 +2,7 @@ package ooo.cron.delivery.screens.ordering_screen.order_cost_fragment
 
 import kotlinx.coroutines.CoroutineScope
 import ooo.cron.delivery.data.DataManager
+import ooo.cron.delivery.data.network.models.Basket
 import ooo.cron.delivery.screens.base_mvp.BaseMvpPresenter
 import javax.inject.Inject
 
@@ -16,5 +17,11 @@ class OrderCostPresenter @Inject constructor(
     private val mainScope: CoroutineScope
 ) : BaseMvpPresenter<OrderCostContract.View>(), OrderCostContract.Presenter {
 
+    fun getDeliveryCityId(): String? {
+        return dataManager.readChosenCityId()
+    }
 
+    fun getBasket(): Basket {
+        return dataManager.readBasket()
+    }
 }

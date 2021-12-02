@@ -224,6 +224,7 @@
     <string name="order_repeat_title">Повторить</string>
     <string name="basket_make_order">Оформить заказ</string>
     <string name="price">%1$s₽</string>
+    <string name="rate_delivery_price">Стоимость доставки\nпо тарифу</string>
     <string name="contacts_for_cooperation_title">По вопросам сотрудничества:</string>
     <string name="contacts_said_lev_title">Гюльмагомедов Саид \nГюльмагомедович</string>
     <string name="contacts_said_lev_position_title">Руководитель отдела по работе с \nпартнёрами</string>

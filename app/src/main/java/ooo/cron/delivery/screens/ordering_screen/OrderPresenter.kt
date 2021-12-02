@@ -38,7 +38,7 @@ class OrderPresenter @Inject constructor(
         mainScope.launch {
             withErrorsHandle(
                 {
-                    dataManager.getBasket(dataManager.readUserBasket()).handleBasketResponse()
+                    dataManager.getBasket(dataManager.readUserBasketId()).handleBasketResponse()
                     view?.hideProgress()
                 },
                 {
@@ -52,7 +52,7 @@ class OrderPresenter @Inject constructor(
     }
 
     fun getBasketId(): String {
-        return dataManager.readUserBasket()
+        return dataManager.readUserBasketId()
     }
 
     override fun paymentSucceed(paymentId: Long) {

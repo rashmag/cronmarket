@@ -1,6 +1,7 @@
 package ooo.cron.delivery.data.network
 
 import android.content.SharedPreferences
+import ooo.cron.delivery.data.network.models.Basket
 import ooo.cron.delivery.data.network.models.City
 import ooo.cron.delivery.data.network.models.MarketCategory
 import ooo.cron.delivery.data.network.models.RefreshableToken
@@ -56,15 +57,40 @@ class SPrefsService @Inject constructor(
     fun readUserPhone() =
         sharedPreferences.getString(USER_PHONE, "")
 
-    fun writeUserBasket(id: String) =
+    fun writeBasket(basket: Basket) {
+        sharedPreferences.edit()
+            .putString(BASKET_ID, basket.id)
+            .putInt(BASKET_MARKET_CATEGORY_ID, basket.marketCategoryId)
+            .putString(BASKET_PARTNER_ID, basket.partnerId)
+            .putFloat(BASKET_AMOUNT, basket.amount.toFloat())
+            .putFloat(BASKET_DELIVERY_COST, basket.deliveryCost.toFloat())
+            .putInt(BASKET_CUTLERY_COUNT, basket.cutleryCount)
+            .putString(BASKET_CONTENT, basket.content)
+            .commit()
+
+    }
+
+    fun readBasket() =
+        Basket(
+            sharedPreferences.getString(BASKET_ID, "").toString(),
+            sharedPreferences.getInt(BASKET_MARKET_CATEGORY_ID, 1),
+            sharedPreferences.getString(BASKET_PARTNER_ID, "").toString(),
+            sharedPreferences.getFloat(BASKET_AMOUNT, 1F).toDouble(),
+            sharedPreferences.getFloat(BASKET_DELIVERY_COST, 1F).toDouble(),
+            sharedPreferences.getInt(BASKET_CUTLERY_COUNT, 1),
+            sharedPreferences.getString(BASKET_CONTENT, "").toString()
+        )
+
+
+    fun writeUserBasketId(id: String) =
         sharedPreferences.edit()
             .putString(USER_BASKET, id)
             .commit()
 
-    fun readUserBasket() =
+    fun readUserBasketId() =
         sharedPreferences.getString(USER_BASKET, null)
 
-    fun removeBasketId() =
+    fun removeUserBasketId() =
         sharedPreferences.edit().putString(USER_BASKET, EMPTY_UUID)
             .commit()
 
@@ -96,6 +122,15 @@ class SPrefsService @Inject constructor(
         const val STREET_WITH_BUILDING = "STREET_WITH_BUILDING"
 
         const val USER_PHONE = "user_phone"
+
+        const val BASKET_ID = "basket_id"
+        const val BASKET_MARKET_CATEGORY_ID = "basket_marketCategoryId"
+        const val BASKET_PARTNER_ID = "basket_partner_id"
+        const val BASKET_AMOUNT = "basket_amount"
+        const val BASKET_DELIVERY_COST = "basket_delivery_cost"
+        const val BASKET_CUTLERY_COUNT = "basket_cutlery_count"
+        const val BASKET_CONTENT = "basket_content"
+
         const val USER_BASKET = "user_basket"
 
         const val ACCESS_TOKEN = "access_token"

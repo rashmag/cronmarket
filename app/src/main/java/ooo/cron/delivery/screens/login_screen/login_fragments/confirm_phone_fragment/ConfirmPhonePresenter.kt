@@ -24,7 +24,7 @@ class ConfirmPhonePresenter @Inject constructor(
     BaseMvpPresenter<ConfirmPhoneContract.View>(), ConfirmPhoneContract.Presenter {
 
     override fun sendConfirmCode() {
-        val basketId = dataManager.readUserBasket()
+        val basketId = dataManager.readUserBasketId()
         dataManager.sentConfirmCode(
             ConfirmCodeReq(
                 dataManager.readUserPhone()!!,

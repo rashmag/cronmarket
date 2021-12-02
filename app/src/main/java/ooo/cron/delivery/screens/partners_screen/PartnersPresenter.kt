@@ -73,7 +73,7 @@ class PartnersPresenter @Inject constructor(
             withErrorsHandle(
                 {
                     dataManager.getPartnerProducts(view?.getPartnerId()!!).handlePartnerProducts()
-                    val basketId = dataManager.readUserBasket()
+                    val basketId = dataManager.readUserBasketId()
                     if (basketId != DataManager.EMPTY_UUID) {
                         dataManager.getBasket(basketId).handleBasket()
                         mergeBasketIntoProducts()
@@ -160,7 +160,7 @@ class PartnersPresenter @Inject constructor(
                 withErrorsHandle(
                     {
                         basket = dataManager.decreaseProductInBasket(basketEditor)
-                        dataManager.writeUserBasket(basket!!.id)
+                        dataManager.writeUserBasketId(basket!!.id)
                         basketContent = deserializeDishes()
                         mergeBasketIntoProducts()
                         view?.showPartnerProducts(productCategoriesModel)
@@ -198,8 +198,8 @@ class PartnersPresenter @Inject constructor(
                             basket = dataManager.clearBasket(BasketClearReq(basket!!.id)).copy(
                                 partnerId = DataManager.EMPTY_UUID
                             )
-                            dataManager.writeUserBasket(basket!!.id)
-                            dataManager.removeUserBasket()
+                            dataManager.writeUserBasketId(basket!!.id)
+                            dataManager.removeUserBasketId()
                             basketContent = deserializeDishes()
                             mergeBasketIntoProducts()
                             view?.showPartnerProducts(productCategoriesModel)
@@ -260,7 +260,7 @@ class PartnersPresenter @Inject constructor(
                     dataManager.increaseProductInBasket("Bearer $accessToken", basketEditor)
                 else
                     dataManager.increaseProductInBasket(basketEditor)
-                dataManager.writeUserBasket(basket!!.id)
+                dataManager.writeUserBasketId(basket!!.id)
                 basketContent = deserializeDishes()
                 mergeBasketIntoProducts()
                 view?.showPartnerProducts(productCategoriesModel)

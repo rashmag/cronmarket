@@ -281,56 +281,40 @@
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <FrameLayout
         android:id="@+id/vg_partner_basket"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_gravity="bottom|center_horizontal"
-        android:visibility="gone">
+        android:layout_height="50dp"
+        android:background="@drawable/button_continue_buy_corners"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginVertical="12dp">
 
-        <ImageView
-            android:id="@+id/iv_partner_basket"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="36dp"
-            android:src="@drawable/ic_partner_basket"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/btn_partner_basket_price"
-            app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_partner_basket"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:textColor="@color/grey90"
-            android:textSize="12sp"
-            android:textStyle="normal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/iv_partner_basket"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="@string/partner_basket" />
+            android:text="@string/basket_title"
+            android:layout_gravity="center|left"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:drawableLeft="@drawable/ic_basket_white"
+            android:drawablePadding="8dp"
+            android:layout_marginStart="24dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_partner_basket_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="36dp"
-            android:backgroundTint="@color/main_dark"
-            android:paddingStart="28dp"
-            android:paddingEnd="28dp"
+            android:layout_gravity="center|right"
+            android:background="#0000"
+            android:layout_marginEnd="24dp"
             android:textColor="@color/white"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1"
-            app:layout_constraintStart_toEndOf="@id/tv_partner_basket"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="101900₽" />
+            android:textSize="16sp"
+            tools:text="10900₽"/>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
 
     <LinearLayout
         android:id="@+id/scrolled_error_container"

@@ -313,7 +313,6 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
     }
 
     override fun updateBasketPreview(quantity: Int, basketPrice: String) {
-        binding.tvPartnerBasket.text = getString(R.string.partner_basket, quantity)
         binding.btnPartnerBasketPrice.text = getString(R.string.partner_basket_price, basketPrice)
 
         binding.vgPartnerBasket.run {

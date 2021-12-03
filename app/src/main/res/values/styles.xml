@@ -87,4 +87,5 @@
         <item name="android:textStyle">bold</item>
         <item name="fontFamily">@font/sf_pro_text_semibold</item>
     </style>
+
 </resources>

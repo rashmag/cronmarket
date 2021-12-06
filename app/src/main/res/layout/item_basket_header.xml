@@ -6,4 +6,5 @@
     android:text="@string/basket_order_title"
     android:textStyle="bold"
     android:textSize="@dimen/text_middle_18"
+    android:layout_marginStart="@dimen/dimen_8"
     android:textColor="@color/grey90"/>

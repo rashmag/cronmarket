@@ -287,7 +287,8 @@
         android:layout_height="50dp"
         android:background="@drawable/button_continue_buy_corners"
         android:layout_marginHorizontal="16dp"
-        android:layout_marginVertical="12dp">
+        android:layout_marginVertical="12dp"
+        android:visibility="gone">
 
 
         <TextView

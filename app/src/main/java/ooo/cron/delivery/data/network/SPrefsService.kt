@@ -1,6 +1,8 @@
 package ooo.cron.delivery.data.network
 
 import android.content.SharedPreferences
+import com.google.gson.Gson
+import ooo.cron.delivery.data.network.models.Basket
 import ooo.cron.delivery.data.network.models.City
 import ooo.cron.delivery.data.network.models.MarketCategory
 import ooo.cron.delivery.data.network.models.RefreshableToken
@@ -56,15 +58,24 @@ class SPrefsService @Inject constructor(
     fun readUserPhone() =
         sharedPreferences.getString(USER_PHONE, "")
 
-    fun writeUserBasket(id: String) =
+    fun writeBasket(basket: Basket) {
+        sharedPreferences.edit()
+            .putString(BASKET, Gson().toJson(basket).toString())
+            .apply()
+    }
+
+    fun readBasket() =
+        Gson().fromJson(sharedPreferences.getString(BASKET,""),Basket::class.java)
+
+    fun writeUserBasketId(id: String) =
         sharedPreferences.edit()
             .putString(USER_BASKET, id)
             .commit()
 
-    fun readUserBasket() =
+    fun readUserBasketId() =
         sharedPreferences.getString(USER_BASKET, null)
 
-    fun removeBasketId() =
+    fun removeUserBasketId() =
         sharedPreferences.edit().putString(USER_BASKET, EMPTY_UUID)
             .commit()
 
@@ -96,6 +107,9 @@ class SPrefsService @Inject constructor(
         const val STREET_WITH_BUILDING = "STREET_WITH_BUILDING"
 
         const val USER_PHONE = "user_phone"
+
+        const val BASKET = "basket"
+
         const val USER_BASKET = "user_basket"
 
         const val ACCESS_TOKEN = "access_token"

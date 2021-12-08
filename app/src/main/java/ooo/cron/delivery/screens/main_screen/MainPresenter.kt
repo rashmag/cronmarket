@@ -44,7 +44,7 @@ class MainPresenter @Inject constructor(
 
             loadUser(dataManager.readToken(), isFromPartnerScreen)
 
-            val basketId = dataManager.readUserBasket()
+            val basketId = dataManager.readUserBasketId()
 
             if (basketId != DataManager.EMPTY_UUID) {
 
@@ -144,7 +144,7 @@ class MainPresenter @Inject constructor(
     private fun Response<ResponseBody>.handleLogOut() {
         if (isSuccessful) {
             dataManager.removeToken()
-            dataManager.removeUserBasket()
+            dataManager.removeUserBasketId()
             view?.reopenMainScreen()
         } else {
             view?.showAnyErrorScreen()
@@ -173,7 +173,7 @@ class MainPresenter @Inject constructor(
     }
 
     private fun writeBasketId(response: Response<UserResponse>) =
-        dataManager.writeUserBasket(response.body()?.basket?.id ?: DataManager.EMPTY_UUID)
+        dataManager.writeUserBasketId(response.body()?.basket?.id ?: DataManager.EMPTY_UUID)
 
     private fun updateUser(response: Response<UserResponse>, isFromPartnerScreen: Boolean) {
         handleBasket(response)

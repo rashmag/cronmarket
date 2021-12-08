@@ -27,7 +27,7 @@ class BasketPresenter @Inject constructor(
         mainScope.launch {
             withErrorsHandle(
                 {
-                    val response = dataManager.getBasket(dataManager.readUserBasket())
+                    val response = dataManager.getBasket(dataManager.readUserBasketId())
                     if (response.isSuccessful) {
                         basket = response.body()!!
                     }
@@ -167,8 +167,8 @@ class BasketPresenter @Inject constructor(
             view?.navigateAuthorization()
             return
         }
-
-        view?.navigateMakeOrderScreen(basket?.amount ?: 0.0, basket)
+        dataManager.writeBasket(basket!!)
+        view?.navigateMakeOrderScreen(basket!!)
     }
 
     private fun deserializeDishes() =

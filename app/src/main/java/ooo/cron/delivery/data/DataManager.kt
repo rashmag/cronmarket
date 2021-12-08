@@ -3,14 +3,12 @@ package ooo.cron.delivery.data
 import ooo.cron.delivery.data.network.RestService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import ooo.cron.delivery.data.network.SPrefsService
 import ooo.cron.delivery.data.network.models.*
 import ooo.cron.delivery.data.network.request.*
 import retrofit2.Call
 import retrofit2.Response
-import retrofit2.http.Header
 import javax.inject.Inject
 
 /**
@@ -195,14 +193,21 @@ class DataManager @Inject constructor(
         sPrefsService.writeUserPhone(phone)
     }
 
-    fun readUserBasket() =
-        sPrefsService.readUserBasket() ?: EMPTY_UUID
+    fun readBasket() =
+        sPrefsService.readBasket()
 
-    fun writeUserBasket(id: String) =
-        sPrefsService.writeUserBasket(id)
+    fun writeBasket(basket: Basket) {
+        sPrefsService.writeBasket(basket)
+    }
 
-    fun removeUserBasket() {
-        sPrefsService.removeBasketId()
+    fun readUserBasketId() =
+        sPrefsService.readUserBasketId() ?: EMPTY_UUID
+
+    fun writeUserBasketId(id: String) =
+        sPrefsService.writeUserBasketId(id)
+
+    fun removeUserBasketId() {
+        sPrefsService.removeUserBasketId()
     }
 
     fun writeToken(token: RefreshableToken) {

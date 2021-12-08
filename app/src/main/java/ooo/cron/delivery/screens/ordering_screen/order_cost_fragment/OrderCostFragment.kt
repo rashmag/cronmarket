@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
+import ooo.cron.delivery.data.network.models.Basket
 import ooo.cron.delivery.databinding.FragmentOrderCostBinding
 import ooo.cron.delivery.screens.BaseFragment
 import javax.inject.Inject
@@ -19,7 +20,7 @@ import javax.inject.Inject
 class OrderCostFragment : BaseFragment(), OrderCostContract.View {
 
     companion object {
-        var AMOUNT = -1.0
+        const val KHAS_ID = "2d0c08eb-da25-4afa-8de2-db70a29a9520"
     }
 
     @Inject
@@ -27,6 +28,8 @@ class OrderCostFragment : BaseFragment(), OrderCostContract.View {
 
     @Inject
     lateinit var binding: FragmentOrderCostBinding
+
+    private var basketModel: Basket? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,9 +56,18 @@ class OrderCostFragment : BaseFragment(), OrderCostContract.View {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        AMOUNT = requireActivity().intent.getDoubleExtra("AMOUNT", -1.0)
-        binding.tvCostGoods.text = String.format(resources.getString(R.string.price), AMOUNT)
-        binding.tvAllCost.text = String.format(resources.getString(R.string.price), AMOUNT + 99)
+        basketModel = presenter.getBasket()
+        binding.tvCostGoods.text = String.format(resources.getString(R.string.price), basketModel?.amount?.toInt())
+        val deliveryPrice = resources.getString(R.string.price)
+        if (presenter.getDeliveryCityId() == KHAS_ID) {
+            binding.tvCostDelivery.text = String.format(resources.getString(R.string.rate_delivery_price))
+            binding.tvAllCost.text = String.format(deliveryPrice, basketModel?.amount?.toInt())
+        } else {
+            binding.tvCostDelivery.text = String.format(deliveryPrice, basketModel!!.deliveryCost.toInt())
+            binding.tvAllCost.text = String.format(deliveryPrice,
+                basketModel?.amount?.toInt()?.plus(basketModel!!.deliveryCost.toInt())
+            )
+        }
     }
 
     fun getPaymentType() =

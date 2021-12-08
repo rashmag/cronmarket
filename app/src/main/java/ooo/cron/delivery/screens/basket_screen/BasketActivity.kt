@@ -104,11 +104,10 @@ class BasketActivity : BaseActivity(), BasketContract.View {
         )
     }
 
-    override fun navigateMakeOrderScreen(amount: Double, basket: Basket?) {
+    override fun navigateMakeOrderScreen(basket: Basket?) {
         startActivity(
             Intent(this, OrderingActivity::class.java).apply {
                 putExtras(intent!!.extras!!)
-                putExtra(AMOUNT, amount)
                 putExtra(BASKET_MODEL, basket)
             }
         )

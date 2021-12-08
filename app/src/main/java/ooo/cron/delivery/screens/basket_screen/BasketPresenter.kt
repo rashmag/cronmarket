@@ -30,7 +30,6 @@ class BasketPresenter @Inject constructor(
                     val response = dataManager.getBasket(dataManager.readUserBasketId())
                     if (response.isSuccessful) {
                         basket = response.body()!!
-                        dataManager.writeBasket(basket!!)
                     }
                 },
                 { view?.showConnectionErrorScreen() },
@@ -168,8 +167,8 @@ class BasketPresenter @Inject constructor(
             view?.navigateAuthorization()
             return
         }
-
-        view?.navigateMakeOrderScreen(basket?.amount ?: 0.0, basket)
+        dataManager.writeBasket(basket!!)
+        view?.navigateMakeOrderScreen(basket!!)
     }
 
     private fun deserializeDishes() =

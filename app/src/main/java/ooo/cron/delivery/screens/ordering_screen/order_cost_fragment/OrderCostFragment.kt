@@ -20,7 +20,6 @@ import javax.inject.Inject
 class OrderCostFragment : BaseFragment(), OrderCostContract.View {
 
     companion object {
-        var AMOUNT = -1.0
         const val KHAS_ID = "2d0c08eb-da25-4afa-8de2-db70a29a9520"
     }
 
@@ -57,16 +56,17 @@ class OrderCostFragment : BaseFragment(), OrderCostContract.View {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        AMOUNT = requireActivity().intent.getDoubleExtra("AMOUNT", -1.0)
         basketModel = presenter.getBasket()
-        binding.tvCostGoods.text = String.format(resources.getString(R.string.price), AMOUNT.toInt())
+        binding.tvCostGoods.text = String.format(resources.getString(R.string.price), basketModel?.amount?.toInt())
         val deliveryPrice = resources.getString(R.string.price)
         if (presenter.getDeliveryCityId() == KHAS_ID) {
             binding.tvCostDelivery.text = String.format(resources.getString(R.string.rate_delivery_price))
-            binding.tvAllCost.text = String.format(deliveryPrice, AMOUNT.toInt())
+            binding.tvAllCost.text = String.format(deliveryPrice, basketModel?.amount?.toInt())
         } else {
             binding.tvCostDelivery.text = String.format(deliveryPrice, basketModel!!.deliveryCost.toInt())
-            binding.tvAllCost.text = String.format(deliveryPrice,AMOUNT.toInt() + basketModel!!.deliveryCost.toInt() )
+            binding.tvAllCost.text = String.format(deliveryPrice,
+                basketModel?.amount?.toInt()?.plus(basketModel!!.deliveryCost.toInt())
+            )
         }
     }
 

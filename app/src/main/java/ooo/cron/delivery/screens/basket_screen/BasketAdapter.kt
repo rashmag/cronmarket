@@ -25,7 +25,9 @@ import javax.inject.Inject
 /**
  * Created by Ramazan Gadzhikadiev on 10.05.2021.
  */
-class BasketAdapter @Inject constructor() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class BasketAdapter(
+    private val isRestaurant: Int
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var products: List<BasketDish> = listOf()
 
@@ -38,7 +40,13 @@ class BasketAdapter @Inject constructor() : RecyclerView.Adapter<RecyclerView.Vi
     override fun getItemViewType(position: Int): Int =
         when (position) {
             getHeaderPosition() -> R.layout.item_basket_header
-            getPersonsPosition() -> R.layout.item_basket_persons
+            getPersonsPosition() -> {
+                if (isRestaurant == RESTAURANT){
+                    R.layout.item_basket_persons
+                }else{
+                    R.layout.item_basket_special_offers
+                }
+            }
             getSpecialOffersPosition() -> R.layout.item_basket_special_offers
             else -> R.layout.item_basket_product
         }
@@ -243,4 +251,8 @@ class BasketAdapter @Inject constructor() : RecyclerView.Adapter<RecyclerView.Vi
     private class SpecialOffersBinding(
         specialOffersBinding: ItemBasketSpecialOffersBinding
     ) : RecyclerView.ViewHolder(specialOffersBinding.root)
+
+    companion object{
+        const val RESTAURANT = 1
+    }
 }

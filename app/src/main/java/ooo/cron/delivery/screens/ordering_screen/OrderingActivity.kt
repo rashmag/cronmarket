@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import com.google.android.material.tabs.TabLayoutMediator
 import ooo.cron.delivery.App
@@ -56,6 +57,8 @@ class OrderingActivity : BaseActivity(), OrderContract.View {
     override fun onStart() {
         super.onStart()
         presenter.onCreateView()
+        if (presenter.getDeliveryCityId() == KHAS_ID)
+            showDeliveryDialog()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -108,6 +111,16 @@ class OrderingActivity : BaseActivity(), OrderContract.View {
                 else -> ""
             }
         }.attach()
+    }
+
+    private fun showDeliveryDialog() {
+        val builder = AlertDialog.Builder(this@OrderingActivity)
+        builder.setTitle("Внимание!")
+            .setMessage("Доставка оплачивается отдельно")
+            .setPositiveButton("Ок") { dialog, id ->
+                dialog.cancel()
+            }
+        builder.show()
     }
 
     private fun onBackClick() =
@@ -235,5 +248,7 @@ class OrderingActivity : BaseActivity(), OrderContract.View {
         private const val CARD_PAYMENT_TYPE_INDEX = 1
 
         private const val BASKET_MODEL = "BASKET_MODEL"
+
+        const val KHAS_ID = "2d0c08eb-da25-4afa-8de2-db70a29a9520"
     }
 }

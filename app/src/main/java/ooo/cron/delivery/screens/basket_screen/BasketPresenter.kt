@@ -26,14 +26,17 @@ class BasketPresenter @Inject constructor(
     override fun onStartView() {
         mainScope.launch {
             withErrorsHandle(
-                {
+                action = {
                     val response = dataManager.getBasket(dataManager.readUserBasketId())
                     if (response.isSuccessful) {
                         basket = response.body()!!
                     }
                 },
-                { view?.showConnectionErrorScreen() },
-                { view?.showAnyErrorScreen() }
+                onRequestError = {
+
+                },
+                onConnectionError = { view?.showConnectionErrorScreen() },
+                onAnyError = { view?.showAnyErrorScreen() }
             )
 
             view?.updateBasket(deserializeDishes(), basket!!.cutleryCount)

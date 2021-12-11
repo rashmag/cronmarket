@@ -44,8 +44,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField "String", "BASE_URL", "\"https://api.crondostavka.ru/\""
         }
-
-        // https://staging-api.crondostav.ru
     }
 }
 

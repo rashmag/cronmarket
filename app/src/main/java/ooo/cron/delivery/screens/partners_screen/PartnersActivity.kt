@@ -1,6 +1,7 @@
 package ooo.cron.delivery.screens.partners_screen
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
@@ -34,13 +36,12 @@ import ooo.cron.delivery.utils.extensions.startBottomAnimate
 import java.util.*
 import javax.inject.Inject
 
-
 /*
  * Created by Muhammad on 02.05.2021
  */
 
 class PartnersActivity : BaseActivity(), PartnersContract.View,
-    PartnerCategoryAdapter.OnCategoryClickListener, CategoryAdapter.OnProductClickListener {
+    PartnerCategoryAdapter.OnCategoryClickListener, CategoryAdapter.OnProductClickListener{
 
     @Inject
     lateinit var presenter: PartnersPresenter
@@ -69,7 +70,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         setResult(RESULT_CODE)
         setContentView(binding.root)
 
-        partnerId = intent.getStringExtra(EXTRA_PARTNER_ID) as String
+        partnerId = intent.getStringExtra(EXTRA_PARTNER_ID)as String
         isOpen = intent.getBooleanExtra(EXTRA_IS_OPEN, true)
         openHours = intent.getIntExtra(EXTRA_OPEN_HOURS, 0)
         openMinutes = intent.getIntExtra(EXTRA_OPEN_MINUTES, 0)
@@ -79,11 +80,11 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
                 dy: Int,
                 recycler: RecyclerView.Recycler?,
                 state: RecyclerView.State?
-            ): Int {
+            ): Int{
                 scrollRange = super.scrollVerticallyBy(dy, recycler, state)
                 overScroll = dy - scrollRange
 
-                if(overScroll < 0) binding.scrolledErrorContainer?.visibility = View.GONE
+                if(overScroll < 0) binding.scrolledErrorContainer.visibility = View.GONE
                 else showBottomCloseShopError()
 
                 return scrollRange
@@ -107,6 +108,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         binding.rvProduct.apply {
             layoutManager = productsLayoutManager
             adapter = productsAdapter
+            isNestedScrollingEnabled = false
         }
     }
 
@@ -119,9 +121,9 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
 
                 val layoutManger = recyclerView.layoutManager as LinearLayoutManager
 
-                val visiblePosition = layoutManger.findFirstVisibleItemPosition()
-                val firstCompletelyVisiblePosition =
-                    layoutManger.findFirstCompletelyVisibleItemPosition()
+                    val visiblePosition = layoutManger.findFirstVisibleItemPosition()
+                    val firstCompletelyVisiblePosition =
+                        layoutManger.findFirstCompletelyVisibleItemPosition()
 
                 val categoryAdapter = binding.rvCategories.adapter as PartnerCategoryAdapter
                 if (visiblePosition > -1) {
@@ -140,7 +142,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         })
     }
 
-    private fun injectDependencies() =
+    private fun injectDependencies()=
         App.appComponent
             .partnersComponentBuilder()
             .bindInflater(layoutInflater)
@@ -148,24 +150,24 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
             .inject(this)
 
 
-    override fun getPartnerId(): String {
+    override fun getPartnerId(): String{
         return partnerId
     }
 
     override fun showPartnerInfo(partnerInfo: PartnersInfoRes) {
         presenter.getPartnerCategory()
-        with(partnerInfo) {
-            binding.run {
-                tvPartnersName.text = name
-                tvPartnersCategory.text = shortDescription
-                tvRating.text =
-                    if (feedbackCount == 0)
+        with(partnerInfo){
+            binding.run{
+                tvPartnersName.text= name
+                tvPartnersCategory.text= shortDescription
+                tvRating.text=
+                    if(feedbackCount == 0)
                         rating.toString()
                     else
                         "$rating ($feedbackCount)"
 
-                tvFreeDelivery.text =
-                    if (minAmountDelivery == null)
+                tvFreeDelivery.text=
+                    if(minAmountDelivery == null)
                         String.format(
                             getString(R.string.partners_activity_min_order_template),
                             minAmountOrder
@@ -176,30 +178,30 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
                             minAmountDelivery
                         )
 
-                if (partnerCardImg != null) {
+                if(partnerCardImg != null) {
                     Glide.with(binding.root)
                         .load(partnerInfo.partnerCardImg)
                         .centerCrop()
                         .into(backdrop)
-                } else {
+                }else{
 
                     binding.vgPartnerInfo.animate().alpha(0f).setDuration(600).start()
 
 
                     val collapsingParams =
                         appbar.layoutParams as CollapsingToolbarLayout.LayoutParams
-                    collapsingParams.collapseMode =
-                        CollapsingToolbarLayout.LayoutParams.COLLAPSE_MODE_OFF
-                    appbar.layoutParams = collapsingParams
+                                collapsingParams.collapseMode=
+                            CollapsingToolbarLayout.LayoutParams.COLLAPSE_MODE_OFF
+                    appbar.layoutParams= collapsingParams
                     appbar.setExpanded(false)
 
                     nestedScrollViewConfigured = true
 
 
-                    val appBarParams = CoordinatorLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+                    val appBarParams = CoordinatorLayout.LayoutParams(MATCH_PARENT,WRAP_CONTENT)
                     appBarParams.height = LinearLayout.LayoutParams.WRAP_CONTENT
 
-                    appbar.layoutParams = appBarParams
+                    appbar.layoutParams= appBarParams
                 }
             }
         }
@@ -211,10 +213,10 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
     private fun collapseToolbar() {
         productsLayoutManager.setScrollEnabled(true)
 
-        if (!nestedScrollViewConfigured) {
+        if(!nestedScrollViewConfigured) {
             binding.vgPartnerInfo.animate().alpha(0f).setDuration(600).start()
             binding.appbar.setExpanded(false)
-            binding.tvTitle.text = binding.tvPartnersName.text
+            binding.tvTitle.text= binding.tvPartnersName.text
             binding.tvTitle.animate().alpha(1f).setDuration(600).start()
 //
 //
@@ -243,12 +245,12 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
                 BottomSheetDialog(this, R.style.BottomSheetDialogTheme)
             val bottomSheetView =
                 LayoutInflater.from(this).inflate(R.layout.dialog_partners_info, bottom_sheet)
-            bottomSheetView.findViewById<Button>(R.id.btn_close).setOnClickListener {
+            bottomSheetView.findViewById<Button>(R.id.btn_close).setOnClickListener{
                 bottomSheetInfoDialog.dismiss()
             }
 
-            bottomSheetView.findViewById<TextView>(R.id.tv_title).text = partnerInfo.name
-            bottomSheetView.findViewById<TextView>(R.id.tv_body).text = partnerInfo.fullDescription
+            bottomSheetView.findViewById<TextView>(R.id.tv_title).text= partnerInfo.name
+            bottomSheetView.findViewById<TextView>(R.id.tv_body).text= partnerInfo.fullDescription
 
             bottomSheetInfoDialog.setContentView(bottomSheetView)
             bottomSheetInfoDialog.show()
@@ -291,7 +293,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
     }
 
     override fun removeProgress() {
-        binding.vgPartnersActivityProgress.root.visibility = View.GONE
+        binding.vgPartnersActivityProgress.root.visibility= View.GONE
     }
 
     override fun showPartnerProducts(
@@ -299,13 +301,13 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
     ) {
 
         productsLayoutManager.setScrollEnabled(false)
-        binding.run {
+        binding.run{
             vgMainView.removeView(binding.vgPartnersActivityProgress.root)
             productsAdapter.setData(productCategoriesModel)
         }
     }
 
-    override fun showClearBasketDialog(onDismiss: () -> Unit, onAccept: () -> Unit) {
+    override fun showClearBasketDialog(onDismiss:()-> Unit, onAccept:()-> Unit) {
         ClearBasketDialog(onDismiss, onAccept).show(
             supportFragmentManager,
             AcceptDialog::class.simpleName
@@ -313,15 +315,15 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
     }
 
     override fun updateBasketPreview(quantity: Int, basketPrice: String) {
-        binding.btnPartnerBasketPrice.text = getString(R.string.partner_basket_price, basketPrice)
+        binding.btnPartnerBasketPrice.text= getString(R.string.partner_basket_price, basketPrice)
 
-        binding.vgPartnerBasket.run {
+        binding.vgPartnerBasket.run{
             startBottomAnimate(quantity > 0 && isOpen == true)
         }
 
         with(
-            View.OnClickListener { presenter.onBasketClicked() }
-        ) {
+            View.OnClickListener{presenter.onBasketClicked()}
+        ){
             binding.vgPartnerBasket.setOnClickListener(this)
             binding.btnPartnerBasketPrice.setOnClickListener(this)
         }
@@ -329,8 +331,8 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
 
     override fun showChangeAddressDialog() {
         RequiredAddressDialog(
-            { presenter.requiredAddressDialogDeclined() },
-            { presenter.requiredAddressDialogAccepted() }
+            {presenter.requiredAddressDialogDeclined()},
+            {presenter.requiredAddressDialogAccepted()}
         ).show(supportFragmentManager, RequiredAddressDialog::class.simpleName)
     }
 
@@ -344,7 +346,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
             product = product,
             onAddClick = presenter::plusClick,
             onMinusClick = presenter::minusClick,
-            quantity = if (product.inBasketQuantity == EMPTY_QUANTITY) NUMBER_SERVINGS_ON_BOTTOM_SHEET else product.inBasketQuantity
+            quantity = if(product.inBasketQuantity == EMPTY_QUANTITY)NUMBER_SERVINGS_ON_BOTTOM_SHEET else product.inBasketQuantity
         ).show()
     }
 
@@ -379,61 +381,61 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         product: PartnerProductsRes,
         additives: List<BasketDishAdditive>,
         quantity: Int
-    ) =
+    )=
         presenter.plusClick(product, additives, quantity)
 
-    override fun onMinusClick(product: PartnerProductsRes, quantity: Int) =
+    override fun onMinusClick(product: PartnerProductsRes, quantity: Int)=
         presenter.minusClick(product, quantity)
 
     private fun setTitleVisibility() {
         var isShow = false
         var scrollRange = -1
 
-        binding.appbar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { barLayout, verticalOffset ->
-            if (scrollRange == -1) {
+        binding.appbar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener{barLayout, verticalOffset->
+            if(scrollRange == -1) {
                 scrollRange = barLayout?.totalScrollRange!!
             }
 
 
-            if (scrollRange + verticalOffset < 150) {
-                binding.vgPartnerInfo.animate().alpha(0f).setDuration(600).start()
-            } else if (!isShow) {
+            if(scrollRange + verticalOffset < 150) {
+                binding.vgPartnerInfo.animate().alpha(1f).setDuration(600).start()
+            }else if(!isShow) {
                 binding.vgPartnerInfo.animate().alpha(1f).setDuration(600).start()
             }
 
 
-            if (scrollRange + verticalOffset == 0) {
-                binding.tvTitle.text = binding.tvPartnersName.text
+            if(scrollRange + verticalOffset == 0) {
+                binding.tvTitle.text= binding.tvPartnersName.text
                 binding.tvTitle.animate().alpha(1f).setDuration(600).start()
                 isShow = true
-            } else if (isShow) {
+            }else if(isShow) {
                 binding.tvTitle.animate().alpha(0f).setDuration(600).start()
 
                 isShow = false
             }
 
             productsLayoutManager.setScrollEnabled(scrollRange + verticalOffset == 0)
-            println("scrollRange ${scrollRange + verticalOffset == 0}")
+            println("scrollRange${scrollRange + verticalOffset == 0}")
         })
     }
 
     private fun showCloseShopError(){
-        val hours = if((openHours?.div(10) ?: 0) > 0) openHours else "0$openHours"
-        val minutes = if((openMinutes?.div(10) ?: 0) > 0) openMinutes else "0$openMinutes"
+        val hours = if((openHours?.div(10)?: 0)> 0)openHours else "0$openHours"
+        val minutes = if((openMinutes?.div(10)?: 0)> 0)openMinutes else "0$openMinutes"
 
-        binding.tvCloseShopError?.isVisible = isOpen == false
-        binding.tvCloseShopError?.text = binding.root.context.getString(
+        binding.tvCloseShopError.isVisible= isOpen == false
+        binding.tvCloseShopError.text= binding.root.context.getString(
             R.string.partner_closed,
             "${hours}:${minutes}"
         )
     }
 
     private fun showBottomCloseShopError(){
-        val hours = if((openHours?.div(10) ?: 0) > 0) openHours else "0$openHours"
-        val minutes = if((openMinutes?.div(10) ?: 0) > 0) openMinutes else "0$openMinutes"
+        val hours = if((openHours?.div(10)?: 0)> 0)openHours else "0$openHours"
+        val minutes = if((openMinutes?.div(10)?: 0)> 0)openMinutes else "0$openMinutes"
 
-        binding.scrolledErrorContainer?.startBottomAnimate(isOpen == false)
-        binding.tvScrollShopError?.text = binding.root.context.getString(
+        binding.scrolledErrorContainer.startBottomAnimate(isOpen == false)
+        binding.tvScrollShopError.text= binding.root.context.getString(
             R.string.partner_closed,
             "${hours}:${minutes}"
         )
@@ -444,7 +446,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         presenter.detachView()
     }
 
-    companion object {
+    companion object{
         const val RESULT_CODE = 1
 
         const val EXTRA_PARTNER_ID = "partnerId"

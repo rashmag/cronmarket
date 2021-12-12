@@ -32,9 +32,6 @@ class BasketPresenter @Inject constructor(
                         basket = response.body()!!
                     }
                 },
-                onRequestError = {
-
-                },
                 onConnectionError = { view?.showConnectionErrorScreen() },
                 onAnyError = { view?.showAnyErrorScreen() }
             )

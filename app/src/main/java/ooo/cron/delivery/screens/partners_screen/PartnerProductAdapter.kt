@@ -199,11 +199,15 @@ class CategoryAdapter(
 class PartnerProductAdapter(private val isOpen: Boolean) :
     SectionRecyclerViewAdapter<PartnerProductAdapter.ViewHolder, ProductCategoryModel>() {
 
-    private var productCategoryModel = ArrayList<ProductCategoryModel>()
+    private var productCategoryModel = arrayListOf<ProductCategoryModel>()
     private lateinit var listener: CategoryAdapter.OnProductClickListener
 
-    fun setData(productCategoryModel: List<ProductCategoryModel>) {
-        this.productCategoryModel = productCategoryModel as ArrayList<ProductCategoryModel>
+    fun setData(productCategoryModel: ArrayList<ProductCategoryModel>) {
+
+        this.productCategoryModel.run {
+            clear()
+            addAll(productCategoryModel)
+        }
         notifyDataSetChanged()
     }
 

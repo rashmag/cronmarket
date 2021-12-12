@@ -42,7 +42,7 @@ class PartnersPresenter @Inject constructor(
     private fun Response<PartnersInfoRes>.handlePartnersInfo() {
         if (isSuccessful) {
             partner = body()!!
-            view?.showPartnerInfo(body()!!)
+            view?.showPartnerInfo(partner)
         } else {
             view?.showAnyErrorScreen()
         }

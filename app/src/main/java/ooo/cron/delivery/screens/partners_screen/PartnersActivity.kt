@@ -2,6 +2,7 @@ package ooo.cron.delivery.screens.partners_screen
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
@@ -17,10 +18,16 @@ import com.bumptech.glide.Glide
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import kotlinx.android.synthetic.main.dialog_partners_info.*
+import javax.inject.Inject
+import kotlinx.android.synthetic.main.dialog_partners_info.bottom_sheet
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
-import ooo.cron.delivery.data.network.models.*
+import ooo.cron.delivery.data.network.models.Basket
+import ooo.cron.delivery.data.network.models.BasketDishAdditive
+import ooo.cron.delivery.data.network.models.PartnerCategoryRes
+import ooo.cron.delivery.data.network.models.PartnerProductsRes
+import ooo.cron.delivery.data.network.models.PartnersInfoRes
+import ooo.cron.delivery.data.network.models.ProductCategoryModel
 import ooo.cron.delivery.databinding.ActivityPartnersBinding
 import ooo.cron.delivery.screens.AcceptDialog
 import ooo.cron.delivery.screens.BaseActivity
@@ -29,8 +36,6 @@ import ooo.cron.delivery.screens.first_address_selection_screen.FirstAddressSele
 import ooo.cron.delivery.utils.CustomLayoutManager
 import ooo.cron.delivery.utils.ProductBottomSheetDialog
 import ooo.cron.delivery.utils.extensions.startBottomAnimate
-import java.util.*
-import javax.inject.Inject
 
 
 /*
@@ -89,6 +94,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
 
         setTitleVisibility()
         showCloseShopError()
+        setImageSize()
         onProductRecyclerViewScrollChanged()
         initPartnerRecyclerView()
     }
@@ -96,6 +102,21 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
     override fun onResume() {
         super.onResume()
         presenter.getPartnerInfo()
+    }
+
+    private fun setImageSize() {
+        if (isOpen == false) {
+
+            val dimensionInDp =
+                TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP, HEADER_IMAGE_SIZE_WHEN_PARTNER_CLOSE, resources.displayMetrics
+                ).toInt()
+
+            binding.imageContainer.apply {
+                layoutParams.height = dimensionInDp
+                requestLayout()
+            }
+        }
     }
 
     private fun initPartnerRecyclerView() {
@@ -447,5 +468,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
 
         private const val NUMBER_SERVINGS_ON_BOTTOM_SHEET = 1
         private const val EMPTY_QUANTITY = 0
+
+        const val HEADER_IMAGE_SIZE_WHEN_PARTNER_CLOSE = 490f
     }
 }

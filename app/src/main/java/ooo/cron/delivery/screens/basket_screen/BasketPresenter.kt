@@ -162,6 +162,10 @@ class BasketPresenter @Inject constructor(
         }
     }
 
+    override fun getMarketCategoryId(): Int {
+        return basket?.marketCategoryId ?: -1
+    }
+
     override fun clickMakeOrder() {
         if (dataManager.readToken().refreshToken.isEmpty()) {
             view?.navigateAuthorization()

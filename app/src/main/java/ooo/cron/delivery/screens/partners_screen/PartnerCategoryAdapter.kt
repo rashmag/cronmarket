@@ -1,76 +1,64 @@
 package ooo.cron.delivery.screens.partners_screen
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.PartnerCategoryRes
+import ooo.cron.delivery.databinding.ItemMarketCategoryTagBinding
 
 /*
  * Created by Muhammad on 08.05.2021
  */
 
-
-
 class PartnerCategoryAdapter(
     private val categoryRes: PartnerCategoryRes,
-    private val listener: OnCategoryClickListener
-) :
-    RecyclerView.Adapter<PartnerCategoryAdapter.ViewHolder>() {
+    private val onCategoryClick: (position: Int) -> Unit
+) : RecyclerView.Adapter<PartnerCategoryAdapter.PartnerCategoryViewHolder>() {
+
     private var checkedPosition = 0
 
-
-    fun setSelected(categoryId: String) {
-        categoryRes.categories.indexOfFirst { it.id == categoryId }.also { position ->
-            checkedPosition = position
-            notifyDataSetChanged()
-        }
+    fun setSelected(position: Int){
+        notifyItemChanged(checkedPosition)
+        checkedPosition = position
+        notifyItemChanged(position)
     }
 
-    fun getCategoryId(position: Int) : String {
-        return categoryRes.categories[position].id
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(
-            LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_market_category_tag, parent, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PartnerCategoryViewHolder =
+        PartnerCategoryViewHolder(
+            itemBinding = ItemMarketCategoryTagBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
-    }
 
     override fun getItemCount() = categoryRes.categories.size
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        with(holder) {
-            (itemView as TextView).text = categoryRes.categories[position].name
-            itemView.setOnClickListener {
-                itemView.setBackgroundResource(R.drawable.bg_market_category_tag_selected_item)
-                if (checkedPosition != holder.adapterPosition) {
-                    notifyItemChanged(checkedPosition)
-                    checkedPosition = holder.adapterPosition
-                }
-                listener.onCategoryClick(position)
-            }
+    override fun onBindViewHolder(holder: PartnerCategoryViewHolder, position: Int) {
+        holder.bind()
+    }
 
-            if (checkedPosition == -1) {
+    inner class PartnerCategoryViewHolder(private val itemBinding: ItemMarketCategoryTagBinding): RecyclerView.ViewHolder(itemBinding.root){
+
+        fun bind(){
+            itemBinding.tagTitle.text = categoryRes.categories[bindingAdapterPosition].name
+
+            if(checkedPosition == -1) {
                 itemView.setBackgroundResource(R.drawable.bg_market_category_tag_not_selected_item)
-            } else {
-                if (checkedPosition == holder.adapterPosition) {
+            }else{
+                if(checkedPosition == bindingAdapterPosition) {
                     itemView.setBackgroundResource(R.drawable.bg_market_category_tag_selected_item)
-                } else {
+                }else{
                     itemView.setBackgroundResource(R.drawable.bg_market_category_tag_not_selected_item)
                 }
             }
 
+            itemView.setOnClickListener{
+                itemView.setBackgroundResource(R.drawable.bg_market_category_tag_selected_item)
+                if(checkedPosition != bindingAdapterPosition) {
+                    notifyItemChanged(checkedPosition)
+                    checkedPosition = bindingAdapterPosition
+                }
+
+                onCategoryClick.invoke(bindingAdapterPosition)
+            }
         }
-    }
-
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
-
-
-    interface OnCategoryClickListener {
-        fun onCategoryClick(position: Int)
     }
 }

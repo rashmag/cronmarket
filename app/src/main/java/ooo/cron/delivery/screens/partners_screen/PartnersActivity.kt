@@ -12,9 +12,7 @@ import android.widget.TextView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.SmoothScroller
 import com.bumptech.glide.Glide
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.CollapsingToolbarLayout
@@ -39,8 +37,7 @@ import javax.inject.Inject
  * Created by Muhammad on 02.05.2021
  */
 
-class PartnersActivity : BaseActivity(), PartnersContract.View,
-    PartnerCategoryAdapter.OnCategoryClickListener, CategoryAdapter.OnProductClickListener {
+class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.OnProductClickListener {
 
     @Inject
     lateinit var presenter: PartnersPresenter
@@ -83,7 +80,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
                 scrollRange = super.scrollVerticallyBy(dy, recycler, state)
                 overScroll = dy - scrollRange
 
-                if(overScroll < 0) binding.scrolledErrorContainer?.visibility = View.GONE
+                if(overScroll < 0) binding.scrolledErrorContainer.visibility = View.GONE
                 else showBottomCloseShopError()
 
                 return scrollRange
@@ -127,13 +124,10 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
                 if (visiblePosition > -1) {
                     if (firstCompletelyVisiblePosition == -1) {
                         binding.rvCategories.smoothScrollToPosition(visiblePosition)
-                        val categoryId = categoryAdapter.getCategoryId(visiblePosition)
-                        categoryAdapter.setSelected(categoryId)
+                        categoryAdapter.setSelected(visiblePosition)
                     } else {
                         binding.rvCategories.smoothScrollToPosition(firstCompletelyVisiblePosition)
-                        val categoryId =
-                            categoryAdapter.getCategoryId(firstCompletelyVisiblePosition)
-                        categoryAdapter.setSelected(categoryId)
+                        categoryAdapter.setSelected(firstCompletelyVisiblePosition)
                     }
                 }
             }
@@ -265,29 +259,28 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
                         LinearLayoutManager.HORIZONTAL,
                         false
                     )
-                adapter = PartnerCategoryAdapter(body, this@PartnersActivity)
+                adapter = PartnerCategoryAdapter(
+                    categoryRes = body,
+                    onCategoryClick = { position ->
+                        onCategoryClick(position)
+                    }
+                )
             }
         }
     }
 
-    override fun onCategoryClick(position: Int) {
+    private fun onCategoryClick(position: Int) {
         collapseToolbar()
 
-
-        val smoothScroller: SmoothScroller = object : LinearSmoothScroller(this) {
-            override fun getVerticalSnapPreference(): Int {
-                return SNAP_TO_START
-            }
-        }
-        smoothScroller.targetPosition = position
-
-        binding.rvProduct.layoutManager?.startSmoothScroll(smoothScroller)
+        (binding.rvProduct.layoutManager as? CustomLayoutManager)?.scrollToPositionWithOffset(position, 0)
 
         val centerOfScreen = binding.rvCategories.width / 3
-        (binding.rvCategories.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(
+        (binding.rvCategories.layoutManager as? LinearLayoutManager)?.scrollToPositionWithOffset(
             position,
             centerOfScreen
         )
+
+        nestedScrollViewConfigured = false
     }
 
     override fun removeProgress() {
@@ -299,8 +292,8 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
     ) {
 
         productsLayoutManager.setScrollEnabled(false)
-        binding.run {
-            vgMainView.removeView(binding.vgPartnersActivityProgress.root)
+        with(binding){
+            vgMainView.removeView(vgPartnersActivityProgress.root)
             productsAdapter.setData(productCategoriesModel)
         }
     }
@@ -421,8 +414,8 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         val hours = if((openHours?.div(10) ?: 0) > 0) openHours else "0$openHours"
         val minutes = if((openMinutes?.div(10) ?: 0) > 0) openMinutes else "0$openMinutes"
 
-        binding.tvCloseShopError?.isVisible = isOpen == false
-        binding.tvCloseShopError?.text = binding.root.context.getString(
+        binding.tvCloseShopError.isVisible = isOpen == false
+        binding.tvCloseShopError.text = binding.root.context.getString(
             R.string.partner_closed,
             "${hours}:${minutes}"
         )
@@ -432,8 +425,8 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         val hours = if((openHours?.div(10) ?: 0) > 0) openHours else "0$openHours"
         val minutes = if((openMinutes?.div(10) ?: 0) > 0) openMinutes else "0$openMinutes"
 
-        binding.scrolledErrorContainer?.startBottomAnimate(isOpen == false)
-        binding.tvScrollShopError?.text = binding.root.context.getString(
+        binding.scrolledErrorContainer.startBottomAnimate(isOpen == false)
+        binding.tvScrollShopError.text = binding.root.context.getString(
             R.string.partner_closed,
             "${hours}:${minutes}"
         )

@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg_basket_counter">
+    android:background="@color/white"
+    android:paddingVertical="@dimen/dimen_4">
 
     <ImageView
         android:id="@+id/iv_basket_portions"

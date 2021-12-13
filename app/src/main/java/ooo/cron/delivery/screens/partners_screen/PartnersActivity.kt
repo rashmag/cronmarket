@@ -405,7 +405,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
                 isShow = false
             }
 
-            productsLayoutManager.setScrollEnabled(scrollRange + verticalOffset == 0)
+            productsLayoutManager.setScrollEnabled(true)
             println("scrollRange ${scrollRange + verticalOffset == 0}")
         })
     }

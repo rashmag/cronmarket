@@ -19,9 +19,9 @@ class PartnerCategoryAdapter(
     private var checkedPosition = 0
 
     fun setSelected(position: Int){
-        notifyItemChanged(checkedPosition)
+        notifyItemChanged(checkedPosition, Unit)
         checkedPosition = position
-        notifyItemChanged(position)
+        notifyItemChanged(position, Unit)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PartnerCategoryViewHolder =

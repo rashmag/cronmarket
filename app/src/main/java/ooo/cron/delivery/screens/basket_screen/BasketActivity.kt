@@ -112,6 +112,8 @@ class BasketActivity : BaseActivity(), BasketContract.View {
     //Метод для показа ордер боттом диалога(Основной боттом диалог)
     override fun showMakeOrderBottomDialog(basket: Basket?) {
         showBottomDialog(orderBottomDialog)
+
+        //метод для перехода в Активити Заказа
 /*        startActivity(
             Intent(this, OrderingActivity::class.java).apply {
                 putExtras(intent!!.extras!!)

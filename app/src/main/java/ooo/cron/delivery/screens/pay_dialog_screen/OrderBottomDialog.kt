@@ -41,9 +41,6 @@ class OrderBottomDialog() : BottomSheetDialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return super.onCreateDialog(savedInstanceState)
-
-        dialog.let {
-        }
     }
 
     private fun injectDependencies() {
@@ -52,5 +49,4 @@ class OrderBottomDialog() : BottomSheetDialogFragment() {
             .build()
             .inject(this)
     }
-
 }

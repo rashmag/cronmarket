@@ -33,10 +33,11 @@ class BasketActivity : BaseActivity(), BasketContract.View {
     protected lateinit var presenter: BasketContract.Presenter
 
     @Inject
-    protected lateinit var adapter: BasketAdapter
-
-    @Inject
     protected lateinit var binding: ActivityBasketBinding
+
+    private val adapter by lazy(LazyThreadSafetyMode.NONE){
+        BasketAdapter(marketCategoryId())
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -137,6 +138,10 @@ class BasketActivity : BaseActivity(), BasketContract.View {
 
     override fun close() {
         finish()
+    }
+
+    override fun marketCategoryId(): Int {
+        return presenter.getMarketCategoryId()
     }
 
     companion object {

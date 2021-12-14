@@ -22,6 +22,8 @@ interface BasketContract {
         fun updateBasketAmount(price: String)
 
         fun close()
+
+        fun marketCategoryId(): Int
     }
 
     interface Presenter : MvpPresenter<View> {
@@ -33,5 +35,6 @@ interface BasketContract {
         fun clickMakeOrder()
         fun clearClicked()
         fun clearBasketAccepted()
+        fun getMarketCategoryId(): Int
     }
 }

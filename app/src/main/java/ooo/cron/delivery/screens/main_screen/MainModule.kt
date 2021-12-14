@@ -1,6 +1,5 @@
 package ooo.cron.delivery.screens.main_screen
 
-import android.app.Activity
 import android.view.LayoutInflater
 import dagger.Binds
 import dagger.Module

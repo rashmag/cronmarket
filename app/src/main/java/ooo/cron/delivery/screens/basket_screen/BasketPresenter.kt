@@ -168,7 +168,7 @@ class BasketPresenter @Inject constructor(
             return
         }
         dataManager.writeBasket(basket!!)
-        view?.navigateMakeOrderScreen(basket!!)
+        view?.showMakeOrderBottomDialog(basket!!)
     }
 
     private fun deserializeDishes() =

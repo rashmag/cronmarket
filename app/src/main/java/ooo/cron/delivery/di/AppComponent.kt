@@ -39,6 +39,7 @@ interface AppComponent {
     fun orderingComponentBuilder(): OrderComponent.Builder
     fun deliveryDetailsComponentBuilder(): DeliveryDetailsComponent.Builder
     fun orderCostComponentBuilder(): OrderCostComponent.Builder
+    fun orderComponentBuilder(): ooo.cron.delivery.screens.pay_dialog_screen.OrderComponent.Builder
 
     @Component.Builder
     interface Builder {

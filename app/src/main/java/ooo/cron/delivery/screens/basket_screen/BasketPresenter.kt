@@ -26,14 +26,14 @@ class BasketPresenter @Inject constructor(
     override fun onStartView() {
         mainScope.launch {
             withErrorsHandle(
-                {
+                action = {
                     val response = dataManager.getBasket(dataManager.readUserBasketId())
                     if (response.isSuccessful) {
                         basket = response.body()!!
                     }
                 },
-                { view?.showConnectionErrorScreen() },
-                { view?.showAnyErrorScreen() }
+                onConnectionError = { view?.showConnectionErrorScreen() },
+                onAnyError = { view?.showAnyErrorScreen() }
             )
 
             view?.updateBasket(deserializeDishes(), basket!!.cutleryCount)
@@ -162,13 +162,17 @@ class BasketPresenter @Inject constructor(
         }
     }
 
+    override fun getMarketCategoryId(): Int {
+        return basket?.marketCategoryId ?: -1
+    }
+
     override fun clickMakeOrder() {
         if (dataManager.readToken().refreshToken.isEmpty()) {
             view?.navigateAuthorization()
             return
         }
         dataManager.writeBasket(basket!!)
-        view?.navigateMakeOrderScreen(basket!!)
+        view?.showMakeOrderBottomDialog(basket!!)
     }
 
     private fun deserializeDishes() =

@@ -42,7 +42,7 @@ class PartnersPresenter @Inject constructor(
     private fun Response<PartnersInfoRes>.handlePartnersInfo() {
         if (isSuccessful) {
             partner = body()!!
-            view?.showPartnerInfo(body()!!)
+            view?.showPartnerInfo(partner)
         } else {
             view?.showAnyErrorScreen()
         }
@@ -79,6 +79,7 @@ class PartnersPresenter @Inject constructor(
                         mergeBasketIntoProducts()
                     } else {
                         basket = null
+                        dataManager.removeUserBasketId()
                     }
                     view?.removeProgress()
                     view?.showPartnerProducts(productCategoriesModel)
@@ -310,6 +311,7 @@ class PartnersPresenter @Inject constructor(
         } else {
             basket = null
             basketContent = null
+            dataManager.removeUserBasketId()
         }
     }
 

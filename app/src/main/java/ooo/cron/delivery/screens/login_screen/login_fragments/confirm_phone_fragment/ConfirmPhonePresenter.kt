@@ -10,18 +10,25 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 
 /*
  * Created by Muhammad on 29.04.2021
  */
 
-
-
 class ConfirmPhonePresenter @Inject constructor(
     private val dataManager: DataManager,
-    private val apiErrorsUtils: ApiErrorsUtils
+    private val apiErrorsUtils: ApiErrorsUtils,
+    private val mainScope: CoroutineScope
 ) :
     BaseMvpPresenter<ConfirmPhoneContract.View>(), ConfirmPhoneContract.Presenter {
+
+    override fun detachView() {
+        super.detachView()
+        mainScope.cancel()
+    }
 
     override fun sendConfirmCode() {
         val basketId = dataManager.readUserBasketId()
@@ -41,10 +48,22 @@ class ConfirmPhonePresenter @Inject constructor(
                 call: Call<RefreshableToken>,
                 response: Response<RefreshableToken>
             ) {
+
                 when {
                     response.isSuccessful -> {
-                        dataManager.writeToken(response.body()!!)
-                        view?.showNextScreen()
+
+                        mainScope.launch {
+
+                            dataManager.writeToken(response.body()!!)
+                            val userResponse = dataManager.getUser("Bearer ${response.body()!!.accessToken}")
+                            if (userResponse.isSuccessful) {
+                                dataManager.writeUserBasketId(
+                                    userResponse.body()?.basket?.id ?: DataManager.EMPTY_UUID
+                                )
+                            }
+                        }.invokeOnCompletion {
+                            view?.showNextScreen()
+                        }
                     }
                     response.code() == 400 -> {
                         view?.showError(response.errorBody()?.string()!!)

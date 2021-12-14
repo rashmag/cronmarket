@@ -16,12 +16,14 @@ interface BasketContract {
         fun showConnectionErrorScreen()
 
         fun showClearBasketDialog()
-        fun navigateMakeOrderScreen(basket: Basket?)
+        fun showMakeOrderBottomDialog(basket: Basket?)
         fun navigateAuthorization()
 
         fun updateBasketAmount(price: String)
 
         fun close()
+
+        fun marketCategoryId(): Int
     }
 
     interface Presenter : MvpPresenter<View> {
@@ -33,5 +35,6 @@ interface BasketContract {
         fun clickMakeOrder()
         fun clearClicked()
         fun clearBasketAccepted()
+        fun getMarketCategoryId(): Int
     }
 }

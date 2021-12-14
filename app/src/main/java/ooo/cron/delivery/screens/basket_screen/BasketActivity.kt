@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.activity_basket.*
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
@@ -15,6 +16,7 @@ import ooo.cron.delivery.databinding.ActivityBasketBinding
 import ooo.cron.delivery.screens.BaseActivity
 import ooo.cron.delivery.screens.login_screen.LoginActivity
 import ooo.cron.delivery.screens.ordering_screen.OrderingActivity
+import ooo.cron.delivery.screens.pay_dialog_screen.OrderBottomDialog
 import javax.inject.Inject
 import ooo.cron.delivery.utils.extensions.startBottomAnimate
 import ooo.cron.delivery.utils.itemdecoration.SpaceItemDecoration
@@ -25,14 +27,17 @@ import ooo.cron.delivery.utils.itemdecoration.SpaceItemDecoration
 
 class BasketActivity : BaseActivity(), BasketContract.View {
 
+    private val orderBottomDialog = OrderBottomDialog()
+
     @Inject
     protected lateinit var presenter: BasketContract.Presenter
 
     @Inject
-    protected lateinit var adapter: BasketAdapter
-
-    @Inject
     protected lateinit var binding: ActivityBasketBinding
+
+    private val adapter by lazy(LazyThreadSafetyMode.NONE){
+        BasketAdapter(marketCategoryId())
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -104,15 +109,26 @@ class BasketActivity : BaseActivity(), BasketContract.View {
         )
     }
 
-    override fun navigateMakeOrderScreen(basket: Basket?) {
-        startActivity(
+    //Метод для показа ордер боттом диалога(Основной боттом диалог)
+    override fun showMakeOrderBottomDialog(basket: Basket?) {
+        showBottomDialog(orderBottomDialog)
+
+        //метод для перехода в Активити Заказа
+/*        startActivity(
             Intent(this, OrderingActivity::class.java).apply {
                 putExtras(intent!!.extras!!)
                 putExtra(BASKET_MODEL, basket)
             }
-        )
+        )*/
     }
 
+    //Метод для показа любого боттом диалога
+    fun showBottomDialog(bottomDialog: BottomSheetDialogFragment) {
+        bottomDialog.show(
+            supportFragmentManager,
+            bottomDialog::class.simpleName
+        )
+    }
     override fun navigateAuthorization() {
         startActivity(Intent(this, LoginActivity::class.java))
     }
@@ -124,6 +140,10 @@ class BasketActivity : BaseActivity(), BasketContract.View {
 
     override fun close() {
         finish()
+    }
+
+    override fun marketCategoryId(): Int {
+        return presenter.getMarketCategoryId()
     }
 
     companion object {

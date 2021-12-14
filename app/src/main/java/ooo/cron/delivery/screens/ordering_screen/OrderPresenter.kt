@@ -22,6 +22,7 @@ import ru.tinkoff.acquiring.sdk.utils.Money
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
+import ooo.cron.delivery.data.network.models.RefreshableToken
 
 /*
  * Created by Muhammad on 19.05.2021
@@ -155,12 +156,34 @@ class OrderPresenter @Inject constructor(
         if (isSuccessful) basket = body()!!
     }
 
-    private fun Response<ResponseBody>.handleOrderResponse() {
+    private suspend fun Response<ResponseBody>.handleOrderResponse() {
+
+        val token = dataManager.readToken()
+
+        if (code() == 401 && token.accessToken.isNotEmpty() && token.refreshToken.isNotEmpty()) {
+            return dataManager.refreshToken(token)
+                .handleRefreshToken()
+        }
+
         if (isSuccessful) {
             view?.showOrderSuccessfulScreen()
-        } else {
+        }
+        else {
             view?.showOrderErrorScreen()
         }
+    }
+
+    private fun Response<RefreshableToken>.handleRefreshToken() {
+        if (isSuccessful) {
+            dataManager.writeToken(body()!!)
+            return makeOrder(getOrderReq())
+        }
+
+        if (code() == 400 || code() == 401) {
+            dataManager.removeToken()
+        }
+
+        view?.showAnyErrorScreen() ?: Unit
     }
 
     private fun paymentId() =

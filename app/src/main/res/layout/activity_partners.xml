@@ -201,13 +201,15 @@
 
                     <LinearLayout
                         android:id="@+id/vg_rating"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="16dp"
-                        android:layout_marginEnd="28dp"
+                        android:layout_marginEnd="16dp"
                         android:background="@drawable/bg_partners_activity_rating"
+                        android:gravity="center"
                         android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tv_partners_category">
 
@@ -227,8 +229,8 @@
                             android:layout_marginTop="4dp"
                             android:layout_marginBottom="4dp"
                             android:textColor="@color/grey70"
-                            android:textStyle="bold"
                             android:textSize="12sp"
+                            android:textStyle="bold"
                             tools:text="4.3 (2480)" />
 
 
@@ -246,13 +248,32 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="4dp"
-                            android:layout_marginEnd="16dp"
                             android:layout_marginBottom="4dp"
                             android:textColor="@color/grey70"
-                            android:textStyle="bold"
                             android:textSize="12sp"
+                            android:textStyle="bold"
                             tools:text="от 5000₽ бесплатно" />
 
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginBottom="4dp"
+                            android:src="@drawable/ic_market_category_partner_min_price" />
+
+                        <TextView
+                            android:id="@+id/tv_min_order_amount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginBottom="4dp"
+                            android:maxLines="2"
+                            android:textColor="@color/grey70"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            tools:text="Заказ от 500₽" />
 
                     </LinearLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>

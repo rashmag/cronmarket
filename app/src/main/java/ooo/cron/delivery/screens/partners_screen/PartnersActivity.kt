@@ -180,16 +180,20 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
                         "$rating ($feedbackCount)"
 
                 tvFreeDelivery.text =
-                    if (minAmountDelivery == null)
-                        String.format(
-                            getString(R.string.partners_activity_min_order_template),
-                            minAmountOrder
-                        )
-                    else
-                        String.format(
-                            getString(R.string.partners_activity_free_delivery_template),
-                            minAmountDelivery
-                        )
+                    String.format(
+                        getString(R.string.partners_activity_free_delivery_template),
+                        minAmountDelivery
+                    )
+
+                tvMinOrderAmount.text = String.format(
+                    getString(R.string.partners_activity_min_order_template),
+                    minAmountOrder
+                )
+                
+                tvMinOrderAmount.text = String.format(
+                    getString(R.string.partners_activity_min_order_template),
+                    minAmountOrder
+                )
 
                 if (partnerCardImg != null) {
                     Glide.with(binding.root)

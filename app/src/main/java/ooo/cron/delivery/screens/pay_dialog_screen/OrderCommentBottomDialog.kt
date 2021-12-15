@@ -1,36 +1,36 @@
 package ooo.cron.delivery.screens.pay_dialog_screen
 
 import android.app.Dialog
-import android.os.Build
+import android.content.Context
 import android.os.Bundle
-import android.util.Log
+import android.os.Parcel
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kotlinx.android.synthetic.main.dialog_order.*
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
-import ooo.cron.delivery.data.DataManager
 import ooo.cron.delivery.databinding.DialogOrderBinding
+import ooo.cron.delivery.databinding.FragmentCommentBinding
 import javax.inject.Inject
+import androidx.core.content.ContextCompat.getSystemService
 
-/**
-* Created by Maya Nasrueva on 14.12.2021
-* */
 
-class OrderBottomDialog() : BottomSheetDialogFragment() {
-   /*
-    @Inject
-    lateinit var commentBottomDialog: OrderCommentBottomDialog
-*/
+
+
+class OrderCommentBottomDialog() : BottomSheetDialogFragment() {
+
     private val viewModel: OrderViewModel by viewModels {
         factory.create()
     }
 
     @Inject
-    lateinit var binding: DialogOrderBinding
+    lateinit var binding: FragmentCommentBinding
 
     @Inject
     lateinit var factory: OrderViewModelFactory.Factory
@@ -48,19 +48,13 @@ class OrderBottomDialog() : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.commentTextLiveData.observe(viewLifecycleOwner) {
-            binding.etComments.setText(it)
-            with(binding.etComments){
-                if(it.isNotBlank())
-                    setBackgroundResource(R.drawable.bg_true_light)
-            }
-        }
-
-        binding.etComments.showSoftInputOnFocus = false
-        binding.etComments.setOnClickListener {
-            OrderCommentBottomDialog().show(parentFragmentManager,"")
+        binding.etComments.requestFocus()
+        binding.btnSaveComment.setOnClickListener{
+            viewModel.setComment(binding.etComments.text.toString())
+            dismiss()
         }
     }
+
     private fun injectDependencies() {
         App.appComponent.orderComponentBuilder()
             .buildInstance(layoutInflater)

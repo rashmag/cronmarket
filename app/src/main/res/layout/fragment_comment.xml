@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/grey5">
+    android:background="@drawable/bg_bottom_sheet_dialog">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/appCompatTextView"
@@ -16,7 +16,7 @@
         android:fontFamily="@font/sf_pro_text_semibold"
         android:text="@string/enter_a_comment_for_the_order"
         android:textColor="@color/black"
-        android:textSize="18sp"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -25,14 +25,17 @@
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/et_comments"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:layout_marginHorizontal="@dimen/dimen_24"
+        android:maxLength="200"
         android:layout_marginVertical="@dimen/dimen_18"
         android:background="@drawable/bg_market_category_tag_not_selected_item"
         android:paddingHorizontal="10dp"
         android:paddingTop="10dp"
         android:paddingBottom="60dp"
-        android:text="@string/comment"
+        android:hint="@string/comment"
+        android:textColorHint="@color/grey50"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/appCompatTextView"

@@ -14,7 +14,7 @@ class OrderViewModelFactory @AssistedInject constructor(
     private val dataManager: DataManager
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        require(modelClass == OrderViewModel::class)
+        require(modelClass == OrderViewModel::class.java)
         return OrderViewModel(dataManager) as T
     }
 

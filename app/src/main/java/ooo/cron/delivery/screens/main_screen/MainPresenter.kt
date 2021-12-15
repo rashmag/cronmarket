@@ -227,7 +227,8 @@ class MainPresenter @Inject constructor(
     private fun loadSpecialOrders() {
         mainScope.launch {
             try {
-                val specialOffers = dataManager.getSpecialOffers(dataManager.readChosenCityId())
+                val specialOffers = dataManager.getSpecialOffers(dataManager.readChosenCityId(), dataManager.readSelectedMarketCategory().id)
+
                 if (specialOffers.isEmpty())
                     view?.hideSpecialOffers()
                 else {

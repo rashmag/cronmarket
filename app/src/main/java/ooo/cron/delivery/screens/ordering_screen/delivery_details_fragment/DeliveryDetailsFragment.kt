@@ -27,13 +27,6 @@ import javax.inject.Inject
 
 class DeliveryDetailsFragment : BaseFragment(), DeliveryDetailsContract.View {
 
-    companion object {
-        var PARTNER_OPEN_HOURS = -1
-        var PARTNER_OPEN_MINUTES = -1
-        var PARTNER_CLOSE_HOURS = -1
-        var PARTNER_CLOSE_MINUTES = -1
-    }
-
     private lateinit var orderingView: OrderContract.View
 
     @Inject
@@ -93,7 +86,7 @@ class DeliveryDetailsFragment : BaseFragment(), DeliveryDetailsContract.View {
             setOnClickListener {
                 startActivity(
                     Intent(requireContext(), FirstAddressSelectionActivity::class.java)
-                        .putExtra("isFromOrderingScreen", true)
+                        .putExtra(IS_FROM_ORDERING, true)
                 )
             }
         }
@@ -224,5 +217,14 @@ class DeliveryDetailsFragment : BaseFragment(), DeliveryDetailsContract.View {
             }
         }
 
+    }
+
+    companion object {
+        var PARTNER_OPEN_HOURS = -1
+        var PARTNER_OPEN_MINUTES = -1
+        var PARTNER_CLOSE_HOURS = -1
+        var PARTNER_CLOSE_MINUTES = -1
+
+        const val IS_FROM_ORDERING = "IS_FROM_ORDERING"
     }
 }

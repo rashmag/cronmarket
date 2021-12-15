@@ -54,13 +54,21 @@ class FirstAddressSelectionActivity :
     lateinit var locationUpdateTimer: CountDownTimer
 
     private var updateAddressesPopupTimer: CountDownTimer? = null
+
     private var isFromOrderingScreen = false
+    private var isFromMainScreen = false
+    private var isFromPartnersScreen = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         injectDependencies()
         presenter.attachView(this)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        isFromOrderingScreen = intent.getBooleanExtra("isFromOrderingScreen", false)
+
+        isFromOrderingScreen = intent.getBooleanExtra(IS_FROM_ORDERING, false)
+        isFromMainScreen = intent.getBooleanExtra(IS_FROM_MAIN, false)
+        isFromPartnersScreen = intent.getBooleanExtra(IS_FROM_PARTNERS, false)
+
         configureSelectionCity()
         configureAddressField()
         configureAddressPopup()
@@ -221,11 +229,11 @@ class FirstAddressSelectionActivity :
     }
 
     override fun navigateMainScreen() {
-        if (this.intent.getBooleanExtra(FLAG, false)) {
+        if(isFromMainScreen || isFromOrderingScreen || isFromPartnersScreen){
             onBackPressed()
-        } else if (isFromOrderingScreen){
-            onBackPressed()
-        } else startActivity(Intent(this, MainActivity::class.java))
+        }else {
+            startActivity(Intent(this, MainActivity::class.java))
+        }
         finish()
     }
 
@@ -419,6 +427,8 @@ class FirstAddressSelectionActivity :
         const val REQUEST_LOCATION_PERIOD_IN_MILLIS = 10_000L
         const val REQUEST_LOCATION_DISTANCE_IN_METERS = 20F
         const val ADDRESS_TYPE_WAITING_IN_MILLIS = 300L
-        const val FLAG = "flag"
+        const val IS_FROM_MAIN = "IS_FROM_MAIN"
+        const val IS_FROM_PARTNERS = "IS_FROM_PARTNERS"
+        const val IS_FROM_ORDERING = "IS_FROM_ORDERING"
     }
 }

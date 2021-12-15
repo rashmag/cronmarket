@@ -203,7 +203,7 @@ class MainActivity : BaseActivity(), MainContract.View {
 
     override fun navigateFirstAddressSelection() {
         val intent = Intent(this, FirstAddressSelectionActivity::class.java)
-        intent.putExtra(FLAG, true)
+        intent.putExtra(IS_FROM_MAIN, true)
         startActivity(intent)
     }
 
@@ -369,6 +369,6 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
     companion object {
-        const val FLAG = "flag"
+        const val IS_FROM_MAIN = "IS_FROM_MAIN"
     }
 }

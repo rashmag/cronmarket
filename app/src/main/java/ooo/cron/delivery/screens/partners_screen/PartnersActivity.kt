@@ -349,7 +349,9 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
     }
 
     override fun showChangeAddressScreen() {
-        startActivity(Intent(this, FirstAddressSelectionActivity::class.java))
+        startActivity(Intent(this, FirstAddressSelectionActivity::class.java)
+            .putExtra(EXTRA_IS_FROM_PARTNERS, true)
+        )
     }
 
     override fun showProductInfo(product: PartnerProductsRes) {
@@ -465,6 +467,8 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
         const val EXTRA_IS_OPEN = "is_open"
         const val EXTRA_OPEN_HOURS = "open_hours"
         const val EXTRA_OPEN_MINUTES = "open_minutes"
+
+        const val EXTRA_IS_FROM_PARTNERS = "IS_FROM_PARTNERS"
 
         private const val NUMBER_SERVINGS_ON_BOTTOM_SHEET = 1
         private const val EMPTY_QUANTITY = 0

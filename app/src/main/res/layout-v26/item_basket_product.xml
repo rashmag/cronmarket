@@ -18,8 +18,8 @@
 
         <ImageView
             android:id="@+id/iv_basket_product"
-            android:layout_width="90dp"
-            android:layout_height="90dp"
+            android:layout_width="112dp"
+            android:layout_height="112dp"
             android:scaleType="centerCrop"
             android:contentDescription="@string/basket_item_image_description"
             app:layout_constraintStart_toStartOf="parent"
@@ -33,7 +33,7 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:textColor="@color/grey90"
-            android:textSize="12sp"
+            android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/iv_basket_product"
@@ -78,7 +78,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/grey90"
-            android:textSize="14sp"
+            android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/vg_basket_counter"
             app:layout_constraintEnd_toEndOf="parent"

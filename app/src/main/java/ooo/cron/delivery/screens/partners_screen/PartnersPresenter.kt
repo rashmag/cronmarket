@@ -186,7 +186,7 @@ class PartnersPresenter @Inject constructor(
                 return@launch
             }
 
-            if (basket != null &&
+            if (basket != null && basket!!.amount != EMPTY_BASKET &&
                 basket!!.partnerId != DataManager.EMPTY_UUID &&
                 basket!!.partnerId != partner.id
             ) {
@@ -335,4 +335,8 @@ class PartnersPresenter @Inject constructor(
     private fun deserializeDishes() =
         Gson().fromJson(basket!!.content, Array<BasketDish>::class.java)
             .asList()
+
+    private companion object{
+        private const val EMPTY_BASKET = 0.0
+    }
 }

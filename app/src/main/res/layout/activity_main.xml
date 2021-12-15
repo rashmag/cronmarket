@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:clickToCloseScale="1"
-    app:contentScaleOpen="0.85"
+    app:contentScaleOpen="0.80"
     app:marginFactor="0.6">
 
     <include

@@ -1,31 +1,26 @@
 package ooo.cron.delivery.screens.pay_dialog_screen
 
-import android.app.Dialog
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kotlinx.android.synthetic.main.dialog_order.*
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
-import ooo.cron.delivery.data.DataManager
 import ooo.cron.delivery.databinding.DialogOrderBinding
 import javax.inject.Inject
 
 /**
-* Created by Maya Nasrueva on 14.12.2021
-* */
+ * Created by Maya Nasrueva on 14.12.2021
+ * */
 
 class OrderBottomDialog() : BottomSheetDialogFragment() {
-   /*
-    @Inject
-    lateinit var commentBottomDialog: OrderCommentBottomDialog
-*/
-    private val viewModel: OrderViewModel by viewModels {
+    /*
+     @Inject
+     lateinit var commentBottomDialog: OrderCommentBottomDialog
+ */
+    private val viewModel: OrderViewModel by activityViewModels {
         factory.create()
     }
 
@@ -50,17 +45,18 @@ class OrderBottomDialog() : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.commentTextLiveData.observe(viewLifecycleOwner) {
             binding.etComments.setText(it)
-            with(binding.etComments){
-                if(it.isNotBlank())
+            with(binding.etComments) {
+                if (it.isNotBlank())
                     setBackgroundResource(R.drawable.bg_true_light)
             }
         }
 
         binding.etComments.showSoftInputOnFocus = false
         binding.etComments.setOnClickListener {
-            OrderCommentBottomDialog().show(parentFragmentManager,"")
+            OrderCommentBottomDialog().show(parentFragmentManager, "")
         }
     }
+
     private fun injectDependencies() {
         App.appComponent.orderComponentBuilder()
             .buildInstance(layoutInflater)

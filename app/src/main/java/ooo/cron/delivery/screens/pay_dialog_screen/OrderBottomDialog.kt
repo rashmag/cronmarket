@@ -1,11 +1,13 @@
 package ooo.cron.delivery.screens.pay_dialog_screen
 
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import kotlinx.android.synthetic.main.item_main_market_category.view.*
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
 import ooo.cron.delivery.databinding.DialogOrderBinding
@@ -44,10 +46,14 @@ class OrderBottomDialog() : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.commentTextLiveData.observe(viewLifecycleOwner) {
-            binding.etComments.setText(it)
             with(binding.etComments) {
-                if (it.isNotBlank())
-                    setBackgroundResource(R.drawable.bg_true_light)
+                text = if(it.isNotBlank()) it else getString(R.string.order_comment)
+                val bg =
+                    if (it.isNotBlank()) R.drawable.bg_true_light else R.drawable.bg_main_address_correct
+                setBackgroundResource(bg)
+                gravity = if (it.isNotBlank()) Gravity.START else Gravity.CENTER
+                val endIcon = if(it.isNotBlank())R.drawable.ic_market_category_tag_check else 0
+                setCompoundDrawablesWithIntrinsicBounds(0, 0, endIcon, 0)
             }
         }
 

@@ -37,8 +37,11 @@ class OrderCommentBottomDialog() : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.etComments.requestFocus()
+        viewModel.commentTextLiveData.observe(viewLifecycleOwner){
+            binding.etComments.setText(it)
+        }
         binding.btnSaveComment.setOnClickListener {
-            viewModel.setComment(binding.etComments.text.toString())
+            viewModel.setComment(binding.etComments.text.toString().trim())
             dismiss()
         }
     }

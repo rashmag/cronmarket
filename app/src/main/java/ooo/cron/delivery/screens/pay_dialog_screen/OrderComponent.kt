@@ -13,6 +13,7 @@ import dagger.Subcomponent
 interface OrderComponent {
 
     fun inject(fragment: OrderBottomDialog)
+    fun inject(fragment: OrderCommentBottomDialog)
 
     @Subcomponent.Builder
     interface Builder {

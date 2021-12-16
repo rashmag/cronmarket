@@ -1,24 +1,28 @@
 package ooo.cron.delivery.screens.pay_dialog_screen
 
-import android.app.Dialog
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import kotlinx.android.synthetic.main.item_main_market_category.view.*
 import ooo.cron.delivery.App
-import ooo.cron.delivery.data.DataManager
+import ooo.cron.delivery.R
 import ooo.cron.delivery.databinding.DialogOrderBinding
 import javax.inject.Inject
 
 /**
-* Created by Maya Nasrueva on 14.12.2021
-* */
+ * Created by Maya Nasrueva on 14.12.2021
+ * */
 
 class OrderBottomDialog() : BottomSheetDialogFragment() {
-
-    private val viewModel: OrderViewModel by viewModels {
+    /*
+     @Inject
+     lateinit var commentBottomDialog: OrderCommentBottomDialog
+ */
+    private val viewModel: OrderViewModel by activityViewModels {
         factory.create()
     }
 
@@ -39,8 +43,24 @@ class OrderBottomDialog() : BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View = binding.root
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return super.onCreateDialog(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.commentTextLiveData.observe(viewLifecycleOwner) {
+            with(binding.etComments) {
+                text = if(it.isNotBlank()) it else getString(R.string.order_comment)
+                val bg =
+                    if (it.isNotBlank()) R.drawable.bg_true_light else R.drawable.bg_main_address_correct
+                setBackgroundResource(bg)
+                gravity = if (it.isNotBlank()) Gravity.START else Gravity.CENTER
+                val endIcon = if(it.isNotBlank())R.drawable.ic_market_category_tag_check else 0
+                setCompoundDrawablesWithIntrinsicBounds(0, 0, endIcon, 0)
+            }
+        }
+
+        binding.etComments.showSoftInputOnFocus = false
+        binding.etComments.setOnClickListener {
+            OrderCommentBottomDialog().show(parentFragmentManager, "")
+        }
     }
 
     private fun injectDependencies() {

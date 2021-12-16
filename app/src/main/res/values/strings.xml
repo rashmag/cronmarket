@@ -270,4 +270,7 @@
     <string name="order_comment">Комментарий к заказу</string>
     <string name="bank_cart">Карта</string>
     <string name="cash">Наличные</string>
+    <string name="save">Сохранить</string>
+    <string name="comment">Комментарий</string>
+    <string name="enter_a_comment_for_the_order">Введите комментарий к заказу</string>
 </resources>

@@ -3,14 +3,16 @@ package ooo.cron.delivery.utils.section_recycler_view
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import com.github.fajaragungpramana.sectionrecyclerview.Section
 import ooo.cron.delivery.R
+import ooo.cron.delivery.data.network.models.ProductCategoryModel
 
-abstract class SectionRecyclerViewAdapter<VH : SectionRecyclerViewHolder, M : Section> :
-    RecyclerView.Adapter<VH>() {
+abstract class SectionRecyclerViewAdapter<VH : SectionRecyclerViewHolder, M : Section>
+    : ListAdapter<ProductCategoryModel, VH>(DIFF_CALLBACK) {
 
-    abstract fun getSectionList(): List<M>
+    abstract fun getSectionList(): ArrayList<ProductCategoryModel>
 
     protected abstract fun viewHolder(view: View): VH
 
@@ -32,4 +34,13 @@ abstract class SectionRecyclerViewAdapter<VH : SectionRecyclerViewHolder, M : Se
 
     override fun getItemViewType(position: Int) = position
 
+    private companion object {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ProductCategoryModel>() {
+            override fun areItemsTheSame(oldItem: ProductCategoryModel, newItem: ProductCategoryModel): Boolean =
+                oldItem.categoryId == newItem.categoryId
+
+            override fun areContentsTheSame(oldItem: ProductCategoryModel, newItem: ProductCategoryModel): Boolean =
+                oldItem.categoryName == newItem.categoryName && oldItem.productList == newItem.productList
+        }
+    }
 }

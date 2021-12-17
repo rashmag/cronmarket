@@ -17,6 +17,7 @@ import ooo.cron.delivery.screens.BaseActivity
 import ooo.cron.delivery.screens.basket_screen.BasketActivity
 import ooo.cron.delivery.screens.ordering_screen.delivery_details_fragment.DeliveryDetailsFragment
 import ooo.cron.delivery.screens.ordering_screen.order_cost_fragment.OrderCostFragment
+import ooo.cron.delivery.screens.pay_dialog_screen.PaymentVariant
 import ooo.cron.delivery.utils.Utils
 import ru.tinkoff.acquiring.sdk.TinkoffAcquiring
 import ru.tinkoff.acquiring.sdk.models.options.screen.PaymentOptions

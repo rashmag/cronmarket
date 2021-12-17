@@ -23,7 +23,6 @@
         app:layout_constraintBottom_toTopOf="@id/cont_delivery_address"
         tools:ignore="MissingConstraints" />
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cont_delivery_address"
         android:layout_width="match_parent"
@@ -70,6 +69,16 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <include
+        android:id="@+id/vg_progress"
+        layout="@layout/layout_progress"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cont_delivery_time"
         android:layout_width="match_parent"
@@ -112,9 +121,9 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/cont_payment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/cont_payment"
         android:orientation="horizontal"
         android:gravity="center"
         android:padding="@dimen/dimen_8"
@@ -124,16 +133,16 @@
             android:id="@+id/gpay_payment"
             android:layout_marginHorizontal="24dp"
             android:src="@drawable/gpay_button_content_black"
-            android:background="@drawable/bg_btn_payment"
+            android:background="@drawable/bg_btn_select_payment"
             android:layout_height="54dp"
             android:layout_width="70dp"/>
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/bank_cart_payment"
+            android:id="@+id/bank_card_payment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/dimen_24"
-            android:background="@drawable/bg_btn_payment"
+            android:background="@drawable/bg_btn_select_payment"
             android:text="@string/bank_cart"
             android:textAllCaps="false"
             android:textSize="17sp"
@@ -148,7 +157,7 @@
             android:layout_marginStart="@dimen/dimen_24"
             android:text="@string/cash"
             android:textAllCaps="false"
-            android:background="@drawable/bg_btn_payment"
+            android:background="@drawable/bg_btn_select_payment"
             android:textSize="17sp"
             android:textStyle="bold"
             android:textColor="@color/black"/>
@@ -177,13 +186,14 @@
             app:layout_constraintTop_toBottomOf="@id/cont_payment"
             tools:text="10900₽" />
 
+
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_order"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/dimen_24"
             android:layout_marginVertical="@dimen/dimen_8"
-            android:background="@drawable/bg_btn_cash_payment"
+            android:background="@drawable/bg_btn_order"
             android:gravity="center"
             android:drawable="@drawable/gpay_button_content_white"
             android:paddingVertical="@dimen/dimen_12"

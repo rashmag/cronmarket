@@ -3,13 +3,16 @@ package ooo.cron.delivery.screens.pay_dialog_screen
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import kotlinx.android.synthetic.main.item_main_market_category.view.*
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.Basket
@@ -39,7 +42,11 @@ class OrderBottomDialog() : BottomSheetDialogFragment() {
 
     private var basket: Basket? = null
     private var phone: String? = null
-    private val viewModel: OrderViewModel by viewModels {
+    /*
+     @Inject
+     lateinit var commentBottomDialog: OrderCommentBottomDialog
+ */
+    private val viewModel: OrderViewModel by activityViewModels {
         factory.create()
     }
     private var paymentVariant: PaymentVariant = NoPayment
@@ -86,6 +93,23 @@ class OrderBottomDialog() : BottomSheetDialogFragment() {
             R.string.price, ((basket?.amount?.toInt() ?: 0) + (basket?.deliveryCost?.toInt()
                 ?: 0)).toString()
         )
+
+        viewModel.commentTextLiveData.observe(viewLifecycleOwner) {
+            with(binding.etComments) {
+                text = if(it.isNotBlank()) it else getString(R.string.order_comment)
+                val bg =
+                    if (it.isNotBlank()) R.drawable.bg_true_light else R.drawable.bg_main_address_correct
+                setBackgroundResource(bg)
+                gravity = if (it.isNotBlank()) Gravity.START else Gravity.CENTER
+                val endIcon = if(it.isNotBlank())R.drawable.ic_market_category_tag_check else 0
+                setCompoundDrawablesWithIntrinsicBounds(0, 0, endIcon, 0)
+            }
+        }
+
+        binding.etComments.showSoftInputOnFocus = false
+        binding.etComments.setOnClickListener {
+            OrderCommentBottomDialog().show(parentFragmentManager, "")
+        }
 
         binding.bankCardPayment.setOnClickListener {
             paymentVariant = CardVariant

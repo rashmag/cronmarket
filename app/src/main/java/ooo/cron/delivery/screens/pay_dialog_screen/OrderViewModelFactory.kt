@@ -22,6 +22,7 @@ class OrderViewModelFactory @AssistedInject constructor(
     }
 
     @AssistedFactory
+    @OrderScope
     interface Factory {
 
         fun create(): OrderViewModelFactory

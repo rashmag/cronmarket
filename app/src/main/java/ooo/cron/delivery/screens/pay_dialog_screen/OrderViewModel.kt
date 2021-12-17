@@ -28,6 +28,17 @@ class OrderViewModel @Inject constructor(
     private val mutableBasketState: MutableLiveData<BasketState> = MutableLiveData()
     val basketState: LiveData<BasketState> get() = mutableBasketState
 
+    init {
+        Log.e("app", "inited")
+    }
+    private val _commentTextLivedata = MutableLiveData("")
+    val commentTextLiveData: LiveData<String> = _commentTextLivedata
+
+    fun setComment(comment: String){
+        _commentTextLivedata.postValue(comment)
+
+    }
+
     fun onCreateView() = viewModelScope.launch {
         val phone = prefsRepo.readUserPhone()
         loadBasket()

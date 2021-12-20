@@ -105,6 +105,11 @@ interface RestService {
         @Query("BasketId") basketId: String
     ): Response<Basket>
 
+    @GET("/api/v1/Basket")
+    suspend fun getSimpleBasket(
+        @Query("BasketId") basketId: String
+    ): Basket
+
     @POST("/api/v1/Basket/inc_product")
     suspend fun increaseProductInBasket(
         @Body editor: BasketEditorReq

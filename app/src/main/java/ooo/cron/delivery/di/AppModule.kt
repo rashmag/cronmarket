@@ -8,6 +8,8 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import ooo.cron.delivery.BuildConfig.BASE_URL
 import ooo.cron.delivery.data.DataManager
+import ooo.cron.delivery.data.OrderPrefsRepository
+import ooo.cron.delivery.data.OrderRestRepository
 import ooo.cron.delivery.data.network.RestService
 import ooo.cron.delivery.data.network.SPrefsService
 import ooo.cron.delivery.data.network.errors.ApiErrorsUtils
@@ -60,8 +62,18 @@ class AppModule {
 
     @Provides
     @Singleton
+    fun provideOrderPrefsRepository(sharedPreferences: SharedPreferences) =
+        OrderPrefsRepository(sharedPreferences)
+
+    @Provides
+    @Singleton
     fun provideDataManager(restService: RestService, sPrefsService: SPrefsService) =
         DataManager(restService, sPrefsService)
+
+    @Provides
+    @Singleton
+    fun provideOrderRestRepository(restService: RestService) =
+        OrderRestRepository(restService)
 
     @Provides
     @Singleton

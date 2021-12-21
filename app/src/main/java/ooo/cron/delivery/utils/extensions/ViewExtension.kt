@@ -25,9 +25,11 @@ internal fun View.makeGone() {
     if (!isGone) visibility = View.GONE
 }
 
+
 internal fun View.makeVisible() {
     if (!isVisible) visibility = View.VISIBLE
 }
+
 
 internal fun View.makeInvisible() {
     if (!isInvisible) visibility = View.INVISIBLE

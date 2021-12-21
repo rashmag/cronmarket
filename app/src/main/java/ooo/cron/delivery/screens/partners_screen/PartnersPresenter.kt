@@ -186,9 +186,9 @@ class PartnersPresenter @Inject constructor(
                 return@launch
             }
 
-            if (basket != null && basket!!.amount != EMPTY_BASKET &&
-                basket!!.partnerId != DataManager.EMPTY_UUID &&
-                basket!!.partnerId != partner.id
+            if (basket != null && basket?.amount != EMPTY_BASKET &&
+                basket?.partnerId != DataManager.EMPTY_UUID &&
+                basket?.partnerId != partner.id
             ) {
                 view?.showClearBasketDialog(
                     {

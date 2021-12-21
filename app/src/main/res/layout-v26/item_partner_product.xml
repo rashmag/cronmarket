@@ -95,7 +95,8 @@
                 android:drawablePadding="12dp"
                 android:gravity="center"
                 android:textColor="@color/grey90"
-                android:textSize="14sp"
+                android:textSize="18sp"
+                android:autoSizeTextType="uniform"
                 android:textStyle="bold"
                 tools:text="1000₽" />
 

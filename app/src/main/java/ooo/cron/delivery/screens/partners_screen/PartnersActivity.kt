@@ -312,10 +312,11 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
         productCategoriesModel: ArrayList<ProductCategoryModel>
     ) {
 
-        productsLayoutManager.setScrollEnabled(false)
+        productsLayoutManager.setScrollEnabled(true)
         with(binding){
             vgMainView.removeView(vgPartnersActivityProgress.root)
-            productsAdapter.setData(productCategoriesModel)
+            productsAdapter.submitList(productCategoriesModel)
+            productsAdapter.setSectionData(productCategoriesModel)
         }
     }
 
@@ -412,7 +413,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
 
 
             if (scrollRange + verticalOffset < 150) {
-                binding.vgPartnerInfo.animate().alpha(0f).setDuration(600).start()
+                binding.vgPartnerInfo.animate().alpha(0f).setDuration(0).start()
             } else if (!isShow) {
                 binding.vgPartnerInfo.animate().alpha(1f).setDuration(600).start()
             }
@@ -420,7 +421,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
 
             if (scrollRange + verticalOffset == 0) {
                 binding.tvTitle.text = binding.tvPartnersName.text
-                binding.tvTitle.animate().alpha(1f).setDuration(600).start()
+                binding.tvTitle.animate().alpha(1f).setDuration(0).start()
                 isShow = true
             } else if (isShow) {
                 binding.tvTitle.animate().alpha(0f).setDuration(600).start()

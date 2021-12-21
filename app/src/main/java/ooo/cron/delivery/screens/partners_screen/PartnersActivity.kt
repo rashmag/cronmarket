@@ -411,7 +411,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
 
 
             if (scrollRange + verticalOffset < 150) {
-                binding.vgPartnerInfo.animate().alpha(0f).setDuration(600).start()
+                binding.vgPartnerInfo.animate().alpha(0f).setDuration(0).start()
             } else if (!isShow) {
                 binding.vgPartnerInfo.animate().alpha(1f).setDuration(600).start()
             }
@@ -419,7 +419,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
 
             if (scrollRange + verticalOffset == 0) {
                 binding.tvTitle.text = binding.tvPartnersName.text
-                binding.tvTitle.animate().alpha(1f).setDuration(600).start()
+                binding.tvTitle.animate().alpha(1f).setDuration(0).start()
                 isShow = true
             } else if (isShow) {
                 binding.tvTitle.animate().alpha(0f).setDuration(600).start()

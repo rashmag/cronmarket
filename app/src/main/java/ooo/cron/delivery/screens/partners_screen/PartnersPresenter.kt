@@ -186,7 +186,12 @@ class PartnersPresenter @Inject constructor(
                 return@launch
             }
 
-            if (basket != null && basket?.amount != EMPTY_BASKET &&
+            if (basket == null) {
+                increaseProductInBasket(product, additives, quantity)
+                return@launch
+            }
+
+            if (basket?.amount != EMPTY_BASKET &&
                 basket?.partnerId != DataManager.EMPTY_UUID &&
                 basket?.partnerId != partner.id
             ) {
@@ -208,15 +213,12 @@ class PartnersPresenter @Inject constructor(
                                 basketContent?.sumBy { it.quantity } ?: 0,
                                 String.format("%.2f", basket!!.amount)
                             )
-                            increaseProductInBasket(product, additives, quantity)
                         }
                     }
                 )
-                return@launch
             }
 
             increaseProductInBasket(product, additives, quantity)
-
         }
     }
 

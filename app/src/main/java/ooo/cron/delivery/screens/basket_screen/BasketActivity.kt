@@ -3,6 +3,9 @@ package ooo.cron.delivery.screens.basket_screen
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.view.View
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,6 +23,7 @@ import ooo.cron.delivery.screens.pay_dialog_screen.OrderBottomDialog
 import javax.inject.Inject
 import ooo.cron.delivery.utils.extensions.startBottomAnimate
 import ooo.cron.delivery.utils.itemdecoration.SpaceItemDecoration
+import ru.tinkoff.acquiring.sdk.TinkoffAcquiring
 
 /**
  * Created by Ramazan Gadzhikadiev on 10.05.2021.
@@ -69,7 +73,17 @@ class BasketActivity : BaseActivity(), BasketContract.View {
         initAdapter()
     }
 
-
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        Log.d("request_code", requestCode.toString())
+        if (resultCode == Activity.RESULT_OK) {
+            Log.d("request_code2", "Done")
+            binding.orderPayStatus!!.visibility = View.VISIBLE
+        }
+        if (resultCode == TinkoffAcquiring.RESULT_ERROR) {
+            Log.d("request_code2", "Fail")
+        }
+    }
 
     override fun onStart() {
         super.onStart()

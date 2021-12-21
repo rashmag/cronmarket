@@ -39,10 +39,11 @@ class OrderViewModel @Inject constructor(
     val basketState: LiveData<BasketState> get() = mutableBasketState
     private val _commentTextLivedata = MutableLiveData("")
     val commentTextLiveData: LiveData<String> = _commentTextLivedata
+    private val mutablePayVariantState: MutableLiveData<PaymentVariant> = MutableLiveData()
+    val payVariantState: LiveData<PaymentVariant> get() = mutablePayVariantState
 
-    fun setComment(comment: String){
-        _commentTextLivedata.postValue(comment)
-
+    init {
+        Log.e("app", "inited")
     }
 
     fun onCreateView() = viewModelScope.launch {
@@ -92,16 +93,27 @@ class OrderViewModel @Inject constructor(
 
     private fun loadBasket() {
         mutableBasketState.postValue(Loading)
-        val id = prefsRepo.readUserBasketId()
-        viewModelScope.launch {
+        viewModelScope.launch(handler) {
             try {
-                val basket = restRepo.getBasket(id)
+                val basket = prefsRepo.readBasket()
                 Log.d("basket", basket.toString())
                 mutableBasketState.postValue(Default(basket))
             } catch (e: Exception) {
                 mutableBasketState.postValue(Error(e))
             }
         }
+    }
+
+    fun setPayVariant(variant: PaymentVariant) {
+        when (variant) {
+            is CardVariant -> mutablePayVariantState.postValue(CardVariant)
+            is CashVariant -> mutablePayVariantState.postValue(CashVariant)
+            is GPayVariant -> mutablePayVariantState.postValue(GPayVariant)
+        }
+    }
+
+    fun setComment(comment: String) {
+        _commentTextLivedata.postValue(comment)
     }
 
     //общий метод для POST-запроса на отправку заказа после оплаты(если картой или GPay)/выбора налички

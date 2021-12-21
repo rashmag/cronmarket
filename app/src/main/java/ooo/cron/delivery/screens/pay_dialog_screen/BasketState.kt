@@ -7,4 +7,4 @@ sealed class BasketState
 
 object Loading: BasketState()
 class Error(e: Exception): BasketState()
-class Default(basket: Basket): BasketState()
+class Default(val basket: Basket): BasketState()

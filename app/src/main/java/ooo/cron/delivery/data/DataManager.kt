@@ -113,8 +113,8 @@ class DataManager @Inject constructor(
     suspend fun logOut(refreshToken: LogOutReq): Response<ResponseBody> =
         restService.logOut(refreshToken)
 
-    suspend fun getSpecialOffers(cityId: String) =
-        restService.getSpecialOffers(cityId).promotions
+    suspend fun getSpecialOffers(cityId: String, marketCategoryId: Int) =
+        restService.getSpecialOffers(cityId, marketCategoryId).promotions
 
     suspend fun getBasket(basketId: String): Response<Basket> =
         restService.getBasket(basketId)

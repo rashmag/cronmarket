@@ -277,12 +277,15 @@ class PartnersPresenter @Inject constructor(
         if (isSuccessful) {
 
             val productList = ArrayList<PartnerProductsRes>()
+            productCategoriesModel.clear()
+
             for (category in categoryRes) {
                 for (product in body()!!) {
                     if (category.id == product.categoryId) {
                         productList.add(product)
                     }
                 }
+
                 productCategoriesModel.add(
                     ProductCategoryModel(
                         category.id,

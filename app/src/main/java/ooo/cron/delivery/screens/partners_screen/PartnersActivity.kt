@@ -312,10 +312,11 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
         productCategoriesModel: ArrayList<ProductCategoryModel>
     ) {
 
-        productsLayoutManager.setScrollEnabled(false)
+        productsLayoutManager.setScrollEnabled(true)
         with(binding){
             vgMainView.removeView(vgPartnersActivityProgress.root)
-            productsAdapter.setData(productCategoriesModel)
+            productsAdapter.submitList(productCategoriesModel)
+            productsAdapter.setSectionData(productCategoriesModel)
         }
     }
 

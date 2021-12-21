@@ -1,6 +1,8 @@
 package ooo.cron.delivery.screens.pay_dialog_screen
 
+import android.content.Context
 import android.view.LayoutInflater
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.Module
 import dagger.Provides
 import ooo.cron.delivery.databinding.DialogOrderBinding
@@ -25,5 +27,7 @@ interface OrderModule {
         @OrderScope
         fun provideCommentInflater(inflater: LayoutInflater) = FragmentCommentBinding
             .inflate(inflater)
+
+
     }
 }

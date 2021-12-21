@@ -1,5 +1,6 @@
 package ooo.cron.delivery.screens.pay_dialog_screen
 
+import android.content.Context
 import android.view.LayoutInflater
 import dagger.BindsInstance
 import dagger.Subcomponent

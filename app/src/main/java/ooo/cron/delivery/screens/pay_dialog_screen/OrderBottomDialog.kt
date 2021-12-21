@@ -40,16 +40,12 @@ import kotlin.collections.ArrayList
 
 class OrderBottomDialog() : BottomSheetDialogFragment() {
 
-    private var basket: Basket? = null
-    private var phone: String? = null
-    /*
-     @Inject
-     lateinit var commentBottomDialog: OrderCommentBottomDialog
- */
+    //var basket: Basket? = null
     private val viewModel: OrderViewModel by activityViewModels {
         factory.create()
     }
-    private var paymentVariant: PaymentVariant = NoPayment
+
+    private lateinit var payTinkoff: PayTinkoff
 
     @Inject
     lateinit var binding: DialogOrderBinding
@@ -66,7 +62,10 @@ class OrderBottomDialog() : BottomSheetDialogFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = binding.root
+    ): View {
+        payTinkoff = PayTinkoff(requireContext(), this)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -164,100 +163,5 @@ class OrderBottomDialog() : BottomSheetDialogFragment() {
                 dialog.cancel()
             }
         builder.show()
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        Log.d("request_code", requestCode.toString())
-        if (resultCode == -1) {
-            Log.d("request_code2", "Done")
-        }
-    }
-
-    private fun openPaymentScreen(paymentOptions: PaymentOptions) {
-        TinkoffAcquiring(
-            getString(R.string.tinkoff_terminal_key),
-            getString(R.string.tinkoff_terminal_password),
-            getString(R.string.tinkoff_terminal_public_key)
-        ).openPaymentScreen(
-            this,
-            paymentOptions,
-            TINKOFF_PAYMENT_REQUEST_CODE
-        )
-    }
-
-    private fun payWithCard() {
-        val paymentOptions = PaymentOptions().setOptions {
-            orderOptions {
-                orderId = Calendar.getInstance().timeInMillis.toString()
-                amount = Money.ofCoins(
-                    basket?.run {
-                        (amount + deliveryCost).inCoins()
-                    } ?: 0
-                )
-                title = getString(R.string.cron_delivery_title)
-                description = "Покупки и услуги доставки"
-                recurrentPayment = false
-                receipt = Receipt(
-                    ArrayList(receiptsItems()),
-                    "cron.devsystems@gmail.com",
-                    Taxation.USN_INCOME
-                )
-            }
-
-            customerOptions {
-                customerKey = phone
-                checkType = CheckType.NO.toString()
-            }
-
-            featuresOptions {
-                useSecureKeyboard = true
-                localizationSource = AsdkSource(Language.RU)
-                handleCardListErrorInSdk = true
-                darkThemeMode = DarkThemeMode.DISABLED
-                emailRequired = false
-
-            }
-        }
-
-        openPaymentScreen(paymentOptions)
-    }
-
-    fun receiptsItems() =
-        basket?.deserializeDishes()?.map {
-            Item(
-                it.name,
-                it.cost.inCoins(),
-                it.quantity.toDouble(),
-                (it.cost * it.quantity).inCoins(),
-                Tax.NONE
-            )
-        }?.toMutableList()?.apply {
-            add(
-                Item(
-                    "Доставка",
-                    basket?.deliveryCost?.inCoins(),
-                    1.0,
-                    basket?.deliveryCost?.inCoins(),
-                    Tax.NONE
-                )
-            )
-        }
-
-    private fun injectDependencies() {
-        App.appComponent.orderComponentBuilder()
-            .buildInstance(layoutInflater)
-            .build()
-            .inject(this)
-    }
-
-    private fun Int.inCoins() =
-        (this * 100).toLong()
-
-    private fun Double.inCoins() =
-        (this * 100).toLong()
-
-    companion object {
-        private const val TINKOFF_PAYMENT_REQUEST_CODE = 1000
     }
 }

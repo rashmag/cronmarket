@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.CoroutineExceptionHandler
 import ooo.cron.delivery.data.DataManager
 import ooo.cron.delivery.data.OrderPrefsRepository
 import ooo.cron.delivery.data.OrderRestRepository

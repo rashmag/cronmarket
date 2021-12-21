@@ -5,4 +5,3 @@ sealed class PaymentVariant
 object CardVariant: PaymentVariant()
 object CashVariant: PaymentVariant()
 object GPayVariant: PaymentVariant()
-object NoPayment: PaymentVariant()

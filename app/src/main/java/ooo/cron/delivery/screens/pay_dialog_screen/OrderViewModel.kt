@@ -5,11 +5,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import ooo.cron.delivery.data.OrderPrefsRepository
 import ooo.cron.delivery.data.OrderRestRepository
 import ooo.cron.delivery.data.network.models.Basket
-import java.lang.Exception
+import ooo.cron.delivery.data.network.models.Basket.Companion.deserializeDishes
+import ooo.cron.delivery.data.network.models.PayData
+import ooo.cron.delivery.utils.SingleLiveEvent
+import ru.tinkoff.acquiring.sdk.models.Item
+import ru.tinkoff.acquiring.sdk.models.Receipt
+import ru.tinkoff.acquiring.sdk.models.enums.Tax
+import ru.tinkoff.acquiring.sdk.models.enums.Taxation
 import javax.inject.Inject
 
 /**
@@ -21,16 +28,15 @@ class OrderViewModel @Inject constructor(
     private val prefsRepo: OrderPrefsRepository
 ) : ViewModel() {
 
-    private val mutableBasket: MutableLiveData<Basket> = MutableLiveData()
-    val basket: LiveData<Basket> get() = mutableBasket
+    private val handler = CoroutineExceptionHandler { context, exception ->
+        Log.e("exception", exception.toString())
+    }
+    val payData: SingleLiveEvent<PayData> = SingleLiveEvent()
+    val callingDialog: SingleLiveEvent<Unit> = SingleLiveEvent()
     private val mutablePhone: MutableLiveData<String> = MutableLiveData()
     val phone: LiveData<String> get() = mutablePhone
     private val mutableBasketState: MutableLiveData<BasketState> = MutableLiveData()
     val basketState: LiveData<BasketState> get() = mutableBasketState
-
-    init {
-        Log.e("app", "inited")
-    }
     private val _commentTextLivedata = MutableLiveData("")
     val commentTextLiveData: LiveData<String> = _commentTextLivedata
 
@@ -40,10 +46,49 @@ class OrderViewModel @Inject constructor(
     }
 
     fun onCreateView() = viewModelScope.launch {
-        val phone = prefsRepo.readUserPhone()
         loadBasket()
-        mutablePhone.postValue(phone.toString())
     }
+
+    fun onPayClicked() {
+        when (payVariantState.value) {
+            is CardVariant -> getOrderInfo()
+            else -> callingDialog.call()
+        }
+    }
+
+    private fun getOrderInfo() {
+        val phone = prefsRepo.readUserPhone().toString()
+        val basket = prefsRepo.readBasket()
+        val amountSum =
+            basket.amount + basket.deliveryCost
+        val receipt = Receipt(
+            ArrayList(receiptsItems(basket)),
+            "cron.devsystems@gmail.com",
+            Taxation.USN_INCOME
+        )
+        payData.postValue(PayData(phone, amountSum, receipt))
+    }
+
+    fun receiptsItems(basket: Basket) =
+        basket.deserializeDishes().map {
+            Item(
+                it.name,
+                it.cost.inCoins(),
+                it.quantity.toDouble(),
+                (it.cost * it.quantity).inCoins(),
+                Tax.NONE
+            )
+        }.toMutableList().apply {
+            add(
+                Item(
+                    "Доставка",
+                    basket.deliveryCost.inCoins(),
+                    1.0,
+                    basket.deliveryCost.inCoins(),
+                    Tax.NONE
+                )
+            )
+        }
 
     private fun loadBasket() {
         mutableBasketState.postValue(Loading)
@@ -62,4 +107,10 @@ class OrderViewModel @Inject constructor(
     //общий метод для POST-запроса на отправку заказа после оплаты(если картой или GPay)/выбора налички
     fun onSendOrder() {
     }
+
+    private fun Int.inCoins() =
+        (this * 100).toLong()
+
+    private fun Double.inCoins() =
+        (this * 100).toLong()
 }

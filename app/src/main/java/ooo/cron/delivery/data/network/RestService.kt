@@ -145,8 +145,10 @@ interface RestService {
     suspend fun getStableVersion(): String
 
     @GET("/api/v1/MainWindow/promotions")
-    suspend fun getSpecialOffers(@Query("CityId") cityId: String)
-            : PromotionsResponse
+    suspend fun getSpecialOffers(
+        @Query("CityId") cityId: String,
+        @Query("MarketCategoryId") marketCategoryId: Int
+    ) : PromotionsResponse
 
     companion object {
         const val PARTNERS_PAGINATION_LIMIT = 15

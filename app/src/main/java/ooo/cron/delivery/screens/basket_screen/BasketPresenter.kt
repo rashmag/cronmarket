@@ -131,11 +131,11 @@ class BasketPresenter @Inject constructor(
         }
     }
 
-    override fun removeItemClicked(product: BasketDish) {
+    override fun removeItemClicked(product: BasketDish?) {
         mainScope.launch {
             basket = dataManager.removeBasketItem(
                 RemoveBasketItemReq(
-                    product.id,
+                    product?.id.orEmpty(),
                     basket!!.id
                 )
             )

@@ -81,17 +81,20 @@ class FirstAddressSelectionActivity :
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
-        permissions: Array<out String>,
+        permissions: Array<String>,
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == LOCATION_REQUEST_CODE) {
-            if (permissions.size == 1 &&
-                permissions[0] == Manifest.permission.ACCESS_FINE_LOCATION &&
-                grantResults[0] == PackageManager.PERMISSION_GRANTED
-            ) {
-                presenter.onLocationPermissionGranted()
-            } else {
+        when (requestCode) {
+            LOCATION_REQUEST_CODE -> {
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    presenter.onLocationPermissionGranted()
+                }else{
+                    Toast.makeText(this, getString(R.string.common_gps_enabled), Toast.LENGTH_SHORT).show()
+                }
+                return
+            }
+            else -> {
                 Toast.makeText(this, getString(R.string.common_gps_enabled), Toast.LENGTH_SHORT).show()
             }
         }

@@ -11,6 +11,7 @@ import android.os.CountDownTimer
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
+import android.widget.Toast
 import androidx.annotation.ColorRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.ListPopupWindow
@@ -80,12 +81,22 @@ class FirstAddressSelectionActivity :
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
-        permissions: Array<out String>,
+        permissions: Array<String>,
         grantResults: IntArray
     ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
-            App.LOCATION_PERMISSION_REQUEST_CODE -> presenter.onLocationPermissionGranted()
-            else -> super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+            LOCATION_REQUEST_CODE -> {
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    presenter.onLocationPermissionGranted()
+                }else{
+                    Toast.makeText(this, getString(R.string.common_gps_enabled), Toast.LENGTH_SHORT).show()
+                }
+                return
+            }
+            else -> {
+                Toast.makeText(this, getString(R.string.common_gps_enabled), Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -420,5 +431,7 @@ class FirstAddressSelectionActivity :
         const val REQUEST_LOCATION_DISTANCE_IN_METERS = 20F
         const val ADDRESS_TYPE_WAITING_IN_MILLIS = 300L
         const val FLAG = "flag"
+
+        const val LOCATION_REQUEST_CODE = 83
     }
 }

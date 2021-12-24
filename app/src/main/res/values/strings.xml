@@ -2,6 +2,7 @@
     <string name="app_name">CronMarket</string>
 
     <string name="common_gps_disabled">Похоже, что GPS выключен. Вы хотите включить GPS</string>
+    <string name="common_gps_enabled">Необходимо включить GPS</string>
     <string name="common_yes">Да</string>
     <string name="common_no">Нет</string>
     <string name="common_user_not_authorized">Пользователь не авторизован</string>

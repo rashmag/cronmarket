@@ -186,9 +186,14 @@ class PartnersPresenter @Inject constructor(
                 return@launch
             }
 
-            if (basket != null &&
-                basket!!.partnerId != DataManager.EMPTY_UUID &&
-                basket!!.partnerId != partner.id
+            if (basket == null) {
+                increaseProductInBasket(product, additives, quantity)
+                return@launch
+            }
+
+            if (basket?.amount != EMPTY_BASKET &&
+                basket?.partnerId != DataManager.EMPTY_UUID &&
+                basket?.partnerId != partner.id
             ) {
                 view?.showClearBasketDialog(
                     {
@@ -208,15 +213,12 @@ class PartnersPresenter @Inject constructor(
                                 basketContent?.sumBy { it.quantity } ?: 0,
                                 String.format("%.2f", basket!!.amount)
                             )
-                            increaseProductInBasket(product, additives, quantity)
                         }
                     }
                 )
-                return@launch
             }
 
             increaseProductInBasket(product, additives, quantity)
-
         }
     }
 
@@ -338,4 +340,8 @@ class PartnersPresenter @Inject constructor(
     private fun deserializeDishes() =
         Gson().fromJson(basket!!.content, Array<BasketDish>::class.java)
             .asList()
+
+    private companion object{
+        private const val EMPTY_BASKET = 0.0
+    }
 }

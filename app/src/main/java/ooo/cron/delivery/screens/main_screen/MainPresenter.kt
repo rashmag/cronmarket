@@ -64,10 +64,14 @@ class MainPresenter @Inject constructor(
 
                     if (partnerIsOpen.not() || basket?.amount?.toInt() == EMPTY_BASKET_COUNT) {
                         view?.shouldLastBasketSessionBeVisible(false)
-                        view?.hideContinueLastSession()
+                        view?.showOrHideContinueLastSession(false)
                     } else{
+                        if (dataManager.readCurrentCityId() == EMPTY_BECAUSE_FIRST_OPEN){
+                            dataManager.writeCurrentCityId(dataManager.readChosenCity().id)
+                        }
+
+                        view?.showOrHideContinueLastSession(dataManager.readChosenCity().id == dataManager.readCurrentCityId())
                         view?.shouldLastBasketSessionBeVisible(true)
-                        view?.showContinueLastSession()
                         view?.showBasketAmount((basket?.amount?.toInt()).toString())
                     }
 
@@ -245,5 +249,7 @@ class MainPresenter @Inject constructor(
 
     private companion object{
         private const val EMPTY_BASKET_COUNT = 0
+
+        private const val EMPTY_BECAUSE_FIRST_OPEN = ""
     }
 }

@@ -27,6 +27,7 @@ import ooo.cron.delivery.databinding.ActivityFirstAddressSelectionBinding
 import ooo.cron.delivery.screens.BaseActivity
 import ooo.cron.delivery.screens.main_screen.MainActivity
 import javax.inject.Inject
+import ooo.cron.delivery.utils.enums.ReturningToScreenEnum
 
 /**
  * Created by Ramazan Gadzhikadiev on 13.04.2021.
@@ -55,13 +56,17 @@ class FirstAddressSelectionActivity :
     lateinit var locationUpdateTimer: CountDownTimer
 
     private var updateAddressesPopupTimer: CountDownTimer? = null
-    private var isFromOrderingScreen = false
+
+    private var returningScreen: ReturningToScreenEnum ?= null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         injectDependencies()
         presenter.attachView(this)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        isFromOrderingScreen = intent.getBooleanExtra("isFromOrderingScreen", false)
+
+        returningScreen = intent.getParcelableExtra(RETURNING_SCREEN_KEY)
+
         configureSelectionCity()
         configureAddressField()
         configureAddressPopup()
@@ -232,11 +237,13 @@ class FirstAddressSelectionActivity :
     }
 
     override fun navigateMainScreen() {
-        if (this.intent.getBooleanExtra(FLAG, false)) {
-            onBackPressed()
-        } else if (isFromOrderingScreen){
-            onBackPressed()
-        } else startActivity(Intent(this, MainActivity::class.java))
+        when(returningScreen){
+            ReturningToScreenEnum.FROM_MAIN,
+            ReturningToScreenEnum.FROM_ORDERING,
+            ReturningToScreenEnum.FROM_PARTNERS -> onBackPressed()
+
+            else -> startActivity(Intent(this, MainActivity::class.java))
+        }
         finish()
     }
 
@@ -283,7 +290,7 @@ class FirstAddressSelectionActivity :
         binding.spinnerFirstAddressSelectionCity.adapter = CitiesAdapter(this)
         binding.spinnerFirstAddressSelectionCity.onItemSelectedListener =
             createSelectionCityListener(presenter::onCitySelected, presenter::onNoCitySelected)
-        binding.spinnerFirstAddressSelectionCity.isEnabled = !isFromOrderingScreen
+        binding.spinnerFirstAddressSelectionCity.isEnabled = returningScreen != ReturningToScreenEnum.FROM_ORDERING
     }
 
     private fun configureAddressField() {
@@ -314,15 +321,16 @@ class FirstAddressSelectionActivity :
     }
 
     private fun configureSubmit() {
-        binding.btnFirstAddressSelectionSubmit
-            .setOnClickListener {
+        with(binding.btnFirstAddressSelectionSubmit) {
+            setOnClickListener {
                 presenter.onSubmitClicked()
             }
 
-        binding.btnFirstAddressSelectionSubmit.text = if (isFromOrderingScreen)
-            getString(R.string.done_title)
-        else
-            getString(R.string.first_address_selection_start_shopping)
+            text = when (returningScreen) {
+                ReturningToScreenEnum.FROM_ORDERING -> getString(R.string.done_title)
+                else -> getString(R.string.first_address_selection_start_shopping)
+            }
+        }
     }
 
     private fun createSelectionCityListener(
@@ -430,8 +438,9 @@ class FirstAddressSelectionActivity :
         const val REQUEST_LOCATION_PERIOD_IN_MILLIS = 10_000L
         const val REQUEST_LOCATION_DISTANCE_IN_METERS = 20F
         const val ADDRESS_TYPE_WAITING_IN_MILLIS = 300L
-        const val FLAG = "flag"
 
         const val LOCATION_REQUEST_CODE = 83
+
+        const val RETURNING_SCREEN_KEY = "RETURNING_SCREEN_KEY"
     }
 }

@@ -2,6 +2,7 @@ package ooo.cron.delivery.screens.partners_screen
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Parcelable
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -35,6 +36,7 @@ import ooo.cron.delivery.screens.basket_screen.BasketActivity
 import ooo.cron.delivery.screens.first_address_selection_screen.FirstAddressSelectionActivity
 import ooo.cron.delivery.utils.CustomLayoutManager
 import ooo.cron.delivery.utils.ProductBottomSheetDialog
+import ooo.cron.delivery.utils.enums.ReturningToScreenEnum
 import ooo.cron.delivery.utils.extensions.startBottomAnimate
 
 
@@ -350,7 +352,9 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
     }
 
     override fun showChangeAddressScreen() {
-        startActivity(Intent(this, FirstAddressSelectionActivity::class.java))
+        startActivity(Intent(this, FirstAddressSelectionActivity::class.java)
+            .putExtra(RETURNING_SCREEN_KEY, ReturningToScreenEnum.FROM_PARTNERS as? Parcelable)
+        )
     }
 
     override fun showProductInfo(product: PartnerProductsRes) {
@@ -466,6 +470,8 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
         const val EXTRA_IS_OPEN = "is_open"
         const val EXTRA_OPEN_HOURS = "open_hours"
         const val EXTRA_OPEN_MINUTES = "open_minutes"
+
+        const val RETURNING_SCREEN_KEY = "RETURNING_SCREEN_KEY"
 
         private const val NUMBER_SERVINGS_ON_BOTTOM_SHEET = 1
         private const val EMPTY_QUANTITY = 0

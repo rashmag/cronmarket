@@ -3,6 +3,7 @@ package ooo.cron.delivery.screens.main_screen
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
@@ -28,6 +29,7 @@ import ooo.cron.delivery.screens.vacancies_screen.VacanciesFragment
 import ooo.cron.delivery.utils.dipToPixels
 import ooo.cron.delivery.utils.extensions.startBottomAnimate
 import javax.inject.Inject
+import ooo.cron.delivery.utils.enums.ReturningToScreenEnum
 import ooo.cron.delivery.utils.extensions.makeGone
 import ooo.cron.delivery.utils.extensions.makeVisible
 
@@ -205,7 +207,7 @@ class MainActivity : BaseActivity(), MainContract.View {
 
     override fun navigateFirstAddressSelection() {
         val intent = Intent(this, FirstAddressSelectionActivity::class.java)
-        intent.putExtra(FLAG, true)
+        intent.putExtra(RETURNING_SCREEN_KEY, ReturningToScreenEnum.FROM_MAIN as? Parcelable)
         startActivity(intent)
     }
 
@@ -379,6 +381,6 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
     companion object {
-        const val FLAG = "flag"
+        const val RETURNING_SCREEN_KEY = "RETURNING_SCREEN_KEY"
     }
 }

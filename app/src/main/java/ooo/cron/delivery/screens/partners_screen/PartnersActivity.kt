@@ -53,9 +53,9 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
     lateinit var binding: ActivityPartnersBinding
 
     private lateinit var partnerId: String
-    private var isOpen: Boolean ?= null
-    private var openHours: Int ?= null
-    private var openMinutes: Int ?= null
+    private var isOpen: Boolean? = null
+    private var openHours: Int? = null
+    private var openMinutes: Int? = null
 
     private var nestedScrollViewConfigured = false
 
@@ -87,7 +87,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
                 scrollRange = super.scrollVerticallyBy(dy, recycler, state)
                 overScroll = dy - scrollRange
 
-                if(overScroll < 0) binding.scrolledErrorContainer.visibility = View.GONE
+                if (overScroll < 0) binding.scrolledErrorContainer.visibility = View.GONE
                 else showBottomCloseShopError()
 
                 return scrollRange
@@ -315,7 +315,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
     ) {
 
         productsLayoutManager.setScrollEnabled(true)
-        with(binding){
+        with(binding) {
             vgMainView.removeView(vgPartnersActivityProgress.root)
             productsAdapter.submitList(productCategoriesModel)
             productsAdapter.setSectionData(productCategoriesModel)
@@ -329,18 +329,24 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
         )
     }
 
-    override fun updateBasketPreview(quantity: Int, basketPrice: String) {
-        binding.btnPartnerBasketPrice.text = getString(R.string.partner_basket_price, basketPrice)
+    override suspend fun updateBasketPreview(quantity: Int, basketPrice: String) {
+        with(binding) {
+            btnPartnerBasketPrice.text = getString(R.string.partner_basket_price, basketPrice)
 
-        binding.vgPartnerBasket.run {
-            startBottomAnimate(quantity > 0 && isOpen == true)
-        }
+            vgPartnerBasket.run {
+                startBottomAnimate(
+                    quantity > 0 &&
+                            isOpen == true &&
+                            presenter.checkCityId()
+                )
+            }
 
-        with(
-            View.OnClickListener { presenter.onBasketClicked() }
-        ) {
-            binding.vgPartnerBasket.setOnClickListener(this)
-            binding.btnPartnerBasketPrice.setOnClickListener(this)
+            with(
+                View.OnClickListener { presenter.onBasketClicked() }
+            ) {
+                vgPartnerBasket.setOnClickListener(this)
+                btnPartnerBasketPrice.setOnClickListener(this)
+            }
         }
     }
 
@@ -352,8 +358,9 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
     }
 
     override fun showChangeAddressScreen() {
-        startActivity(Intent(this, FirstAddressSelectionActivity::class.java)
-            .putExtra(RETURNING_SCREEN_KEY, ReturningToScreenEnum.FROM_PARTNERS as? Parcelable)
+        startActivity(
+            Intent(this, FirstAddressSelectionActivity::class.java)
+                .putExtra(RETURNING_SCREEN_KEY, ReturningToScreenEnum.FROM_PARTNERS as? Parcelable)
         )
     }
 
@@ -436,9 +443,9 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
         })
     }
 
-    private fun showCloseShopError(){
-        val hours = if((openHours?.div(10) ?: 0) > 0) openHours else "0$openHours"
-        val minutes = if((openMinutes?.div(10) ?: 0) > 0) openMinutes else "0$openMinutes"
+    private fun showCloseShopError() {
+        val hours = if ((openHours?.div(10) ?: 0) > 0) openHours else "0$openHours"
+        val minutes = if ((openMinutes?.div(10) ?: 0) > 0) openMinutes else "0$openMinutes"
 
         binding.tvCloseShopError.isVisible = isOpen == false
         binding.tvCloseShopError.text = binding.root.context.getString(
@@ -447,9 +454,9 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
         )
     }
 
-    private fun showBottomCloseShopError(){
-        val hours = if((openHours?.div(10) ?: 0) > 0) openHours else "0$openHours"
-        val minutes = if((openMinutes?.div(10) ?: 0) > 0) openMinutes else "0$openMinutes"
+    private fun showBottomCloseShopError() {
+        val hours = if ((openHours?.div(10) ?: 0) > 0) openHours else "0$openHours"
+        val minutes = if ((openMinutes?.div(10) ?: 0) > 0) openMinutes else "0$openMinutes"
 
         binding.scrolledErrorContainer.startBottomAnimate(isOpen == false)
         binding.tvScrollShopError.text = binding.root.context.getString(

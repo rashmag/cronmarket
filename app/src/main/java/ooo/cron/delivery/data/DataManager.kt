@@ -164,6 +164,16 @@ class DataManager @Inject constructor(
             sPrefsService.readChosenCity()
         }
 
+    suspend fun writeCurrentCityId(cityId: String) =
+        withContext(Dispatchers.IO){
+            sPrefsService.writeCurrentCityId(cityId)
+        }
+
+    suspend fun readCurrentCityId() =
+        withContext(Dispatchers.IO){
+            sPrefsService.readCurrentCityId()
+        }
+
     fun readChosenCityId() =
         sPrefsService.readChosenCity().id
 

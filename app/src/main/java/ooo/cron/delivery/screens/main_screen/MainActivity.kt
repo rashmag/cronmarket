@@ -149,8 +149,12 @@ class MainActivity : BaseActivity(), MainContract.View {
         this.shouldLastBasketSessionBeVisible = boolean
     }
 
-    override fun showOrHideContinueLastSession(state: Boolean) {
-        binding.vgMainContinueLastSession.startBottomAnimate(state)
+    override fun showContinueLastSession() {
+        binding.vgMainContinueLastSession.startBottomAnimate(true)
+    }
+
+    override fun hideContinueLastSession() {
+        binding.vgMainContinueLastSession.startBottomAnimate(false)
     }
 
     override fun startMarketCategoryFragment(category: MarketCategory) {

@@ -64,13 +64,18 @@ class MainPresenter @Inject constructor(
 
                     if (partnerIsOpen.not() || basket?.amount?.toInt() == EMPTY_BASKET_COUNT) {
                         view?.shouldLastBasketSessionBeVisible(false)
-                        view?.showOrHideContinueLastSession(false)
+                        view?.hideContinueLastSession()
                     } else{
                         if (dataManager.readCurrentCityId() == EMPTY_BECAUSE_FIRST_OPEN){
                             dataManager.writeCurrentCityId(dataManager.readChosenCity().id)
                         }
 
-                        view?.showOrHideContinueLastSession(dataManager.readChosenCity().id == dataManager.readCurrentCityId())
+                        if (dataManager.readChosenCity().id == dataManager.readCurrentCityId()){
+                            view?.showContinueLastSession()
+                        }else{
+                            view?.hideContinueLastSession()
+                        }
+
                         view?.shouldLastBasketSessionBeVisible(true)
                         view?.showBasketAmount((basket?.amount?.toInt()).toString())
                     }

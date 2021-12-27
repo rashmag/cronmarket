@@ -19,14 +19,17 @@
 
     <TextView
         android:id="@+id/tv_basket_counter_quantity"
-        android:layout_width="48dp"
+        android:layout_width="54dp"
         android:layout_height="wrap_content"
         android:text="1"
-        android:textSize="14sp"
+        android:autoSizeMinTextSize="12sp"
+        android:autoSizeMaxTextSize="112sp"
+        android:autoSizeStepGranularity="1sp"
+        android:textSize="18sp"
         android:textColor="@color/grey90"
         android:paddingHorizontal="@dimen/dimen_12"
-        android:textStyle="bold"
         android:gravity="center"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/iv_basket_counter_minus"
         app:layout_constraintTop_toTopOf="parent" />

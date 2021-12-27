@@ -4,6 +4,7 @@ import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +19,7 @@ import ooo.cron.delivery.screens.ordering_screen.OrderContract
 import ooo.cron.delivery.screens.ordering_screen.OrderingActivity
 import java.util.*
 import javax.inject.Inject
+import ooo.cron.delivery.utils.enums.ReturningToScreenEnum
 
 /*
  * Created by Muhammad on 18.05.2021
@@ -26,13 +28,6 @@ import javax.inject.Inject
 
 
 class DeliveryDetailsFragment : BaseFragment(), DeliveryDetailsContract.View {
-
-    companion object {
-        var PARTNER_OPEN_HOURS = -1
-        var PARTNER_OPEN_MINUTES = -1
-        var PARTNER_CLOSE_HOURS = -1
-        var PARTNER_CLOSE_MINUTES = -1
-    }
 
     private lateinit var orderingView: OrderContract.View
 
@@ -93,7 +88,7 @@ class DeliveryDetailsFragment : BaseFragment(), DeliveryDetailsContract.View {
             setOnClickListener {
                 startActivity(
                     Intent(requireContext(), FirstAddressSelectionActivity::class.java)
-                        .putExtra("isFromOrderingScreen", true)
+                        .putExtra(RETURNING_SCREEN_KEY, ReturningToScreenEnum.FROM_ORDERING as? Parcelable)
                 )
             }
         }
@@ -224,5 +219,14 @@ class DeliveryDetailsFragment : BaseFragment(), DeliveryDetailsContract.View {
             }
         }
 
+    }
+
+    companion object {
+        var PARTNER_OPEN_HOURS = -1
+        var PARTNER_OPEN_MINUTES = -1
+        var PARTNER_CLOSE_HOURS = -1
+        var PARTNER_CLOSE_MINUTES = -1
+
+        const val RETURNING_SCREEN_KEY = "RETURNING_SCREEN_KEY"
     }
 }

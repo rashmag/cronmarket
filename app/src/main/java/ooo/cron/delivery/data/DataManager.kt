@@ -113,8 +113,8 @@ class DataManager @Inject constructor(
     suspend fun logOut(refreshToken: LogOutReq): Response<ResponseBody> =
         restService.logOut(refreshToken)
 
-    suspend fun getSpecialOffers(cityId: String) =
-        restService.getSpecialOffers(cityId).promotions
+    suspend fun getSpecialOffers(cityId: String, marketCategoryId: Int) =
+        restService.getSpecialOffers(cityId, marketCategoryId).promotions
 
     suspend fun getBasket(basketId: String): Response<Basket> =
         restService.getBasket(basketId)
@@ -163,6 +163,23 @@ class DataManager @Inject constructor(
         withContext(Dispatchers.IO) {
             sPrefsService.readChosenCity()
         }
+
+    suspend fun writeCurrentCityId(cityId: String) =
+        withContext(Dispatchers.IO){
+            sPrefsService.writeCurrentCityId(cityId)
+        }
+
+    suspend fun readCurrentCityId() =
+        withContext(Dispatchers.IO){
+            sPrefsService.readCurrentCityId()
+        }
+
+    fun writeCurrentCityPosition(position: Int){
+        sPrefsService.writeCurrentCityPosition(position)
+    }
+
+    fun readCurrentCityPosition() =
+        sPrefsService.readCurrentCityPosition()
 
     fun readChosenCityId() =
         sPrefsService.readChosenCity().id

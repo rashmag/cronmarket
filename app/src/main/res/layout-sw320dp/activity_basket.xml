@@ -93,7 +93,7 @@
                 android:layout_marginBottom="@dimen/dimen_24"
                 android:gravity="center"
                 android:textColor="@color/black"
-                android:textSize="@dimen/text_max_20"
+                android:textSize="@dimen/text_middle_16"
                 android:textStyle="bold"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"

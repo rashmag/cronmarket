@@ -146,7 +146,7 @@ class FirstAddressSelectionPresenter @Inject constructor(
         }
     }
 
-    private fun Response<List<City>>.handleCities() {
+    private suspend fun Response<List<City>>.handleCities() {
         if (isSuccessful && body().isNullOrEmpty().not()) {
             cities = body()!!
             view?.showCities(cities)
@@ -180,6 +180,11 @@ class FirstAddressSelectionPresenter @Inject constructor(
             view?.showAnyErrorScreen()
         }
     }
+
+    override suspend fun checkingFirstLaunch() = dataManager.readChosenCity().city != ""
+
+    override fun writeCurrentCityPosition(position: Int) = dataManager.writeCurrentCityPosition(position)
+    override fun getCurrentCityPosition() = dataManager.readCurrentCityPosition()
 
     private fun disableInteractiveViews() = view?.let {
         it.disableCitySelection()

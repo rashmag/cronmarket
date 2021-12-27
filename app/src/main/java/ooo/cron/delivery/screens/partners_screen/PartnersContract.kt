@@ -22,7 +22,7 @@ interface PartnersContract {
         fun showPartnerProducts(productCategoriesModel: ArrayList<ProductCategoryModel>)
 
         fun showClearBasketDialog(onDismiss: () -> Unit, onAccept: () -> Unit)
-        fun updateBasketPreview(quantity: Int, basketPrice: String)
+        suspend fun updateBasketPreview(quantity: Int, basketPrice: String)
 
         fun showChangeAddressDialog()
 

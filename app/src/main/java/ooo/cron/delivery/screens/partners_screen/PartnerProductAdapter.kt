@@ -81,12 +81,10 @@ class CategoryAdapter(
 
                     when(defineQuantityChangeStatus(currentQuantity, product.inBasketQuantity)){
                         QuantityChangeStatus.INCREASED -> increaseProduct(product, currentQuantity)
-                        QuantityChangeStatus.DECREASED ->  restartTimer {
-                            listener.onMinusClick(
+                        QuantityChangeStatus.DECREASED -> listener.onMinusClick(
                                 product,
                                 product.inBasketQuantity - currentQuantity
                             )
-                        }
                         QuantityChangeStatus.NO_CHANGES -> updateCounter(currentQuantity)
                     }
                 }
@@ -102,9 +100,7 @@ class CategoryAdapter(
 
                 when(defineQuantityChangeStatus(currentQuantity, product.inBasketQuantity)){
                     QuantityChangeStatus.INCREASED -> increaseProduct(product, currentQuantity)
-                    QuantityChangeStatus.DECREASED -> restartTimer {
-                        listener.onMinusClick(product, product.inBasketQuantity - currentQuantity)
-                    }
+                    QuantityChangeStatus.DECREASED -> listener.onMinusClick(product, product.inBasketQuantity - currentQuantity)
                     QuantityChangeStatus.NO_CHANGES ->{timer.cancel()
                     updateCounter(currentQuantity)}
                 }
@@ -140,17 +136,6 @@ class CategoryAdapter(
             binding.vgAddProduct.visibility = View.VISIBLE
         }
 
-        private fun restartTimer(
-            onFinish: () -> Unit
-        ) {
-            timer.cancel()
-            timer.start {
-                binding.partnerProductProgress.visibility = View.VISIBLE
-                binding.vgCost.visibility = View.INVISIBLE
-                onFinish()
-            }
-        }
-
         private fun defineQuantityChangeStatus(
             quantity: Int,
             inBasketQuantity: Int
@@ -168,13 +153,11 @@ class CategoryAdapter(
             if (product.additives.isEmpty() &&
                 product.requiredAdditiveGroups.isEmpty()
             )
-                return restartTimer {
-                    listener.onPlusClick(
+                return listener.onPlusClick(
                         product,
                         listOf(),
                         currentQuantity - product.inBasketQuantity
                     )
-                }
             listener.onProductClick(product)
         }
     }
@@ -202,8 +185,7 @@ class PartnerProductAdapter(private val isOpen: Boolean) :
     private var productCategoryModel = arrayListOf<ProductCategoryModel>()
     private lateinit var listener: CategoryAdapter.OnProductClickListener
 
-    fun setData(productCategoryModel: ArrayList<ProductCategoryModel>) {
-
+    fun setSectionData(productCategoryModel: List<ProductCategoryModel>) {
         this.productCategoryModel.run {
             clear()
             addAll(productCategoryModel)
@@ -215,7 +197,7 @@ class PartnerProductAdapter(private val isOpen: Boolean) :
         this.listener = listener
     }
 
-    override fun getSectionList(): List<ProductCategoryModel> = productCategoryModel
+    override fun getSectionList(): ArrayList<ProductCategoryModel> = productCategoryModel
 
     override fun viewHolder(view: View) = ViewHolder(view)
 

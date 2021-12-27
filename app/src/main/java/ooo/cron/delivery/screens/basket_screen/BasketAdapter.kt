@@ -18,9 +18,10 @@ import ooo.cron.delivery.databinding.ItemBasketHeaderBinding
 import ooo.cron.delivery.databinding.ItemBasketPersonsBinding
 import ooo.cron.delivery.databinding.ItemBasketProductBinding
 import ooo.cron.delivery.databinding.ItemBasketSpecialOffersBinding
-import ooo.cron.delivery.utils.BasketCounterTimer
 import ooo.cron.delivery.utils.dipToPixels
-import javax.inject.Inject
+import ooo.cron.delivery.utils.extensions.makeGone
+import ooo.cron.delivery.utils.extensions.makeInvisible
+import ooo.cron.delivery.utils.extensions.makeVisible
 
 /**
  * Created by Ramazan Gadzhikadiev on 10.05.2021.
@@ -41,9 +42,9 @@ class BasketAdapter(
         when (position) {
             getHeaderPosition() -> R.layout.item_basket_header
             getPersonsPosition() -> {
-                if (isRestaurant == RESTAURANT){
+                if (isRestaurant == RESTAURANT) {
                     R.layout.item_basket_persons
-                }else{
+                } else {
                     R.layout.item_basket_special_offers
                 }
             }
@@ -126,9 +127,7 @@ class BasketAdapter(
     inner class ProductViewHolder(private val binding: ItemBasketProductBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        lateinit var product: BasketDish
-
-        private val timer = BasketCounterTimer()
+        var product: BasketDish? = null
 
         fun bind(product: BasketDish) {
             this.product = product
@@ -137,7 +136,7 @@ class BasketAdapter(
             binding.vgBasketCounter.tvBasketCounterQuantity.text = product.quantity.toString()
             binding.tvBasketProductAmount.text = itemView.context.getString(
                 R.string.price,
-                (product.cost * product.quantity).toInt().toString()
+                (product.cost * product.quantity).toString()
             )
 
             binding.vgBasketCounter.ivBasketCounterPlus.setOnClickListener {
@@ -157,8 +156,7 @@ class BasketAdapter(
                             itemView.context.resources.dipToPixels(3f).toInt()
                         )
                     )
-                })
-                .into(binding.ivBasketProduct)
+                }).into(binding.ivBasketProduct)
         }
     }
 
@@ -170,81 +168,59 @@ class BasketAdapter(
         private val binding: ItemBasketPersonsBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        var timer: CountDownTimer? = null
         var currentQuantity = 0
 
         fun bind(quantity: Int) {
             currentQuantity = quantity
-            binding.swBasketPersons.apply {
-                if (quantity > 0)
-                    isChecked = quantity > 0
-                else
-                    binding.vgBasketCounter.ivBasketCounterMinus.visibility = View.INVISIBLE
 
-                if (quantity == 20)
-                    binding.vgBasketCounter.ivBasketCounterPlus.visibility = View.INVISIBLE
-                setOnCheckedChangeListener { _, isChecked ->
-                    if (isChecked)
-                        binding.vgBasketCounter.root.visibility = View.VISIBLE
+            with(binding) {
+
+                // Чекбокс
+                swBasketPersons.apply {
+
+                    isChecked = currentQuantity >= 1
+                    vgBasketCounter.ivBasketCounterMinus.isVisible = currentQuantity >= 0
+
+                    if (currentQuantity == DEVICE_MAX_COUNT) vgBasketCounter.ivBasketCounterPlus.makeGone()
+
+                    setOnCheckedChangeListener { _, isChecked ->
+                        vgBasketCounter.root.isVisible = isChecked
+                    }
+                }
+
+                vgBasketCounter.tvBasketCounterQuantity.text =
+                    if (currentQuantity == 0) (currentQuantity + 1).toString()
+                    else currentQuantity.toString()
+
+                vgBasketCounter.root.isVisible = currentQuantity > 0
+
+                // Минус клик
+                vgBasketCounter.ivBasketCounterMinus.setOnClickListener {
+                    if (currentQuantity > 0) currentQuantity--
+
+                    vgBasketCounter.ivBasketCounterPlus.makeVisible()
+
+                    partnersEditClick(currentQuantity)
+                }
+
+                // Плюс клик
+                vgBasketCounter.ivBasketCounterPlus.setOnClickListener {
+                    if (currentQuantity == 0) {
+                        currentQuantity += 1
+                    }
+
+                    vgBasketCounter.ivBasketCounterMinus.makeVisible()
+
+                    if (currentQuantity <= DEVICE_MAX_COUNT) currentQuantity++
+
+                    if (currentQuantity == DEVICE_MAX_COUNT)
+                        it.makeInvisible()
                     else
-                        binding.vgBasketCounter.root.visibility = View.INVISIBLE
-                }
-            }
+                        it.makeVisible()
 
-            binding.vgBasketCounter.tvBasketCounterQuantity.text = currentQuantity.toString()
-
-            if (quantity > 0)
-                binding.vgBasketCounter.root.visibility = View.VISIBLE
-            else
-                binding.vgBasketCounter.root.visibility = View.INVISIBLE
-
-            binding.vgBasketCounter.ivBasketCounterMinus.setOnClickListener {
-                if (currentQuantity > 0) currentQuantity--
-                if (currentQuantity == 0)
-                    it.visibility = View.INVISIBLE
-                else
-                    it.visibility = View.VISIBLE
-
-                if (!binding.vgBasketCounter.ivBasketCounterPlus.isVisible) {
-                    binding.vgBasketCounter.ivBasketCounterPlus.visibility = View.VISIBLE
-                }
-                editQuantity(currentQuantity)
-            }
-
-            binding.vgBasketCounter.ivBasketCounterPlus.setOnClickListener {
-                if (currentQuantity <= 20) currentQuantity++
-
-                if (currentQuantity == 20)
-                    it.visibility = View.INVISIBLE
-                else
-                    it.visibility = View.VISIBLE
-
-                if (!binding.vgBasketCounter.ivBasketCounterMinus.isVisible) {
-                    binding.vgBasketCounter.ivBasketCounterMinus.visibility = View.VISIBLE
-                }
-
-                editQuantity(currentQuantity)
-            }
-        }
-
-        private fun editQuantity(quantity: Int) {
-            binding.vgBasketCounter.tvBasketCounterQuantity.text = quantity.toString()
-            timer?.cancel()
-            timer = object : CountDownTimer(900, 900) {
-                override fun onTick(millisUntilFinished: Long) {
-                    Log.d(
-                        this::class.simpleName,
-                        "persons quantity changed"
-                    )
-                }
-
-                override fun onFinish() {
-                    binding.vgBasketCounter.root.visibility = View.INVISIBLE
-                    binding.pbPersonsProgress.visibility = View.VISIBLE
                     partnersEditClick(currentQuantity)
                 }
             }
-            timer!!.start()
         }
     }
 
@@ -252,7 +228,8 @@ class BasketAdapter(
         specialOffersBinding: ItemBasketSpecialOffersBinding
     ) : RecyclerView.ViewHolder(specialOffersBinding.root)
 
-    companion object{
+    companion object {
         const val RESTAURANT = 1
+        const val DEVICE_MAX_COUNT = 20
     }
 }

@@ -79,7 +79,7 @@
 
     <string name="partners_activity_min_order_template">заказ от %1$d&#160;\u20BD</string>
     <string name="partners_activity_free_delivery_template">от %1$d \u20BD&#160;бесплатно</string>
-    <string name="partners_activity_free_delivery_template_2">от %1$d \u20BD&#160;\nбесплатно</string>
+    <string name="partners_activity_free_delivery_template_small_screen">от %1$d \u20BD\nбесплатно</string>
     <string name="partners_activity_close_title">Закрыть</string>
 
 

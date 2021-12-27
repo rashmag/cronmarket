@@ -105,7 +105,7 @@ class FirstAddressSelectionActivity :
         }
     }
 
-    override fun showCities(cities: List<City>) {
+    override suspend fun showCities(cities: List<City>) {
         updateCities(cities)
         makeCitiesVisible()
     }
@@ -345,6 +345,7 @@ class FirstAddressSelectionActivity :
                 id: Long
             ) {
                 onItemSelected(position)
+                presenter.writeCurrentCityPosition(position)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -352,13 +353,18 @@ class FirstAddressSelectionActivity :
             }
         }
 
-    private fun updateCities(cities: List<City>) {
-        (binding.spinnerFirstAddressSelectionCity.adapter as CitiesAdapter).run {
-            clear()
-            cities.forEachIndexed { index, city ->
-                insert(city, index)
+    private suspend fun updateCities(cities: List<City>) {
+        with(binding) {
+            (spinnerFirstAddressSelectionCity.adapter as CitiesAdapter).run {
+                clear()
+                if (presenter.checkingFirstLaunch()) {
+                    spinnerFirstAddressSelectionCity.setSelection(presenter.getCurrentCityPosition())
+                }
+                cities.forEachIndexed { index, city ->
+                    insert(city, index)
+                }
+                notifyDataSetChanged()
             }
-            notifyDataSetChanged()
         }
     }
 

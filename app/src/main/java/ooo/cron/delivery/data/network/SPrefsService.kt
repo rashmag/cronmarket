@@ -36,6 +36,14 @@ class SPrefsService @Inject constructor(
     fun readCurrentCityId() =
         sharedPreferences.getString(CURRENT_CITY_ID, "")
 
+    fun writeCurrentCityPosition(position: Int) =
+        sharedPreferences.edit()
+            .putInt(CURRENT_CITY_POSITION, position)
+            .commit()
+
+    fun readCurrentCityPosition() =
+        sharedPreferences.getInt(CURRENT_CITY_POSITION, -1)
+
     fun writeSelectedMarketCategory(category: MarketCategory) =
         sharedPreferences.edit()
             .putInt(MARKET_CATEGORY_ID, category.id)
@@ -113,6 +121,8 @@ class SPrefsService @Inject constructor(
         const val CITY_KLADR_ID = "CITY_KLADR_ID"
 
         const val CURRENT_CITY_ID = "CURRENT_CITY_ID"
+
+        const val CURRENT_CITY_POSITION = "CURRENT_CITY_POSITION"
 
         const val STREET_WITH_BUILDING = "STREET_WITH_BUILDING"
 

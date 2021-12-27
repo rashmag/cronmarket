@@ -174,6 +174,13 @@ class DataManager @Inject constructor(
             sPrefsService.readCurrentCityId()
         }
 
+    fun writeCurrentCityPosition(position: Int){
+        sPrefsService.writeCurrentCityPosition(position)
+    }
+
+    fun readCurrentCityPosition() =
+        sPrefsService.readCurrentCityPosition()
+
     fun readChosenCityId() =
         sPrefsService.readChosenCity().id
 

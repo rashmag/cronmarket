@@ -31,7 +31,7 @@ interface BasketContract {
         fun plusClick(dish: BasketDish, extraQuantity: Int)
         fun minusClick(dish: BasketDish, unwantedQuantity: Int)
         fun personsQuantityEdited(quantity: Int)
-        fun removeItemClicked(product: BasketDish)
+        fun removeItemClicked(product: BasketDish?)
         fun clickMakeOrder()
         fun clearClicked()
         fun clearBasketAccepted()

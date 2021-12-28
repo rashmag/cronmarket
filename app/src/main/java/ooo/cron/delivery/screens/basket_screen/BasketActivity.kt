@@ -138,6 +138,12 @@ class BasketActivity : BaseActivity(), BasketContract.View, PayClickCallback {
         finish()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.personsQuantityEdited(0)
+        presenter.detachView()
+    }
+
     override fun marketCategoryId(): Int {
         return presenter.getMarketCategoryId()
     }

@@ -26,6 +26,9 @@ class OrderPrefsRepository @Inject constructor(
             sharedPreferences.getString(REFRESH_TOKEN, "")!!
         )
 
+    fun readDeliveryCityId() =
+        sharedPreferences.getString(CITY_ID, "")
+
     companion object {
         const val USER_PHONE = "user_phone"
 
@@ -35,5 +38,7 @@ class OrderPrefsRepository @Inject constructor(
         const val REFRESH_TOKEN = "refresh_token"
 
         const val BASKET = "basket"
+
+        const val CITY_ID = "CITY_ID"
     }
 }

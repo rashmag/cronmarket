@@ -1,6 +1,7 @@
 package ooo.cron.delivery.screens.pay_dialog_screen
 
 import android.content.Context
+import android.util.Log
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import ooo.cron.delivery.R
 import ru.tinkoff.acquiring.sdk.TinkoffAcquiring
@@ -23,7 +24,6 @@ class PayTinkoff (
     private fun openPaymentScreen(paymentOptions: PaymentOptions) {
         TinkoffAcquiring(
             context.getString(R.string.tinkoff_terminal_key),
-            context.getString(R.string.tinkoff_terminal_password),
             context.getString(R.string.tinkoff_terminal_public_key)
         ).openPaymentScreen(
             fragment,
@@ -36,7 +36,7 @@ class PayTinkoff (
         val paymentOptions = PaymentOptions().setOptions {
             orderOptions {
                 orderId = Calendar.getInstance().timeInMillis.toString()
-                amount = Money.ofCoins(amountSum.toLong()* 100)
+                amount = Money.ofCoins((amountSum*100).toLong())
                 title = fragment.context?.getString(R.string.cron_delivery_title)
                 description = "Покупки и услуги доставки"
                 recurrentPayment = false
@@ -54,12 +54,15 @@ class PayTinkoff (
                 handleCardListErrorInSdk = true
                 darkThemeMode = DarkThemeMode.DISABLED
                 emailRequired = false
+                handleErrorsInSdk = true
+                theme = R.style.AcquiringThemeCustom
             }
         }
+        Log.d("payment", paymentOptions. toString())
         openPaymentScreen(paymentOptions)
     }
 
     companion object {
-        private const val TINKOFF_PAYMENT_REQUEST_CODE = 1000
+        private const val TINKOFF_PAYMENT_REQUEST_CODE = 1
     }
 }

@@ -1,36 +1,30 @@
 package ooo.cron.delivery.screens.pay_dialog_screen
 
-import android.content.Context
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
+import android.widget.Toast
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.customview.customView
+import com.afollestad.materialdialogs.customview.getCustomView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.button.MaterialButton
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.Basket
-import ooo.cron.delivery.data.network.models.Basket.Companion.deserializeDishes
 import ooo.cron.delivery.databinding.DialogOrderBinding
 import ru.tinkoff.acquiring.sdk.AcquiringSdk
-import ru.tinkoff.acquiring.sdk.BuildConfig
 import ru.tinkoff.acquiring.sdk.TinkoffAcquiring
-import ru.tinkoff.acquiring.sdk.localization.AsdkSource
-import ru.tinkoff.acquiring.sdk.localization.Language
-import ru.tinkoff.acquiring.sdk.models.DarkThemeMode
-import ru.tinkoff.acquiring.sdk.models.Item
-import ru.tinkoff.acquiring.sdk.models.Receipt
-import ru.tinkoff.acquiring.sdk.models.enums.CheckType
-import ru.tinkoff.acquiring.sdk.models.enums.Tax
-import ru.tinkoff.acquiring.sdk.models.enums.Taxation
-import ru.tinkoff.acquiring.sdk.models.options.screen.PaymentOptions
-import ru.tinkoff.acquiring.sdk.utils.Money
-import java.util.*
+import ru.tinkoff.acquiring.sdk.TinkoffAcquiring.Companion.RESULT_ERROR
 import javax.inject.Inject
-import kotlin.collections.ArrayList
 
 /**
  * Created by Maya Nasrueva on 14.12.2021
@@ -38,12 +32,12 @@ import kotlin.collections.ArrayList
 
 class OrderBottomDialog() : BottomSheetDialogFragment() {
 
-    //var basket: Basket? = null
     private val viewModel: OrderViewModel by activityViewModels {
         factory.create()
     }
 
     private lateinit var payTinkoff: PayTinkoff
+    private var payCallback : PayClickCallback? = null
 
     @Inject
     lateinit var binding: DialogOrderBinding
@@ -54,6 +48,10 @@ class OrderBottomDialog() : BottomSheetDialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         injectDependencies()
+        context.let { context ->
+            if (context is PayClickCallback) payCallback = context
+        }
+        payTinkoff = PayTinkoff(requireContext(), this)
     }
 
     override fun onCreateView(
@@ -61,13 +59,29 @@ class OrderBottomDialog() : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        payTinkoff = PayTinkoff(requireContext(), this)
         return binding.root
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when (resultCode) {
+            Activity.RESULT_OK -> {
+                Log.d("result_codeD", "Done$resultCode")
+                viewModel.onPaymentSuccess()
+            }
+            Activity.RESULT_CANCELED -> Toast.makeText(requireContext(), "Оплата отменена", Toast.LENGTH_SHORT).show()
+            RESULT_ERROR -> {
+                viewModel.onPaymentFailed()
+                Log.d("result_codeD", "Fail$resultCode")
+                Log.e("t_error_code",(data?.getSerializableExtra(TinkoffAcquiring.EXTRA_ERROR) as Throwable).toString())
+            }
+        else -> super.onActivityResult(requestCode, resultCode, data)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        AcquiringSdk.isDeveloperMode = BuildConfig.DEBUG
+        AcquiringSdk.isDeveloperMode = true
+        AcquiringSdk.isDebug = true
         viewModel.onCreateView()
         viewModel.basketState.observe(viewLifecycleOwner, { basketState ->
             when (basketState) {
@@ -76,8 +90,11 @@ class OrderBottomDialog() : BottomSheetDialogFragment() {
                 is Error -> showError()
             }
         })
+        viewModel.paymentStatus.observe(viewLifecycleOwner, {
+            openOrderStatusFragment(it)
+        })
         viewModel.callingDialog.observe(viewLifecycleOwner, {
-
+            showInformDialog(R.string.order_no_payment_inform_message)
         })
         viewModel.payVariantState.observe(viewLifecycleOwner, {
             when (it) {
@@ -136,6 +153,14 @@ class OrderBottomDialog() : BottomSheetDialogFragment() {
         }
     }
 
+    //Открытие полноэкранного статуса заказа в экране корзины
+    private fun openOrderStatusFragment(isSuccessPayment: Boolean) {
+        /*TODO сделать переход на фран с открытием полноэкранного статуса заказа
+        *  isSuccessPayment передавать в экран через Bundle или Extra*/
+        payCallback?.onPayClicked(isSuccessPayment)
+        dismiss()
+    }
+
     private fun injectDependencies() {
         App.appComponent.orderComponentBuilder()
             .buildInstance(layoutInflater)
@@ -143,6 +168,7 @@ class OrderBottomDialog() : BottomSheetDialogFragment() {
             .inject(this)
     }
 
+    //Показ ошибки получения баскета
     private fun showError() {
         TODO("Not yet implemented")
     }
@@ -159,12 +185,36 @@ class OrderBottomDialog() : BottomSheetDialogFragment() {
     }
 
     private fun showNoPaymentDialog() {
-        //TODO сделать в либе
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setMessage("Необходимо выбрать способ оплаты")
-            .setPositiveButton("Ок") { dialog, id ->
-                dialog.cancel()
-            }
-        builder.show()
+        val dialog = MaterialDialog(requireContext())
+            .customView(R.layout.dialog_inform)
+        val customView = dialog.getCustomView()
+        val button = customView.rootView.findViewById<MaterialButton>(R.id.btn_inform_accept)
+        button.text = getString(R.string.order_inform_attention_btn)
+        button.setOnClickListener {
+            dialog.cancel()
+        }
+        val title = customView.rootView.findViewById<AppCompatTextView>(R.id.tv_inform_title)
+        title.text = getString(R.string.order_inform_attention)
+        val message = customView.rootView.findViewById<AppCompatTextView>(R.id.tv_inform_message)
+        message.text = getString(R.string.order_no_payment_inform_message)
+        dialog.show()
     }
+
+    private fun showInformDialog(resMessage:Int) {
+        val dialog = MaterialDialog(requireContext())
+            .customView(R.layout.dialog_inform)
+        val customView = dialog.getCustomView()
+        val button = customView.rootView.findViewById<MaterialButton>(R.id.btn_inform_accept)
+        button.text = getString(R.string.order_inform_attention_btn)
+        button.setOnClickListener {
+            dialog.cancel()
+        }
+        val title = customView.rootView.findViewById<AppCompatTextView>(R.id.tv_inform_title)
+        title.text = getString(R.string.order_inform_attention)
+        val message = customView.rootView.findViewById<AppCompatTextView>(R.id.tv_inform_message)
+        message.text = getString(resMessage)
+        dialog.show()
+    }
+
+
 }

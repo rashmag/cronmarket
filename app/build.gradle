@@ -15,6 +15,10 @@ android {
         versionName "3.9"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        packagingOptions {
+            exclude 'META-INF/core.kotlin_module'
+        }
     }
 
     compileOptions {
@@ -114,7 +118,7 @@ dependencies {
     implementation "com.github.fajaragungpramana:section-recyclerview:$section_recycler_view"
 
     //Tinkoff Acquiring
-    def tinkoff_acquiring_version = '2.3.2'
+    def tinkoff_acquiring_version = '2.5.4'
     implementation "ru.tinkoff.acquiring:ui:$tinkoff_acquiring_version"
 
     //Android Image Slider
@@ -124,4 +128,7 @@ dependencies {
     //Pager indicator
     def indicatorVersion ='1.0.3'
     implementation "com.romandanylyk:pageindicatorview:$indicatorVersion"
+
+    //Afollestad Material Dialogs
+    implementation "com.afollestad.material-dialogs:core:3.3.0"
 }

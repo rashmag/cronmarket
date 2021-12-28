@@ -9,8 +9,8 @@ import ooo.cron.delivery.data.network.models.Basket
  * Created by Ramazan Gadzhikadiev on 10.05.2021.
  */
 
-@Subcomponent(modules = [BasketModule::class])
 @BasketScope
+@Subcomponent(modules = [BasketModule::class])
 interface BasketComponent {
 
     fun inject(activity: BasketActivity)

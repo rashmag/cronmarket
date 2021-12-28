@@ -93,8 +93,15 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
     override fun showSavedAddress(address: String) {
-        binding.tvMainUserAddress.setBackgroundResource(R.drawable.bg_main_address_correct)
-        binding.tvMainUserAddress.text = address
+            binding.tvMainUserAddress.run {
+                if(address.isNotEmpty()) {
+                    setBackgroundResource(R.drawable.bg_main_address_correct)
+                    text = address
+                }else{
+                    setBackgroundResource(R.drawable.bg_main_address_incorrect)
+                    text = getString(R.string.main_address_incorrect)
+                }
+        }
     }
 
     override fun removeMarketCategoriesProgress() =
@@ -360,24 +367,26 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
     private fun setToolbarTitleVisibility(isVisible: Boolean, title: String?) {
-        val visibility = if (isVisible) View.GONE else View.VISIBLE
-        binding.abMain.visibility = visibility
-        //TODO("Change View.GONE on visibility")
-        binding.ivMainSearch.visibility = View.GONE
-        binding.tvMainUserAddress.visibility = visibility
-        binding.vgMainContinueLastSession.visibility =
-            if (shouldLastBasketSessionBeVisible && !isVisible)
-                View.VISIBLE
-            else
-                View.GONE
+        with(binding) {
+            val visibility = if (isVisible) View.GONE else View.VISIBLE
+            abMain.visibility = visibility
+            //TODO("Change View.GONE on visibility")
+            ivMainSearch.visibility = View.GONE
+            tvMainUserAddress.visibility = visibility
+            vgMainContinueLastSession.visibility =
+                if (shouldLastBasketSessionBeVisible && !isVisible)
+                    View.VISIBLE
+                else
+                    View.GONE
 
-        if (isVisible) {
-            val params = binding.vgMainContent.layoutParams as CoordinatorLayout.LayoutParams
-            params.behavior = null
-            binding.vgMainContent.layoutParams = params
+            if (isVisible) {
+                val params = vgMainContent.layoutParams as CoordinatorLayout.LayoutParams
+                params.behavior = null
+                vgMainContent.layoutParams = params
+            }
+            tvMainTitle.text = title
+            tvMainTitle.visibility = if (isVisible) View.VISIBLE else View.GONE
         }
-        binding.tvMainTitle.text = title
-        binding.tvMainTitle.visibility = if (isVisible) View.VISIBLE else View.GONE
     }
 
     companion object {

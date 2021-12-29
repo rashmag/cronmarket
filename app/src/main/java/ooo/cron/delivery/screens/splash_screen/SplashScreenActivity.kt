@@ -5,6 +5,9 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import androidx.core.content.ContextCompat
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.internal.button.DialogActionButton
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
 import ooo.cron.delivery.screens.BaseActivity
@@ -66,9 +69,21 @@ class SplashScreenActivity : BaseActivity(), SplashScreenContract.View {
     }
 
     override fun showUpdateVersionDialog() {
-        UpdateVersionDialog(
-            presenter::updateDeclined,
-            presenter::updateAccepted
-        ).show(supportFragmentManager, this::class.simpleName)
+        val dialog = MaterialDialog(this)
+            .title(R.string.attention_title)
+            .message(R.string.version_update_title)
+            .icon(R.drawable.ic_update)
+            .positiveButton {
+                presenter.updateAccepted()
+            }
+            .negativeButton {
+                presenter.updateDeclined()
+            }
+            .cancelOnTouchOutside(false)
+        val positiveButton = dialog.view.findViewById<DialogActionButton>(R.id.md_button_positive)
+        positiveButton.text = "Обновить"
+        positiveButton.isAllCaps = false
+        positiveButton.updateTextColor(resources.getColor(R.color.errors_true))
+        dialog.show()
     }
 }

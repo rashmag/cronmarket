@@ -50,6 +50,8 @@ interface FirstAddressSelectionContract {
 
         fun showAnyErrorScreen()
         fun showConnectionErrorScreen()
+
+        fun showUserSavedAddress(address: String)
     }
 
     interface Presenter: MvpPresenter<View> {
@@ -79,5 +81,7 @@ interface FirstAddressSelectionContract {
         fun onLocationProviderUpdateTimerFinished()
 
         fun onSubmitClicked()
+
+        fun writeUserAddress(address: String)
     }
 }

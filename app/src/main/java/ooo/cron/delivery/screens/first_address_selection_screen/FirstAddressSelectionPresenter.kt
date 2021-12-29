@@ -23,6 +23,8 @@ class FirstAddressSelectionPresenter @Inject constructor(
     private var cities: List<City> = listOf()
     private var selectedCity: City? = null
 
+    var lastSelectedCity = ""
+
     private var suggestedAddresses: List<SuggestAddress> = listOf()
 
     override fun onStartView() {
@@ -38,7 +40,16 @@ class FirstAddressSelectionPresenter @Inject constructor(
         if (selectedCity != cities[pos]) {
             selectedCity = cities[pos]
             suggestedAddresses = listOf()
-            view?.clearAddressField()
+
+            if (selectedCity?.city != lastSelectedCity) {
+                view?.clearAddressField()
+            }
+        }
+    }
+
+    override fun writeUserAddress(address: String) {
+        addressScope.launch {
+            dataManager.writeBuildingAddress(address)
         }
     }
 
@@ -150,6 +161,8 @@ class FirstAddressSelectionPresenter @Inject constructor(
         if (isSuccessful && body().isNullOrEmpty().not()) {
             cities = body()!!
             view?.showCities(cities)
+            view?.showUserSavedAddress(dataManager.readBuildingAddress().orEmpty())
+            lastSelectedCity = dataManager.readChosenCity().city
             view?.removeCitiesProgress()
             view?.showStartShopping()
         } else

@@ -136,13 +136,20 @@ class FirstAddressSelectionActivity :
         addressesPopupWindow.show()
     }
 
+    override fun showUserSavedAddress(address: String) {
+        binding.etFirstAddressSelectionAddress.setText(address)
+    }
+
     override fun disableAddressPopup() {
         addressesPopupWindow.dismiss()
     }
 
     override fun clearAddressField() {
-        binding.etFirstAddressSelectionAddress.text?.clear()
-        addressesPopupWindow.dismiss()
+        with(binding) {
+            etFirstAddressSelectionAddress.text?.clear()
+            presenter.writeUserAddress(etFirstAddressSelectionAddress.text.toString())
+            addressesPopupWindow.dismiss()
+        }
     }
 
     override fun checkLocationPermission() {

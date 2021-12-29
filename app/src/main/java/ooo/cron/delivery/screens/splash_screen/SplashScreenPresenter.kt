@@ -48,7 +48,7 @@ class SplashScreenPresenter @Inject constructor(
     }
 
     companion object {
-        const val STABLE_API_VERSION = "5"
+        const val STABLE_API_VERSION = "6"
     }
 
 }

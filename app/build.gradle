@@ -11,8 +11,8 @@ android {
         applicationId "ooo.cron.delivery"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 32
-        versionName "3.9"
+        versionCode 33
+        versionName "4.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -129,6 +129,6 @@ dependencies {
     def indicatorVersion ='1.0.3'
     implementation "com.romandanylyk:pageindicatorview:$indicatorVersion"
 
-    //Afollestad Material Dialogs
-    implementation "com.afollestad.material-dialogs:core:3.3.0"
+    //affolestad
+    implementation 'com.afollestad.material-dialogs:core:3.3.0'
 }

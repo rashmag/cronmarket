@@ -44,7 +44,6 @@ class CategoryAdapter(
 
         private val binding = ItemPartnerProductBinding.bind(view)
 
-        private val timer = BasketCounterTimer()
         init {
             if(isOpen) {
                 view.setOnClickListener {
@@ -57,7 +56,6 @@ class CategoryAdapter(
                             product.requiredAdditiveGroups.isEmpty()
                     ) {
                         val currentQuantity = binding.tvPortionCount.text.toString().toInt() + 1
-                        updateCounter(currentQuantity)
 
                         when (defineQuantityChangeStatus(currentQuantity, product.inBasketQuantity)) {
                             QuantityChangeStatus.INCREASED -> increaseProduct(product, currentQuantity)
@@ -101,10 +99,8 @@ class CategoryAdapter(
                 when(defineQuantityChangeStatus(currentQuantity, product.inBasketQuantity)){
                     QuantityChangeStatus.INCREASED -> increaseProduct(product, currentQuantity)
                     QuantityChangeStatus.DECREASED -> listener.onMinusClick(product, product.inBasketQuantity - currentQuantity)
-                    QuantityChangeStatus.NO_CHANGES ->{timer.cancel()
-                    updateCounter(currentQuantity)}
+                    QuantityChangeStatus.NO_CHANGES -> updateCounter(currentQuantity)
                 }
-
             }
         }
 

@@ -3,9 +3,6 @@ package ooo.cron.delivery.screens.basket_screen
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.view.View
-import android.widget.Toast
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -79,21 +76,24 @@ class BasketActivity : BaseActivity(), BasketContract.View, PayClickCallback {
     }
 
     private fun initAdapter(){
-        rv_basket_content.addItemDecoration(
-            SpaceItemDecoration(
-                MARGIN_SPACING_VALUE_34
-            ))
+        with(binding) {
+            rvBasketContent.layoutManager = LinearLayoutManager(this@BasketActivity, RecyclerView.VERTICAL, false)
+            rvBasketContent.addItemDecoration(
+                SpaceItemDecoration(
+                    MARGIN_SPACING_VALUE_34
+                )
+            )
+            rvBasketContent.adapter = adapter
 
-        val itemTouchHelper = ItemTouchHelper(SwipeHelper(this) {
-            if (it is BasketAdapter.ProductViewHolder)
-                presenter.removeItemClicked(it.product)
-        })
-        itemTouchHelper.attachToRecyclerView(rv_basket_content)
+            val itemTouchHelper = ItemTouchHelper(SwipeHelper(this@BasketActivity) {
+                if (it is BasketAdapter.ProductViewHolder)
+                    presenter.removeItemClicked(it.product)
+            })
+            itemTouchHelper.attachToRecyclerView(rvBasketContent)
+        }
     }
 
     override fun updateBasket(basket: List<BasketDish>, personsQuantity: Int) {
-        binding.rvBasketContent?.layoutManager =
-            LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         adapter.setProducts(
             basket,
             personsQuantity,
@@ -101,7 +101,6 @@ class BasketActivity : BaseActivity(), BasketContract.View, PayClickCallback {
             { dish, unwantedQuantity -> presenter.minusClick(dish, unwantedQuantity) },
             { presenter.personsQuantityEdited(it) }
         )
-        binding.rvBasketContent?.adapter = adapter
     }
 
     override fun showClearBasketDialog() {

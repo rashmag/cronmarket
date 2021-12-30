@@ -2,6 +2,7 @@
     <string name="app_name">CronMarket</string>
 
     <string name="common_gps_disabled">Похоже, что GPS выключен. Вы хотите включить GPS</string>
+    <string name="common_gps_enabled">Необходимо включить GPS</string>
     <string name="common_yes">Да</string>
     <string name="common_no">Нет</string>
     <string name="common_user_not_authorized">Пользователь не авторизован</string>
@@ -76,8 +77,9 @@
     <string name="repeat_sent_code_title">Выслать код повторно можно через %1$d сек</string>
     <string name="enter_phone_repeat_send_code_title"><u>Выслать код повторно</u></string>
 
-    <string name="partners_activity_min_order_template">заказ от %1$d \u20BD</string>
-    <string name="partners_activity_free_delivery_template">от %1$d \u20BD бесплатно</string>
+    <string name="partners_activity_min_order_template">заказ от %1$d&#160;\u20BD</string>
+    <string name="partners_activity_free_delivery_template">от %1$d \u20BD&#160;бесплатно</string>
+    <string name="partners_activity_free_delivery_template_small_screen">от %1$d \u20BD\nбесплатно</string>
     <string name="partners_activity_close_title">Закрыть</string>
 
 
@@ -118,6 +120,9 @@
     <string name="ordering_pay_status_done_details_title">Спасибо! Мы доставим вам заказ в ближайшее время.</string>
     <string name="ordering_pay_status_error">Ваш платёж не прошёл.</string>
     <string name="ordering_pay_status_error_detail_title">Не удалось произвести платёж. Попробуйте снова, или обратитесь в <u>техподдержку</u>.</string>
+
+    <string name="version_update_title">У нас появилось много\nнового и интересного!\nПожалуйста, обновите приложение.</string>
+    <string name="attention_title">Внимание</string>
 
 
 

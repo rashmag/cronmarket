@@ -66,8 +66,17 @@ class MainPresenter @Inject constructor(
                         view?.shouldLastBasketSessionBeVisible(false)
                         view?.hideContinueLastSession()
                     } else{
+                        if (dataManager.readCurrentCityId() == EMPTY_BECAUSE_FIRST_OPEN){
+                            dataManager.writeCurrentCityId(dataManager.readChosenCity().id)
+                        }
+
+                        if (dataManager.readChosenCity().id == dataManager.readCurrentCityId()){
+                            view?.showContinueLastSession()
+                        }else{
+                            view?.hideContinueLastSession()
+                        }
+
                         view?.shouldLastBasketSessionBeVisible(true)
-                        view?.showContinueLastSession()
                         view?.showBasketAmount((basket?.amount?.toInt()).toString())
                     }
 
@@ -118,8 +127,7 @@ class MainPresenter @Inject constructor(
 
     private suspend fun defineAddress() {
         val address = dataManager.readBuildingAddress()
-        if (address.isNullOrBlank().not())
-            view?.showSavedAddress(address!!)
+        view?.showSavedAddress(address.orEmpty())
     }
 
     private suspend fun loadMarketCategories(cityId: String) = withErrorsHandle(
@@ -245,5 +253,7 @@ class MainPresenter @Inject constructor(
 
     private companion object{
         private const val EMPTY_BASKET_COUNT = 0
+
+        private const val EMPTY_BECAUSE_FIRST_OPEN = ""
     }
 }

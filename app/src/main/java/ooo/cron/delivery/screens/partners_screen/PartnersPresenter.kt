@@ -38,6 +38,12 @@ class PartnersPresenter @Inject constructor(
         }
     }
 
+    suspend fun checkCityId() : Boolean {
+        if (dataManager.readCurrentCityId() == EMPTY){
+            dataManager.writeCurrentCityId(dataManager.readChosenCity().id)
+        }
+        return dataManager.readChosenCity().id == dataManager.readCurrentCityId()
+    }
 
     private fun Response<PartnersInfoRes>.handlePartnersInfo() {
         if (isSuccessful) {
@@ -186,9 +192,9 @@ class PartnersPresenter @Inject constructor(
                 return@launch
             }
 
-            if (basket != null &&
-                basket!!.partnerId != DataManager.EMPTY_UUID &&
-                basket!!.partnerId != partner.id
+            if (basket != null && basket?.amount != EMPTY_BASKET &&
+                basket?.partnerId != DataManager.EMPTY_UUID &&
+                basket?.partnerId != partner.id
             ) {
                 view?.showClearBasketDialog(
                     {
@@ -204,6 +210,7 @@ class PartnersPresenter @Inject constructor(
                             basketContent = deserializeDishes()
                             mergeBasketIntoProducts()
                             view?.showPartnerProducts(productCategoriesModel)
+                            dataManager.writeCurrentCityId(dataManager.readChosenCity().id)
                             view?.updateBasketPreview(
                                 basketContent?.sumBy { it.quantity } ?: 0,
                                 String.format("%.2f", basket!!.amount)
@@ -216,7 +223,6 @@ class PartnersPresenter @Inject constructor(
             }
 
             increaseProductInBasket(product, additives, quantity)
-
         }
     }
 
@@ -301,7 +307,7 @@ class PartnersPresenter @Inject constructor(
         }
     }
 
-    private fun Response<Basket>.handleBasket() {
+    private suspend fun Response<Basket>.handleBasket() {
         if (isSuccessful && body() != null &&
             body()!!.id != DataManager.EMPTY_UUID
         ) {
@@ -338,4 +344,9 @@ class PartnersPresenter @Inject constructor(
     private fun deserializeDishes() =
         Gson().fromJson(basket!!.content, Array<BasketDish>::class.java)
             .asList()
+
+    private companion object{
+        private const val EMPTY_BASKET = 0.0
+        private const val EMPTY = ""
+    }
 }

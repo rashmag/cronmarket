@@ -23,6 +23,8 @@ class FirstAddressSelectionPresenter @Inject constructor(
     private var cities: List<City> = listOf()
     private var selectedCity: City? = null
 
+    var lastSelectedCity = ""
+
     private var suggestedAddresses: List<SuggestAddress> = listOf()
 
     override fun onStartView() {
@@ -38,7 +40,16 @@ class FirstAddressSelectionPresenter @Inject constructor(
         if (selectedCity != cities[pos]) {
             selectedCity = cities[pos]
             suggestedAddresses = listOf()
-            view?.clearAddressField()
+
+            if (selectedCity?.city != lastSelectedCity) {
+                view?.clearAddressField()
+            }
+        }
+    }
+
+    override fun writeUserAddress(address: String) {
+        addressScope.launch {
+            dataManager.writeBuildingAddress(address)
         }
     }
 
@@ -146,10 +157,12 @@ class FirstAddressSelectionPresenter @Inject constructor(
         }
     }
 
-    private fun Response<List<City>>.handleCities() {
+    private suspend fun Response<List<City>>.handleCities() {
         if (isSuccessful && body().isNullOrEmpty().not()) {
             cities = body()!!
             view?.showCities(cities)
+            view?.showUserSavedAddress(dataManager.readBuildingAddress().orEmpty())
+            lastSelectedCity = dataManager.readChosenCity().city
             view?.removeCitiesProgress()
             view?.showStartShopping()
         } else
@@ -180,6 +193,11 @@ class FirstAddressSelectionPresenter @Inject constructor(
             view?.showAnyErrorScreen()
         }
     }
+
+    override suspend fun checkingFirstLaunch() = dataManager.readChosenCity().city != ""
+
+    override fun writeCurrentCityPosition(position: Int) = dataManager.writeCurrentCityPosition(position)
+    override fun getCurrentCityPosition() = dataManager.readCurrentCityPosition()
 
     private fun disableInteractiveViews() = view?.let {
         it.disableCitySelection()

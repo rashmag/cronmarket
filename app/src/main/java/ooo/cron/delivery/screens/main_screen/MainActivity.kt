@@ -3,6 +3,7 @@ package ooo.cron.delivery.screens.main_screen
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
@@ -28,6 +29,7 @@ import ooo.cron.delivery.screens.vacancies_screen.VacanciesFragment
 import ooo.cron.delivery.utils.dipToPixels
 import ooo.cron.delivery.utils.extensions.startBottomAnimate
 import javax.inject.Inject
+import ooo.cron.delivery.utils.enums.ReturningToScreenEnum
 import ooo.cron.delivery.utils.extensions.makeGone
 import ooo.cron.delivery.utils.extensions.makeVisible
 
@@ -91,8 +93,15 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
     override fun showSavedAddress(address: String) {
-        binding.tvMainUserAddress.setBackgroundResource(R.drawable.bg_main_address_correct)
-        binding.tvMainUserAddress.text = address
+            binding.tvMainUserAddress.run {
+                if(address.isNotEmpty()) {
+                    setBackgroundResource(R.drawable.bg_main_address_correct)
+                    text = address
+                }else{
+                    setBackgroundResource(R.drawable.bg_main_address_incorrect)
+                    text = getString(R.string.main_address_incorrect)
+                }
+        }
     }
 
     override fun removeMarketCategoriesProgress() =
@@ -205,7 +214,7 @@ class MainActivity : BaseActivity(), MainContract.View {
 
     override fun navigateFirstAddressSelection() {
         val intent = Intent(this, FirstAddressSelectionActivity::class.java)
-        intent.putExtra(FLAG, true)
+        intent.putExtra(RETURNING_SCREEN_KEY, ReturningToScreenEnum.FROM_MAIN as? Parcelable)
         startActivity(intent)
     }
 
@@ -358,27 +367,29 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
     private fun setToolbarTitleVisibility(isVisible: Boolean, title: String?) {
-        val visibility = if (isVisible) View.GONE else View.VISIBLE
-        binding.abMain.visibility = visibility
-        //TODO("Change View.GONE on visibility")
-        binding.ivMainSearch.visibility = View.GONE
-        binding.tvMainUserAddress.visibility = visibility
-        binding.vgMainContinueLastSession.visibility =
-            if (shouldLastBasketSessionBeVisible && !isVisible)
-                View.VISIBLE
-            else
-                View.GONE
+        with(binding) {
+            val visibility = if (isVisible) View.GONE else View.VISIBLE
+            abMain.visibility = visibility
+            //TODO("Change View.GONE on visibility")
+            ivMainSearch.visibility = View.GONE
+            tvMainUserAddress.visibility = visibility
+            vgMainContinueLastSession.visibility =
+                if (shouldLastBasketSessionBeVisible && !isVisible)
+                    View.VISIBLE
+                else
+                    View.GONE
 
-        if (isVisible) {
-            val params = binding.vgMainContent.layoutParams as CoordinatorLayout.LayoutParams
-            params.behavior = null
-            binding.vgMainContent.layoutParams = params
+            if (isVisible) {
+                val params = vgMainContent.layoutParams as CoordinatorLayout.LayoutParams
+                params.behavior = null
+                vgMainContent.layoutParams = params
+            }
+            tvMainTitle.text = title
+            tvMainTitle.visibility = if (isVisible) View.VISIBLE else View.GONE
         }
-        binding.tvMainTitle.text = title
-        binding.tvMainTitle.visibility = if (isVisible) View.VISIBLE else View.GONE
     }
 
     companion object {
-        const val FLAG = "flag"
+        const val RETURNING_SCREEN_KEY = "RETURNING_SCREEN_KEY"
     }
 }

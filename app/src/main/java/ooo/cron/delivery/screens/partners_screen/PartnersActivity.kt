@@ -2,6 +2,7 @@ package ooo.cron.delivery.screens.partners_screen
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Parcelable
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -35,6 +36,7 @@ import ooo.cron.delivery.screens.basket_screen.BasketActivity
 import ooo.cron.delivery.screens.first_address_selection_screen.FirstAddressSelectionActivity
 import ooo.cron.delivery.utils.CustomLayoutManager
 import ooo.cron.delivery.utils.ProductBottomSheetDialog
+import ooo.cron.delivery.utils.enums.ReturningToScreenEnum
 import ooo.cron.delivery.utils.extensions.startBottomAnimate
 
 
@@ -51,9 +53,9 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
     lateinit var binding: ActivityPartnersBinding
 
     private lateinit var partnerId: String
-    private var isOpen: Boolean ?= null
-    private var openHours: Int ?= null
-    private var openMinutes: Int ?= null
+    private var isOpen: Boolean? = null
+    private var openHours: Int? = null
+    private var openMinutes: Int? = null
 
     private var nestedScrollViewConfigured = false
 
@@ -85,7 +87,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
                 scrollRange = super.scrollVerticallyBy(dy, recycler, state)
                 overScroll = dy - scrollRange
 
-                if(overScroll < 0) binding.scrolledErrorContainer.visibility = View.GONE
+                if (overScroll < 0) binding.scrolledErrorContainer.visibility = View.GONE
                 else showBottomCloseShopError()
 
                 return scrollRange
@@ -179,17 +181,31 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
                     else
                         "$rating ($feedbackCount)"
 
-                tvFreeDelivery.text =
-                    if (minAmountDelivery == null)
-                        String.format(
-                            getString(R.string.partners_activity_min_order_template),
-                            minAmountOrder
-                        )
-                    else
-                        String.format(
-                            getString(R.string.partners_activity_free_delivery_template),
-                            minAmountDelivery
-                        )
+                val density = resources.displayMetrics.density.toDouble()
+                when {
+                    // standard screen
+                    density in 2.5..4.0 -> {
+                        tvFreeDelivery.text =
+                            String.format(
+                                getString(R.string.partners_activity_free_delivery_template),
+                                minAmountDelivery
+                            )
+                    }
+
+                    // small screen
+                    density >= 2.0 && density < 2.5 -> {
+                        tvFreeDelivery.text =
+                            String.format(
+                                getString(R.string.partners_activity_free_delivery_template_small_screen),
+                                minAmountDelivery
+                            )
+                    }
+                }
+
+                tvMinOrderAmount.text = String.format(
+                    getString(R.string.partners_activity_min_order_template),
+                    minAmountOrder
+                )
 
                 if (partnerCardImg != null) {
                     Glide.with(binding.root)
@@ -313,7 +329,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
     ) {
 
         productsLayoutManager.setScrollEnabled(true)
-        with(binding){
+        with(binding) {
             vgMainView.removeView(vgPartnersActivityProgress.root)
             productsAdapter.submitList(productCategoriesModel)
             productsAdapter.setSectionData(productCategoriesModel)
@@ -327,18 +343,24 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
         )
     }
 
-    override fun updateBasketPreview(quantity: Int, basketPrice: String) {
-        binding.btnPartnerBasketPrice.text = getString(R.string.partner_basket_price, basketPrice)
+    override suspend fun updateBasketPreview(quantity: Int, basketPrice: String) {
+        with(binding) {
+            btnPartnerBasketPrice.text = getString(R.string.partner_basket_price, basketPrice)
 
-        binding.vgPartnerBasket.run {
-            startBottomAnimate(quantity > 0 && isOpen == true)
-        }
+            vgPartnerBasket.run {
+                startBottomAnimate(
+                    quantity > 0 &&
+                            isOpen == true &&
+                            presenter.checkCityId()
+                )
+            }
 
-        with(
-            View.OnClickListener { presenter.onBasketClicked() }
-        ) {
-            binding.vgPartnerBasket.setOnClickListener(this)
-            binding.btnPartnerBasketPrice.setOnClickListener(this)
+            with(
+                View.OnClickListener { presenter.onBasketClicked() }
+            ) {
+                vgPartnerBasket.setOnClickListener(this)
+                btnPartnerBasketPrice.setOnClickListener(this)
+            }
         }
     }
 
@@ -350,7 +372,10 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
     }
 
     override fun showChangeAddressScreen() {
-        startActivity(Intent(this, FirstAddressSelectionActivity::class.java))
+        startActivity(
+            Intent(this, FirstAddressSelectionActivity::class.java)
+                .putExtra(RETURNING_SCREEN_KEY, ReturningToScreenEnum.FROM_PARTNERS as? Parcelable)
+        )
     }
 
     override fun showProductInfo(product: PartnerProductsRes) {
@@ -432,9 +457,9 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
         })
     }
 
-    private fun showCloseShopError(){
-        val hours = if((openHours?.div(10) ?: 0) > 0) openHours else "0$openHours"
-        val minutes = if((openMinutes?.div(10) ?: 0) > 0) openMinutes else "0$openMinutes"
+    private fun showCloseShopError() {
+        val hours = if ((openHours?.div(10) ?: 0) > 0) openHours else "0$openHours"
+        val minutes = if ((openMinutes?.div(10) ?: 0) > 0) openMinutes else "0$openMinutes"
 
         binding.tvCloseShopError.isVisible = isOpen == false
         binding.tvCloseShopError.text = binding.root.context.getString(
@@ -443,9 +468,9 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
         )
     }
 
-    private fun showBottomCloseShopError(){
-        val hours = if((openHours?.div(10) ?: 0) > 0) openHours else "0$openHours"
-        val minutes = if((openMinutes?.div(10) ?: 0) > 0) openMinutes else "0$openMinutes"
+    private fun showBottomCloseShopError() {
+        val hours = if ((openHours?.div(10) ?: 0) > 0) openHours else "0$openHours"
+        val minutes = if ((openMinutes?.div(10) ?: 0) > 0) openMinutes else "0$openMinutes"
 
         binding.scrolledErrorContainer.startBottomAnimate(isOpen == false)
         binding.tvScrollShopError.text = binding.root.context.getString(
@@ -466,6 +491,8 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
         const val EXTRA_IS_OPEN = "is_open"
         const val EXTRA_OPEN_HOURS = "open_hours"
         const val EXTRA_OPEN_MINUTES = "open_minutes"
+
+        const val RETURNING_SCREEN_KEY = "RETURNING_SCREEN_KEY"
 
         private const val NUMBER_SERVINGS_ON_BOTTOM_SHEET = 1
         private const val EMPTY_QUANTITY = 0

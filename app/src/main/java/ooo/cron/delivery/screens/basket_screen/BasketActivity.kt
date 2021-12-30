@@ -75,21 +75,24 @@ class BasketActivity : BaseActivity(), BasketContract.View {
     }
 
     private fun initAdapter(){
-        rv_basket_content.addItemDecoration(
-            SpaceItemDecoration(
-                MARGIN_SPACING_VALUE_34
-            ))
+        with(binding) {
+            rvBasketContent.layoutManager = LinearLayoutManager(this@BasketActivity, RecyclerView.VERTICAL, false)
+            rvBasketContent.addItemDecoration(
+                SpaceItemDecoration(
+                    MARGIN_SPACING_VALUE_34
+                )
+            )
+            rvBasketContent.adapter = adapter
 
-        val itemTouchHelper = ItemTouchHelper(SwipeHelper(this) {
-            if (it is BasketAdapter.ProductViewHolder)
-                presenter.removeItemClicked(it.product)
-        })
-        itemTouchHelper.attachToRecyclerView(rv_basket_content)
+            val itemTouchHelper = ItemTouchHelper(SwipeHelper(this@BasketActivity) {
+                if (it is BasketAdapter.ProductViewHolder)
+                    presenter.removeItemClicked(it.product)
+            })
+            itemTouchHelper.attachToRecyclerView(rvBasketContent)
+        }
     }
 
     override fun updateBasket(basket: List<BasketDish>, personsQuantity: Int) {
-        binding.rvBasketContent.layoutManager =
-            LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         adapter.setProducts(
             basket,
             personsQuantity,
@@ -97,7 +100,6 @@ class BasketActivity : BaseActivity(), BasketContract.View {
             { dish, unwantedQuantity -> presenter.minusClick(dish, unwantedQuantity) },
             { presenter.personsQuantityEdited(it) }
         )
-        binding.rvBasketContent.adapter = adapter
     }
 
     override fun showClearBasketDialog() {

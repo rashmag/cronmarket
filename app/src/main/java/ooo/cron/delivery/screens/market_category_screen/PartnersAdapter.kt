@@ -133,6 +133,7 @@ class PartnersAdapter(private val onClick: (partner: Partner) -> Unit) :
             Glide.with(binding.root)
                 .load(partner.mainWinImg)
                 .centerCrop()
+                .placeholder(R.drawable.placeholder_main)
                 .into(binding.ivMarketCategoryPartner)
         }
 

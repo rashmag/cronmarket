@@ -11,6 +11,7 @@ import ooo.cron.delivery.screens.base_mvp.BaseMvpPresenter
 import retrofit2.Response
 import java.util.*
 import javax.inject.Inject
+import ooo.cron.delivery.utils.extensions.orZero
 
 /*
  * Created by Muhammad on 05.05.2021
@@ -38,11 +39,8 @@ class PartnersPresenter @Inject constructor(
         }
     }
 
-    suspend fun checkCityId() : Boolean {
-        if (dataManager.readCurrentCityId() == EMPTY){
-            dataManager.writeCurrentCityId(dataManager.readChosenCity().id)
-        }
-        return dataManager.readChosenCity().id == dataManager.readCurrentCityId()
+    private fun checkPartnerId(): Boolean{
+        return dataManager.readPartnerId() != view?.getPartnerId()
     }
 
     private fun Response<PartnersInfoRes>.handlePartnersInfo() {
@@ -92,6 +90,7 @@ class PartnersPresenter @Inject constructor(
                     view?.updateBasketPreview(basketContent?.sumBy { it.quantity } ?: 0,
                         String.format("%.2f", basket?.amount ?: 0.00))
 
+                    view?.showOrHideBtnBasket(checkPartnerId().not())
                 },
                 { view?.showConnectionErrorScreen() },
                 { view?.showAnyErrorScreen() }
@@ -108,27 +107,31 @@ class PartnersPresenter @Inject constructor(
     }
 
     override fun onBasketClicked() {
-        partner.schedule.let { schedule ->
-            val openTime =
-                if (schedule.begin.isNotEmpty())
-                    schedule.begin.split(':')
-                        .map { it.toInt() }
-                else
-                    listOf(0, 0, 0)
+        if (basket?.amount!! < view?.getMinOrderAmount().orZero()) {
+            view?.showOrderFromDialog()
+        } else {
+            partner.schedule.let { schedule ->
+                val openTime =
+                    if (schedule.begin.isNotEmpty())
+                        schedule.begin.split(':')
+                            .map { it.toInt() }
+                    else
+                        listOf(0, 0, 0)
 
-            val closeTime =
-                if (schedule.end.isNotEmpty())
-                    schedule.end.split(':')
-                        .map { it.toInt() }
-                else listOf(23, 59, 59)
+                val closeTime =
+                    if (schedule.end.isNotEmpty())
+                        schedule.end.split(':')
+                            .map { it.toInt() }
+                    else listOf(23, 59, 59)
 
-            view?.navigateBasket(
-                openTime[0],
-                openTime[1],
-                closeTime[0],
-                closeTime[1],
-                basket
-            )
+                view?.navigateBasket(
+                    openTime[0],
+                    openTime[1],
+                    closeTime[0],
+                    closeTime[1],
+                    basket
+                )
+            }
         }
     }
 
@@ -243,6 +246,8 @@ class PartnersPresenter @Inject constructor(
                 return@forEach
             }
         }
+
+        dataManager.writePartnerId(partner.id)
 
         val addingProduct = BasketDish(
             dishId,

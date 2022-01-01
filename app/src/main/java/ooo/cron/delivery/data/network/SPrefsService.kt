@@ -113,6 +113,14 @@ class SPrefsService @Inject constructor(
             .remove(REFRESH_TOKEN)
             .commit()
 
+    fun writePartnerId(id: String){
+        sharedPreferences.edit()
+            .putString(PARTNER_ID, id)
+            .commit()
+    }
+
+    fun readPartnerId() = sharedPreferences.getString(PARTNER_ID, "")
+
     companion object {
         const val EMPTY_UUID = "00000000-0000-0000-0000-000000000000"
 
@@ -138,5 +146,7 @@ class SPrefsService @Inject constructor(
         const val MARKET_CATEGORY_ID = "market_category_id"
         const val MARKET_CATEGORY_NAME = "market_category_name"
         const val MARKET_CATEGORY_IMAGE = "market_category_image"
+
+        const val PARTNER_ID = "PARTNER_ID"
     }
 }

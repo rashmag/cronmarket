@@ -34,3 +34,5 @@ internal fun View.makeVisible() {
 internal fun View.makeInvisible() {
     if (!isInvisible) visibility = View.INVISIBLE
 }
+
+fun Int?.orZero(): Int = this ?: 0

@@ -65,6 +65,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
 
     var scrollRange = -1
     var overScroll = -1
+    private var minOrderAmount = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         injectDependencies()
@@ -207,6 +208,8 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
                     minAmountOrder
                 )
 
+                minOrderAmount = minAmountOrder
+
                 if (partnerCardImg != null) {
                     Glide.with(binding.root)
                         .load(partnerInfo.partnerCardImg)
@@ -343,6 +346,12 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
         )
     }
 
+    override fun showOrHideBtnBasket(state: Boolean) {
+        binding.vgPartnerBasket.startBottomAnimate(state)
+    }
+
+    override fun getMinOrderAmount() = minOrderAmount
+
     override suspend fun updateBasketPreview(quantity: Int, basketPrice: String) {
         with(binding) {
             btnPartnerBasketPrice.text = getString(R.string.partner_basket_price, basketPrice)
@@ -350,8 +359,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
             vgPartnerBasket.run {
                 startBottomAnimate(
                     quantity > 0 &&
-                            isOpen == true &&
-                            presenter.checkCityId()
+                            isOpen == true
                 )
             }
 
@@ -376,6 +384,12 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
             Intent(this, FirstAddressSelectionActivity::class.java)
                 .putExtra(RETURNING_SCREEN_KEY, ReturningToScreenEnum.FROM_PARTNERS as? Parcelable)
         )
+    }
+
+    override fun showOrderFromDialog() {
+        OrderFromDialog(
+            price = minOrderAmount
+        ).show(supportFragmentManager, OrderFromDialog::class.java.simpleName)
     }
 
     override fun showProductInfo(product: PartnerProductsRes) {

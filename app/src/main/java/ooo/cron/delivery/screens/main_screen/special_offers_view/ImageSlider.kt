@@ -166,7 +166,7 @@ class ImageSlider @JvmOverloads constructor(
             override fun run() {
                 handler.post(update)
             }
-        }, delay, period)
+        }, delay, IMAGE_SLIDER_SCROLL_TIME)
     }
 
     /**
@@ -216,4 +216,7 @@ class ImageSlider @JvmOverloads constructor(
         }
     }
 
+    private companion object{
+        private const val IMAGE_SLIDER_SCROLL_TIME = 3000L
+    }
 }

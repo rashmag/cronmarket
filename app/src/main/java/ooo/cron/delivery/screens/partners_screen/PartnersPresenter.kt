@@ -39,7 +39,7 @@ class PartnersPresenter @Inject constructor(
         }
     }
 
-    private fun checkPartnerId(): Boolean{
+    fun checkPartnerId(): Boolean{
         return dataManager.readPartnerId() != view?.getPartnerId()
     }
 
@@ -89,8 +89,6 @@ class PartnersPresenter @Inject constructor(
                     view?.showPartnerProducts(productCategoriesModel)
                     view?.updateBasketPreview(basketContent?.sumBy { it.quantity } ?: 0,
                         String.format("%.2f", basket?.amount ?: 0.00))
-
-                    view?.showOrHideBtnBasket(checkPartnerId().not())
                 },
                 { view?.showConnectionErrorScreen() },
                 { view?.showAnyErrorScreen() }

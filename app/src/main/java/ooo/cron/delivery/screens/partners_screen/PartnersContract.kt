@@ -30,8 +30,6 @@ interface PartnersContract {
 
         fun showOrderFromDialog()
 
-        fun showOrHideBtnBasket(state: Boolean)
-
         fun getMinOrderAmount(): Int
 
         fun showProductInfo(product: PartnerProductsRes)

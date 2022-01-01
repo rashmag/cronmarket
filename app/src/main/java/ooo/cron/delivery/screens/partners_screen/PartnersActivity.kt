@@ -346,10 +346,6 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
         )
     }
 
-    override fun showOrHideBtnBasket(state: Boolean) {
-        binding.vgPartnerBasket.startBottomAnimate(state)
-    }
-
     override fun getMinOrderAmount() = minOrderAmount
 
     override suspend fun updateBasketPreview(quantity: Int, basketPrice: String) {
@@ -359,7 +355,8 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
             vgPartnerBasket.run {
                 startBottomAnimate(
                     quantity > 0 &&
-                            isOpen == true
+                            isOpen == true &&
+                            presenter.checkPartnerId().not()
                 )
             }
 

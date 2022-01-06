@@ -53,7 +53,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
     lateinit var binding: ActivityPartnersBinding
 
     private lateinit var partnerId: String
-    private var isOpen: Boolean? = null
+    private var isOpen = false
     private var openHours: Int? = null
     private var openMinutes: Int? = null
 
@@ -108,7 +108,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
     }
 
     private fun setImageSize() {
-        if (isOpen == false) {
+        if (!isOpen) {
 
             val dimensionInDp =
                 TypedValue.applyDimension(
@@ -123,7 +123,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
     }
 
     private fun initPartnerRecyclerView() {
-        productsAdapter = PartnerProductAdapter(isOpen == true)
+        productsAdapter = PartnerProductAdapter(isOpen)
         productsAdapter.setProductClickListener(this)
         binding.rvProduct.apply {
             layoutManager = productsLayoutManager
@@ -355,7 +355,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
             vgPartnerBasket.run {
                 startBottomAnimate(
                     quantity > 0 &&
-                            isOpen == true &&
+                            isOpen &&
                             presenter.checkPartnerId().not()
                 )
             }

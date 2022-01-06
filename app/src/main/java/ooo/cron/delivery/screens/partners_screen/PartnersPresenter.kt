@@ -105,7 +105,7 @@ class PartnersPresenter @Inject constructor(
     }
 
     override fun onBasketClicked() {
-        if (basket?.amount!! < view?.getMinOrderAmount().orZero()) {
+        if ((basket?.amount ?: EMPTY_BASKET) < view?.getMinOrderAmount().orZero()) {
             view?.showOrderFromDialog()
         } else {
             partner.schedule.let { schedule ->

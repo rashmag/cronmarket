@@ -9,4 +9,4 @@ import ooo.cron.delivery.data.network.models.City
  * Created by Ramazan Gadzhikadiev on 13.04.2021.
  */
 class CitiesAdapter(context: Context) :
-    ArrayAdapter<City>(context, R.layout.item_first_address_selection_city, mutableListOf())
+    ArrayAdapter<String>(context, R.layout.item_first_address_selection_city, mutableListOf())

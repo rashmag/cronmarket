@@ -19,6 +19,7 @@ interface FirstAddressSelectionContract {
 
         fun fillAddressField(address: String)
         fun getAddress(): String
+        fun setFoundAddress(suggestAddresses: String)
         fun showAddressesPopup(suggestAddresses: List<SuggestAddress>)
         fun disableAddressPopup()
         fun clearAddressField()
@@ -52,6 +53,8 @@ interface FirstAddressSelectionContract {
         fun showConnectionErrorScreen()
 
         fun showUserSavedAddress(address: String)
+
+        fun setFoundCity(city: String)
     }
 
     interface Presenter: MvpPresenter<View> {

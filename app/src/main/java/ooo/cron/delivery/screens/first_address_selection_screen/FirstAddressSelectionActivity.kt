@@ -22,11 +22,11 @@ import androidx.core.widget.doAfterTextChanged
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.City
-import ooo.cron.delivery.data.network.models.SuggestAddress
 import ooo.cron.delivery.databinding.ActivityFirstAddressSelectionBinding
 import ooo.cron.delivery.screens.BaseActivity
 import ooo.cron.delivery.screens.main_screen.MainActivity
 import javax.inject.Inject
+import ooo.cron.delivery.data.network.models.SuggestAddress
 import ooo.cron.delivery.utils.enums.ReturningToScreenEnum
 
 /**
@@ -58,6 +58,8 @@ class FirstAddressSelectionActivity :
     private var updateAddressesPopupTimer: CountDownTimer? = null
 
     private var returningScreen: ReturningToScreenEnum ?= null
+
+    var citiesList = arrayListOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         injectDependencies()
@@ -128,6 +130,10 @@ class FirstAddressSelectionActivity :
 
     override fun getAddress(): String =
         binding.etFirstAddressSelectionAddress.text.toString()
+
+    override fun setFoundAddress(suggestAddresses: String) {
+        binding.etFirstAddressSelectionAddress.setText(suggestAddresses)
+    }
 
     override fun showAddressesPopup(suggestAddresses: List<SuggestAddress>) {
         addressesPopupWindow.setAdapter(
@@ -360,6 +366,16 @@ class FirstAddressSelectionActivity :
             }
         }
 
+    override fun setFoundCity(city: String) {
+        val foundCityList = arrayListOf<String>(city)
+
+        citiesList.forEachIndexed { i, value ->
+            if (foundCityList[0] == value) {
+                binding.spinnerFirstAddressSelectionCity.setSelection(i)
+            }
+        }
+    }
+
     private suspend fun updateCities(cities: List<City>) {
         with(binding) {
             (spinnerFirstAddressSelectionCity.adapter as CitiesAdapter).run {
@@ -368,7 +384,8 @@ class FirstAddressSelectionActivity :
                     spinnerFirstAddressSelectionCity.setSelection(presenter.getCurrentCityPosition())
                 }
                 cities.forEachIndexed { index, city ->
-                    insert(city, index)
+                    insert(city.city, index)
+                    citiesList.add(city.city)
                 }
                 notifyDataSetChanged()
             }

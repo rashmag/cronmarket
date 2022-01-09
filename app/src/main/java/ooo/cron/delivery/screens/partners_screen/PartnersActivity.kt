@@ -1,5 +1,7 @@
 package ooo.cron.delivery.screens.partners_screen
 
+import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
@@ -383,10 +385,17 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
         )
     }
 
+    @SuppressLint("StringFormatMatches")
     override fun showOrderFromDialog() {
-        OrderFromDialog(
-            price = minOrderAmount
-        ).show(supportFragmentManager, OrderFromDialog::class.java.simpleName)
+        AlertDialog.Builder(this)
+            .setView(R.layout.order_from_dialog)
+            .setMessage(getString(R.string.partners_activity_dialog_min_price_title, minOrderAmount))
+            .setCancelable(false)
+            .setPositiveButton(R.string.partners_activity_dialog_btn_ok_title) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .create()
+            .show()
     }
 
     override fun showProductInfo(product: PartnerProductsRes) {

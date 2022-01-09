@@ -171,10 +171,9 @@ class FirstAddressSelectionPresenter @Inject constructor(
 
     // Вставка предложенного города, при поиске своего местоположения
     private suspend fun Response<List<SuggestAddress>>.handleAddresses() {
-        if (isSuccessful && body() != null) {
-            if (body()!!.isNotEmpty()) {
-                suggestedAddresses = body()!!.weedOutNullAddresses()
-                if (suggestedAddresses.isNotEmpty()) {
+        if (isSuccessful && body().isNullOrEmpty().not()) {
+                suggestedAddresses = body()?.weedOutNullAddresses() ?: listOf()
+                if (suggestedAddresses.isEmpty().not()) {
 
                     suggestedAddresses.forEach {
                         view?.setFoundCity(it.city)
@@ -184,29 +183,23 @@ class FirstAddressSelectionPresenter @Inject constructor(
                 } else {
                     view?.showWarningMessage()
                 }
-            } else
-                view?.showLocationNotFoundMessage()
         } else {
-            view?.showAnyErrorScreen()
+            view?.showLocationNotFoundMessage()
         }
     }
 
     // Отображение предложенных адресов, при вводе текста
     private fun Response<List<SuggestAddress>>.handleAddressesWhenTyping() {
-        if (isSuccessful && body() != null) {
-            if (body()!!.isNotEmpty()) {
-                suggestedAddresses = body()!!.weedOutNullAddresses()
+        if (isSuccessful && body().isNullOrEmpty().not()) {
+                suggestedAddresses = body()?.weedOutNullAddresses() ?: listOf()
 
-                if (suggestedAddresses.isNotEmpty()) {
+                if (suggestedAddresses.isEmpty().not()) {
                     view?.showAddressesPopup(suggestedAddresses)
                 }else{
                     view?.showWarningMessage()
                 }
             }else
                 view?.showLocationNotFoundMessage()
-        } else {
-            view?.showAnyErrorScreen()
-        }
 
         view?.let {
             if (it.getAddress().isValidAddress()) {

@@ -370,7 +370,7 @@ class FirstAddressSelectionActivity :
         val foundCityList = arrayListOf<String>(city)
 
         citiesList.forEachIndexed { i, value ->
-            if (foundCityList[0] == value) {
+            if (foundCityList.firstOrNull() == value) {
                 binding.spinnerFirstAddressSelectionCity.setSelection(i)
             }
         }

@@ -18,6 +18,7 @@ import com.afollestad.materialdialogs.customview.getCustomView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
 import ooo.cron.delivery.App
+import ooo.cron.delivery.BuildConfig
 import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.Basket
 import ooo.cron.delivery.databinding.DialogOrderBinding
@@ -62,6 +63,7 @@ class OrderBottomDialog() : BottomSheetDialogFragment() {
         return binding.root
     }
 
+    //TODO аншелвить изменения и показать результат в экране
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (resultCode) {
             Activity.RESULT_OK -> {
@@ -80,8 +82,8 @@ class OrderBottomDialog() : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        AcquiringSdk.isDeveloperMode = true
-        AcquiringSdk.isDebug = true
+        AcquiringSdk.isDeveloperMode = BuildConfig.DEBUG
+        AcquiringSdk.isDebug = BuildConfig.DEBUG
         viewModel.onCreateView()
         viewModel.basketState.observe(viewLifecycleOwner, { basketState ->
             when (basketState) {
@@ -96,41 +98,25 @@ class OrderBottomDialog() : BottomSheetDialogFragment() {
         viewModel.callingDialog.observe(viewLifecycleOwner, {
             showInformDialog(R.string.order_no_payment_inform_message)
         })
+        //TODO радиогруппа с чек айдишниками
         viewModel.payVariantState.observe(viewLifecycleOwner, {
             when (it) {
                 is CardVariant -> {
-                    binding.bankCardPayment.isSelected = true
-                    binding.cashPayment.isSelected = false
-                    binding.gpayPayment.isSelected = false
                     binding.btnOrder.setBackgroundResource(R.drawable.bg_btn_order)
                     binding.btnOrder.text = getString(R.string.order_cash_payment)
                 }
                 is CashVariant -> {
-                    binding.bankCardPayment.isSelected = false
-                    binding.cashPayment.isSelected = true
-                    binding.gpayPayment.isSelected = false
                     binding.btnOrder.setBackgroundResource(R.drawable.bg_btn_order)
                     binding.btnOrder.text = getString(R.string.order_cash_payment)
                 }
                 is GPayVariant -> {
-                    binding.bankCardPayment.isSelected = false
-                    binding.cashPayment.isSelected = false
-                    binding.gpayPayment.isSelected = true
                     binding.btnOrder.setBackgroundResource(R.drawable.bg_btn_payment_gpay_selected)
                     binding.btnOrder.text = getString(R.string.order_cash_payment)
                 }
             }
         })
         viewModel.commentTextLiveData.observe(viewLifecycleOwner) {
-            with(binding.etComments) {
-                text = if (it.isNotBlank()) it else getString(R.string.order_comment)
-                val bg =
-                    if (it.isNotBlank()) R.drawable.bg_true_light else R.drawable.bg_main_address_correct
-                setBackgroundResource(bg)
-                gravity = if (it.isNotBlank()) Gravity.START else Gravity.CENTER
-                val endIcon = if (it.isNotBlank()) R.drawable.ic_market_category_tag_check else 0
-                setCompoundDrawablesWithIntrinsicBounds(0, 0, endIcon, 0)
-            }
+            updateCommentText(it)
         }
         viewModel.payData.observe(viewLifecycleOwner, {
             payTinkoff.payWithCard(it.amountSum, it.receipt, it.phone)
@@ -139,23 +125,33 @@ class OrderBottomDialog() : BottomSheetDialogFragment() {
         binding.etComments.setOnClickListener {
             OrderCommentBottomDialog().show(parentFragmentManager, "")
         }
-        binding.bankCardPayment.setOnClickListener {
-            viewModel.setPayVariant(CardVariant)
-        }
-        binding.cashPayment.setOnClickListener {
-            viewModel.setPayVariant(CashVariant)
-        }
-        binding.gpayPayment.setOnClickListener {
-            viewModel.setPayVariant(GPayVariant)
+        binding.rgPayment.setOnCheckedChangeListener { radioGroup, i ->
+            when (radioGroup.checkedRadioButtonId) {
+                R.id.card_button -> viewModel.setPayVariant(CardVariant)
+                R.id.cash_button -> viewModel.setPayVariant(CashVariant)
+                R.id.gpay_button -> viewModel.setPayVariant(GPayVariant)
+            }
         }
         binding.btnOrder.setOnClickListener {
            viewModel.onPayClicked()
         }
     }
 
+    private fun updateCommentText(comment: String) {
+        with(binding.etComments) {
+            text = if (comment.isNotBlank()) comment else getString(R.string.order_comment)
+            val bg =
+                if (comment.isNotBlank()) R.drawable.bg_true_light else R.drawable.bg_main_address_correct
+            setBackgroundResource(bg)
+            gravity = if (comment.isNotBlank()) Gravity.START else Gravity.CENTER
+            val endIcon = if (comment.isNotBlank()) R.drawable.ic_market_category_tag_check else 0
+            setCompoundDrawablesWithIntrinsicBounds(0, 0, endIcon, 0)
+        }
+    }
+
     //Открытие полноэкранного статуса заказа в экране корзины
     private fun openOrderStatusFragment(isSuccessPayment: Boolean) {
-        /*TODO сделать переход на фран с открытием полноэкранного статуса заказа
+        /*TODO сделать переход на фрагмент с открытием полноэкранного статуса заказа
         *  isSuccessPayment передавать в экран через Bundle или Extra*/
         payCallback?.onPayClicked(isSuccessPayment)
         dismiss()

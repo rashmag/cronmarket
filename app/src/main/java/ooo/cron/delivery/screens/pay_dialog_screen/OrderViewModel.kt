@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
+import ooo.cron.delivery.data.OrderInteractor
 import ooo.cron.delivery.data.OrderPrefsRepository
 import ooo.cron.delivery.data.OrderRestRepository
 import ooo.cron.delivery.data.network.models.Basket
@@ -25,8 +26,7 @@ import javax.inject.Inject
  * */
 
 class OrderViewModel @Inject constructor(
-    private val restRepo: OrderRestRepository,
-    private val prefsRepo: OrderPrefsRepository
+    private val interactor: OrderInteractor
 ) : ViewModel() {
 
     private val handler = CoroutineExceptionHandler { context, exception ->
@@ -43,8 +43,6 @@ class OrderViewModel @Inject constructor(
     val commentTextLiveData: LiveData<String> = _commentTextLivedata
     private val mutablePayVariantState: MutableLiveData<PaymentVariant> = MutableLiveData()
     val payVariantState: LiveData<PaymentVariant> get() = mutablePayVariantState
-    private val mutableOrderReq: MutableLiveData<OrderReq> = MutableLiveData()
-    val orderReq: LiveData<OrderReq> get() = mutableOrderReq
 
     init {
         Log.e("app", "inited")
@@ -62,8 +60,8 @@ class OrderViewModel @Inject constructor(
     }
 
     private fun getOrderInfo() {
-        val phone = prefsRepo.readUserPhone().toString()
-        val basket = prefsRepo.readBasket()
+        val phone = interactor.getPhone().toString()
+        val basket = interactor.getBasket()
         val amountSum =
             basket.amount + basket.deliveryCost
         val receipt = Receipt(
@@ -99,20 +97,16 @@ class OrderViewModel @Inject constructor(
         mutableBasketState.postValue(Loading)
         viewModelScope.launch(handler) {
             try {
-                val basket = prefsRepo.readBasket()
+                val basket = interactor.getBasket()
                 mutableBasketState.postValue(Default(basket))
             } catch (e: Exception) {
-                mutableBasketState.postValue(Error(e))
+                mutableBasketState.postValue(Error)
             }
         }
     }
 
     fun setPayVariant(variant: PaymentVariant) {
-        when (variant) {
-            is CardVariant -> mutablePayVariantState.postValue(CardVariant)
-            is CashVariant -> mutablePayVariantState.postValue(CashVariant)
-            is GPayVariant -> mutablePayVariantState.postValue(GPayVariant)
-        }
+        mutablePayVariantState.postValue(variant)
     }
 
     fun setComment(comment: String) {
@@ -120,15 +114,12 @@ class OrderViewModel @Inject constructor(
     }
 
     //метод для POST-запроса на отправку заказа после оплаты(если картой или GPay)/выбора налички
+    //TODO !!!!!!!!!! обработать ошибку отсутствия интернета при успешной оплате и отправке POST-запроса
+
     fun onPaymentSuccess() {
         //TODO сформировать OrderReq с введенных юзером данных
         viewModelScope.launch {
-            restRepo.sendOrder(
-                prefsRepo.readToken().accessToken,
-                prefsRepo.readBasket().id,
-                prefsRepo.readUserPhone(),
-                prefsRepo.readDeliveryCityId()
-            )
+            interactor.sendOrder(paymentMethod = 1)
         }
         paymentStatus.postValue(true)
     }

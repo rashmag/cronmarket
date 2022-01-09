@@ -21,6 +21,7 @@ class SPrefsService @Inject constructor(
             .putString(CITY_KLADR_ID, city.kladrId)
             .commit()
 
+    //можно имрпавить
     fun readChosenCity() =
         City(
             sharedPreferences.getString(CITY_ID, "")!!,
@@ -51,6 +52,7 @@ class SPrefsService @Inject constructor(
             .putString(MARKET_CATEGORY_IMAGE, category.categoryImgUri)
             .commit()
 
+    //можно имправить
     fun readSelectedMarketCategory() =
         MarketCategory(
             sharedPreferences.getInt(MARKET_CATEGORY_ID, 1),

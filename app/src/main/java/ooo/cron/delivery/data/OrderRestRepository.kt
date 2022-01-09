@@ -9,7 +9,7 @@ class OrderRestRepository @Inject constructor(
 ) {
     suspend fun getBasket(basketId: String) = restService.getSimpleBasket(basketId)
 
-    suspend fun sendOrder(token:String, basketId: String, phone: String?, deliveryCityId: String?) =
+    suspend fun sendOrder(token:String, basketId: String, phone: String?, deliveryCityId: String?, paymentMethod:Int) =
         restService.sendOrder(token, OrderReq(
             basketId,
             phone,

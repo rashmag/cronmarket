@@ -48,10 +48,9 @@ class MainActivity : BaseActivity(), MainContract.View {
     private var shouldLastBasketSessionBeVisible = false
     private var isFromPartnerScreen = false
 
-    private var currentPage = 0
     private var imageCount = 0
 
-    private var swipeTimer: Timer ?= null
+    private var swipeTimer: Timer? = null
 
     private val partnerActivityLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -273,13 +272,13 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
     override fun hideSpecialOffers() {
-        with(binding){
+        with(binding) {
             specialOffersTitle.makeGone()
             imageSlider.makeGone()
         }
     }
 
-    private fun setPageTransformerForImageSlider(){
+    private fun setPageTransformerForImageSlider() {
         with(binding) {
             imageSlider.offscreenPageLimit = 1
 
@@ -294,22 +293,25 @@ class MainActivity : BaseActivity(), MainContract.View {
         }
     }
 
-    private fun setTimerForImageSlider(){
+    private fun setTimerForImageSlider() {
 
-        val sliderHandler = Handler()
-        val sliderRunnable = Runnable {
-            if(currentPage == imageCount){
-                currentPage = 0
+        with(binding) {
+            val sliderHandler = Handler()
+            val sliderRunnable = Runnable {
+                if (imageSlider.currentItem + 1 == imageCount) {
+                    imageSlider.setCurrentItem(FIRST_IMAGE, true)
+                } else {
+                    imageSlider.setCurrentItem(imageSlider.currentItem + 1, true)
+                }
             }
-            binding.imageSlider.setCurrentItem(currentPage++, true)
+
+            swipeTimer = Timer()
+            swipeTimer?.schedule(object : TimerTask() {
+                override fun run() {
+                    sliderHandler.post(sliderRunnable)
+                }
+            }, IMAGE_SLIDE_DELAY, IMAGE_SLIDE_PERIOD)
         }
-
-        swipeTimer = Timer()
-        swipeTimer?.schedule(object : TimerTask() {
-            override fun run() {
-                sliderHandler.post(sliderRunnable)
-            }
-        }, IMAGE_SLIDE_DELAY, IMAGE_SLIDE_PERIOD)
     }
 
     private fun injectDependencies() =
@@ -443,5 +445,6 @@ class MainActivity : BaseActivity(), MainContract.View {
         const val RETURNING_SCREEN_KEY = "RETURNING_SCREEN_KEY"
         private const val IMAGE_SLIDE_DELAY = 0L
         private const val IMAGE_SLIDE_PERIOD = 3000L
+        private const val FIRST_IMAGE = 0
     }
 }

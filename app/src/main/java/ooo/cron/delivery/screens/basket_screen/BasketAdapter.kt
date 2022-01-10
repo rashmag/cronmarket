@@ -122,6 +122,7 @@ class BasketAdapter(
         this.minusClick = onMinusClick
         this.partnersEditClick = partnersEditClick
         this.persons = persons
+        notifyDataSetChanged()
     }
 
     inner class ProductViewHolder(private val binding: ItemBasketProductBinding) :

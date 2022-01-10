@@ -181,17 +181,31 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
                     else
                         "$rating ($feedbackCount)"
 
-                tvFreeDelivery.text =
-                    if (minAmountDelivery == null)
-                        String.format(
-                            getString(R.string.partners_activity_min_order_template),
-                            minAmountOrder
-                        )
-                    else
-                        String.format(
-                            getString(R.string.partners_activity_free_delivery_template),
-                            minAmountDelivery
-                        )
+                val density = resources.displayMetrics.density.toDouble()
+                when {
+                    // standard screen
+                    density in 2.5..4.0 -> {
+                        tvFreeDelivery.text =
+                            String.format(
+                                getString(R.string.partners_activity_free_delivery_template),
+                                minAmountDelivery
+                            )
+                    }
+
+                    // small screen
+                    density >= 2.0 && density < 2.5 -> {
+                        tvFreeDelivery.text =
+                            String.format(
+                                getString(R.string.partners_activity_free_delivery_template_small_screen),
+                                minAmountDelivery
+                            )
+                    }
+                }
+
+                tvMinOrderAmount.text = String.format(
+                    getString(R.string.partners_activity_min_order_template),
+                    minAmountOrder
+                )
 
                 if (partnerCardImg != null) {
                     Glide.with(binding.root)

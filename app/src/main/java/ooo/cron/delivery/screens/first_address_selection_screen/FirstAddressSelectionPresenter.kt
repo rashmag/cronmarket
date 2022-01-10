@@ -23,6 +23,8 @@ class FirstAddressSelectionPresenter @Inject constructor(
     private var cities: List<City> = listOf()
     private var selectedCity: City? = null
 
+    var lastSelectedCity = ""
+
     private var suggestedAddresses: List<SuggestAddress> = listOf()
 
     override fun onStartView() {
@@ -38,7 +40,16 @@ class FirstAddressSelectionPresenter @Inject constructor(
         if (selectedCity != cities[pos]) {
             selectedCity = cities[pos]
             suggestedAddresses = listOf()
-            view?.clearAddressField()
+
+            if (selectedCity?.city != lastSelectedCity) {
+                view?.clearAddressField()
+            }
+        }
+    }
+
+    override fun writeUserAddress(address: String) {
+        addressScope.launch {
+            dataManager.writeBuildingAddress(address)
         }
     }
 
@@ -146,10 +157,17 @@ class FirstAddressSelectionPresenter @Inject constructor(
         }
     }
 
-    private fun Response<List<City>>.handleCities() {
+    override fun setSavedAddress() {
+        addressScope.launch {
+            view?.showUserSavedAddress(dataManager.readBuildingAddress().orEmpty())
+        }
+    }
+
+    private suspend fun Response<List<City>>.handleCities() {
         if (isSuccessful && body().isNullOrEmpty().not()) {
             cities = body()!!
             view?.showCities(cities)
+            lastSelectedCity = dataManager.readChosenCity().city
             view?.removeCitiesProgress()
             view?.showStartShopping()
         } else
@@ -181,6 +199,11 @@ class FirstAddressSelectionPresenter @Inject constructor(
         }
     }
 
+    override suspend fun checkingFirstLaunch() = dataManager.readChosenCity().city != ""
+
+    override fun writeCurrentCityPosition(position: Int) = dataManager.writeCurrentCityPosition(position)
+    override fun getCurrentCityPosition() = dataManager.readCurrentCityPosition()
+
     private fun disableInteractiveViews() = view?.let {
         it.disableCitySelection()
         it.disableAddressField()
@@ -195,8 +218,16 @@ class FirstAddressSelectionPresenter @Inject constructor(
     private suspend fun writeData() {
         dataManager.writeChosenCity(selectedCity!!)
         view?.let {
-            if (it.getAddress().isValidAddress())
+            if (it.getAddress().isValidAddress()) {
                 dataManager.writeBuildingAddress(it.getAddress())
+            } else {
+                addressScope.launch {
+                    dataManager.writeBuildingAddress(
+                        if (it.getAddress() == EMPTY_ADDRESS) it.getAddress()
+                        else dataManager.readBuildingAddress().toString()
+                    )
+                }
+            }
         }
     }
 
@@ -211,5 +242,6 @@ class FirstAddressSelectionPresenter @Inject constructor(
 
     companion object {
         const val MIN_ADDRESS_LETTERS = 2
+        const val EMPTY_ADDRESS = ""
     }
 }

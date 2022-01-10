@@ -127,8 +127,7 @@ class MainPresenter @Inject constructor(
 
     private suspend fun defineAddress() {
         val address = dataManager.readBuildingAddress()
-        if (address.isNullOrBlank().not())
-            view?.showSavedAddress(address!!)
+        view?.showSavedAddress(address.orEmpty())
     }
 
     private suspend fun loadMarketCategories(cityId: String) = withErrorsHandle(

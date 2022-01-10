@@ -79,6 +79,11 @@ class FirstAddressSelectionActivity :
         presenter.onStartView()
     }
 
+    override fun onResume() {
+        super.onResume()
+        presenter.setSavedAddress()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         presenter.onDestroyView()
@@ -105,7 +110,7 @@ class FirstAddressSelectionActivity :
         }
     }
 
-    override fun showCities(cities: List<City>) {
+    override suspend fun showCities(cities: List<City>) {
         updateCities(cities)
         makeCitiesVisible()
     }
@@ -136,13 +141,20 @@ class FirstAddressSelectionActivity :
         addressesPopupWindow.show()
     }
 
+    override fun showUserSavedAddress(address: String) {
+        binding.etFirstAddressSelectionAddress.setText(address)
+    }
+
     override fun disableAddressPopup() {
         addressesPopupWindow.dismiss()
     }
 
     override fun clearAddressField() {
-        binding.etFirstAddressSelectionAddress.text?.clear()
-        addressesPopupWindow.dismiss()
+        with(binding) {
+            etFirstAddressSelectionAddress.text?.clear()
+            presenter.writeUserAddress(etFirstAddressSelectionAddress.text.toString())
+            addressesPopupWindow.dismiss()
+        }
     }
 
     override fun checkLocationPermission() {
@@ -345,6 +357,7 @@ class FirstAddressSelectionActivity :
                 id: Long
             ) {
                 onItemSelected(position)
+                presenter.writeCurrentCityPosition(position)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -352,13 +365,18 @@ class FirstAddressSelectionActivity :
             }
         }
 
-    private fun updateCities(cities: List<City>) {
-        (binding.spinnerFirstAddressSelectionCity.adapter as CitiesAdapter).run {
-            clear()
-            cities.forEachIndexed { index, city ->
-                insert(city, index)
+    private suspend fun updateCities(cities: List<City>) {
+        with(binding) {
+            (spinnerFirstAddressSelectionCity.adapter as CitiesAdapter).run {
+                clear()
+                if (presenter.checkingFirstLaunch()) {
+                    spinnerFirstAddressSelectionCity.setSelection(presenter.getCurrentCityPosition())
+                }
+                cities.forEachIndexed { index, city ->
+                    insert(city, index)
+                }
+                notifyDataSetChanged()
             }
-            notifyDataSetChanged()
         }
     }
 

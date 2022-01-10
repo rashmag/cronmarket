@@ -12,7 +12,7 @@ import ooo.cron.delivery.screens.base_mvp.MvpView
 interface FirstAddressSelectionContract {
     interface View : MvpView {
 
-        fun showCities(cities: List<City>)
+        suspend fun showCities(cities: List<City>)
         fun removeCitiesProgress()
 
         fun showStartShopping()
@@ -50,6 +50,8 @@ interface FirstAddressSelectionContract {
 
         fun showAnyErrorScreen()
         fun showConnectionErrorScreen()
+
+        fun showUserSavedAddress(address: String)
     }
 
     interface Presenter: MvpPresenter<View> {
@@ -64,6 +66,10 @@ interface FirstAddressSelectionContract {
 
         fun onFindLocationClicked()
 
+        suspend fun checkingFirstLaunch(): Boolean
+        fun getCurrentCityPosition(): Int
+        fun writeCurrentCityPosition(position: Int)
+
         fun onLocationPermissionGranted()
         fun onLocationPermissionNotGranted()
         fun onShouldShowLocationPermissionRationale()
@@ -75,5 +81,9 @@ interface FirstAddressSelectionContract {
         fun onLocationProviderUpdateTimerFinished()
 
         fun onSubmitClicked()
+
+        fun writeUserAddress(address: String)
+
+        fun setSavedAddress()
     }
 }

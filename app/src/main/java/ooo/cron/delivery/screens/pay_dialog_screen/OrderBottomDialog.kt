@@ -100,20 +100,10 @@ class OrderBottomDialog() : BottomSheetDialogFragment() {
         })
         //TODO радиогруппа с чек айдишниками
         viewModel.payVariantState.observe(viewLifecycleOwner, {
-            when (it) {
-                is CardVariant -> {
-                    binding.btnOrder.setBackgroundResource(R.drawable.bg_btn_order)
-                    binding.btnOrder.text = getString(R.string.order_cash_payment)
-                }
-                is CashVariant -> {
-                    binding.btnOrder.setBackgroundResource(R.drawable.bg_btn_order)
-                    binding.btnOrder.text = getString(R.string.order_cash_payment)
-                }
-                is GPayVariant -> {
-                    binding.btnOrder.setBackgroundResource(R.drawable.bg_btn_payment_gpay_selected)
-                    binding.btnOrder.text = getString(R.string.order_cash_payment)
-                }
-            }
+            binding.btnOrder.text = getString(R.string.order_cash_payment)
+            binding.btnOrder.setBackgroundResource(R.drawable.bg_btn_order)
+            binding.btnGpayOrder.isVisible = it is GPayVariant
+            binding.btnOrder.isVisible = it !is GPayVariant
         })
         viewModel.commentTextLiveData.observe(viewLifecycleOwner) {
             updateCommentText(it)
@@ -134,6 +124,10 @@ class OrderBottomDialog() : BottomSheetDialogFragment() {
         }
         binding.btnOrder.setOnClickListener {
            viewModel.onPayClicked()
+        }
+
+        binding.gpayButton.setOnClickListener {
+            viewModel.onPayClicked()
         }
     }
 

@@ -81,6 +81,11 @@ class FirstAddressSelectionActivity :
         presenter.onStartView()
     }
 
+    override fun onResume() {
+        super.onResume()
+        presenter.setSavedAddress()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         presenter.onDestroyView()

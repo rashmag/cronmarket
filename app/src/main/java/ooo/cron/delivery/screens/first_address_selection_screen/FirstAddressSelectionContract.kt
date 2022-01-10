@@ -83,5 +83,7 @@ interface FirstAddressSelectionContract {
         fun onSubmitClicked()
 
         fun writeUserAddress(address: String)
+
+        fun setSavedAddress()
     }
 }

@@ -157,11 +157,16 @@ class FirstAddressSelectionPresenter @Inject constructor(
         }
     }
 
+    override fun setSavedAddress() {
+        addressScope.launch {
+            view?.showUserSavedAddress(dataManager.readBuildingAddress().orEmpty())
+        }
+    }
+
     private suspend fun Response<List<City>>.handleCities() {
         if (isSuccessful && body().isNullOrEmpty().not()) {
             cities = body()!!
             view?.showCities(cities)
-            view?.showUserSavedAddress(dataManager.readBuildingAddress().orEmpty())
             lastSelectedCity = dataManager.readChosenCity().city
             view?.removeCitiesProgress()
             view?.showStartShopping()
@@ -213,8 +218,16 @@ class FirstAddressSelectionPresenter @Inject constructor(
     private suspend fun writeData() {
         dataManager.writeChosenCity(selectedCity!!)
         view?.let {
-            if (it.getAddress().isValidAddress())
+            if (it.getAddress().isValidAddress()) {
                 dataManager.writeBuildingAddress(it.getAddress())
+            } else {
+                addressScope.launch {
+                    dataManager.writeBuildingAddress(
+                        if (it.getAddress() == EMPTY_ADDRESS) it.getAddress()
+                        else dataManager.readBuildingAddress().toString()
+                    )
+                }
+            }
         }
     }
 
@@ -229,5 +242,6 @@ class FirstAddressSelectionPresenter @Inject constructor(
 
     companion object {
         const val MIN_ADDRESS_LETTERS = 2
+        const val EMPTY_ADDRESS = ""
     }
 }

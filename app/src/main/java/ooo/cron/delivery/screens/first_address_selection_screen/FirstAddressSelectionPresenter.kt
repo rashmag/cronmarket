@@ -179,7 +179,7 @@ class FirstAddressSelectionPresenter @Inject constructor(
     private suspend fun Response<List<SuggestAddress>>.handleAddresses() {
         if (isSuccessful && body().isNullOrEmpty().not()) {
                 suggestedAddresses = body()?.weedOutNullAddresses() ?: listOf()
-                if (suggestedAddresses.isEmpty().not()) {
+                if (suggestedAddresses.isNotEmpty()) {
 
                     suggestedAddresses.forEach {
                         view?.setFoundCity(it.city)
@@ -199,7 +199,7 @@ class FirstAddressSelectionPresenter @Inject constructor(
         if (isSuccessful && body().isNullOrEmpty().not()) {
                 suggestedAddresses = body()?.weedOutNullAddresses() ?: listOf()
 
-                if (suggestedAddresses.isEmpty().not()) {
+                if (suggestedAddresses.isNotEmpty()) {
                     view?.showAddressesPopup(suggestedAddresses)
                 }else{
                     view?.showWarningMessage()

@@ -98,7 +98,6 @@ class OrderBottomDialog() : BottomSheetDialogFragment() {
         viewModel.callingDialog.observe(viewLifecycleOwner, {
             showInformDialog(R.string.order_no_payment_inform_message)
         })
-        //TODO радиогруппа с чек айдишниками
         viewModel.payVariantState.observe(viewLifecycleOwner, {
             binding.btnOrder.text = getString(R.string.order_cash_payment)
             binding.btnOrder.setBackgroundResource(R.drawable.bg_btn_order)

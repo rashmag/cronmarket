@@ -119,7 +119,8 @@ class OrderViewModel @Inject constructor(
     fun onPaymentSuccess() {
         //TODO сформировать OrderReq с введенных юзером данных
         viewModelScope.launch {
-            interactor.sendOrder(paymentMethod = 1)
+            val paymentMethod = if (payVariantState.value == CashVariant) 1 else 2
+            interactor.sendOrder(paymentMethod)
         }
         paymentStatus.postValue(true)
     }

@@ -11,27 +11,27 @@
         android:id="@+id/et_comments"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:cursorVisible="false"
-        android:background="@drawable/bg_main_address_correct"
-        tools:text="lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem"
-        android:textColor="@color/grey70"
-        android:textSize="14sp"
-        android:paddingVertical="12dp"
-        android:paddingHorizontal="20dp"
         android:layout_marginHorizontal="16dp"
+        android:layout_marginVertical="16dp"
+        android:background="@drawable/bg_main_address_correct"
+        android:cursorVisible="false"
         android:drawablePadding="12dp"
-        android:layout_marginVertical="24dp"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:gravity="center"
-        tools:drawableEnd="@drawable/ic_market_category_tag_check"
         android:drawableTint="@color/errors_true"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="1"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="12dp"
         android:scrollHorizontally="true"
+        android:textColor="@color/grey70"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toTopOf="@id/cont_delivery_address"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/cont_delivery_address"
-        tools:ignore="MissingConstraints" />
+        tools:drawableEnd="@drawable/ic_market_category_tag_check"
+        tools:ignore="MissingConstraints"
+        tools:text="lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cont_delivery_address"
@@ -49,14 +49,14 @@
             android:id="@+id/tv_main_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="24dp"
+            android:layout_marginVertical="16dp"
             android:layout_marginStart="@dimen/dimen_16"
             android:drawableStart="@drawable/ic_home"
             android:drawablePadding="@dimen/dimen_8"
             android:fontFamily="@font/sf_pro_text_regular"
             android:text="@string/main_address_incorrect"
             android:textColor="@color/black"
-            android:textSize="18sp"
+            android:textSize="15sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/imageView"
@@ -85,10 +85,10 @@
         layout="@layout/layout_progress"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cont_delivery_time"
@@ -105,13 +105,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/dimen_16"
-            android:layout_marginVertical="24dp"
+            android:layout_marginVertical="16dp"
             android:drawableStart="@drawable/ic_time"
             android:drawablePadding="@dimen/dimen_8"
             android:fontFamily="@font/sf_pro_text_semibold"
             android:text="@string/delivery_details_delivery_time_title"
             android:textColor="@color/black"
-            android:textSize="18sp"
+            android:textSize="15sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -126,53 +126,63 @@
             android:src="@drawable/ic_right_arrow"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/cont_payment"
+    <RadioGroup
+        android:id="@+id/rg_payment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_height="0dp"
         android:gravity="center"
-        android:padding="@dimen/dimen_8"
+        android:orientation="horizontal"
+        android:layout_marginVertical="@dimen/dimen_4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cont_delivery_time">
 
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/gpay_payment"
-            android:layout_marginHorizontal="24dp"
-            android:src="@drawable/gpay_button_content_black"
-            android:background="@drawable/bg_btn_select_payment"
-            android:layout_height="54dp"
-            android:layout_width="70dp"/>
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/bank_card_payment"
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/gpay_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/dimen_24"
+            android:layout_marginEnd="@dimen/dimen_20"
+            android:layout_marginStart="4dp"
+            android:paddingVertical="@dimen/dimen_8"
+            android:paddingHorizontal="@dimen/dimen_16"
+            android:gravity="center"
+            android:button="@android:color/transparent"
+            android:background="@drawable/bg_btn_select_payment"
+            android:drawableStart="@drawable/gpay_button_content_black"/>
+
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/card_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:layout_marginStart="12dp"
+            android:paddingVertical="@dimen/dimen_8"
+            android:paddingHorizontal="@dimen/dimen_16"
+            android:button="@android:color/transparent"
             android:background="@drawable/bg_btn_select_payment"
             android:text="@string/bank_cart"
-            android:textAllCaps="false"
-            android:textSize="17sp"
-            android:textStyle="bold"
             android:textColor="@color/black"
-            android:gravity="center"/>
+            android:textStyle="bold"/>
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/cash_payment"
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/cash_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dimen_24"
             android:text="@string/cash"
-            android:textAllCaps="false"
-            android:background="@drawable/bg_btn_select_payment"
-            android:textSize="17sp"
+            android:textColor="@color/black"
             android:textStyle="bold"
-            android:textColor="@color/black"/>
-    </androidx.appcompat.widget.LinearLayoutCompat>
+            android:paddingVertical="@dimen/dimen_8"
+            android:paddingHorizontal="16dp"
+            android:layout_marginStart="@dimen/dimen_20"
+            android:button="@android:color/transparent"
+            android:background="@drawable/bg_btn_select_payment"
+            />
+    </RadioGroup>
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/vg_order"
@@ -183,25 +193,25 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cont_payment">
+        app:layout_constraintTop_toBottomOf="@id/rg_payment">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_basket_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginStart="@dimen/dimen_24"
+            android:layout_marginStart="@dimen/dimen_16"
             android:textColor="@color/black"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cont_payment"
+            app:layout_constraintTop_toBottomOf="@id/rg_payment"
             tools:text="10900₽" />
 
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_order"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_marginHorizontal="@dimen/dimen_24"
             android:layout_marginVertical="@dimen/dimen_8"
             android:background="@drawable/bg_btn_order"
@@ -210,29 +220,31 @@
             android:text="@string/order_title"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            android:textSize="16sp"
+            android:textSize="15sp"
             android:textStyle="bold"
-            android:visibility="visible"/>
+            android:visibility="visible" />
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/btn_gpay_order"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_marginHorizontal="@dimen/dimen_24"
             android:layout_marginVertical="@dimen/dimen_8"
             android:background="@drawable/bg_btn_payment_gpay_selected"
             android:gravity="center"
-            android:src="@drawable/gpay_button_content_white"
-            android:paddingVertical="@dimen/dimen_12"/>
+            android:visibility="gone"
+            android:scaleType="centerInside"
+            android:paddingVertical="@dimen/dimen_8"
+            android:src="@drawable/gpay_button_content_white" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline2"
+        android:id="@+id/guideline3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.027118644" />
+        app:layout_constraintGuide_begin="20dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

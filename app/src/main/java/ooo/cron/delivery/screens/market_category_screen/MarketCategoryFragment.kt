@@ -90,7 +90,7 @@ class MarketCategoryFragment() : BaseFragment(),
             .build()
 
         val pagedList: PagedList<Partner> = PagedList.Builder(dataSource, config)
-            .setNotifyExecutor(ContextCompat.getMainExecutor(context))
+            .setNotifyExecutor(ContextCompat.getMainExecutor(context!!))
             .setFetchExecutor(Executors.newSingleThreadExecutor())
             .build()
 

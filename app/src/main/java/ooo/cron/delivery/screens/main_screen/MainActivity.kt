@@ -295,8 +295,9 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
     private fun setTimerForImageSlider(){
-        val handler = Handler()
-        val update = Runnable {
+
+        val sliderHandler = Handler()
+        val sliderRunnable = Runnable {
             if(currentPage == imageCount){
                 currentPage = 0
             }
@@ -306,7 +307,7 @@ class MainActivity : BaseActivity(), MainContract.View {
         swipeTimer = Timer()
         swipeTimer?.schedule(object : TimerTask() {
             override fun run() {
-                handler.post(update)
+                sliderHandler.post(sliderRunnable)
             }
         }, IMAGE_SLIDE_DELAY, IMAGE_SLIDE_PERIOD)
     }

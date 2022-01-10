@@ -6,8 +6,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterInside
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.request.RequestOptions
-import ooo.cron.delivery.R
 import ooo.cron.delivery.databinding.PagerRowBinding
 import ooo.cron.delivery.screens.main_screen.special_offers_view.models.SlideModel
 

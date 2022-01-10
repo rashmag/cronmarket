@@ -26,6 +26,8 @@ class CategoryAdapter(
 ) :
     RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
 
+    private var quantityCount = 0
+
     override fun getItemCount() = productCategoryModel.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -59,11 +61,12 @@ class CategoryAdapter(
                         if (product.additives.isEmpty() &&
                             product.requiredAdditiveGroups.isEmpty()
                         ) {
-                            val currentQuantity = tvPortionCount.text.toString().toInt() + 1
+                            quantityCount = product.inBasketQuantity
+                            quantityCount++
 
-                            when (defineQuantityChangeStatus(currentQuantity, product.inBasketQuantity)) {
-                                QuantityChangeStatus.INCREASED -> increaseProduct(product, currentQuantity)
-                                QuantityChangeStatus.NO_CHANGES -> updateCounter(currentQuantity)
+                            when (defineQuantityChangeStatus(quantityCount, product.inBasketQuantity)) {
+                                QuantityChangeStatus.INCREASED -> increaseProduct(product, quantityCount)
+                                QuantityChangeStatus.NO_CHANGES -> updateCounter(quantityCount)
                                 else -> {
                                 }
                             }
@@ -77,16 +80,17 @@ class CategoryAdapter(
                         if (product.additives.isEmpty() &&
                             product.requiredAdditiveGroups.isEmpty()
                         ) {
-                            val currentQuantity = tvPortionCount.text.toString().toInt() + 1
-                            updateCounter(currentQuantity)
+                            quantityCount = product.inBasketQuantity
+                            quantityCount++
+                            updateCounter(quantityCount)
 
-                            when (defineQuantityChangeStatus(currentQuantity, product.inBasketQuantity)) {
-                                QuantityChangeStatus.INCREASED -> increaseProduct(product, currentQuantity)
+                            when (defineQuantityChangeStatus(quantityCount, product.inBasketQuantity)) {
+                                QuantityChangeStatus.INCREASED -> increaseProduct(product, quantityCount)
                                 QuantityChangeStatus.DECREASED -> listener.onMinusClick(
                                     product,
-                                    product.inBasketQuantity - currentQuantity
+                                    product.inBasketQuantity - quantityCount
                                 )
-                                QuantityChangeStatus.NO_CHANGES -> updateCounter(currentQuantity)
+                                QuantityChangeStatus.NO_CHANGES -> updateCounter(quantityCount)
                             }
                         } else {
                             listener.onProductClick(product)
@@ -95,16 +99,17 @@ class CategoryAdapter(
 
                     ivMinus.setOnClickListener {
                         val product = productCategoryModel[bindingAdapterPosition]
-                        val currentQuantity = tvPortionCount.text.toString().toInt() - 1
-                        updateCounter(currentQuantity)
+                        quantityCount = product.inBasketQuantity
+                        quantityCount--
+                        updateCounter(quantityCount)
 
-                        when (defineQuantityChangeStatus(currentQuantity, product.inBasketQuantity)) {
-                            QuantityChangeStatus.INCREASED -> increaseProduct(product, currentQuantity)
+                        when (defineQuantityChangeStatus(quantityCount, product.inBasketQuantity)) {
+                            QuantityChangeStatus.INCREASED -> increaseProduct(product, quantityCount)
                             QuantityChangeStatus.DECREASED -> listener.onMinusClick(
                                 product,
-                                product.inBasketQuantity - currentQuantity
+                                product.inBasketQuantity - quantityCount
                             )
-                            QuantityChangeStatus.NO_CHANGES -> updateCounter(currentQuantity)
+                            QuantityChangeStatus.NO_CHANGES -> updateCounter(quantityCount)
                         }
                     }
                 }

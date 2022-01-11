@@ -81,7 +81,7 @@
     <string name="partners_activity_free_delivery_template">от %1$d \u20BD&#160;бесплатно</string>
     <string name="partners_activity_free_delivery_template_small_screen">от %1$d \u20BD\nбесплатно</string>
     <string name="partners_activity_close_title">Закрыть</string>
-    <string name="partners_activity_dialog_min_price_title">Минимальная сумма заказа составляется %s₽</string>
+    <string name="partners_activity_dialog_min_price_title">Минимальная сумма заказа составляет %s₽</string>
     <string name="partners_activity_dialog_btn_ok_title">Ок</string>
 
 

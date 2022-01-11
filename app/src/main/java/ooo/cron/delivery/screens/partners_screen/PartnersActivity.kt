@@ -385,11 +385,11 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
         )
     }
 
-    @SuppressLint("StringFormatMatches")
     override fun showOrderFromDialog() {
         AlertDialog.Builder(this)
-            .setView(R.layout.order_from_dialog)
-            .setMessage(getString(R.string.partners_activity_dialog_min_price_title, minOrderAmount))
+            .setTitle(EMPTY_TITLE)
+            .setIcon(R.mipmap.ic_launcher)
+            .setMessage(getString(R.string.partners_activity_dialog_min_price_title, minOrderAmount.toString()))
             .setCancelable(false)
             .setPositiveButton(R.string.partners_activity_dialog_btn_ok_title) { dialog, _ ->
                 dialog.dismiss()
@@ -518,5 +518,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
         private const val EMPTY_QUANTITY = 0
 
         const val HEADER_IMAGE_SIZE_WHEN_PARTNER_CLOSE = 490f
+
+        const val EMPTY_TITLE = " "
     }
 }

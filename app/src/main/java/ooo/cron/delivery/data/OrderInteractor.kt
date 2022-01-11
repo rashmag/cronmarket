@@ -12,11 +12,12 @@ class OrderInteractor @Inject constructor(
 ) {
     //suspend fun getBasket() = restRepo.getBasket(prefsRepo.readBasket().id)
 
-    suspend fun sendOrder(paymentMethod: Int ) {
+    suspend fun sendOrder(paymentMethod: Int, comment: String ) {
         restRepo.sendOrder(
             prefsRepo.readToken().accessToken,
             prefsRepo.readBasket().id,
             prefsRepo.readUserPhone(),
+            comment,
             prefsRepo.readDeliveryCityId(),
             paymentMethod
         )

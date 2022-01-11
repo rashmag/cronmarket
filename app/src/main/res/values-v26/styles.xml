@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="RadiogroupStyle">
+        <item name="android:paddingHorizontal">@dimen/dimen_16</item>
+        <item name="android:paddingVertical">@dimen/dimen_8</item>
+        <item name="android:button">@android:color/transparent</item>
+
+    </style>
+</resources>

@@ -116,6 +116,7 @@ class CategoryAdapter(
 
                     com.bumptech.glide.Glide.with(root)
                         .load(photo)
+                        .placeholder(R.drawable.placeholder_details)
                         .into(ivProduct)
                 }
             }

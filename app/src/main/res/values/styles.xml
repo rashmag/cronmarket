@@ -101,9 +101,9 @@
     <style name="RadiogroupStyle">
         <item name="android:paddingStart">@dimen/dimen_16</item>
         <item name="android:paddingEnd">@dimen/dimen_16</item>
-        <item name="android:paddingTop">@dimen/dimen_8</item>
-        <item name="android:paddingBottom">@dimen/dimen_8</item>
-        <item name="android:button">@android:color/transparent</item>
+        <item name="android:paddingTop">@dimen/dimen_12</item>
+        <item name="android:paddingBottom">@dimen/dimen_12</item>
+        <item name="android:button">@null</item>
         <item name="android:gravity">center</item>
     </style>
 

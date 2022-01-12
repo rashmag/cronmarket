@@ -149,7 +149,6 @@
             android:layout_marginEnd="@dimen/dimen_20"
             android:layout_marginStart="4dp"
             style="@style/RadiogroupStyle"
-            android:background="@drawable/bg_btn_select_payment"
             android:drawableStart="@drawable/gpay_button_content_black"/>
 
         <androidx.appcompat.widget.AppCompatRadioButton
@@ -159,21 +158,15 @@
             android:layout_marginEnd="12dp"
             android:layout_marginStart="12dp"
             style="@style/RadiogroupStyle"
-            android:background="@drawable/bg_btn_select_payment"
-            android:text="@string/bank_cart"
-            android:textColor="@color/black"
-            android:textStyle="bold"/>
+            android:text="@string/bank_cart" />
 
         <androidx.appcompat.widget.AppCompatRadioButton
             android:id="@+id/cash_radiobutton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/cash"
-            android:textColor="@color/black"
-            android:textStyle="bold"
             style="@style/RadiogroupStyle"
             android:layout_marginStart="@dimen/dimen_20"
-            android:background="@drawable/bg_btn_select_payment"
             />
     </RadioGroup>
 

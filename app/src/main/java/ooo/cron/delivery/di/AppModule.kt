@@ -8,6 +8,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import ooo.cron.delivery.BuildConfig.BASE_URL
 import ooo.cron.delivery.data.DataManager
+import ooo.cron.delivery.data.OrderInteractor
 import ooo.cron.delivery.data.OrderPrefsRepository
 import ooo.cron.delivery.data.OrderRestRepository
 import ooo.cron.delivery.data.network.RestService
@@ -53,7 +54,10 @@ class AppModule {
     @Provides
     @Singleton
     fun providePreferences(context: Context): SharedPreferences =
-        context.getSharedPreferences(ooo.cron.delivery.BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE)
+        context.getSharedPreferences(
+            ooo.cron.delivery.BuildConfig.APPLICATION_ID,
+            Context.MODE_PRIVATE
+        )
 
     @Provides
     @Singleton
@@ -80,4 +84,13 @@ class AppModule {
     fun provideApiErrorUtils(): ApiErrorsUtils {
         return ApiErrorsUtils()
     }
+
+    @Provides
+    @Singleton
+    fun provideOrderInteractor(
+        restRepository: OrderRestRepository,
+        prefsRepository: OrderPrefsRepository
+    ): OrderInteractor =
+        OrderInteractor(restRepository, prefsRepository)
+
 }

@@ -3,6 +3,7 @@ package ooo.cron.delivery.screens.basket_screen
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,17 +16,18 @@ import ooo.cron.delivery.data.network.models.BasketDish
 import ooo.cron.delivery.databinding.ActivityBasketBinding
 import ooo.cron.delivery.screens.BaseActivity
 import ooo.cron.delivery.screens.login_screen.LoginActivity
-import ooo.cron.delivery.screens.ordering_screen.OrderingActivity
 import ooo.cron.delivery.screens.pay_dialog_screen.OrderBottomDialog
-import javax.inject.Inject
+import ooo.cron.delivery.screens.pay_dialog_screen.PayClickCallback
 import ooo.cron.delivery.utils.extensions.startBottomAnimate
 import ooo.cron.delivery.utils.itemdecoration.SpaceItemDecoration
+import ru.tinkoff.acquiring.sdk.TinkoffAcquiring
+import javax.inject.Inject
 
 /**
  * Created by Ramazan Gadzhikadiev on 10.05.2021.
  */
 
-class BasketActivity : BaseActivity(), BasketContract.View {
+class BasketActivity : BaseActivity(), BasketContract.View, PayClickCallback {
 
     private val orderBottomDialog = OrderBottomDialog()
 
@@ -114,14 +116,6 @@ class BasketActivity : BaseActivity(), BasketContract.View {
     //Метод для показа ордер боттом диалога(Основной боттом диалог)
     override fun showMakeOrderBottomDialog(basket: Basket?) {
         showBottomDialog(orderBottomDialog)
-
-        //метод для перехода в Активити Заказа
-/*        startActivity(
-            Intent(this, OrderingActivity::class.java).apply {
-                putExtras(intent!!.extras!!)
-                putExtra(BASKET_MODEL, basket)
-            }
-        )*/
     }
 
     //Метод для показа любого боттом диалога
@@ -175,5 +169,13 @@ class BasketActivity : BaseActivity(), BasketContract.View {
                 activity.finish()
             }
         }
+    }
+
+    override fun onPayClicked(isSuccessPayment: Boolean) {
+        if (isSuccessPayment) {
+            Toast.makeText(this, "Оплата прошла успешно", Toast.LENGTH_SHORT).show()
+        }
+        else Toast.makeText(this, "Произошла ошибка. Попробуйте повторить", Toast.LENGTH_SHORT).show()
+
     }
 }

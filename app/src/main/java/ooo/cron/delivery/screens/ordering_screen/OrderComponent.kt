@@ -10,8 +10,9 @@ import ooo.cron.delivery.data.network.models.Basket
  */
 
 
-@OrderScope
+
 @Subcomponent(modules = [OrderModule::class])
+@OrderScope
 interface OrderComponent {
 
     fun inject(orderingActivity: OrderingActivity)

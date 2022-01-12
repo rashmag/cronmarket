@@ -88,4 +88,14 @@
         <item name="fontFamily">@font/sf_pro_text_semibold</item>
     </style>
 
+    <style name="AcquiringThemeCustom" parent="AcquiringTheme">
+        <item name="acqButtonStyle">@style/AcquiringButtonStyle.Custom</item>
+
+    </style>
+
+    <style name="AcquiringButtonStyle.Custom" parent="AcquiringButtonStyle.Base">
+        <item name="background">@color/brand</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
 </resources>

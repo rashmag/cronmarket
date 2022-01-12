@@ -4,7 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.CoroutineExceptionHandler
 import ooo.cron.delivery.data.DataManager
+import ooo.cron.delivery.data.OrderInteractor
 import ooo.cron.delivery.data.OrderPrefsRepository
 import ooo.cron.delivery.data.OrderRestRepository
 
@@ -13,12 +15,11 @@ import ooo.cron.delivery.data.OrderRestRepository
  * */
 
 class OrderViewModelFactory @AssistedInject constructor(
-    private val restRepo: OrderRestRepository,
-    private val prefsRepo: OrderPrefsRepository
+    private val interactor: OrderInteractor
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         require(modelClass == OrderViewModel::class.java)
-        return OrderViewModel(restRepo, prefsRepo) as T
+        return OrderViewModel(interactor) as T
     }
 
     @AssistedFactory

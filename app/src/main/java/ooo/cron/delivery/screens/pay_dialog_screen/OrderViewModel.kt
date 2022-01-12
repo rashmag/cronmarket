@@ -55,6 +55,7 @@ class OrderViewModel @Inject constructor(
     fun onPayClicked() {
         when (payVariantState.value) {
             is CardVariant -> getOrderInfo()
+            is CashVariant -> onPaymentSuccess()
             else -> callingDialog.call()
         }
     }

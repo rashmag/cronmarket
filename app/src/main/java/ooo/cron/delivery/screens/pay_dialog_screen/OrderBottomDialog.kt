@@ -116,16 +116,16 @@ class OrderBottomDialog() : BottomSheetDialogFragment() {
         }
         binding.rgPayment.setOnCheckedChangeListener { radioGroup, i ->
             when (radioGroup.checkedRadioButtonId) {
-                R.id.card_button -> viewModel.setPayVariant(CardVariant)
-                R.id.cash_button -> viewModel.setPayVariant(CashVariant)
-                R.id.gpay_button -> viewModel.setPayVariant(GPayVariant)
+                R.id.card_radiobutton -> viewModel.setPayVariant(CardVariant)
+                R.id.cash_radiobutton -> viewModel.setPayVariant(CashVariant)
+                R.id.gpay_radiobutton -> viewModel.setPayVariant(GPayVariant)
             }
         }
         binding.btnOrder.setOnClickListener {
            viewModel.onPayClicked()
         }
 
-        binding.gpayButton.setOnClickListener {
+        binding.btnGpayOrder.setOnClickListener {
             viewModel.onPayClicked()
         }
     }

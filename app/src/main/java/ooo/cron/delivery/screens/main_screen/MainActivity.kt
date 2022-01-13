@@ -113,7 +113,7 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
     override fun showSavedAddress(address: String) {
-        binding.tvMainUserAddress.run {
+        with(binding.tvMainUserAddress){
             if (address.isNotEmpty()) {
                 setBackgroundResource(R.drawable.bg_main_address_correct)
                 text = address

@@ -3,6 +3,7 @@ package ooo.cron.delivery.screens.main_screen
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.os.Parcelable
 import android.view.View
 import android.widget.Toast
@@ -10,6 +11,7 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.appbar.AppBarLayout.ScrollingViewBehavior
 import nl.psdcompany.duonavigationdrawer.widgets.DuoDrawerToggle
 import ooo.cron.delivery.App
@@ -26,12 +28,13 @@ import ooo.cron.delivery.screens.main_screen.special_offers_view.models.SlideMod
 import ooo.cron.delivery.screens.market_category_screen.MarketCategoryFragment
 import ooo.cron.delivery.screens.partners_screen.PartnersActivity
 import ooo.cron.delivery.screens.vacancies_screen.VacanciesFragment
-import ooo.cron.delivery.utils.dipToPixels
 import ooo.cron.delivery.utils.extensions.startBottomAnimate
 import javax.inject.Inject
+import ooo.cron.delivery.screens.main_screen.special_offers_view.adapters.SliderAdapter
 import ooo.cron.delivery.utils.enums.ReturningToScreenEnum
 import ooo.cron.delivery.utils.extensions.makeGone
 import ooo.cron.delivery.utils.extensions.makeVisible
+import java.util.*
 
 
 class MainActivity : BaseActivity(), MainContract.View {
@@ -45,6 +48,10 @@ class MainActivity : BaseActivity(), MainContract.View {
     private var shouldLastBasketSessionBeVisible = false
     private var isFromPartnerScreen = false
 
+    private var imageCount = 0
+
+    private var swipeTimer: Timer? = null
+
     private val partnerActivityLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result: ActivityResult ->
@@ -52,6 +59,10 @@ class MainActivity : BaseActivity(), MainContract.View {
             isFromPartnerScreen = true
         }
 
+    }
+
+    private val sliderAdapter by lazy(LazyThreadSafetyMode.NONE) {
+        SliderAdapter()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,12 +87,21 @@ class MainActivity : BaseActivity(), MainContract.View {
 
     override fun onResume() {
         super.onResume()
+        setTimerForImageSlider()
         presenter.onResumeView(isFromPartnerScreen)
         isFromPartnerScreen = false
     }
 
+    override fun onStop() {
+        super.onStop()
+        swipeTimer?.cancel()
+        swipeTimer?.purge()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
+        swipeTimer?.cancel()
+        swipeTimer?.purge()
         presenter.detachView()
     }
 
@@ -93,14 +113,14 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
     override fun showSavedAddress(address: String) {
-            binding.tvMainUserAddress.run {
-                if(address.isNotEmpty()) {
-                    setBackgroundResource(R.drawable.bg_main_address_correct)
-                    text = address
-                }else{
-                    setBackgroundResource(R.drawable.bg_main_address_incorrect)
-                    text = getString(R.string.main_address_incorrect)
-                }
+        with(binding.tvMainUserAddress){
+            if (address.isNotEmpty()) {
+                setBackgroundResource(R.drawable.bg_main_address_correct)
+                text = address
+            } else {
+                setBackgroundResource(R.drawable.bg_main_address_incorrect)
+                text = getString(R.string.main_address_incorrect)
+            }
         }
     }
 
@@ -242,23 +262,55 @@ class MainActivity : BaseActivity(), MainContract.View {
             specialOffersTitle.makeVisible()
             imageSlider.makeVisible()
 
-            imageSlider.viewPager?.pageMargin = resources.dipToPixels(16f).toInt()
-            imageSlider.viewPager?.clipToPadding = false
+            imageCount = promotions.size
 
-            imageSlider.viewPager?.setPadding(
-                resources.dipToPixels(16f).toInt(),
-                0,
-                resources.dipToPixels(16f).toInt(),
-                0
-            )
-            imageSlider.setImageList(promotions.map { SlideModel(it.imgUri, "") })
+            setPageTransformerForImageSlider()
+
+            sliderAdapter.setData(promotions.map { SlideModel(it.imgUri) })
+            imageSlider.adapter = sliderAdapter
         }
     }
 
     override fun hideSpecialOffers() {
-        with(binding){
+        with(binding) {
             specialOffersTitle.makeGone()
             imageSlider.makeGone()
+        }
+    }
+
+    private fun setPageTransformerForImageSlider() {
+        with(binding) {
+            imageSlider.offscreenPageLimit = 1
+
+            // Для показа половинки предыдущего и следующего элемента
+            val nextItemVisiblePx = resources.getDimension(R.dimen.space_26)
+            val currentItemHorizontalMarginPx = resources.getDimension(R.dimen.space_42)
+            val pageTranslationX = nextItemVisiblePx + currentItemHorizontalMarginPx
+            val pageTransformer = ViewPager2.PageTransformer { page: View, position: Float ->
+                page.translationX = -pageTranslationX * position
+            }
+            imageSlider.setPageTransformer(pageTransformer)
+        }
+    }
+
+    private fun setTimerForImageSlider() {
+
+        with(binding) {
+            val sliderHandler = Handler()
+            val sliderRunnable = Runnable {
+                if (imageSlider.currentItem + 1 == imageCount) {
+                    imageSlider.setCurrentItem(FIRST_IMAGE, true)
+                } else {
+                    imageSlider.setCurrentItem(imageSlider.currentItem + 1, true)
+                }
+            }
+
+            swipeTimer = Timer()
+            swipeTimer?.schedule(object : TimerTask() {
+                override fun run() {
+                    sliderHandler.post(sliderRunnable)
+                }
+            }, IMAGE_SLIDE_DELAY, IMAGE_SLIDE_PERIOD)
         }
     }
 
@@ -391,5 +443,8 @@ class MainActivity : BaseActivity(), MainContract.View {
 
     companion object {
         const val RETURNING_SCREEN_KEY = "RETURNING_SCREEN_KEY"
+        private const val IMAGE_SLIDE_DELAY = 0L
+        private const val IMAGE_SLIDE_PERIOD = 3000L
+        private const val FIRST_IMAGE = 0
     }
 }

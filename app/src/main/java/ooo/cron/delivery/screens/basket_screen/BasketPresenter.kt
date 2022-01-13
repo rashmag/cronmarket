@@ -113,21 +113,29 @@ class BasketPresenter @Inject constructor(
 
     override fun personsQuantityEdited(quantity: Int) {
         mainScope.launch {
-            basket = dataManager.editPersonsQuantity(
-                BasketPersonsReq(
-                    basket!!.id,
-                    quantity
-                )
-            )
-            view?.updateBasket(
-                deserializeDishes(),
-                basket!!.cutleryCount
-            )
-            val formatter = DecimalFormat("#.##").apply {
-                roundingMode = RoundingMode.CEILING
-            }
+            withErrorsHandle(
+                {
+                    basket = dataManager.editPersonsQuantity(
+                        BasketPersonsReq(
+                            basket?.id.orEmpty(),
+                            quantity
+                        )
+                    )
 
-            view?.updateBasketAmount(formatter.format(basket!!.amount))
+                    view?.updateBasket(
+                        deserializeDishes(),
+                        basket?.cutleryCount ?: 0
+                    )
+
+                    val formatter = DecimalFormat("#.##").apply {
+                        roundingMode = RoundingMode.CEILING
+                    }
+
+                    view?.updateBasketAmount(formatter.format(basket?.amount))
+                },
+                { view?.showConnectionErrorScreen() },
+                { view?.showAnyErrorScreen() }
+            )
         }
     }
 

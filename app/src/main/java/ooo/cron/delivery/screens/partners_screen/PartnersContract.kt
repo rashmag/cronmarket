@@ -28,6 +28,10 @@ interface PartnersContract {
 
         fun showChangeAddressScreen()
 
+        fun showOrderFromDialog()
+
+        fun getMinOrderAmount(): Int
+
         fun showProductInfo(product: PartnerProductsRes)
 
         fun navigateBasket(

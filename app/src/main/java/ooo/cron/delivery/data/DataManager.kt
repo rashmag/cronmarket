@@ -237,6 +237,12 @@ class DataManager @Inject constructor(
     fun removeToken() =
         sPrefsService.removeToken()
 
+    fun writePartnerId(id: String){
+        sPrefsService.writePartnerId(id)
+    }
+
+    fun readPartnerId() = sPrefsService.readPartnerId()
+
     companion object {
         const val EMPTY_UUID = SPrefsService.EMPTY_UUID
     }

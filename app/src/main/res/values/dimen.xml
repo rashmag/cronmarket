@@ -44,4 +44,8 @@
     <dimen name="radius_8">8dp</dimen>
     <dimen name="radius_12">12dp</dimen>
     <dimen name="radius_16">16dp</dimen>
+    
+    <!-- Image Slider -->
+    <dimen name="space_26">26dp</dimen>
+    <dimen name="space_42">42dp</dimen>
 </resources>

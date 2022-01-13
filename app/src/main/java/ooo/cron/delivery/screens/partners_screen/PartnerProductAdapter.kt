@@ -61,8 +61,7 @@ class CategoryAdapter(
                         if (product.additives.isEmpty() &&
                             product.requiredAdditiveGroups.isEmpty()
                         ) {
-                            quantityCount = product.inBasketQuantity
-                            quantityCount++
+                            quantityCount = product.inBasketQuantity + 1
 
                             when (defineQuantityChangeStatus(quantityCount, product.inBasketQuantity)) {
                                 QuantityChangeStatus.INCREASED -> increaseProduct(product, quantityCount)
@@ -80,8 +79,7 @@ class CategoryAdapter(
                         if (product.additives.isEmpty() &&
                             product.requiredAdditiveGroups.isEmpty()
                         ) {
-                            quantityCount = product.inBasketQuantity
-                            quantityCount++
+                            quantityCount = product.inBasketQuantity + 1
                             updateCounter(quantityCount)
 
                             when (defineQuantityChangeStatus(quantityCount, product.inBasketQuantity)) {
@@ -137,7 +135,7 @@ class CategoryAdapter(
         private fun updateCounter(quantity: Int) {
             with(binding) {
                 tvPortionCount.text = quantity.toString()
-                if (quantity <= 0 || !isOpen) {
+                if (quantity <= 0 || isOpen.not()) {
                     containerAddToBasket.makeVisible()
                     vgAddProduct.makeInvisible()
                     return

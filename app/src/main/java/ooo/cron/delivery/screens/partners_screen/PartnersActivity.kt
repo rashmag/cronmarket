@@ -1,5 +1,7 @@
 package ooo.cron.delivery.screens.partners_screen
 
+import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
@@ -53,7 +55,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
     lateinit var binding: ActivityPartnersBinding
 
     private lateinit var partnerId: String
-    private var isOpen: Boolean? = null
+    private var isOpen = false
     private var openHours: Int? = null
     private var openMinutes: Int? = null
 
@@ -65,6 +67,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
 
     var scrollRange = -1
     var overScroll = -1
+    private var minOrderAmount = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         injectDependencies()
@@ -107,7 +110,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
     }
 
     private fun setImageSize() {
-        if (isOpen == false) {
+        if (!isOpen) {
 
             val dimensionInDp =
                 TypedValue.applyDimension(
@@ -122,7 +125,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
     }
 
     private fun initPartnerRecyclerView() {
-        productsAdapter = PartnerProductAdapter(isOpen == true)
+        productsAdapter = PartnerProductAdapter(isOpen)
         productsAdapter.setProductClickListener(this)
         binding.rvProduct.apply {
             layoutManager = productsLayoutManager
@@ -206,6 +209,8 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
                     getString(R.string.partners_activity_min_order_template),
                     minAmountOrder
                 )
+
+                minOrderAmount = minAmountOrder
 
                 if (partnerCardImg != null) {
                     Glide.with(binding.root)
@@ -343,6 +348,8 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
         )
     }
 
+    override fun getMinOrderAmount() = minOrderAmount
+
     override suspend fun updateBasketPreview(quantity: Int, basketPrice: String) {
         with(binding) {
             btnPartnerBasketPrice.text = getString(R.string.partner_basket_price, basketPrice)
@@ -350,8 +357,8 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
             vgPartnerBasket.run {
                 startBottomAnimate(
                     quantity > 0 &&
-                            isOpen == true &&
-                            presenter.checkCityId()
+                            isOpen &&
+                            presenter.checkPartnerId().not()
                 )
             }
 
@@ -376,6 +383,19 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
             Intent(this, FirstAddressSelectionActivity::class.java)
                 .putExtra(RETURNING_SCREEN_KEY, ReturningToScreenEnum.FROM_PARTNERS as? Parcelable)
         )
+    }
+
+    override fun showOrderFromDialog() {
+        AlertDialog.Builder(this)
+            .setTitle(EMPTY_TITLE)
+            .setIcon(R.mipmap.ic_launcher)
+            .setMessage(getString(R.string.partners_activity_dialog_min_price_title, minOrderAmount.toString()))
+            .setCancelable(false)
+            .setPositiveButton(R.string.partners_activity_dialog_btn_ok_title) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .create()
+            .show()
     }
 
     override fun showProductInfo(product: PartnerProductsRes) {
@@ -498,5 +518,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
         private const val EMPTY_QUANTITY = 0
 
         const val HEADER_IMAGE_SIZE_WHEN_PARTNER_CLOSE = 490f
+
+        const val EMPTY_TITLE = " "
     }
 }

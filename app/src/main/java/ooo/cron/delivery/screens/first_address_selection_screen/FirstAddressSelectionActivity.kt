@@ -28,6 +28,7 @@ import ooo.cron.delivery.screens.main_screen.MainActivity
 import javax.inject.Inject
 import ooo.cron.delivery.data.network.models.SuggestAddress
 import ooo.cron.delivery.utils.enums.ReturningToScreenEnum
+import ooo.cron.delivery.utils.extensions.uiLazy
 
 /**
  * Created by Ramazan Gadzhikadiev on 13.04.2021.
@@ -60,6 +61,10 @@ class FirstAddressSelectionActivity :
     private var returningScreen: ReturningToScreenEnum ?= null
 
     var citiesList = arrayListOf<String>()
+
+    private val citiesAdapter by uiLazy {
+        CitiesAdapter(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         injectDependencies()
@@ -305,7 +310,7 @@ class FirstAddressSelectionActivity :
     }
 
     private fun configureSelectionCity() {
-        binding.spinnerFirstAddressSelectionCity.adapter = CitiesAdapter(this)
+        binding.spinnerFirstAddressSelectionCity.adapter = citiesAdapter
         binding.spinnerFirstAddressSelectionCity.onItemSelectedListener =
             createSelectionCityListener(presenter::onCitySelected, presenter::onNoCitySelected)
         binding.spinnerFirstAddressSelectionCity.isEnabled = returningScreen != ReturningToScreenEnum.FROM_ORDERING
@@ -382,17 +387,14 @@ class FirstAddressSelectionActivity :
     }
 
     private suspend fun updateCities(cities: List<City>) {
-        with(binding) {
-            (spinnerFirstAddressSelectionCity.adapter as CitiesAdapter).run {
-                clear()
-                if (presenter.checkingFirstLaunch()) {
-                    spinnerFirstAddressSelectionCity.setSelection(presenter.getCurrentCityPosition())
-                }
-                cities.forEachIndexed { index, city ->
-                    insert(city.city, index)
-                    citiesList.add(city.city)
-                }
-                notifyDataSetChanged()
+        with(binding.spinnerFirstAddressSelectionCity) {
+            citiesList.clear()
+            if (presenter.checkingFirstLaunch()) {
+                setSelection(presenter.getCurrentCityPosition())
+            }
+            citiesAdapter.setData(cities)
+            cities.forEach {
+                citiesList.add(it.city)
             }
         }
     }

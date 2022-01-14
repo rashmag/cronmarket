@@ -28,6 +28,7 @@ import ooo.cron.delivery.screens.main_screen.MainActivity
 import javax.inject.Inject
 import ooo.cron.delivery.data.network.models.SuggestAddress
 import ooo.cron.delivery.utils.enums.ReturningToScreenEnum
+import ooo.cron.delivery.utils.extensions.uiLazy
 
 /**
  * Created by Ramazan Gadzhikadiev on 13.04.2021.
@@ -61,7 +62,7 @@ class FirstAddressSelectionActivity :
 
     var citiesList = arrayListOf<String>()
 
-    private val citiesAdapter by lazy(LazyThreadSafetyMode.NONE) {
+    private val citiesAdapter by uiLazy {
         CitiesAdapter(this)
     }
 
@@ -309,7 +310,7 @@ class FirstAddressSelectionActivity :
     }
 
     private fun configureSelectionCity() {
-        binding.spinnerFirstAddressSelectionCity.adapter = CitiesAdapter(this)
+        binding.spinnerFirstAddressSelectionCity.adapter = citiesAdapter
         binding.spinnerFirstAddressSelectionCity.onItemSelectedListener =
             createSelectionCityListener(presenter::onCitySelected, presenter::onNoCitySelected)
         binding.spinnerFirstAddressSelectionCity.isEnabled = returningScreen != ReturningToScreenEnum.FROM_ORDERING
@@ -392,7 +393,6 @@ class FirstAddressSelectionActivity :
                 setSelection(presenter.getCurrentCityPosition())
             }
             citiesAdapter.setData(cities)
-            adapter = citiesAdapter
             cities.forEach {
                 citiesList.add(it.city)
             }

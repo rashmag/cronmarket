@@ -36,3 +36,7 @@ internal fun View.makeInvisible() {
 }
 
 fun Int?.orZero(): Int = this ?: 0
+
+fun <T> uiLazy(operation: () -> T): Lazy<T> = lazy(LazyThreadSafetyMode.NONE) {
+    operation()
+}

@@ -97,8 +97,7 @@ class CategoryAdapter(
 
                     ivMinus.setOnClickListener {
                         val product = productCategoryModel[bindingAdapterPosition]
-                        quantityCount = product.inBasketQuantity
-                        quantityCount--
+                        quantityCount = product.inBasketQuantity - 1
                         updateCounter(quantityCount)
 
                         when (defineQuantityChangeStatus(quantityCount, product.inBasketQuantity)) {

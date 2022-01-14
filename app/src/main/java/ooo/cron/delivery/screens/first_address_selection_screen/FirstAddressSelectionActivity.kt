@@ -385,6 +385,7 @@ class FirstAddressSelectionActivity :
         with(binding) {
             (spinnerFirstAddressSelectionCity.adapter as CitiesAdapter).run {
                 clear()
+                citiesList.clear()
                 if (presenter.checkingFirstLaunch()) {
                     spinnerFirstAddressSelectionCity.setSelection(presenter.getCurrentCityPosition())
                 }

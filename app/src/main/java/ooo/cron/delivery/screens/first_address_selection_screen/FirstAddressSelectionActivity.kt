@@ -61,6 +61,10 @@ class FirstAddressSelectionActivity :
 
     var citiesList = arrayListOf<String>()
 
+    private val citiesAdapter by lazy(LazyThreadSafetyMode.NONE) {
+        CitiesAdapter(this)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         injectDependencies()
         presenter.attachView(this)
@@ -382,18 +386,15 @@ class FirstAddressSelectionActivity :
     }
 
     private suspend fun updateCities(cities: List<City>) {
-        with(binding) {
-            (spinnerFirstAddressSelectionCity.adapter as CitiesAdapter).run {
-                clear()
-                citiesList.clear()
-                if (presenter.checkingFirstLaunch()) {
-                    spinnerFirstAddressSelectionCity.setSelection(presenter.getCurrentCityPosition())
-                }
-                cities.forEachIndexed { index, city ->
-                    insert(city.city, index)
-                    citiesList.add(city.city)
-                }
-                notifyDataSetChanged()
+        with(binding.spinnerFirstAddressSelectionCity) {
+            citiesList.clear()
+            if (presenter.checkingFirstLaunch()) {
+                setSelection(presenter.getCurrentCityPosition())
+            }
+            citiesAdapter.setData(cities)
+            adapter = citiesAdapter
+            cities.forEach {
+                citiesList.add(it.city)
             }
         }
     }

@@ -184,7 +184,7 @@ class FirstAddressSelectionPresenter @Inject constructor(
                     suggestedAddresses.forEach {
                         view?.setFoundCity(it.city)
                         delay(DELAY_FOR_SEARCH_ADDRESS)
-                        view?.setFoundAddress(it.streetWithType)
+                        view?.setFoundAddress(it.streetWithType.plus(" " + it.house))
                     }
                 } else {
                     view?.showWarningMessage()

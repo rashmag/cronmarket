@@ -226,7 +226,8 @@
     <string name="accept_warning_message">Нельзя заказать товары из разных заведений. Подтверждая вы удалите все товары из корзины.</string>
     <string name="accept">Подтвердить</string>
     <string name="cancel">Отмена</string>
-    <string name="order_repeat_title">Повторить</string>
+    <string name="order_pay_fail_title">Вернуться к оплате</string>
+    <string name="order_pay_success_title">Вернуться на главную</string>
     <string name="basket_make_order">Оформить заказ</string>
     <string name="price">%1$s₽</string>
     <string name="rate_delivery_price">Стоимость доставки\nпо тарифу</string>

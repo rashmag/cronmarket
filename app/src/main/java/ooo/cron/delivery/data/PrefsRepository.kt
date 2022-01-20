@@ -7,7 +7,7 @@ import ooo.cron.delivery.data.network.models.Basket
 import ooo.cron.delivery.data.network.models.RefreshableToken
 import javax.inject.Inject
 
-class OrderPrefsRepository @Inject constructor(
+class PrefsRepository @Inject constructor(
     private val sharedPreferences: SharedPreferences
 ) {
 
@@ -28,6 +28,12 @@ class OrderPrefsRepository @Inject constructor(
 
     fun readDeliveryCityId() =
         sharedPreferences.getString(CITY_ID, "")
+
+    fun writeBasket(basket:Basket) {
+        sharedPreferences.edit()
+            .putString(BASKET, Gson().toJson(basket).toString())
+            .apply()
+    }
 
     companion object {
         const val USER_PHONE = "user_phone"

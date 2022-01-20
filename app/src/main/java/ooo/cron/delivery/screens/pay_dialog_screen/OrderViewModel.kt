@@ -8,12 +8,9 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import ooo.cron.delivery.data.OrderInteractor
-import ooo.cron.delivery.data.OrderPrefsRepository
-import ooo.cron.delivery.data.OrderRestRepository
 import ooo.cron.delivery.data.network.models.Basket
 import ooo.cron.delivery.data.network.models.Basket.Companion.deserializeDishes
 import ooo.cron.delivery.data.network.models.PayData
-import ooo.cron.delivery.data.network.request.OrderReq
 import ooo.cron.delivery.utils.SingleLiveEvent
 import ru.tinkoff.acquiring.sdk.models.Item
 import ru.tinkoff.acquiring.sdk.models.Receipt

@@ -1,14 +1,11 @@
 package ooo.cron.delivery.data
 
-import android.content.SharedPreferences
-import ooo.cron.delivery.data.network.RestService
 import ooo.cron.delivery.data.network.models.Basket
-import ooo.cron.delivery.data.network.request.OrderReq
 import javax.inject.Inject
 
 class OrderInteractor @Inject constructor(
-    private val restRepo: OrderRestRepository,
-    private val prefsRepo: OrderPrefsRepository
+    private val restRepo: RestRepository,
+    private val prefsRepo: PrefsRepository
 ) {
     //suspend fun getBasket() = restRepo.getBasket(prefsRepo.readBasket().id)
 

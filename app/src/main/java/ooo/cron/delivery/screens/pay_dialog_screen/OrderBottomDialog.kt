@@ -31,7 +31,7 @@ import javax.inject.Inject
  * Created by Maya Nasrueva on 14.12.2021
  * */
 
-class OrderBottomDialog() : BottomSheetDialogFragment() {
+class OrderBottomDialog : BottomSheetDialogFragment() {
 
     private val viewModel: OrderViewModel by activityViewModels {
         factory.create()
@@ -69,6 +69,7 @@ class OrderBottomDialog() : BottomSheetDialogFragment() {
             Activity.RESULT_OK -> {
                 Log.d("result_codeD", "Done$resultCode")
                 viewModel.onPaymentSuccess()
+
             }
             Activity.RESULT_CANCELED -> Toast.makeText(requireContext(), "Оплата отменена", Toast.LENGTH_SHORT).show()
             RESULT_ERROR -> {
@@ -146,8 +147,8 @@ class OrderBottomDialog() : BottomSheetDialogFragment() {
     private fun openOrderStatusFragment(isSuccessPayment: Boolean) {
         /*TODO сделать переход на фрагмент с открытием полноэкранного статуса заказа
         *  isSuccessPayment передавать в экран через Bundle или Extra*/
-        payCallback?.onPayClicked(isSuccessPayment)
         dismiss()
+        payCallback?.onPayClicked(isSuccessPayment)
     }
 
     private fun injectDependencies() {
@@ -157,9 +158,8 @@ class OrderBottomDialog() : BottomSheetDialogFragment() {
             .inject(this)
     }
 
-    //Показ ошибки получения баскета
     private fun showError() {
-        TODO("Not yet implemented")
+        //TODO Показ ошибки получения баскета
     }
 
     private fun removeLoadingState(basket: Basket) {

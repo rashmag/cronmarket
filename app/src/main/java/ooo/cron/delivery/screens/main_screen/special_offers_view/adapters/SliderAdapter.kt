@@ -11,7 +11,7 @@ import ooo.cron.delivery.screens.main_screen.special_offers_view.models.SlideMod
 
 class SliderAdapter : RecyclerView.Adapter<SliderAdapter.SliderViewHolder>() {
 
-    private var imageList = listOf<SlideModel>()
+    private var imageList = arrayListOf<SlideModel>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = SliderViewHolder(
         itemBinding = PagerRowBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -24,7 +24,11 @@ class SliderAdapter : RecyclerView.Adapter<SliderAdapter.SliderViewHolder>() {
     override fun getItemCount() = imageList.size
 
     fun setData(list: List<SlideModel>){
-        this.imageList = list
+        this.imageList.run {
+            clear()
+            addAll(list)
+        }
+        notifyDataSetChanged()
     }
 
     inner class SliderViewHolder(private val itemBinding: PagerRowBinding): RecyclerView.ViewHolder(itemBinding.root) {

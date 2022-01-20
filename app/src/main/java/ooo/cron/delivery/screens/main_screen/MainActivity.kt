@@ -11,6 +11,7 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.appbar.AppBarLayout.ScrollingViewBehavior
 import nl.psdcompany.duonavigationdrawer.widgets.DuoDrawerToggle
@@ -48,9 +49,8 @@ class MainActivity : BaseActivity(), MainContract.View {
     private var shouldLastBasketSessionBeVisible = false
     private var isFromPartnerScreen = false
 
-    private var imageCount = 0
-
     private var swipeTimer: Timer? = null
+    private var sliderPosition = 0
 
     private val partnerActivityLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -74,6 +74,7 @@ class MainActivity : BaseActivity(), MainContract.View {
         configureNavigationDrawer()
         configureMarketCategoriesList()
         setContinueLastSessionClickListener()
+        initSliderRecycler()
     }
 
     private fun configureMarketCategoriesList() {
@@ -262,12 +263,7 @@ class MainActivity : BaseActivity(), MainContract.View {
             specialOffersTitle.makeVisible()
             imageSlider.makeVisible()
 
-            imageCount = promotions.size
-
-            setPageTransformerForImageSlider()
-
             sliderAdapter.setData(promotions.map { SlideModel(it.imgUri) })
-            imageSlider.adapter = sliderAdapter
         }
     }
 
@@ -278,30 +274,23 @@ class MainActivity : BaseActivity(), MainContract.View {
         }
     }
 
-    private fun setPageTransformerForImageSlider() {
-        with(binding) {
-            imageSlider.offscreenPageLimit = 1
-
-            // Для показа половинки предыдущего и следующего элемента
-            val nextItemVisiblePx = resources.getDimension(R.dimen.space_26)
-            val currentItemHorizontalMarginPx = resources.getDimension(R.dimen.space_42)
-            val pageTranslationX = nextItemVisiblePx + currentItemHorizontalMarginPx
-            val pageTransformer = ViewPager2.PageTransformer { page: View, position: Float ->
-                page.translationX = -pageTranslationX * position
-            }
-            imageSlider.setPageTransformer(pageTransformer)
+    private fun initSliderRecycler() {
+        with(binding.imageSlider) {
+            PagerSnapHelper().attachToRecyclerView(this)
+            adapter = sliderAdapter
         }
     }
 
     private fun setTimerForImageSlider() {
 
-        with(binding) {
+        with(binding.imageSlider) {
             val sliderHandler = Handler()
             val sliderRunnable = Runnable {
-                if (imageSlider.currentItem + 1 == imageCount) {
-                    imageSlider.setCurrentItem(FIRST_IMAGE, true)
+                val position = (layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
+                if (position + 1 >= sliderAdapter.itemCount) {
+                    smoothScrollToPosition(0)
                 } else {
-                    imageSlider.setCurrentItem(imageSlider.currentItem + 1, true)
+                    smoothScrollToPosition(position + 1)
                 }
             }
 

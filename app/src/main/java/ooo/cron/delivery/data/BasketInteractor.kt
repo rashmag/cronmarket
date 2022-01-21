@@ -1,8 +1,6 @@
 package ooo.cron.delivery.data
 
-import ooo.cron.delivery.data.network.models.Basket
-import ooo.cron.delivery.data.network.models.BasketPersonsReq
-import ooo.cron.delivery.data.network.models.RemoveBasketItemReq
+import ooo.cron.delivery.data.network.models.*
 import ooo.cron.delivery.data.network.request.BasketClearReq
 import ooo.cron.delivery.data.network.request.BasketEditorReq
 import javax.inject.Inject
@@ -41,4 +39,16 @@ class BasketInteractor @Inject constructor(
 
     suspend fun removeBasketItem(removeBasketItem: RemoveBasketItemReq) =
         restRepository.removeBasketItem(removeBasketItem)
+
+    fun getBasketPersonReq(basket: Basket, quantity: Int) =
+        restRepository.getBasketPersonReq(basket, quantity)
+
+    fun getBasketClearReq(basket: Basket) =
+        restRepository.getBasketClearReq(basket)
+
+    fun getRemoveBasketItemReq(product: BasketDish?, basket: Basket) =
+        restRepository.getRemoveBasketItemReq(product, basket)
+
+    fun getBasketEditorReq(basket: Basket, addingProduct: BasketDish) =
+        restRepository.getBasketEditorReq(basket, addingProduct)
 }

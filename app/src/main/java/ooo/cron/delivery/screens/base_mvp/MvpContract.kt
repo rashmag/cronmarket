@@ -40,8 +40,9 @@ abstract class BaseMvpPresenter<V : MvpView> : MvpPresenter<V> {
                 is UnknownHostException, is SocketTimeoutException ->
                     onConnectionError?.invoke()
                 is CancellationException -> showJobCancellationLogMessage(e)
-                else ->
+                else -> {
                     onAnyError()
+                }
             }
         }
     }

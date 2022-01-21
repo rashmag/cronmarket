@@ -2,6 +2,7 @@ package ooo.cron.delivery.screens.basket_screen
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +18,8 @@ import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.Basket
 import ooo.cron.delivery.data.network.models.BasketDish
 import ooo.cron.delivery.databinding.FragmentBasketBinding
-import ooo.cron.delivery.screens.BaseFragment
+import ooo.cron.delivery.screens.BaseFragment2
+import ooo.cron.delivery.screens.BaseViewModel
 import ooo.cron.delivery.screens.login_screen.LoginActivity
 import ooo.cron.delivery.screens.pay_dialog_screen.OrderBottomDialog
 import ooo.cron.delivery.utils.extensions.startBottomAnimate
@@ -30,10 +32,7 @@ import javax.inject.Inject
  * Created by Maya Nasrueva on 28.12.2021
  * */
 
-class BasketFragment : BaseFragment() {
-
-    /*@Inject
-    lateinit var presenter: BasketContract.Presenter*/
+class BasketFragment : BaseFragment2() {
 
     @Inject
     lateinit var binding: FragmentBasketBinding
@@ -41,7 +40,7 @@ class BasketFragment : BaseFragment() {
     @Inject
     lateinit var factory: BasketViewModelFactory.Factory
 
-    private val viewModel: BasketViewModel by viewModels {
+    override val baseViewModel: BasketViewModel by viewModels {
         factory.create()
     }
     private var basket: Basket? = null
@@ -50,7 +49,6 @@ class BasketFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         injectDependencies()
-        //presenter.attachView(this)
         super.onCreate(savedInstanceState)
     }
 
@@ -63,8 +61,7 @@ class BasketFragment : BaseFragment() {
 
     override fun onStart() {
         super.onStart()
-        //presenter.onStartView() // Todo убрать presenter +
-        viewModel.onStart()
+        baseViewModel.onStart()
     }
 
     override fun onCreateView(
@@ -82,39 +79,31 @@ class BasketFragment : BaseFragment() {
             showClearBasketDialog()
         }
         binding.btnBasketOrder.setOnClickListener {
-            viewModel.onMakeOrderClicked()
+            baseViewModel.onMakeOrderClicked()
         }
         initAdapter()
 
-        viewModel.basket.observe(viewLifecycleOwner, {
+        baseViewModel.basket.observe(viewLifecycleOwner, {
             basket = it
             isRestaurant = it.marketCategoryId
-            updateBasket(deserializeDishes(basket), basket!!.cutleryCount)
+            updateBasket(deserializeDishes(it), it.cutleryCount)
             val formatter = DecimalFormat("#.##").apply {
                 roundingMode = RoundingMode.CEILING
             }
-            updateBasketAmount(formatter.format(basket!!.amount))
+            updateBasketAmount(formatter.format(it.amount))
 
         })
 
-        viewModel.basketClearAccept.observe(viewLifecycleOwner, {
+        baseViewModel.basketClearAccept.observe(viewLifecycleOwner, {
             closeBasketScreen()
         })
 
-        viewModel.navigationAuth.observe(viewLifecycleOwner, {
+        baseViewModel.navigationAuth.observe(viewLifecycleOwner, {
             navigateAuthorization()
         })
 
-        viewModel.showingMakeOrderDialog.observe(viewLifecycleOwner, {
+        baseViewModel.showingMakeOrderDialog.observe(viewLifecycleOwner, {
             showMakeOrderBottomDialog()
-        })
-
-        viewModel.connectionErrorScreen.observe(viewLifecycleOwner, {
-            showConnectionErrorScreen()
-        })
-
-        viewModel.anyErrorScreen.observe(viewLifecycleOwner, {
-            showAnyErrorScreen()
         })
     }
 
@@ -132,28 +121,28 @@ class BasketFragment : BaseFragment() {
 
             val itemTouchHelper = ItemTouchHelper(SwipeHelper(requireContext()) {
                 if (it is BasketAdapter.ProductViewHolder)
-                //presenter.removeItemClicked(it.product) // Todo убрать presenter +
-                    viewModel.onItemRemoveClicked(it.product)
+                    baseViewModel.onItemRemoveClicked(it.product)
             })
             itemTouchHelper.attachToRecyclerView(rvBasketContent)
         }
     }
 
     private fun updateBasket(basket: List<BasketDish>, partnersQuantity: Int) {
-        adapter.setProducts(
-            basket,
-            partnersQuantity,
-            isRestaurant!!, //?
-            { dish, extraQuantity -> viewModel.onPlusClicked(dish, extraQuantity) }, // Todo убрать presenter +
-            { dish, unwantedQuantity -> viewModel.onMinusClicked(dish, unwantedQuantity) }, // Todo убрать presenter +
-            { viewModel.onPersonsQuantityEdited(it) } // Todo убрать presenter +
-        )
+        isRestaurant?.let {
+            adapter.setProducts(
+                basket,
+                partnersQuantity,
+                it,
+                { dish, extraQuantity -> baseViewModel.onPlusClicked(dish, extraQuantity) },
+                { dish, unwantedQuantity -> baseViewModel.onMinusClicked(dish, unwantedQuantity) },
+                { quantity ->  baseViewModel.onPersonsQuantityEdited(quantity) }
+            )
+        }
     }
 
     private fun showClearBasketDialog() {
         ClearBasketDialog {
-            //presenter.clearBasketAccepted() // Todo убрать presenter +
-            viewModel.onClearBasketAccepted()
+            baseViewModel.onClearBasketAccepted()
         }.show(
             parentFragmentManager,
             ClearBasketDialog::class.simpleName
@@ -188,9 +177,7 @@ class BasketFragment : BaseFragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        //presenter.personsQuantityEdited(0) // Todo убрать presenter +
-        viewModel.onPersonsQuantityEdited(0)
-        //presenter.detachView() // Todo убрать presenter +
+        baseViewModel.onPersonsQuantityEdited(0)
     }
 
     private fun deserializeDishes(basket: Basket?) =

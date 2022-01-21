@@ -4,18 +4,18 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import ooo.cron.delivery.data.BasketInteractor
 import ooo.cron.delivery.data.network.models.Basket
 import ooo.cron.delivery.data.network.models.BasketDish
-import ooo.cron.delivery.data.network.models.BasketPersonsReq
-import ooo.cron.delivery.data.network.models.RemoveBasketItemReq
-import ooo.cron.delivery.data.network.request.BasketClearReq
 import ooo.cron.delivery.data.network.request.BasketEditorReq
 import ooo.cron.delivery.screens.BaseViewModel
+import ooo.cron.delivery.utils.Error
+import ooo.cron.delivery.utils.NoConnection
+import ooo.cron.delivery.utils.Result
 import ooo.cron.delivery.utils.SingleLiveEvent
+import ooo.cron.delivery.utils.Success
 import javax.inject.Inject
 
 /**
@@ -36,102 +36,57 @@ class BasketViewModel @Inject constructor(
     override val connectionErrorScreen: SingleLiveEvent<Unit> = SingleLiveEvent()
     override val anyErrorScreen: SingleLiveEvent<Unit> = SingleLiveEvent()
 
+
     fun onStart() {
         viewModelScope.launch(handler) {
-            ErrorHandler(
-                action = {
-                    val basket = interactor.getBasket(interactor.getBasketId())
-                    basket.onSuccess {
-                        mutableBasket.postValue(basket.getOrNull())
-                    }
-                },
-                onConnectionError = { connectionErrorScreen.call()},
-                onAnyError = { anyErrorScreen.call()})
+            interactor.getBasket(interactor.getBasketId()).process { mutableBasket.postValue(it) }
         }
     }
 
     fun onPlusClicked(dish: BasketDish, extraQuantity: Int) {
         viewModelScope.launch(handler) {
             val editor = prepareEditor(dish, extraQuantity)
-            ErrorHandler(
-                action = {
-                   val basket = editor?.let { interactor.increaseProductInBasket(it)
-                   }
-                    mutableBasket.postValue(basket!!)
-                },
-                onConnectionError = { connectionErrorScreen.call() },
-                onAnyError = { anyErrorScreen.call() }
-            )
+            editor?.let { interactor.increaseProductInBasket(it) }
+                ?.process { mutableBasket.postValue(it) }
         }
     }
 
     fun onMinusClicked(dish: BasketDish, extraQuantity: Int) {
         viewModelScope.launch(handler) {
             val editor = prepareEditor(dish, extraQuantity)
-            ErrorHandler(
-                action = {
-                    val basket = editor?.let {
-                        interactor.decreaseProductInBasket(it)
-                    }
-                    mutableBasket.postValue(basket!!)
-                },
-                onConnectionError = { connectionErrorScreen.call() },
-                onAnyError = { anyErrorScreen.call() }
-            )
+            editor?.let { interactor.decreaseProductInBasket(it) }
+                ?.process { mutableBasket.postValue(it) }
         }
     }
 
     fun onPersonsQuantityEdited(quantity: Int) {
         viewModelScope.launch(handler) {
-            ErrorHandler(
-                action = {
-                    val basket = interactor.editPersonsQuantity(
-                        BasketPersonsReq(
-                            mutableBasket.value!!.id,
-                            quantity
-                        )
-                    )
-                    mutableBasket.postValue(basket)
-                },
-                onConnectionError = { connectionErrorScreen.call() },
-                onAnyError = { anyErrorScreen.call() }
-            )
+            val basketPersonsReq = mutableBasket.value?.let {
+                interactor.getBasketPersonReq(it,quantity)
+            }
+            basketPersonsReq?.let { interactor.editPersonsQuantity(it) }
+                ?.process { mutableBasket.postValue(it) }
         }
     }
 
     fun onClearBasketAccepted() {
         viewModelScope.launch(handler) {
-            ErrorHandler(
-                action =  {
-                    val basket = interactor.clearBasket(
-                        BasketClearReq(
-                            mutableBasket.value!!.id
-                        )
-                    )
-                    mutableBasket.value = basket //?
-                    basketClearAccept.call()
-                },
-                onConnectionError = { connectionErrorScreen.call() },
-                onAnyError = { anyErrorScreen.call() }
-            )
+            val basketClearReq = mutableBasket.value?.let { interactor.getBasketClearReq(it) }
+            basketClearReq?.let { interactor.clearBasket(it) }
+                ?.process { mutableBasket.postValue(it) }
+            basketClearAccept.call()
         }
     }
 
     fun onItemRemoveClicked(product: BasketDish?) {
         viewModelScope.launch(handler) {
-            ErrorHandler(
-                action = {
-                    val basket = interactor.removeBasketItem(
-                        RemoveBasketItemReq(
-                            product?.id.orEmpty(),
-                            mutableBasket.value !!.id
-                        )
-                    )
-                    mutableBasket.postValue(basket)
-                },
-                onConnectionError = { connectionErrorScreen.call() },
-                onAnyError = { anyErrorScreen.call() }
-            )
+            val removeBasketItemReq = mutableBasket.value?.let {
+                interactor.getRemoveBasketItemReq(product, it)
+            }
+            removeBasketItemReq?.let {
+                interactor.removeBasketItem(it)
+            }?.process { mutableBasket.postValue(it) }
+
         }
     }
 
@@ -139,7 +94,8 @@ class BasketViewModel @Inject constructor(
         if (interactor.getToken().refreshToken.isEmpty())
             navigationAuth.call()
         mutableBasket.value?.let {
-            interactor.writeBasket(it) }
+            interactor.writeBasket(it)
+        }
         showingMakeOrderDialog.call()
 
     }
@@ -148,15 +104,18 @@ class BasketViewModel @Inject constructor(
         val addingProduct = dish.copy(
             quantity = extraQuantity
         )
-        val basketEditor = mutableBasket.value
-        val editor = basketEditor?.let {
-            BasketEditorReq(
-                it.id,
-                it.partnerId,
-                it.marketCategoryId,
-                Gson().toJson(addingProduct)
-            )
+        val basket = mutableBasket.value
+        return basket?.let {
+            interactor.getBasketEditorReq(it, addingProduct)
         }
-        return editor
+    }
+
+    //экстеншн
+    private fun <T> Result<T>.process(onSuccess: (T) -> Unit) {
+        return when (this) {
+            is Success -> onSuccess.invoke(body)
+            is Error -> anyErrorScreen.call()
+            is NoConnection -> connectionErrorScreen.call()
+        }
     }
 }

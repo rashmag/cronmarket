@@ -60,14 +60,21 @@ class OrderViewModel @Inject constructor(
     private fun getOrderInfo() {
         val phone = interactor.getPhone().toString()
         val basket = interactor.getBasket()
+        Log.d("basket", basket.toString())
         val amountSum =
-            basket.amount + basket.deliveryCost
-        val receipt = Receipt(
-            ArrayList(receiptsItems(basket)),
-            "cron.devsystems@gmail.com",
-            Taxation.USN_INCOME
-        )
-        payData.postValue(PayData(phone, amountSum, receipt))
+            basket?.let {
+                it.amount + it.deliveryCost
+            }
+        val receipt = basket?.let {
+            Receipt(
+                ArrayList(receiptsItems(it)),
+                "cron.devsystems@gmail.com",
+                Taxation.USN_INCOME
+            )
+        }
+        payData.postValue(amountSum?.let { receipt?.let { it1 ->
+            PayData(phone, it, it1)
+        } })
     }
 
     fun receiptsItems(basket: Basket) =
@@ -96,7 +103,9 @@ class OrderViewModel @Inject constructor(
         viewModelScope.launch(handler) {
             try {
                 val basket = interactor.getBasket()
-                mutableBasketState.postValue(Default(basket))
+                mutableBasketState.postValue(basket?.let {
+                    Default(it)
+                })
             } catch (e: Exception) {
                 mutableBasketState.postValue(Error)
             }
@@ -115,7 +124,6 @@ class OrderViewModel @Inject constructor(
     //TODO !!!!!!!!!! обработать ошибку отсутствия интернета при успешной оплате и отправке POST-запроса
 
     fun onPaymentSuccess() {
-        //TODO сформировать OrderReq с введенных юзером данных
         viewModelScope.launch {
             val paymentMethod = if (payVariantState.value == CashVariant) 1 else 2
             val comment = commentTextLiveData.value.toString()
@@ -126,7 +134,6 @@ class OrderViewModel @Inject constructor(
 
     //метод для вызова показа ошибки в экране корзины
     fun onPaymentFailed() {
-        /*TODO вызвать SingleLiveEvent для показа ошибки оплаты заказа*/
         paymentStatus.postValue(false)
     }
 

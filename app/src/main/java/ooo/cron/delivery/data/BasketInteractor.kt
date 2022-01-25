@@ -17,7 +17,7 @@ class BasketInteractor @Inject constructor(
         restRepository.getBasket(basketId)
 
     fun getBasketId() =
-        prefsRepository.readBasket().id
+        prefsRepository.readBasketId()
 
     fun getToken() =
         prefsRepository.readToken()

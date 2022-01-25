@@ -10,17 +10,19 @@ class OrderInteractor @Inject constructor(
     //suspend fun getBasket() = restRepo.getBasket(prefsRepo.readBasket().id)
 
     suspend fun sendOrder(paymentMethod: Int, comment: String ) {
-        restRepo.sendOrder(
-            prefsRepo.readToken().accessToken,
-            prefsRepo.readBasket().id,
-            prefsRepo.readUserPhone(),
-            comment,
-            prefsRepo.readDeliveryCityId(),
-            paymentMethod
-        )
+        prefsRepo.readBasket()?.let {
+            restRepo.sendOrder(
+                prefsRepo.readToken().accessToken,
+                it.id,
+                prefsRepo.readUserPhone(),
+                comment,
+                prefsRepo.readDeliveryCityId(),
+                paymentMethod
+            )
+        }
     }
 
-    fun getBasket(): Basket =
+    fun getBasket(): Basket? =
         prefsRepo.readBasket()
 
     fun getPhone(): String? =

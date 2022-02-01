@@ -11,6 +11,7 @@ import ooo.cron.delivery.data.OrderInteractor
 import ooo.cron.delivery.data.network.models.Basket
 import ooo.cron.delivery.data.network.models.Basket.Companion.deserializeDishes
 import ooo.cron.delivery.data.network.models.PayData
+import ooo.cron.delivery.screens.BaseViewModel
 import ooo.cron.delivery.utils.SingleLiveEvent
 import ru.tinkoff.acquiring.sdk.models.Item
 import ru.tinkoff.acquiring.sdk.models.Receipt
@@ -126,6 +127,9 @@ class OrderViewModel @Inject constructor(
         viewModelScope.launch {
             val paymentMethod = if (payVariantState.value == CashVariant) 1 else 2
             val comment = commentTextLiveData.value.toString()
+            val basket = interactor.getBasket()
+            val basketClearReq = basket?.let { interactor.getBasketClearReq(it) }
+            basketClearReq?.let { interactor.clearBasket(it) }
             interactor.sendOrder(paymentMethod, comment)
         }
         paymentStatus.postValue(true)

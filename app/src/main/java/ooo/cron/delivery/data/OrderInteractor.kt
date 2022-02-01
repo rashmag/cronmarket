@@ -1,6 +1,7 @@
 package ooo.cron.delivery.data
 
 import ooo.cron.delivery.data.network.models.Basket
+import ooo.cron.delivery.data.network.request.BasketClearReq
 import javax.inject.Inject
 
 /**
@@ -27,6 +28,12 @@ class OrderInteractor @Inject constructor(
             }
         }
     }
+
+    suspend fun clearBasket(basketClearReq: BasketClearReq) =
+        restRepo.clearBasket(basketClearReq)
+
+    fun getBasketClearReq(basket: Basket) =
+        restRepo.getBasketClearReq(basket)
 
     fun getBasket(): Basket? =
         prefsRepo.readBasket()

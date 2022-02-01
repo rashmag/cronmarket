@@ -3,6 +3,10 @@ package ooo.cron.delivery.data
 import ooo.cron.delivery.data.network.models.Basket
 import javax.inject.Inject
 
+/**
+ * Created by Maya Nasrueva on 09.01.2022
+ * */
+
 class OrderInteractor @Inject constructor(
     private val restRepo: RestRepository,
     private val prefsRepo: PrefsRepository
@@ -11,14 +15,16 @@ class OrderInteractor @Inject constructor(
 
     suspend fun sendOrder(paymentMethod: Int, comment: String ) {
         prefsRepo.readBasket()?.let {
-            restRepo.sendOrder(
-                prefsRepo.readToken().accessToken,
-                it.id,
-                prefsRepo.readUserPhone(),
-                comment,
-                prefsRepo.readDeliveryCityId(),
-                paymentMethod
-            )
+            prefsRepo.readToken()?.accessToken?.let { it1 ->
+                restRepo.sendOrder(
+                    it1,
+                    it.id,
+                    prefsRepo.readUserPhone(),
+                    comment,
+                    prefsRepo.readDeliveryCityId(),
+                    paymentMethod
+                )
+            }
         }
     }
 

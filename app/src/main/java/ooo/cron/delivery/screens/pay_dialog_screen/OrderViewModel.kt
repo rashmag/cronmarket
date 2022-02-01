@@ -60,7 +60,6 @@ class OrderViewModel @Inject constructor(
     private fun getOrderInfo() {
         val phone = interactor.getPhone().toString()
         val basket = interactor.getBasket()
-        Log.d("basket", basket.toString())
         val amountSum =
             basket?.let {
                 it.amount + it.deliveryCost

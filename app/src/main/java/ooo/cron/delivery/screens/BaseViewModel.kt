@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import ooo.cron.delivery.utils.*
 
 /**
- * Created by Maya Nasrueva on 18.01.2021
+ * Created by Maya Nasrueva on 18.01.2022
  * */
 
 abstract class BaseViewModel: ViewModel() {

@@ -86,7 +86,7 @@ class BasketViewModel @Inject constructor(
     }
 
     fun onMakeOrderClicked() {
-        if (interactor.getToken().refreshToken.isEmpty())
+        if (interactor.getToken()?.refreshToken == null)
             navigationAuth.call()
         mutableBasket.value?.let {
             interactor.writeBasket(it)

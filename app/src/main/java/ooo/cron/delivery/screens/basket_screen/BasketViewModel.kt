@@ -11,11 +11,7 @@ import ooo.cron.delivery.data.network.models.Basket
 import ooo.cron.delivery.data.network.models.BasketDish
 import ooo.cron.delivery.data.network.request.BasketEditorReq
 import ooo.cron.delivery.screens.BaseViewModel
-import ooo.cron.delivery.utils.Error
-import ooo.cron.delivery.utils.NoConnection
-import ooo.cron.delivery.utils.Result
 import ooo.cron.delivery.utils.SingleLiveEvent
-import ooo.cron.delivery.utils.Success
 import javax.inject.Inject
 
 /**
@@ -33,13 +29,12 @@ class BasketViewModel @Inject constructor(
     val basketClearAccept: SingleLiveEvent<Unit> = SingleLiveEvent()
     val navigationAuth: SingleLiveEvent<Unit> = SingleLiveEvent()
     val showingMakeOrderDialog: SingleLiveEvent<Unit> = SingleLiveEvent()
-    override val connectionErrorScreen: SingleLiveEvent<Unit> = SingleLiveEvent()
-    override val anyErrorScreen: SingleLiveEvent<Unit> = SingleLiveEvent()
 
 
     fun onStart() {
         viewModelScope.launch(handler) {
-            interactor.getBasket(interactor.getBasketId()).process { mutableBasket.postValue(it) }
+            val basket = interactor.getBasketId()?.let { interactor.getBasket(it) }
+            basket?.process { mutableBasket.postValue(it) }
         }
     }
 
@@ -91,7 +86,7 @@ class BasketViewModel @Inject constructor(
     }
 
     fun onMakeOrderClicked() {
-        if (interactor.getToken().refreshToken.isEmpty())
+        if (interactor.getToken()?.refreshToken == null)
             navigationAuth.call()
         mutableBasket.value?.let {
             interactor.writeBasket(it)
@@ -110,12 +105,5 @@ class BasketViewModel @Inject constructor(
         }
     }
 
-    //экстеншн
-    private fun <T> Result<T>.process(onSuccess: (T) -> Unit) {
-        return when (this) {
-            is Success -> onSuccess.invoke(body)
-            is Error -> anyErrorScreen.call()
-            is NoConnection -> connectionErrorScreen.call()
-        }
-    }
+
 }

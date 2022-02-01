@@ -1,6 +1,5 @@
 package ooo.cron.delivery.data
 
-import android.util.Log
 import com.google.gson.Gson
 import ooo.cron.delivery.data.network.RestService
 import ooo.cron.delivery.data.network.models.Basket
@@ -10,10 +9,10 @@ import ooo.cron.delivery.data.network.models.RemoveBasketItemReq
 import ooo.cron.delivery.data.network.request.BasketClearReq
 import ooo.cron.delivery.data.network.request.BasketEditorReq
 import ooo.cron.delivery.data.network.request.OrderReq
+import ooo.cron.delivery.utils.Error
 import ooo.cron.delivery.utils.NoConnection
 import ooo.cron.delivery.utils.Result
 import ooo.cron.delivery.utils.Success
-import ooo.cron.delivery.utils.Error
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import javax.inject.Inject

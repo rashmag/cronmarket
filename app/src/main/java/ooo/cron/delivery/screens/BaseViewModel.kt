@@ -1,16 +1,21 @@
 package ooo.cron.delivery.screens
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
-import ooo.cron.delivery.utils.SingleLiveEvent
-import java.net.SocketTimeoutException
-import java.net.UnknownHostException
+import ooo.cron.delivery.utils.*
 
 /**
- * Created by Maya Nasrueva on 18.01.2021
+ * Created by Maya Nasrueva on 18.01.2022
  * */
 
 abstract class BaseViewModel: ViewModel() {
-    open val connectionErrorScreen: SingleLiveEvent<Unit> = SingleLiveEvent()
-    open val anyErrorScreen: SingleLiveEvent<Unit> = SingleLiveEvent()
+    val connectionErrorScreen: SingleLiveEvent<Unit> = SingleLiveEvent()
+    val anyErrorScreen: SingleLiveEvent<Unit> = SingleLiveEvent()
+
+    protected fun <T> Result<T>.process(onSuccess: (T) -> Unit) {
+        return when (this) {
+            is Success -> onSuccess.invoke(body)
+            is Error -> anyErrorScreen.call()
+            is NoConnection -> connectionErrorScreen.call()
+        }
+    }
 }

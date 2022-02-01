@@ -2,7 +2,6 @@ package ooo.cron.delivery.screens.basket_screen
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.activity_basket.*
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.Basket
@@ -55,17 +54,5 @@ class BasketActivity : BaseActivity(), PayClickCallback {
         const val BASKET_MODEL = "BASKET_MODEL"
 
         const val MARGIN_SPACING_VALUE_34 = 34
-
-/*        private lateinit var activity: Activity
-        private fun initActivity(activity: Activity) {
-            if (!this::activity.isInitialized || this.activity != activity)
-                this.activity = activity
-        }
-
-        fun stopActivity() {
-            if (::activity.isInitialized) {
-                activity.finish()
-            }
-        }*/
     }
 }

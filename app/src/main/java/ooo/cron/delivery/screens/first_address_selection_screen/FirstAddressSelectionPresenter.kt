@@ -167,7 +167,7 @@ class FirstAddressSelectionPresenter @Inject constructor(
         if (isSuccessful && body().isNullOrEmpty().not()) {
             cities = body()!!
             view?.showCities(cities)
-            lastSelectedCity = dataManager.readChosenCity().city
+            lastSelectedCity = dataManager.readChosenCity()?.city.toString()
             view?.removeCitiesProgress()
             view?.showStartShopping()
         } else
@@ -199,7 +199,7 @@ class FirstAddressSelectionPresenter @Inject constructor(
         }
     }
 
-    override suspend fun checkingFirstLaunch() = dataManager.readChosenCity().city != ""
+    override suspend fun checkingFirstLaunch() = dataManager.readChosenCity()?.city != ""
 
     override fun writeCurrentCityPosition(position: Int) = dataManager.writeCurrentCityPosition(position)
     override fun getCurrentCityPosition() = dataManager.readCurrentCityPosition()

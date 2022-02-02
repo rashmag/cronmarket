@@ -11,7 +11,6 @@ import ooo.cron.delivery.data.OrderInteractor
 import ooo.cron.delivery.data.network.models.Basket
 import ooo.cron.delivery.data.network.models.Basket.Companion.deserializeDishes
 import ooo.cron.delivery.data.network.models.PayData
-import ooo.cron.delivery.screens.BaseViewModel
 import ooo.cron.delivery.utils.SingleLiveEvent
 import ru.tinkoff.acquiring.sdk.models.Item
 import ru.tinkoff.acquiring.sdk.models.Receipt
@@ -31,7 +30,8 @@ class OrderViewModel @Inject constructor(
         Log.e("exception", exception.toString())
     }
     val payData: SingleLiveEvent<PayData> = SingleLiveEvent()
-    val callingDialog: SingleLiveEvent<Unit> = SingleLiveEvent()
+    val callingPayInfoDialog: SingleLiveEvent<Unit> = SingleLiveEvent()
+    val callingDeliveryCostInfo: SingleLiveEvent<Boolean> = SingleLiveEvent()
     val paymentStatus: SingleLiveEvent<Boolean> = SingleLiveEvent()
     private val mutablePhone: MutableLiveData<String> = MutableLiveData()
     val phone: LiveData<String> get() = mutablePhone
@@ -46,7 +46,10 @@ class OrderViewModel @Inject constructor(
         Log.e("app", "inited")
     }
 
-    fun onCreateView() = viewModelScope.launch {
+    fun onViewCreated() = viewModelScope.launch {
+        if (interactor.getDeliveryCityId() == KHAS_ID) {
+            callingDeliveryCostInfo.postValue(true)
+        } else callingDeliveryCostInfo.postValue(false)
         loadBasket()
     }
 
@@ -54,13 +57,14 @@ class OrderViewModel @Inject constructor(
         when (payVariantState.value) {
             is CardVariant -> getOrderInfo()
             is CashVariant -> onPaymentSuccess()
-            else -> callingDialog.call()
+            else -> callingPayInfoDialog.call()
         }
     }
 
     private fun getOrderInfo() {
         val phone = interactor.getPhone().toString()
         val basket = interactor.getBasket()
+        //Todo исправить стоимость доставки
         val amountSum =
             basket?.let {
                 it.amount + it.deliveryCost
@@ -145,4 +149,8 @@ class OrderViewModel @Inject constructor(
 
     private fun Double.inCoins() =
         (this * 100).toLong()
+
+    companion object {
+        const val KHAS_ID = "2d0c08eb-da25-4afa-8de2-db70a29a9520"
+    }
 }

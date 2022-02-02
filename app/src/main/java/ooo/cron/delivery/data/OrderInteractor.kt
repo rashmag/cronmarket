@@ -22,7 +22,7 @@ class OrderInteractor @Inject constructor(
                     it.id,
                     prefsRepo.readUserPhone(),
                     comment,
-                    prefsRepo.readDeliveryCityId(),
+                    prefsRepo.readDeliveryCity().id,
                     paymentMethod
                 )
             }
@@ -40,4 +40,7 @@ class OrderInteractor @Inject constructor(
 
     fun getPhone(): String? =
         prefsRepo.readUserPhone()
+
+    fun getDeliveryCityId(): String =
+        prefsRepo.readDeliveryCity().id
 }

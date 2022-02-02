@@ -181,18 +181,39 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/rg_payment">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_basket_amount"
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/order_amount"
+            android:orientation="vertical"
             android:layout_gravity="center"
+            android:visibility="gone"
             android:layout_marginStart="@dimen/dimen_16"
-            android:textColor="@color/black"
-            android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/rg_payment"
-            tools:text="10900₽" />
+            tools:visibility="visible"
+            >
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_basket_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                tools:text="10900₽" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_basket_delivery_cost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_min_8"
+                android:textStyle="bold"
+                android:text="@string/delivery_cost"
+                />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_order"

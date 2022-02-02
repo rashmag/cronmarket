@@ -169,6 +169,7 @@ class BasketFragment : BaseFragment2() {
     private fun updateBasketAmount(price: String) {
         binding.tvBasketAmount.text = getString(R.string.price, price)
         binding.tvBasketAmount.startBottomAnimate(true)
+        binding.tvBasketDeliveryCost.startBottomAnimate(true)
     }
 
     private fun closeBasketScreen() {

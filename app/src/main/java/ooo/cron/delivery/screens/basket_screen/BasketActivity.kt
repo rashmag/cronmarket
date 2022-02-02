@@ -35,7 +35,6 @@ class BasketActivity : BaseActivity(), PayClickCallback {
     fun openRootFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
             .add(R.id.container_basket_fragments, fragment)
-            .addToBackStack("root")
             .commit()
     }
     override fun onPayClicked(isSuccessPayment: Boolean) {

@@ -2,7 +2,9 @@ package ooo.cron.delivery.data
 
 import android.content.SharedPreferences
 import com.google.gson.Gson
+import ooo.cron.delivery.data.network.SPrefsService
 import ooo.cron.delivery.data.network.models.Basket
+import ooo.cron.delivery.data.network.models.City
 import ooo.cron.delivery.data.network.models.RefreshableToken
 import javax.inject.Inject
 
@@ -30,8 +32,8 @@ class PrefsRepository @Inject constructor(
     fun readToken(): RefreshableToken? =
         Gson().fromJson(sharedPreferences.getString(TOKEN, ""), RefreshableToken::class.java)
 
-    fun readDeliveryCityId() =
-        sharedPreferences.getString(CITY_ID, "")
+    fun readDeliveryCity() =
+        Gson().fromJson(sharedPreferences.getString(CITY, ""), City::class.java)
 
     fun writeBasket(basket: Basket) {
         sharedPreferences.edit()
@@ -57,5 +59,7 @@ class PrefsRepository @Inject constructor(
         const val USER_BASKET_ID = "user_basket"
 
         const val CITY_ID = "CITY_ID"
+
+        const val CITY = "city"
     }
 }

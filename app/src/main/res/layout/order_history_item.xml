@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="@dimen/dimen_8"
+    android:layout_marginBottom="@dimen/dimen_16"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dimen_16">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/order_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_middle_16"
+            android:fontFamily="@font/sf_pro_text_semibold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Заказ №1"
+            android:layout_marginTop="@dimen/dimen_16"
+            android:layout_marginStart="@dimen/dimen_16" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/partner_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_min_12"
+            android:fontFamily="@font/sf_pro_text_semibold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/order_number"
+            tools:text="Теремок"
+            android:layout_marginTop="@dimen/dimen_4"
+            android:layout_marginStart="@dimen/dimen_16"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/order_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/partner_name"
+            tools:text="17.03.21 11:50"
+            android:textSize="@dimen/text_min_12"
+            android:textColor="@color/black"
+            android:fontFamily="@font/sf_pro_text_semibold"
+            android:layout_marginTop="@dimen/dimen_12"
+            android:layout_marginStart="@dimen/dimen_16" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/order_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_16"
+            android:layout_marginTop="@dimen/dimen_12"
+            android:drawableStart="@drawable/ic_location_order_history"
+            android:drawablePadding="@dimen/dimen_8"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/order_date"
+            tools:text="г. Махачкала, ул. Гаджикадиева, д 43, ..."
+            android:fontFamily="@font/sf_pro_text_semibold"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/order_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/order_status_background_on_moderation"
+            android:paddingHorizontal="@dimen/dimen_8"
+            android:paddingVertical="@dimen/dimen_4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="На модерации"
+            android:fontFamily="@font/sf_pro_text_semibold"
+            android:layout_marginTop="@dimen/dimen_24"
+            android:layout_marginEnd="@dimen/dimen_12"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/order_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/order_status"
+            tools:text="5100₽"
+            android:layout_marginTop="@dimen/dimen_16"
+            android:layout_marginEnd="@dimen/dimen_16"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="@dimen/text_middle_18"
+            android:fontFamily="@font/sf_pro_text_semibold"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/order_temporary_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/order_address"
+            app:layout_constraintEnd_toStartOf="@+id/order_price"
+            app:layout_constraintStart_toEndOf="@+id/order_date"
+            tools:text="Ждет оценки"
+            android:textColor="@color/colorAccent"
+            android:layout_marginBottom="@dimen/dimen_12"
+            android:background="@drawable/order_temporary_status_background"
+            android:paddingHorizontal="@dimen/dimen_8"
+            android:paddingVertical="2dp"
+            android:fontFamily="@font/sf_pro_text_semibold"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

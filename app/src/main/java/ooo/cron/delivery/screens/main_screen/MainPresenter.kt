@@ -86,6 +86,10 @@ class MainPresenter @Inject constructor(
         }
     }
 
+    override fun getUserLoggedStatus(): Boolean {
+        return dataManager.readToken().accessToken.isEmpty().not()
+    }
+
     override fun onMarketCategoryClicked(category: MarketCategory) {
         view?.startMarketCategoryFragment(category)
         dataManager.writeSelectedMarketCategory(category)

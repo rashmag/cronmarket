@@ -67,61 +67,33 @@ class RestRepository @Inject constructor(
         )
 
     suspend fun increaseProductInBasket(editor: BasketEditorReq): Result<Basket> {
-        return try {
-            val result = restService.increaseProductInBasket(editor)
-            Success(result)
-        } catch (e: UnknownHostException) {
-            NoConnection
-        } catch (e: SocketTimeoutException) {
-            NoConnection
-        } catch (e: Exception) {
-            Error(e, e.message)
-        }
+        val result = restService.increaseProductInBasket(editor)
+        return errorHandle(result)
     }
 
 
     suspend fun decreaseProductInBasket(editor: BasketEditorReq): Result<Basket> {
-        return try {
-            val result = restService.decreaseProductInBasket(editor)
-            Success(result)
-        } catch (e: UnknownHostException) {
-            NoConnection
-        } catch (e: SocketTimeoutException) {
-            NoConnection
-        } catch (e: Exception) {
-            Error(e, e.message)
-        }
+        val result = restService.decreaseProductInBasket(editor)
+        return errorHandle(result)
     }
 
     suspend fun editPersonsQuantity(persons: BasketPersonsReq): Result<Basket> {
-        return try {
-            val result = restService.editPersonsCount(persons)
-            Success(result)
-        } catch (e: UnknownHostException) {
-            NoConnection
-        } catch (e: SocketTimeoutException) {
-            NoConnection
-        } catch (e: Exception) {
-            Error(e, e.message)
-        }
+        val result = restService.editPersonsCount(persons)
+        return errorHandle(result)
     }
 
     suspend fun clearBasket(basketClearReq: BasketClearReq): Result<Basket> {
-        return try {
-            val result = restService.clearBasket(basketClearReq)
-            Success(result)
-        } catch (e: UnknownHostException) {
-            NoConnection
-        } catch (e: SocketTimeoutException) {
-            NoConnection
-        } catch (e: Exception) {
-            Error(e, e.message)
-        }
+        val result = restService.clearBasket(basketClearReq)
+        return errorHandle(result)
     }
 
     suspend fun removeBasketItem(removeBasketItem: RemoveBasketItemReq): Result<Basket> {
+        val result = restService.removeProduct(removeBasketItem)
+        return errorHandle(result)
+    }
+
+    private fun errorHandle(result: Basket): Result<Basket> {
         return try {
-            val result = restService.removeProduct(removeBasketItem)
             Success(result)
         } catch (e: UnknownHostException) {
             NoConnection

@@ -2,7 +2,6 @@ package ooo.cron.delivery.screens.basket_screen
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,8 +17,7 @@ import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.Basket
 import ooo.cron.delivery.data.network.models.BasketDish
 import ooo.cron.delivery.databinding.FragmentBasketBinding
-import ooo.cron.delivery.screens.BaseFragment2
-import ooo.cron.delivery.screens.BaseViewModel
+import ooo.cron.delivery.screens.BaseMVVMFragment
 import ooo.cron.delivery.screens.login_screen.LoginActivity
 import ooo.cron.delivery.screens.pay_dialog_screen.OrderBottomDialog
 import ooo.cron.delivery.utils.extensions.startBottomAnimate
@@ -32,7 +30,7 @@ import javax.inject.Inject
  * Created by Maya Nasrueva on 28.12.2021
  * */
 
-class BasketFragment : BaseFragment2() {
+class BasketFragment : BaseMVVMFragment() {
 
     @Inject
     lateinit var binding: FragmentBasketBinding
@@ -44,7 +42,7 @@ class BasketFragment : BaseFragment2() {
         factory.create()
     }
     private var basket: Basket? = null
-    private lateinit var adapter: BasketAdapter
+    private var adapter: BasketAdapter? = null
     private var isRestaurant: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,6 +61,12 @@ class BasketFragment : BaseFragment2() {
         super.onStart()
         baseViewModel.onStart()
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        adapter = null
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -84,13 +88,13 @@ class BasketFragment : BaseFragment2() {
         initAdapter()
 
         baseViewModel.basket.observe(viewLifecycleOwner, {
-            basket = it
-            isRestaurant = it.marketCategoryId
-            updateBasket(deserializeDishes(it), it.cutleryCount)
+            basket = it.first
+            isRestaurant = it.first.marketCategoryId
+            updateBasket(it.second, it.first.cutleryCount)
             val formatter = DecimalFormat("#.##").apply {
                 roundingMode = RoundingMode.CEILING
             }
-            updateBasketAmount(formatter.format(it.amount))
+            updateBasketAmount(formatter.format(it.first.amount))
 
         })
 
@@ -129,7 +133,7 @@ class BasketFragment : BaseFragment2() {
 
     private fun updateBasket(basket: List<BasketDish>, partnersQuantity: Int) {
         isRestaurant?.let {
-            adapter.setProducts(
+            adapter?.setProducts(
                 basket,
                 partnersQuantity,
                 it,
@@ -140,6 +144,7 @@ class BasketFragment : BaseFragment2() {
         }
     }
 
+    //Todo сделать материал диалог
     private fun showClearBasketDialog() {
         ClearBasketDialog {
             baseViewModel.onClearBasketAccepted()
@@ -180,8 +185,4 @@ class BasketFragment : BaseFragment2() {
         super.onDestroy()
         baseViewModel.onPersonsQuantityEdited(0)
     }
-
-    private fun deserializeDishes(basket: Basket?) =
-        Gson().fromJson(basket?.content, Array<BasketDish>::class.java)
-            .asList()
 }

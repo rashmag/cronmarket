@@ -47,9 +47,9 @@ class OrderViewModel @Inject constructor(
     }
 
     fun onViewCreated() = viewModelScope.launch {
-        if (interactor.getDeliveryCityId() == KHAS_ID) {
+        if (interactor.getDeliveryCityId() == KHAS_ID)
             callingDeliveryCostInfo.postValue(true)
-        } else callingDeliveryCostInfo.postValue(false)
+        else callingDeliveryCostInfo.postValue(false)
         loadBasket()
     }
 
@@ -65,20 +65,16 @@ class OrderViewModel @Inject constructor(
         val phone = interactor.getPhone().toString()
         val basket = interactor.getBasket()
         //Todo исправить стоимость доставки
-        val amountSum =
-            basket?.let {
-                it.amount + it.deliveryCost
-            }
-        val receipt = basket?.let {
-            Receipt(
+        basket?.let {
+            val amountSum = it.amount + it.deliveryCost
+            val receipt =
+                Receipt(
                 ArrayList(receiptsItems(it)),
                 "cron.devsystems@gmail.com",
                 Taxation.USN_INCOME
             )
+            payData.postValue(PayData(phone, amountSum, receipt))
         }
-        payData.postValue(amountSum?.let { receipt?.let { it1 ->
-            PayData(phone, it, it1)
-        } })
     }
 
     fun receiptsItems(basket: Basket) =
@@ -132,8 +128,10 @@ class OrderViewModel @Inject constructor(
             val paymentMethod = if (payVariantState.value == CashVariant) 1 else 2
             val comment = commentTextLiveData.value.toString()
             val basket = interactor.getBasket()
-            val basketClearReq = basket?.let { interactor.getBasketClearReq(it) }
-            basketClearReq?.let { interactor.clearBasket(it) }
+            basket?.let {
+                val basketClearReq = interactor.getBasketClearReq(it)
+                interactor.clearBasket(basketClearReq)
+            }
             interactor.sendOrder(paymentMethod, comment)
         }
         paymentStatus.postValue(true)

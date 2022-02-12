@@ -11,7 +11,7 @@ import ooo.cron.delivery.screens.connection_error_screen.ConnectionErrorActivity
  * Created by Maya Nasrueva on 19.01.2022
  * */
 
-abstract class BaseFragment2 : Fragment() {
+abstract class BaseMVVMFragment : Fragment() {
 
     abstract val baseViewModel: BaseViewModel
 

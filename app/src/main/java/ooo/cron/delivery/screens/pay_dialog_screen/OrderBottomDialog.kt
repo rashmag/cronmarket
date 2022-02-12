@@ -70,11 +70,7 @@ class OrderBottomDialog : BottomSheetDialogFragment() {
         when (resultCode) {
             Activity.RESULT_OK -> {
                 Log.d("result_codeD", "Done$resultCode")
-                val error = data?.getSerializableExtra(TinkoffAcquiring.EXTRA_ERROR)
-                if (error != null) {
-                    viewModel.onPaymentSuccess()
-                } else viewModel.onPaymentFailed()
-
+                viewModel.onPaymentSuccess()
             }
             Activity.RESULT_CANCELED -> Toast.makeText(requireContext(), "Оплата отменена", Toast.LENGTH_SHORT).show()
             RESULT_ERROR -> {

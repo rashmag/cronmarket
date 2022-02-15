@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <FrameLayout
+        android:id="@+id/order_history_detail_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/all_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/partner_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen_38"
+                android:layout_marginTop="@dimen/dimen_16"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Теремок"
+                android:textSize="@dimen/text_middle_16"
+                android:textColor="@color/black"
+                android:textStyle="bold"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/order_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/partner_name"
+                tools:text="17.03.21 11:50"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_middle_16"
+                android:layout_marginTop="@dimen/dimen_8"
+                android:layout_marginStart="@dimen/dimen_38"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/order_delivery_to"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Доставка к 15:00"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_middle_16"
+                android:visibility="gone"
+                android:layout_marginTop="46dp"
+                android:layout_marginEnd="34dp"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/order_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/order_date"
+                tools:text="г. Махачкала, ул. Гаджикадиева, д 43, п. 1, эт. 5"
+                android:textSize="@dimen/text_min_12"
+                android:drawableStart="@drawable/ic_location_order_history"
+                android:drawablePadding="@dimen/dimen_10"
+                android:layout_marginStart="@dimen/dimen_38"
+                android:layout_marginTop="@dimen/dimen_8" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/stepper_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_24"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/order_address">
+
+                <com.rakshakhegde.stepperindicator.StepperIndicator
+                    android:id="@+id/stepper_indicator"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="62dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:stpi_circleRadius="6dp"
+                    app:stpi_stepCount="4"
+                    app:stpi_lineDoneColor="@color/green_00875a" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/title_moderation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="38dp"
+                    android:layout_marginTop="@dimen/dimen_6"
+                    android:text="@string/order_history_screen_moderation_title"
+                    android:textSize="@dimen/text_min_12"
+                    app:layout_constraintEnd_toStartOf="@+id/title_process"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/stepper_indicator" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/title_process"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_16"
+                    android:layout_marginTop="@dimen/dimen_6"
+                    android:text="@string/order_history_screen_process_title"
+                    android:textSize="@dimen/text_min_12"
+                    app:layout_constraintEnd_toStartOf="@+id/title_way"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/title_moderation"
+                    app:layout_constraintTop_toBottomOf="@+id/stepper_indicator" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/title_way"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_32"
+                    android:layout_marginTop="@dimen/dimen_6"
+                    android:layout_marginEnd="40dp"
+                    android:text="@string/order_history_screen_way_title"
+                    android:textSize="@dimen/text_min_12"
+                    app:layout_constraintEnd_toStartOf="@+id/title_done"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/title_process"
+                    app:layout_constraintTop_toBottomOf="@+id/stepper_indicator" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/title_done"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_6"
+                    android:layout_marginEnd="44dp"
+                    android:text="@string/order_history_screen_done_title"
+                    android:textSize="@dimen/text_min_12"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/title_way"
+                    app:layout_constraintTop_toBottomOf="@+id/stepper_indicator" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:id="@+id/order_cancelled_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/order_address">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/order_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_38"
+                    android:layout_marginTop="@dimen/dimen_24"
+                    android:background="@drawable/order_status_background_cancelled"
+                    android:fontFamily="@font/sf_pro_text_semibold"
+                    android:paddingHorizontal="@dimen/dimen_8"
+                    android:paddingVertical="@dimen/dimen_4"
+                    android:text="@string/order_history_screen_cancelled_title"
+                    android:textColor="@color/red_bf2600"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/order_address" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/order_cancelled_text"
+                    android:layout_width="220dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_8"
+                    android:layout_marginTop="@dimen/dimen_16"
+                    android:layout_marginBottom="@dimen/dimen_10"
+                    android:maxLines="2"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toEndOf="@+id/order_status"
+                    app:layout_constraintTop_toBottomOf="@+id/order_address"
+                    tools:text="Причина указанная модератором, длинна текста 2 строки, не больше." />
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/view"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginHorizontal="@dimen/dimen_38"
+                android:layout_marginTop="@dimen/dimen_16"
+                android:background="@color/grey30"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/stepper_container" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_order_history_detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/dimen_38"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/cost_of_goods_title"
+                        android:textColor="@color/grey90" />
+
+                    <TextView
+                        android:id="@+id/orders_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        tools:text="166000₽ "
+                        android:textColor="@color/grey90" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/cost_of_delivery_title"
+                        android:textColor="@color/grey90" />
+
+                    <TextView
+                        android:id="@+id/order_delivery"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        tools:text="99₽"
+                        android:textColor="@color/grey90" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/order_cost_discount_title"
+                        android:textColor="@color/grey90" />
+
+                    <TextView
+                        android:id="@+id/order_discount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        tools:text="166000₽ "
+                        android:textColor="@color/grey90" />
+                </FrameLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/grey50" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/order_history_screen_total_amount"
+                        android:textColor="@color/grey90"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/total_sum"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        tools:text="166099₽"
+                        android:textColor="@color/grey90"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </FrameLayout>
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

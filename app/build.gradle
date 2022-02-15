@@ -132,4 +132,6 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
 
     implementation 'androidx.fragment:fragment-ktx:1.4.1'
+
+    implementation 'com.github.rakshakhegde:stepper-indicator:2.0.0-alpha'
 }

@@ -152,6 +152,12 @@ interface RestService {
         @Query("Limit") limit: Int = PARTNERS_PAGINATION_LIMIT
     ) : Response<List<OrderHistoryNetModel>>
 
+    @GET("/api/v1/Order")
+    suspend fun getOrderHistoryDetail(
+        @Header("Authorization") token: String,
+        @Query("id") orderId: String
+    ) : Response<OrderHistoryDetailNetModel>
+
     companion object {
         const val PARTNERS_PAGINATION_LIMIT = 15
     }

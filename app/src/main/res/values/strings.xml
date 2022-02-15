@@ -283,4 +283,11 @@
 
     <!-- Orders history -->
     <string name="order_history_screen_total_amount_ruble">%s₽</string>
+    <string name="order_history_screen_cancelled_title">Отменен</string>
+    <string name="order_history_screen_delivery_to_title">Доставка к %s</string>
+    <string name="order_history_screen_moderation_title">Модерация</string>
+    <string name="order_history_screen_process_title">Готовится</string>
+    <string name="order_history_screen_way_title">В пути</string>
+    <string name="order_history_screen_done_title">Доставлен</string>
+    <string name="order_history_screen_total_amount">Итого:</string>
 </resources>

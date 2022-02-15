@@ -5,7 +5,8 @@
     android:layout_height="wrap_content"
     app:cardCornerRadius="@dimen/dimen_8"
     android:layout_marginBottom="@dimen/dimen_16"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_view_order">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

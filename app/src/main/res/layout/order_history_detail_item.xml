@@ -32,45 +32,48 @@
             app:layout_constraintTop_toTopOf="parent"
             android:textColor="@color/black"/>
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/appCompatTextView"
-            android:layout_width="wrap_content"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/order_additive_recycler"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dimen_8"
             android:layout_marginTop="@dimen/dimen_8"
+            android:layout_marginEnd="8dp"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/order_image"
             app:layout_constraintTop_toBottomOf="@+id/order_name"
-            tools:text="Тут будет recyclerView"
-            android:visibility="gone"
-            tools:visibility="visible"/>
+            tools:listitem="@layout/order_additive_item"
+            tools:visibility="visible" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/order_quantity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen_8"
             android:layout_marginStart="88dp"
+            android:layout_marginTop="@dimen/dimen_8"
+            android:background="@color/grey5"
             android:paddingHorizontal="@dimen/dimen_32"
             android:paddingVertical="@dimen/dimen_4"
-            android:background="@color/grey5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/appCompatTextView"
-            tools:text="1"
+            android:textColor="@color/black"
             android:textSize="@dimen/text_middle_18"
-            android:textColor="@color/black"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/order_additive_recycler"
+            tools:text="1" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/order_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen_12"
+            android:layout_marginTop="@dimen/dimen_8"
             android:layout_marginEnd="@dimen/dimen_8"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/appCompatTextView"
-            tools:text="1000₽"
-            android:textSize="@dimen/text_middle_18"
             android:textColor="@color/black"
-            android:textStyle="bold"/>
+            android:textSize="@dimen/text_middle_18"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/order_additive_recycler"
+            tools:text="1000₽" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

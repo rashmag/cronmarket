@@ -13,6 +13,9 @@ import ooo.cron.delivery.screens.order_history_screen.presentation.OrderHistoryA
 import ooo.cron.delivery.utils.extensions.addRipple
 import ooo.cron.delivery.utils.extensions.colorFromStatus
 import ooo.cron.delivery.utils.extensions.drawableFromStatus
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
 
 class OrderHistoryAdapter(
     private val onOrderClick: (orderId: String) -> Unit
@@ -41,7 +44,12 @@ class OrderHistoryAdapter(
                 }
                 orderNumber.text = model.orderNumber
                 partnerName.text = model.partnerName
-                orderDate.text = model.dateTime
+
+                val input = SimpleDateFormat(BACKEND_DATE_FORMAT)
+                val output = SimpleDateFormat(NECESSARY_FORMAT)
+                val date = input.parse(model.dateTime)
+                orderDate.text = output.format(date)
+
                 orderAddress.text = model.deliveryLocation
                 orderStatus.text = model.status
                 when(model.status){
@@ -90,5 +98,8 @@ class OrderHistoryAdapter(
         private const val IN_PROCESS = "Готовится"
         private const val DONE = "Доставлен"
         private const val CANCELLED = "Отменен"
+
+        private const val BACKEND_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS"
+        private const val NECESSARY_FORMAT = "dd.MM.yy HH:mm"
     }
 }

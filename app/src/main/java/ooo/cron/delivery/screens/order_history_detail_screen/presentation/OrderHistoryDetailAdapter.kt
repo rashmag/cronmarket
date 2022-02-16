@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide
 import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.OrderHistoryDetailDish
 import ooo.cron.delivery.databinding.OrderHistoryDetailItemBinding
+import ooo.cron.delivery.utils.extensions.uiLazy
 
 class OrderHistoryDetailAdapter : ListAdapter<OrderHistoryDetailDish, OrderHistoryDetailAdapter.OrderHistoryDetailViewHolder>(DIFF_CALLBACK) {
 
@@ -22,6 +23,10 @@ class OrderHistoryDetailAdapter : ListAdapter<OrderHistoryDetailDish, OrderHisto
 
     inner class OrderHistoryDetailViewHolder(private val itemBinding: OrderHistoryDetailItemBinding) : RecyclerView.ViewHolder(itemBinding.root) {
 
+        private val additiveAdapter by uiLazy {
+            OrderHistoryDetailAdditiveAdapter()
+        }
+
         fun bind(model: OrderHistoryDetailDish){
 
             with(itemBinding){
@@ -32,6 +37,9 @@ class OrderHistoryDetailAdapter : ListAdapter<OrderHistoryDetailDish, OrderHisto
                     R.string.order_history_screen_total_amount_ruble,
                     model.cost.toString()
                 )
+
+                orderAdditiveRecycler.adapter = additiveAdapter
+                additiveAdapter.submitList(model.dishAdditives)
 
                 Glide.with(root)
                     .load(model.photoUri)
@@ -49,7 +57,12 @@ class OrderHistoryDetailAdapter : ListAdapter<OrderHistoryDetailDish, OrderHisto
                 oldItem.id == newItem.id
 
             override fun areContentsTheSame(oldItem: OrderHistoryDetailDish, newItem: OrderHistoryDetailDish): Boolean =
-                oldItem.name == newItem.name // TODO: дописать остальные
+                oldItem.productId == newItem.productId &&
+                oldItem.name == newItem.name &&
+                        oldItem.quantity == newItem.quantity &&
+                        oldItem.cost == newItem.cost &&
+                        oldItem.photoUri == newItem.photoUri &&
+                        oldItem.dishAdditives == newItem.dishAdditives
         }
     }
 }

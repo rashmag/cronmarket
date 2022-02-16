@@ -290,4 +290,7 @@
     <string name="order_history_screen_way_title">В пути</string>
     <string name="order_history_screen_done_title">Доставлен</string>
     <string name="order_history_screen_total_amount">Итого:</string>
+
+    <!-- Orders history detail -->
+    <string name="order_history_detail_screen_additive_plus">+ %s</string>
 </resources>

@@ -1,9 +1,7 @@
 package ooo.cron.delivery.screens.order_history_detail_screen.presentation
 
 import android.graphics.Color
-import android.graphics.Typeface
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,7 +24,7 @@ import ooo.cron.delivery.utils.extensions.setBold
 import ooo.cron.delivery.utils.extensions.uiLazy
 import ooo.cron.delivery.utils.extensions.withArgs
 import ooo.cron.delivery.utils.itemdecoration.OrderHistoryDetailItemDecoration
-import ooo.cron.delivery.utils.itemdecoration.SpaceItemDecoration
+import java.text.SimpleDateFormat
 
 class OrderHistoryDetailFragment : BaseFragment() {
 
@@ -72,7 +70,9 @@ class OrderHistoryDetailFragment : BaseFragment() {
     private fun setupViewModel() {
         with(viewModel) {
             orderHistoryDetail.observe(viewLifecycleOwner) {
-                it.body()?.let { it1 -> showInfo(it1) }
+                it.body()?.let { detailModel ->
+                    showInfo(detailModel)
+                }
             }
 
             orderHistoryDetailList.observe(viewLifecycleOwner) {
@@ -93,7 +93,12 @@ class OrderHistoryDetailFragment : BaseFragment() {
             }
 
             partnerName.text = model.partnerName
-            orderDate.text = model.dateTime
+
+            val input = SimpleDateFormat(BACKEND_DATE_FORMAT)
+            val output = SimpleDateFormat(NECESSARY_FORMAT)
+            val date = input.parse(model.dateTime)
+            orderDate.text = output.format(date)
+
             orderDeliveryTo.text = getString(R.string.order_history_screen_delivery_to_title, model.deliverAtTime)
             orderAddress.text = model.deliveryLocation
             orderCancelledText.text = model.feedbackModerationStatus
@@ -122,8 +127,7 @@ class OrderHistoryDetailFragment : BaseFragment() {
             adapter = orderHistoryDetailAdapter
             addItemDecoration(
                 OrderHistoryDetailItemDecoration(
-                    MARGIN_SPACING_VALUE_34,
-                    MARGIN_SPACING_VALUE_100,
+                    MARGIN_SPACING_VALUE_16,
                     MARGIN_SPACING_VALUE_100
                 )
             )
@@ -145,7 +149,10 @@ class OrderHistoryDetailFragment : BaseFragment() {
                         .addToBackStack(null)
                         .commit()
 
-                    binding.allContainer.makeGone()
+                    with(binding) {
+                        allContainer.makeGone()
+                        totalPriceContainer.makeGone()
+                    }
 
                     isEnabled = false
                 }
@@ -167,7 +174,10 @@ class OrderHistoryDetailFragment : BaseFragment() {
 
         private const val ORDER_CANCELLED = "Отменен"
 
-        const val MARGIN_SPACING_VALUE_34 = 34
+        const val MARGIN_SPACING_VALUE_16 = 16
         const val MARGIN_SPACING_VALUE_100 = 100
+
+        private const val BACKEND_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS"
+        private const val NECESSARY_FORMAT = "dd.MM.yy HH:mm"
     }
 }

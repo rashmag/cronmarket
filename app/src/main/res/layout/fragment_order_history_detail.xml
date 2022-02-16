@@ -14,6 +14,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/all_container"
             android:layout_width="match_parent"
@@ -201,116 +205,124 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_order_history_detail"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/dimen_16"
                 android:orientation="vertical"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:overScrollMode="never"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/view" />
 
-            <LinearLayout
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <LinearLayout
+            android:id="@+id/total_price_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/dimen_38"
+            android:background="@color/grey2"
+            android:orientation="vertical"
+            android:layout_gravity="bottom"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/dimen_38"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
+                android:layout_marginTop="8dp">
 
-                <FrameLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp">
+                    android:text="@string/cost_of_goods_title"
+                    android:textColor="@color/grey90" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/cost_of_goods_title"
-                        android:textColor="@color/grey90" />
-
-                    <TextView
-                        android:id="@+id/orders_price"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        tools:text="166000₽ "
-                        android:textColor="@color/grey90" />
-                </FrameLayout>
-
-                <FrameLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/orders_price"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp">
+                    android:layout_gravity="end"
+                    android:textColor="@color/grey90"
+                    tools:text="166000₽ " />
+            </FrameLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/cost_of_delivery_title"
-                        android:textColor="@color/grey90" />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
 
-                    <TextView
-                        android:id="@+id/order_delivery"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        tools:text="99₽"
-                        android:textColor="@color/grey90" />
-                </FrameLayout>
-
-                <FrameLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp">
+                    android:text="@string/cost_of_delivery_title"
+                    android:textColor="@color/grey90" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/order_cost_discount_title"
-                        android:textColor="@color/grey90" />
-
-                    <TextView
-                        android:id="@+id/order_discount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        tools:text="166000₽ "
-                        android:textColor="@color/grey90" />
-                </FrameLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@color/grey50" />
-
-                <FrameLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/order_delivery"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp">
+                    android:layout_gravity="end"
+                    android:textColor="@color/grey90"
+                    tools:text="99₽" />
+            </FrameLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/order_history_screen_total_amount"
-                        android:textColor="@color/grey90"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
 
-                    <TextView
-                        android:id="@+id/total_sum"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        tools:text="166099₽"
-                        android:textColor="@color/grey90"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-                </FrameLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/order_cost_discount_title"
+                    android:textColor="@color/grey90" />
 
-            </LinearLayout>
+                <TextView
+                    android:id="@+id/order_discount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:textColor="@color/grey90"
+                    tools:text="166000₽ " />
+            </FrameLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/grey50" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/order_history_screen_total_amount"
+                    android:textColor="@color/grey90"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/total_sum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:textColor="@color/grey90"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    tools:text="166099₽" />
+            </FrameLayout>
+
+        </LinearLayout>
 
     </FrameLayout>
 

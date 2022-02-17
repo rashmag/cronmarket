@@ -1,6 +1,5 @@
 package ooo.cron.delivery.screens.order_history_detail_screen.presentation
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -20,7 +19,10 @@ import ooo.cron.delivery.screens.order_history_screen.presentation.OrderHistoryF
 import ooo.cron.delivery.utils.extensions.makeGone
 import ooo.cron.delivery.utils.extensions.makeInvisible
 import ooo.cron.delivery.utils.extensions.makeVisible
+import ooo.cron.delivery.utils.extensions.setActiveIndicator
 import ooo.cron.delivery.utils.extensions.setBold
+import ooo.cron.delivery.utils.extensions.setDoneColor
+import ooo.cron.delivery.utils.extensions.setDoneIndicator
 import ooo.cron.delivery.utils.extensions.uiLazy
 import ooo.cron.delivery.utils.extensions.withArgs
 import ooo.cron.delivery.utils.itemdecoration.OrderHistoryDetailItemDecoration
@@ -90,6 +92,9 @@ class OrderHistoryDetailFragment : BaseFragment() {
             if (model.statusName == ORDER_CANCELLED) {
                 stepperContainer.makeInvisible()
                 orderCancelledContainer.makeVisible()
+            }else{
+                stepperContainer.makeVisible()
+                orderCancelledContainer.makeInvisible()
             }
 
             partnerName.text = model.partnerName
@@ -99,26 +104,90 @@ class OrderHistoryDetailFragment : BaseFragment() {
             val date = input.parse(model.dateTime)
             orderDate.text = output.format(date)
 
-            orderDeliveryTo.text = getString(R.string.order_history_screen_delivery_to_title, model.deliverAtTime)
+            orderDeliveryTo.text = getString(
+                R.string.order_history_screen_delivery_to_title,
+                model.deliverAtTime
+            )
+
             orderAddress.text = model.deliveryLocation
             orderCancelledText.text = model.feedbackModerationStatus
-            stepperIndicator.apply {
-                currentStep = model.statusId
-                setIndicatorColor(Color.parseColor("#00875A"))
-            }
 
-            when (model.statusId) {
-                1 -> titleModeration.setBold()
-                2 -> titleProcess.setBold()
-                3 -> titleWay.setBold()
-                4 -> titleDone.setBold()
-            }
+            setIndicator(model.statusId)
 
-            ordersPrice.text = getString(R.string.order_history_screen_total_amount_ruble, model.amount.toString())
-            orderDelivery.text =
-                getString(R.string.order_history_screen_total_amount_ruble, model.deliveryCost.toString())
-            orderDiscount.text = getString(R.string.order_history_screen_total_amount_ruble, model.discount.toString())
-            totalSum.text = getString(R.string.order_history_screen_total_amount_ruble, model.totalAmount.toString())
+            ordersPrice.text = getString(
+                R.string.order_history_screen_total_amount_ruble,
+                model.amount.toString()
+            )
+
+            orderDelivery.text = getString(
+                R.string.order_history_screen_total_amount_ruble,
+                model.deliveryCost.toString()
+            )
+
+            orderDiscount.text = getString(
+                R.string.order_history_screen_total_amount_ruble,
+                model.discount.toString()
+            )
+
+            totalSum.text = getString(
+                R.string.order_history_screen_total_amount_ruble,
+                model.totalAmount.toString()
+            )
+        }
+    }
+
+    private fun setIndicator(statusId: Int) {
+
+        with(binding) {
+            when (statusId) {
+                1 -> {
+                    titleModeration.setBold()
+
+                    indicatorModeration.setActiveIndicator()
+                    progressModeration.progress = ACTIVE_STATE
+                }
+                2 -> {
+                    titleProcess.setBold()
+
+                    indicatorProcess.setActiveIndicator()
+                    progressProcess.progress = ACTIVE_STATE
+
+                    indicatorModeration.setDoneIndicator()
+                    progressModeration.setDoneColor()
+                    progressModeration.progress = DONE_STATE
+                }
+                3 -> {
+                    titleWay.setBold()
+
+                    indicatorWay.setActiveIndicator()
+                    progressWay.progress = ACTIVE_STATE
+
+                    indicatorProcess.setDoneIndicator()
+                    progressProcess.setDoneColor()
+                    progressProcess.progress = DONE_STATE
+
+                    indicatorModeration.setDoneIndicator()
+                    progressModeration.setDoneColor()
+                    progressModeration.progress = DONE_STATE
+                }
+                4 -> {
+                    titleDone.setBold()
+
+                    indicatorDone.setDoneIndicator()
+
+                    indicatorModeration.setDoneIndicator()
+                    progressModeration.setDoneColor()
+                    progressModeration.progress = DONE_STATE
+
+                    indicatorProcess.setDoneIndicator()
+                    progressProcess.setDoneColor()
+                    progressProcess.progress = DONE_STATE
+
+                    indicatorWay.setDoneIndicator()
+                    progressWay.setDoneColor()
+                    progressWay.progress = DONE_STATE
+                }
+            }
         }
     }
 
@@ -179,5 +248,8 @@ class OrderHistoryDetailFragment : BaseFragment() {
 
         private const val BACKEND_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS"
         private const val NECESSARY_FORMAT = "dd.MM.yy HH:mm"
+
+        private const val ACTIVE_STATE = 50
+        private const val DONE_STATE = 100
     }
 }

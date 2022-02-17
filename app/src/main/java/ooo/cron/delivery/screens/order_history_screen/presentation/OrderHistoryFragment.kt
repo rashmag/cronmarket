@@ -65,8 +65,8 @@ class OrderHistoryFragment : BaseFragment() {
             addItemDecoration(
                 SpaceItemDecoration(
                     MARGIN_SPACING_VALUE_34,
-                    MARGIN_SPACING_VALUE_100,
-                    MARGIN_SPACING_VALUE_100
+                    MARGIN_SPACING_VALUE_48,
+                    MARGIN_SPACING_VALUE_48
                 )
             )
         }
@@ -121,6 +121,6 @@ class OrderHistoryFragment : BaseFragment() {
 
     companion object{
         const val MARGIN_SPACING_VALUE_34 = 34
-        const val MARGIN_SPACING_VALUE_100 = 100
+        const val MARGIN_SPACING_VALUE_48 = 48
     }
 }

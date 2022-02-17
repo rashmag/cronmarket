@@ -79,75 +79,120 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_24"
-                android:visibility="visible"
+                android:visibility="gone"
+                tools:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/order_address">
 
-                <com.rakshakhegde.stepperindicator.StepperIndicator
-                    android:id="@+id/stepper_indicator"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="62dp"
-                    app:layout_constraintEnd_toEndOf="parent"
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/indicator_moderation"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_marginStart="62dp"
+                    android:layout_marginTop="2dp"
+                    android:background="@drawable/circle_indicator_inactive"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:stpi_circleRadius="6dp"
-                    app:stpi_stepCount="4"
-                    app:stpi_lineDoneColor="@color/green_00875a" />
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ProgressBar
+                    android:id="@+id/progress_moderation"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="80dp"
+                    android:progressTint="@color/orange_ff8b00"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toEndOf="@+id/indicator_moderation"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/indicator_process"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_marginTop="2dp"
+                    android:background="@drawable/circle_indicator_inactive"
+                    app:layout_constraintStart_toEndOf="@+id/progress_moderation"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ProgressBar
+                    android:id="@+id/progress_process"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:progressTint="@color/orange_ff8b00"
+                    app:layout_constraintStart_toEndOf="@+id/indicator_process"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/indicator_way"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_marginTop="2dp"
+                    android:background="@drawable/circle_indicator_inactive"
+                    app:layout_constraintStart_toEndOf="@+id/progress_process"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ProgressBar
+                    android:id="@+id/progress_way"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:progressTint="@color/orange_ff8b00"
+                    app:layout_constraintStart_toEndOf="@+id/indicator_way"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/indicator_done"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_marginTop="2dp"
+                    android:background="@drawable/circle_indicator_inactive"
+                    app:layout_constraintStart_toEndOf="@+id/progress_way"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/title_moderation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="38dp"
                     android:layout_marginTop="@dimen/dimen_6"
+                    android:layout_marginStart="36dp"
                     android:text="@string/order_history_screen_moderation_title"
                     android:textSize="@dimen/text_min_12"
-                    app:layout_constraintEnd_toStartOf="@+id/title_process"
-                    app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/stepper_indicator" />
+                    app:layout_constraintTop_toBottomOf="@+id/indicator_moderation" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/title_process"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dimen_16"
                     android:layout_marginTop="@dimen/dimen_6"
+                    android:layout_marginEnd="@dimen/dimen_28"
                     android:text="@string/order_history_screen_process_title"
                     android:textSize="@dimen/text_min_12"
-                    app:layout_constraintEnd_toStartOf="@+id/title_way"
-                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintEnd_toStartOf="@id/indicator_way"
                     app:layout_constraintStart_toEndOf="@+id/title_moderation"
-                    app:layout_constraintTop_toBottomOf="@+id/stepper_indicator" />
+                    app:layout_constraintTop_toBottomOf="@+id/indicator_process" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/title_way"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dimen_32"
                     android:layout_marginTop="@dimen/dimen_6"
-                    android:layout_marginEnd="40dp"
                     android:text="@string/order_history_screen_way_title"
                     android:textSize="@dimen/text_min_12"
                     app:layout_constraintEnd_toStartOf="@+id/title_done"
-                    app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/title_process"
-                    app:layout_constraintTop_toBottomOf="@+id/stepper_indicator" />
+                    app:layout_constraintTop_toBottomOf="@+id/indicator_way" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/title_done"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dimen_6"
-                    android:layout_marginEnd="44dp"
+                    android:layout_marginEnd="36dp"
                     android:text="@string/order_history_screen_done_title"
                     android:textSize="@dimen/text_min_12"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/title_way"
-                    app:layout_constraintTop_toBottomOf="@+id/stepper_indicator" />
+                    app:layout_constraintTop_toBottomOf="@+id/indicator_done" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

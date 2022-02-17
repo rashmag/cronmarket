@@ -1,6 +1,7 @@
 package ooo.cron.delivery.utils.extensions
 
 import android.annotation.SuppressLint
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Build
@@ -9,6 +10,8 @@ import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
@@ -70,4 +73,18 @@ inline fun <T : Fragment> T.withArgs(
 internal fun TextView.setBold(){
     setTypeface(this.typeface, Typeface.BOLD)
     setTextColor(Color.parseColor("#000000"))
+}
+
+fun ImageView.setActiveIndicator(){
+    setBackgroundResource(R.drawable.circle_indicator_active)
+    setImageResource(R.drawable.ic_waiting)
+}
+
+fun ImageView.setDoneIndicator(){
+    setBackgroundResource(R.drawable.circle_indicator_done)
+    setImageResource(R.drawable.ic_done_10dp)
+}
+
+fun ProgressBar.setDoneColor(){
+    progressTintList = ColorStateList.valueOf(Color.parseColor("#00875A"))
 }

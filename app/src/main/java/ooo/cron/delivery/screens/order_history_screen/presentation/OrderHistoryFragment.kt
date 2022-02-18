@@ -17,7 +17,6 @@ import ooo.cron.delivery.screens.BaseFragment
 import ooo.cron.delivery.screens.order_history_detail_screen.presentation.OrderHistoryDetailFragment
 import ooo.cron.delivery.utils.extensions.makeGone
 import ooo.cron.delivery.utils.extensions.uiLazy
-import ooo.cron.delivery.utils.itemdecoration.SpaceItemDecoration
 
 class OrderHistoryFragment : BaseFragment() {
 
@@ -60,16 +59,7 @@ class OrderHistoryFragment : BaseFragment() {
     }
 
     private fun initAdapter() {
-        with(binding.recyclerOrdersHistory) {
-            adapter = orderHistoryAdapter
-            addItemDecoration(
-                SpaceItemDecoration(
-                    MARGIN_SPACING_VALUE_34,
-                    MARGIN_SPACING_VALUE_48,
-                    MARGIN_SPACING_VALUE_48
-                )
-            )
-        }
+        binding.recyclerOrdersHistory.adapter = orderHistoryAdapter
     }
 
     private fun navigateOrderDetail(orderId: String) {
@@ -117,10 +107,5 @@ class OrderHistoryFragment : BaseFragment() {
         super.onDestroyView()
         childFragmentManager.beginTransaction().remove(OrderHistoryFragment())
         _binding = null
-    }
-
-    companion object{
-        const val MARGIN_SPACING_VALUE_34 = 34
-        const val MARGIN_SPACING_VALUE_48 = 48
     }
 }

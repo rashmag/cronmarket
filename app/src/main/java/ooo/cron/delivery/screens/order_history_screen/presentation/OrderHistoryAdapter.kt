@@ -66,7 +66,6 @@ class OrderHistoryAdapter(
                     R.string.order_history_screen_total_amount_ruble,
                     model.totalAmount.toString()
                 )
-//                orderTemporaryStatus.text = model.status // TODO: узнать, какой параметр отвечает
 
                 itemView.setOnClickListener {
                     onOrderClick.invoke(model.id)

@@ -25,7 +25,6 @@ import ooo.cron.delivery.utils.extensions.setDoneColor
 import ooo.cron.delivery.utils.extensions.setDoneIndicator
 import ooo.cron.delivery.utils.extensions.uiLazy
 import ooo.cron.delivery.utils.extensions.withArgs
-import ooo.cron.delivery.utils.itemdecoration.OrderHistoryDetailItemDecoration
 import java.text.SimpleDateFormat
 
 class OrderHistoryDetailFragment : BaseFragment() {
@@ -192,15 +191,7 @@ class OrderHistoryDetailFragment : BaseFragment() {
     }
 
     private fun initAdapter() {
-        with(binding.recyclerOrderHistoryDetail) {
-            adapter = orderHistoryDetailAdapter
-            addItemDecoration(
-                OrderHistoryDetailItemDecoration(
-                    MARGIN_SPACING_VALUE_16,
-                    MARGIN_SPACING_VALUE_100
-                )
-            )
-        }
+        binding.recyclerOrderHistoryDetail.adapter = orderHistoryDetailAdapter
     }
 
     private fun onBackPressed() {
@@ -242,9 +233,6 @@ class OrderHistoryDetailFragment : BaseFragment() {
         }
 
         private const val ORDER_CANCELLED = "Отменен"
-
-        const val MARGIN_SPACING_VALUE_16 = 16
-        const val MARGIN_SPACING_VALUE_100 = 100
 
         private const val BACKEND_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS"
         private const val NECESSARY_FORMAT = "dd.MM.yy HH:mm"

@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="8dp"
+    app:cardCornerRadius="@dimen/dimen_8"
+    android:layout_marginHorizontal="@dimen/dimen_38"
+    android:layout_marginVertical="@dimen/dimen_12"
     xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -23,14 +25,15 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/order_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            tools:text="Сет из 6 видов шашлыков А у"
-            android:layout_marginStart="@dimen/dimen_8"
             android:layout_marginTop="@dimen/dimen_8"
+            android:layout_marginHorizontal="@dimen/dimen_8"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/order_image"
             app:layout_constraintTop_toTopOf="parent"
-            android:textColor="@color/black"/>
+            tools:text="Сет из 6 видов шашлыков А у" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/order_additive_recycler"

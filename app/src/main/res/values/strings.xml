@@ -52,6 +52,7 @@
     <string name="drawer_profile_image_description">Профиль</string>
 
     <string name="drawer_menu_item_shops">Магазины</string>
+    <string name="drawer_menu_item_orders">Заказы</string>
     <string name="drawer_menu_item_contacts">Связаться с нами</string>
     <string name="drawer_menu_item_about_us">О сервисе</string>
     <string name="drawer_menu_item_vacancies">Стать курьером</string>
@@ -59,6 +60,8 @@
     <string name="drawer_log_in">Вход / Регистрация</string>
     <string name="drawer_log_out">Выйти из профиля</string>
     <string name="drawer_profile_name_unauthorized">Вход \nне выполнен</string>
+
+    <string name="drawer_menu_item_my_orders_title">Мои заказы</string>
 
     <string name="enter_phone_title">Укажите номер</string>
     <string name="confirm_phone_title">Подтвердите номер</string>
@@ -277,4 +280,17 @@
     <string name="order_comment">Комментарий к заказу</string>
     <string name="bank_cart">Карта</string>
     <string name="cash">Наличные</string>
+
+    <!-- Orders history -->
+    <string name="order_history_screen_total_amount_ruble">%s₽</string>
+    <string name="order_history_screen_cancelled_title">Отменен</string>
+    <string name="order_history_screen_delivery_to_title">Доставка к %s</string>
+    <string name="order_history_screen_moderation_title">Модерация</string>
+    <string name="order_history_screen_process_title">Готовится</string>
+    <string name="order_history_screen_way_title">В пути</string>
+    <string name="order_history_screen_done_title">Доставлен</string>
+    <string name="order_history_screen_total_amount">Итого:</string>
+
+    <!-- Orders history detail -->
+    <string name="order_history_detail_screen_additive_plus">+ %s</string>
 </resources>

@@ -25,6 +25,7 @@ interface MainContract {
         fun showNotAuthorizedMessage()
         fun showLogOutDialog()
         fun startMarketCategoryFragment(category: MarketCategory)
+        fun startOrdersHistoryFragment()
         fun startContactsFragment()
         fun reopenMainScreen()
         fun navigateFirstAddressSelection()
@@ -48,5 +49,6 @@ interface MainContract {
         fun continueLastSessionCLick()
         fun getMarketCategory(): MarketCategory
         fun onStartMarketCategory()
+        fun getUserLoggedStatus(): Boolean
     }
 }

@@ -10,9 +10,9 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
-import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.appbar.AppBarLayout.ScrollingViewBehavior
 import nl.psdcompany.duonavigationdrawer.widgets.DuoDrawerToggle
 import ooo.cron.delivery.App
@@ -32,6 +32,7 @@ import ooo.cron.delivery.screens.vacancies_screen.VacanciesFragment
 import ooo.cron.delivery.utils.extensions.startBottomAnimate
 import javax.inject.Inject
 import ooo.cron.delivery.screens.main_screen.special_offers_view.adapters.SliderAdapter
+import ooo.cron.delivery.screens.order_history_screen.presentation.OrderHistoryFragment
 import ooo.cron.delivery.utils.enums.ReturningToScreenEnum
 import ooo.cron.delivery.utils.extensions.makeGone
 import ooo.cron.delivery.utils.extensions.makeVisible
@@ -91,6 +92,7 @@ class MainActivity : BaseActivity(), MainContract.View {
         setTimerForImageSlider()
         presenter.onResumeView(isFromPartnerScreen)
         isFromPartnerScreen = false
+        checkUserLoggedStatus()
     }
 
     override fun onStop() {
@@ -203,6 +205,14 @@ class MainActivity : BaseActivity(), MainContract.View {
         presenter.onStartMarketCategory()
     }
 
+    override fun startOrdersHistoryFragment() {
+        setToolbarTitleVisibility(true, getString(R.string.drawer_menu_item_my_orders_title))
+        supportFragmentManager.beginTransaction().replace(
+            R.id.container_main,
+            OrderHistoryFragment()
+        ).commit()
+    }
+
     override fun startAboutServiceFragment() {
         setToolbarTitleVisibility(true, getString(R.string.drawer_menu_item_about_us))
         supportFragmentManager.beginTransaction().replace(
@@ -303,6 +313,10 @@ class MainActivity : BaseActivity(), MainContract.View {
         }
     }
 
+    private fun checkUserLoggedStatus(){
+        binding.vgMainMenu.tvDrawerMenuItemsOrders.isVisible = presenter.getUserLoggedStatus()
+    }
+
     private fun injectDependencies() =
         App.appComponent.mainComponentBuilder()
             .bindInflater(layoutInflater)
@@ -377,28 +391,33 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
     private fun configureMenuItemsClick(onClick: (menuItem: View) -> Unit) {
-        val menuItems = listOf(
-            binding.vgMainMenu.tvDrawerMenuItemShops,
-            binding.vgMainMenu.tvDrawerMenuItemContacts,
-            binding.vgMainMenu.tvDrawerMenuItemAboutUs,
-            binding.vgMainMenu.tvDrawerMenuItemVacancies
-        )
+        with(binding) {
 
-        menuItems.forEach {
-            it.setOnClickListener { clickedView ->
-                menuItems.forEach { item ->
-                    item.isSelected = item == clickedView
-                }
+            val menuItems = listOf(
+                vgMainMenu.tvDrawerMenuItemShops,
+                vgMainMenu.tvDrawerMenuItemsOrders,
+                vgMainMenu.tvDrawerMenuItemContacts,
+                vgMainMenu.tvDrawerMenuItemAboutUs,
+                vgMainMenu.tvDrawerMenuItemVacancies
+            )
 
-                when (clickedView) {
-                    binding.vgMainMenu.tvDrawerMenuItemShops -> startMarketCategoryFragment(
-                        presenter.getMarketCategory()
-                    )
-                    binding.vgMainMenu.tvDrawerMenuItemAboutUs -> startAboutServiceFragment()
-                    binding.vgMainMenu.tvDrawerMenuItemContacts -> startContactsFragment()
-                    binding.vgMainMenu.tvDrawerMenuItemVacancies -> startVacanciesFragment()
+            menuItems.forEach {
+                it.setOnClickListener { clickedView ->
+                    menuItems.forEach { item ->
+                        item.isSelected = item == clickedView
+                    }
+
+                    when (clickedView) {
+                        vgMainMenu.tvDrawerMenuItemShops -> startMarketCategoryFragment(
+                            presenter.getMarketCategory()
+                        )
+                        vgMainMenu.tvDrawerMenuItemsOrders -> startOrdersHistoryFragment()
+                        vgMainMenu.tvDrawerMenuItemAboutUs -> startAboutServiceFragment()
+                        vgMainMenu.tvDrawerMenuItemContacts -> startContactsFragment()
+                        vgMainMenu.tvDrawerMenuItemVacancies -> startVacanciesFragment()
+                    }
+                    onClick(clickedView)
                 }
-                onClick(clickedView)
             }
         }
     }

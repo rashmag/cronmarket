@@ -145,6 +145,19 @@ interface RestService {
         @Query("MarketCategoryId") marketCategoryId: Int
     ) : PromotionsResponse
 
+    @GET("/api/v1/Order/all")
+    suspend fun getOrdersHistory(
+        @Header("Authorization") token: String,
+        @Query("Offset") offset: Int = 15,
+        @Query("Limit") limit: Int = PARTNERS_PAGINATION_LIMIT
+    ) : Response<List<OrderHistoryNetModel>>
+
+    @GET("/api/v1/Order")
+    suspend fun getOrderHistoryDetail(
+        @Header("Authorization") token: String,
+        @Query("id") orderId: String
+    ) : Response<OrderHistoryDetailNetModel>
+
     companion object {
         const val PARTNERS_PAGINATION_LIMIT = 15
     }

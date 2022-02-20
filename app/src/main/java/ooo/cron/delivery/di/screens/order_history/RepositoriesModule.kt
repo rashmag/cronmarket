@@ -1,4 +1,4 @@
-package ooo.cron.delivery.screens.order_history_screen.data.di
+package ooo.cron.delivery.di.screens.order_history
 
 import dagger.Binds
 import dagger.Module

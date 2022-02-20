@@ -87,7 +87,7 @@ class MainPresenter @Inject constructor(
     }
 
     override fun getUserLoggedStatus(): Boolean {
-        return dataManager.readToken().accessToken.isEmpty().not()
+        return dataManager.readToken().accessToken.isNotEmpty()
     }
 
     override fun onMarketCategoryClicked(category: MarketCategory) {

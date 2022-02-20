@@ -1,11 +1,11 @@
-package ooo.cron.delivery.screens.order_history_detail_screen.data.di
+package ooo.cron.delivery.di.screens.order_history_detail
 
 import android.view.LayoutInflater
 import dagger.BindsInstance
 import dagger.Subcomponent
 import ooo.cron.delivery.screens.order_history_detail_screen.presentation.OrderHistoryDetailFragment
-import ooo.cron.delivery.screens.order_history_screen.data.di.RepositoriesModule
-import ooo.cron.delivery.screens.order_history_screen.data.di.ViewModelModule
+import ooo.cron.delivery.di.screens.order_history.RepositoriesModule
+import ooo.cron.delivery.di.ViewModelModule
 
 @OrderHistoryDetailScope
 @Subcomponent(modules = [ViewModelModule::class, RepositoriesModule::class])

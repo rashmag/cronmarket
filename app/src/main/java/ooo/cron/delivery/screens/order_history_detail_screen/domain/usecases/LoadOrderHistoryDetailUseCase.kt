@@ -10,7 +10,7 @@ class LoadOrderHistoryDetailUseCase @Inject constructor(
     private val orderHistoryDetailRepository: OrderHistoryDetailRepository
 ) {
 
-    suspend fun getOrderHistoryDetail(token: String, orderId: String): Response<OrderHistoryDetailNetModel>{
+    suspend operator fun invoke(token: String, orderId: String): Response<OrderHistoryDetailNetModel>{
         return orderHistoryDetailRepository.getOrderHistoryDetail(token, orderId)
     }
 }

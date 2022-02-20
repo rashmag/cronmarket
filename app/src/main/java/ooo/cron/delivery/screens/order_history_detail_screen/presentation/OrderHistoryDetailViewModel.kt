@@ -1,6 +1,5 @@
 package ooo.cron.delivery.screens.order_history_detail_screen.presentation
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -28,27 +27,22 @@ class OrderHistoryDetailViewModel @Inject constructor(
     private val _orderHistoryDetailList = MutableLiveData<List<OrderHistoryDetailDish>>()
     val orderHistoryDetailList: LiveData<List<OrderHistoryDetailDish>> get() = _orderHistoryDetailList
 
-    var orderId = ""
-
-    init {
-        getOrderHistoryDetail(orderId)
-    }
+    private val _serverError = MutableLiveData<String>()
+    val error: LiveData<String> get() = _serverError
 
     fun getOrderHistoryDetail(orderId: String){
         viewModelScope.launch {
             try {
-                _orderHistoryDetail.value = loadOrderHistoryDetailUseCase.getOrderHistoryDetail(
+                _orderHistoryDetail.value = loadOrderHistoryDetailUseCase.invoke(
                     token = "Bearer ${dataManager.readToken().accessToken}",
                     orderId = orderId
                 )
 
                 orderHistoryDetailNetModel = _orderHistoryDetail.value?.body()
 
-                Log.d("MYLIST", deserializeDishes().toString())
-
                 _orderHistoryDetailList.value = deserializeDishes()
             }catch (e: Exception){
-                Log.d("HELLOHELLO", e.message.toString())
+                _serverError.value = e.message
             }
         }
     }

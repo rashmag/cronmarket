@@ -54,9 +54,10 @@ class OrderHistoryDetailAdapter : ListAdapter<OrderHistoryDetailDish, OrderHisto
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<OrderHistoryDetailDish>() {
 
             override fun areItemsTheSame(oldItem: OrderHistoryDetailDish, newItem: OrderHistoryDetailDish): Boolean =
-                oldItem.id == newItem.id
+                oldItem == newItem
 
             override fun areContentsTheSame(oldItem: OrderHistoryDetailDish, newItem: OrderHistoryDetailDish): Boolean =
+                oldItem.id == newItem.id &&
                 oldItem.productId == newItem.productId &&
                 oldItem.name == newItem.name &&
                         oldItem.quantity == newItem.quantity &&

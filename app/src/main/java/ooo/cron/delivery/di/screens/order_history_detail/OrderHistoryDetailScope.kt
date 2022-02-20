@@ -1,4 +1,4 @@
-package ooo.cron.delivery.screens.order_history_detail_screen.data.di
+package ooo.cron.delivery.di.screens.order_history_detail
 
 import javax.inject.Scope
 

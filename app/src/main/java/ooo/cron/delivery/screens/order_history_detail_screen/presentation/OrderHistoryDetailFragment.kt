@@ -79,6 +79,10 @@ class OrderHistoryDetailFragment : BaseFragment() {
             orderHistoryDetailList.observe(viewLifecycleOwner) {
                 showList(it)
             }
+
+            error.observe(viewLifecycleOwner){ errorText ->
+                if(errorText.isNotEmpty()) showAnyErrorScreen()
+            }
         }
     }
 

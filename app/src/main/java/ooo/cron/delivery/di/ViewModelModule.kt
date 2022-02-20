@@ -1,10 +1,11 @@
-package ooo.cron.delivery.screens.order_history_screen.data.di
+package ooo.cron.delivery.di
 
 import androidx.lifecycle.ViewModelProvider
 import dagger.Binds
 import dagger.Module
 import javax.inject.Named
-import ooo.cron.delivery.screens.order_history_detail_screen.data.di.OrderHistoryDetailViewModelFactory
+import ooo.cron.delivery.di.screens.order_history.OrderHistoryViewModelFactory
+import ooo.cron.delivery.di.screens.order_history_detail.OrderHistoryDetailViewModelFactory
 
 @Module
 abstract class ViewModelModule {

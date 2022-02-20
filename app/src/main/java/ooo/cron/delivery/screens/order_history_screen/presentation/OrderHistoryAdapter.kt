@@ -79,9 +79,10 @@ class OrderHistoryAdapter(
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<OrderHistoryNetModel>() {
 
             override fun areItemsTheSame(oldItem: OrderHistoryNetModel, newItem: OrderHistoryNetModel): Boolean =
-                oldItem.id == newItem.id
+                oldItem == newItem
 
             override fun areContentsTheSame(oldItem: OrderHistoryNetModel, newItem: OrderHistoryNetModel): Boolean =
+                oldItem.id == newItem.id &&
                 oldItem.orderNumber == newItem.orderNumber &&
                         oldItem.partnerName == newItem.partnerName &&
                         oldItem.totalAmount == newItem.totalAmount &&

@@ -1,4 +1,4 @@
-package ooo.cron.delivery.screens.order_history_detail_screen.data.di
+package ooo.cron.delivery.di.screens.order_history_detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -7,8 +7,6 @@ import javax.inject.Named
 import ooo.cron.delivery.data.DataManager
 import ooo.cron.delivery.screens.order_history_detail_screen.domain.usecases.LoadOrderHistoryDetailUseCase
 import ooo.cron.delivery.screens.order_history_detail_screen.presentation.OrderHistoryDetailViewModel
-import ooo.cron.delivery.screens.order_history_screen.domain.usecases.LoadOrderHistoryUseCase
-import ooo.cron.delivery.screens.order_history_screen.presentation.OrderHistoryViewModel
 
 class OrderHistoryDetailViewModelFactory @Inject constructor(
     private val dataManager: DataManager,

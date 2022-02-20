@@ -1,6 +1,5 @@
 package ooo.cron.delivery.screens.order_history_screen.presentation
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -20,6 +19,9 @@ class OrderHistoryViewModel @Inject constructor(
     private val _orderHistoryList = MutableLiveData<Response<List<OrderHistoryNetModel>>>()
     val orderHistoryList: LiveData<Response<List<OrderHistoryNetModel>>> get() = _orderHistoryList
 
+    private val _serverError = MutableLiveData<String>()
+    val error: LiveData<String> get() = _serverError
+
     init {
         loadOrderHistory()
     }
@@ -29,7 +31,7 @@ class OrderHistoryViewModel @Inject constructor(
             try {
                 _orderHistoryList.value = orderHistoryUseCase.invoke("Bearer ${dataManager.readToken().accessToken}")
             }catch (e: Exception){
-                Log.d("NAMNAM", e.toString())
+                _serverError.value = e.message
             }
         }
     }

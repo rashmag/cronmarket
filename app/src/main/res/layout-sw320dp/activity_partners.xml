@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -198,89 +197,86 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-
-                    <LinearLayout
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/vg_rating"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dimen_16"
                         android:layout_marginTop="@dimen/dimen_16"
                         android:layout_marginEnd="@dimen/dimen_16"
-                        android:gravity="center"
                         android:background="@drawable/bg_partners_activity_rating"
-                        android:orientation="horizontal"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tv_partners_category">
 
-                        <ImageView
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/delivery_type_container"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/dimen_8"
-                            android:layout_marginTop="@dimen/dimen_4"
-                            android:layout_marginBottom="@dimen/dimen_4"
-                            android:src="@drawable/ic_star_empty" />
+                            android:layout_margin="@dimen/dimen_6"
+                            app:cardCornerRadius="@dimen/dimen_12"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
 
-                        <TextView
-                            android:id="@+id/tv_rating"
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/delivery_type_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingHorizontal="@dimen/dimen_16"
+                                android:paddingVertical="@dimen/dimen_12"
+                                android:textColor="@color/black"
+                                tools:text="Доставка 0-199Р" />
+
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/delivery_from_container"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/dimen_8"
-                            android:layout_marginTop="@dimen/dimen_4"
-                            android:layout_marginBottom="@dimen/dimen_4"
-                            android:textColor="@color/grey70"
-                            android:textSize="@dimen/text_min_12"
-                            android:textStyle="bold"
-                            tools:text="4.3 (2480)" />
+                            android:layout_margin="@dimen/dimen_6"
+                            app:cardCornerRadius="@dimen/dimen_12"
+                            app:layout_constraintStart_toEndOf="@+id/delivery_type_container"
+                            app:layout_constraintTop_toTopOf="parent">
 
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/delivery_from_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingHorizontal="@dimen/dimen_16"
+                                android:paddingVertical="@dimen/dimen_12"
+                                android:textColor="@color/black"
+                                tools:text="Заказ от 500Р" />
 
-                        <ImageView
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/delivery_time_container"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/dimen_16"
-                            android:layout_marginTop="@dimen/dimen_4"
-                            android:layout_marginBottom="@dimen/dimen_4"
-                            android:src="@drawable/ic_car" />
+                            android:layout_marginTop="@dimen/dimen_12"
+                            android:layout_marginStart="@dimen/dimen_6"
+                            android:layout_marginBottom="@dimen/dimen_6"
+                            app:cardCornerRadius="@dimen/dimen_12"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/delivery_type_container">
 
-                        <TextView
-                            android:id="@+id/tv_free_delivery"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/dimen_8"
-                            android:layout_marginTop="@dimen/dimen_4"
-                            android:layout_marginBottom="@dimen/dimen_4"
-                            android:textColor="@color/grey70"
-                            android:textSize="@dimen/text_min_12"
-                            android:textStyle="bold"
-                            tools:text="от 5000₽ бесплатно" />
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/delivery_time_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingHorizontal="@dimen/dimen_16"
+                                android:paddingVertical="@dimen/dimen_12"
+                                android:textColor="@color/black"
+                                tools:text="60-70 мин." />
 
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/dimen_16"
-                            android:layout_marginTop="@dimen/dimen_4"
-                            android:layout_marginBottom="@dimen/dimen_4"
-                            android:src="@drawable/ic_market_category_partner_min_price" />
+                        </androidx.cardview.widget.CardView>
 
-                        <TextView
-                            android:id="@+id/tv_min_order_amount"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/dimen_8"
-                            android:layout_marginTop="@dimen/dimen_4"
-                            android:layout_marginBottom="@dimen/dimen_4"
-                            android:textColor="@color/grey70"
-                            android:textSize="@dimen/text_min_12"
-                            android:textStyle="bold"
-                            android:maxLines="2"
-                            tools:text="Заказ от 500₽" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-                    </LinearLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
-
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -356,7 +352,7 @@
             android:layout_marginEnd="@dimen/dimen_24"
             android:textColor="@color/white"
             android:textSize="@dimen/text_middle_16"
-            tools:text="10900₽"/>
+            tools:text="10900₽" />
 
     </FrameLayout>
 

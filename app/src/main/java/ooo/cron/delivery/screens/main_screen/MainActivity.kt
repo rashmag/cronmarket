@@ -76,6 +76,7 @@ class MainActivity : BaseActivity(), MainContract.View {
         configureMarketCategoriesList()
         setContinueLastSessionClickListener()
         initSliderRecycler()
+        presenter.onCreateScreen()
     }
 
     private fun configureMarketCategoriesList() {

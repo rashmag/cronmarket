@@ -35,9 +35,12 @@ class MainPresenter @Inject constructor(
         mainScope.cancel()
     }
 
+    override fun onCreateScreen() {
+        analytics.trackOpenMainScreen(dataManager.readUserPhone().toString())
+    }
+
     override fun onResumeView(isFromPartnerScreen: Boolean) {
         mainScope.launch {
-            analytics.trackOpenMainScreen(dataManager.readUserPhone().toString())
             defineAddress()
             if (currentChosenCity != dataManager.readChosenCity().id) {
                 currentChosenCity = dataManager.readChosenCity().id

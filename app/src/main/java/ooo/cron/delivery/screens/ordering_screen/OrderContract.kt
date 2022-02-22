@@ -42,6 +42,7 @@ interface OrderContract {
     }
 
     interface Presenter : MvpPresenter<View> {
+        fun onCreateMakingOrderScreen()
         fun onCreateView()
         fun paymentSucceed(paymentId: Long)
         fun paymentFailed()

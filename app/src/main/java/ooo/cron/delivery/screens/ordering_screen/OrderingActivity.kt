@@ -52,6 +52,7 @@ class OrderingActivity : BaseActivity(), OrderContract.View {
         initViewPager()
         onBackClick()
         onOrderClick()
+        presenter.onCreateMakingOrderScreen()
     }
 
     override fun onStart() {

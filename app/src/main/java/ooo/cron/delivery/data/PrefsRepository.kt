@@ -18,7 +18,7 @@ class PrefsRepository @Inject constructor(
 
     fun readBasket(): Basket? {
         val basketPrefs = sharedPreferences.getString(BASKET, null)
-        return if (basketPrefs != null)
+        return if (!basketPrefs.isNullOrEmpty())
             Gson().fromJson(basketPrefs, Basket::class.java)
         else null
     }

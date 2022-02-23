@@ -13,6 +13,7 @@ import ooo.cron.delivery.utils.Error
 import ooo.cron.delivery.utils.NoConnection
 import ooo.cron.delivery.utils.Result
 import ooo.cron.delivery.utils.Success
+import retrofit2.HttpException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import javax.inject.Inject
@@ -35,11 +36,10 @@ class RestRepository @Inject constructor(
             NoConnection
         } catch (e: SocketTimeoutException) {
             NoConnection
-        } catch (e: Exception) {
+        } catch (e: HttpException) {
             Error(e, e.message)
         }
     }
-
 
     suspend fun sendOrder(
         token: String,
@@ -47,7 +47,15 @@ class RestRepository @Inject constructor(
         phone: String?,
         comment: String,
         deliveryCityId: String?,
+        address: String?,
+        entrance: String?,
+        floor: String?,
+        flat: String?,
+        deliveryAtTime: String?,
+        saveAddress: Boolean?,
+        discount: Int?,
         paymentMethod: Int
+
     ) =
         restService.sendOrder(
             token, OrderReq(
@@ -55,13 +63,13 @@ class RestRepository @Inject constructor(
                 phone,
                 comment,
                 deliveryCityId,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
+                address,
+                entrance,
+                floor,
+                flat,
+                deliveryAtTime,
+                saveAddress,
+                discount,
                 paymentMethod
             )
         )

@@ -16,7 +16,7 @@ class SPrefsService @Inject constructor(
 ) {
     //можно имрпавить жсончики
     fun writeChosenCity(city: City) {
-        return sharedPreferences.edit()
+        sharedPreferences.edit()
             .putString(CITY, Gson().toJson(city).toString())
             .apply()
     }
@@ -37,7 +37,7 @@ class SPrefsService @Inject constructor(
             )
             writeChosenCity(cityPrevious)
             return cityPrevious
-        } else null
+        }else null
     }
 
 

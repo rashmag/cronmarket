@@ -148,8 +148,8 @@ interface RestService {
     @GET("/api/v1/Order/all")
     suspend fun getOrdersHistory(
         @Header("Authorization") token: String,
-        @Query("Offset") offset: Int = 15,
-        @Query("Limit") limit: Int = PARTNERS_PAGINATION_LIMIT
+        @Query("Offset") offset: Int = 0,
+        @Query("Limit") limit: Int = 0
     ) : Response<List<OrderHistoryNetModel>>
 
     @GET("/api/v1/Order")

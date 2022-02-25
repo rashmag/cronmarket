@@ -14,20 +14,32 @@ import javax.inject.Inject
 class SPrefsService @Inject constructor(
     private val sharedPreferences: SharedPreferences
 ) {
-    fun writeChosenCity(city: City) =
+    //можно имрпавить жсончики
+    fun writeChosenCity(city: City) {
         sharedPreferences.edit()
-            .putString(CITY_ID, city.id)
-            .putString(CITY_NAME, city.city)
-            .putString(CITY_KLADR_ID, city.kladrId)
-            .commit()
+            .putString(CITY, Gson().toJson(city).toString())
+            .apply()
+    }
 
-    //можно имрпавить
-    fun readChosenCity() =
-        City(
-            sharedPreferences.getString(CITY_ID, "")!!,
-            sharedPreferences.getString(CITY_NAME, "")!!,
-            sharedPreferences.getString(CITY_KLADR_ID, "")!!
-        )
+    //можно имрпавить жсончики
+    fun readChosenCity(): City? {
+        val cityIdPrevious = sharedPreferences.getString(CITY_ID, "")
+        val cityNamePrevious = sharedPreferences.getString(CITY_NAME, "")
+        val cityKladrIdPrevious = sharedPreferences.getString(CITY_KLADR_ID, "")
+        val city = sharedPreferences.getString(CITY, "")
+        return if (city != "")
+            Gson().fromJson(city, City::class.java)
+        else if (cityIdPrevious != "" && cityNamePrevious != "" && cityKladrIdPrevious != "") {
+            val cityPrevious = City(
+                cityIdPrevious.toString(),
+                cityNamePrevious.toString(),
+                cityKladrIdPrevious.toString()
+            )
+            writeChosenCity(cityPrevious)
+            return cityPrevious
+        }else null
+    }
+
 
     fun writeCurrentCityId(cityId: String) =
         sharedPreferences.edit()
@@ -45,20 +57,33 @@ class SPrefsService @Inject constructor(
     fun readCurrentCityPosition() =
         sharedPreferences.getInt(CURRENT_CITY_POSITION, -1)
 
+    //можно имправить жсончики
     fun writeSelectedMarketCategory(category: MarketCategory) =
         sharedPreferences.edit()
-            .putInt(MARKET_CATEGORY_ID, category.id)
-            .putString(MARKET_CATEGORY_NAME, category.categoryName)
-            .putString(MARKET_CATEGORY_IMAGE, category.categoryImgUri)
-            .commit()
+            .putString(MARKET_CATEGORY, Gson().toJson(category).toString())
+            .apply()
 
-    //можно имправить
-    fun readSelectedMarketCategory() =
-        MarketCategory(
-            sharedPreferences.getInt(MARKET_CATEGORY_ID, 1),
-            sharedPreferences.getString(MARKET_CATEGORY_NAME, "")!!,
-            sharedPreferences.getString(MARKET_CATEGORY_IMAGE, "")!!
-        )
+    //можно имправить жсончики
+    fun readSelectedMarketCategory(): MarketCategory? {
+        val marketCategoryIdPrevious = sharedPreferences.getInt(MARKET_CATEGORY_ID, -1)
+        val marketCategoryNamePrevious = sharedPreferences.getString(MARKET_CATEGORY_NAME, "")
+        val marketCategoryImagePrevious = sharedPreferences.getString(MARKET_CATEGORY_IMAGE, "")
+        val marketCategory = sharedPreferences.getString(MARKET_CATEGORY, "")
+        return if (marketCategory != "")
+            Gson().fromJson(
+                marketCategory,
+                MarketCategory::class.java
+            ) else if (marketCategoryIdPrevious != -1 && marketCategoryImagePrevious != "" && marketCategoryNamePrevious != "") {
+            val marketCategoryPrevious =
+                MarketCategory(
+                    marketCategoryIdPrevious,
+                    marketCategoryNamePrevious.toString(),
+                    marketCategoryImagePrevious.toString()
+                )
+            writeSelectedMarketCategory(marketCategoryPrevious)
+            marketCategoryPrevious
+        } else null
+    }
 
     fun writeBuildingAddress(address: String) =
         sharedPreferences.edit()
@@ -83,7 +108,7 @@ class SPrefsService @Inject constructor(
     }
 
     fun readBasket() =
-        Gson().fromJson(sharedPreferences.getString(BASKET,""),Basket::class.java)
+        Gson().fromJson(sharedPreferences.getString(BASKET, ""), Basket::class.java)
 
     fun writeUserBasketId(id: String) =
         sharedPreferences.edit()
@@ -97,23 +122,34 @@ class SPrefsService @Inject constructor(
         sharedPreferences.edit().putString(USER_BASKET, EMPTY_UUID)
             .commit()
 
+    //можно имправить жсончики
     fun writeToken(token: RefreshableToken) =
         sharedPreferences.edit()
-            .putString(ACCESS_TOKEN, token.accessToken)
-            .putString(REFRESH_TOKEN, token.refreshToken)
-            .commit()
+            .putString(TOKEN, Gson().toJson(token).toString())
+            .apply()
 
-    fun readToken() =
-        RefreshableToken(
-            sharedPreferences.getString(ACCESS_TOKEN, "")!!,
-            sharedPreferences.getString(REFRESH_TOKEN, "")!!
-        )
+    //можно имправить жсончики
+    fun readToken(): RefreshableToken? {
+        val tokenPreviousAccess = sharedPreferences.getString(ACCESS_TOKEN, "")
+        val tokenPreviousRefresh = sharedPreferences.getString(REFRESH_TOKEN, "")
+        val token = sharedPreferences.getString(TOKEN, "")
+        return if (token != "")
+            Gson().fromJson(token, RefreshableToken::class.java)
+        else if (tokenPreviousAccess != "" && tokenPreviousRefresh != "") {
+            val tokenPrevious = RefreshableToken(
+                tokenPreviousAccess.toString(),
+                tokenPreviousRefresh.toString()
+            )
+            writeToken(tokenPrevious)
+            tokenPrevious
+        } else null
+    }
 
+    //можно имправить жсончики
     fun removeToken() =
         sharedPreferences.edit()
-            .remove(ACCESS_TOKEN)
-            .remove(REFRESH_TOKEN)
-            .commit()
+            .remove(TOKEN)
+            .apply()
 
     companion object {
         const val EMPTY_UUID = "00000000-0000-0000-0000-000000000000"
@@ -121,6 +157,8 @@ class SPrefsService @Inject constructor(
         const val CITY_ID = "CITY_ID"
         const val CITY_NAME = "CITY_NAME"
         const val CITY_KLADR_ID = "CITY_KLADR_ID"
+
+        const val CITY = "city"
 
         const val CURRENT_CITY_ID = "CURRENT_CITY_ID"
 
@@ -137,8 +175,12 @@ class SPrefsService @Inject constructor(
         const val ACCESS_TOKEN = "access_token"
         const val REFRESH_TOKEN = "refresh_token"
 
+        const val TOKEN = "token"
+
         const val MARKET_CATEGORY_ID = "market_category_id"
         const val MARKET_CATEGORY_NAME = "market_category_name"
         const val MARKET_CATEGORY_IMAGE = "market_category_image"
+
+        const val MARKET_CATEGORY = "market_category"
     }
 }

@@ -164,7 +164,7 @@ class MainActivity : BaseActivity(), MainContract.View {
         binding.vgMainContinueLastSession.startBottomAnimate(false)
     }
 
-    override fun startMarketCategoryFragment(category: MarketCategory) {
+    override fun startMarketCategoryFragment(category: MarketCategory?) {
         setToolbarTitleVisibility(false, null)
         supportFragmentManager.beginTransaction().replace(
             R.id.container_main,
@@ -320,18 +320,20 @@ class MainActivity : BaseActivity(), MainContract.View {
         }
     }
 
-    private fun marketCategoryArguments(category: MarketCategory) = Bundle().apply {
+    private fun marketCategoryArguments(category: MarketCategory?) = Bundle().apply {
         putString(
             MarketCategoryFragment.ARGUMENT_MARKET_CATEGORY_NAME,
-            category.categoryName
+            category?.categoryName
         )
-        putInt(
-            MarketCategoryFragment.ARGUMENT_MARKET_CATEGORY_ID,
-            category.id
-        )
+        category?.id?.let {
+            putInt(
+                MarketCategoryFragment.ARGUMENT_MARKET_CATEGORY_ID,
+                it
+            )
+        }
         putString(
             MarketCategoryFragment.ARGUMENT_MARKET_CATEGORY_IMAGE,
-            category.categoryImgUri
+            category?.categoryImgUri
         )
     }
 

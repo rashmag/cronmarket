@@ -1,5 +1,6 @@
 package ooo.cron.delivery.screens.pay_dialog_screen
 
+
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,12 +9,9 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import ooo.cron.delivery.data.OrderInteractor
-import ooo.cron.delivery.data.OrderPrefsRepository
-import ooo.cron.delivery.data.OrderRestRepository
 import ooo.cron.delivery.data.network.models.Basket
 import ooo.cron.delivery.data.network.models.Basket.Companion.deserializeDishes
 import ooo.cron.delivery.data.network.models.PayData
-import ooo.cron.delivery.data.network.request.OrderReq
 import ooo.cron.delivery.utils.SingleLiveEvent
 import ru.tinkoff.acquiring.sdk.models.Item
 import ru.tinkoff.acquiring.sdk.models.Receipt
@@ -32,9 +30,12 @@ class OrderViewModel @Inject constructor(
     private val handler = CoroutineExceptionHandler { context, exception ->
         Log.e("exception", exception.toString())
     }
-    val payData: SingleLiveEvent<PayData> = SingleLiveEvent()
-    val callingDialog: SingleLiveEvent<Unit> = SingleLiveEvent()
+    val cardPayData: SingleLiveEvent<PayData> = SingleLiveEvent()
+    val googlePayData: SingleLiveEvent<Pair<PayData, String>> = SingleLiveEvent()
+    val callingPayInfoDialog: SingleLiveEvent<Unit> = SingleLiveEvent()
+    val callingDeliveryCostInfo: SingleLiveEvent<Boolean> = SingleLiveEvent()
     val paymentStatus: SingleLiveEvent<Boolean> = SingleLiveEvent()
+    val gPayClick: SingleLiveEvent<Long> = SingleLiveEvent()
     private val mutablePhone: MutableLiveData<String> = MutableLiveData()
     val phone: LiveData<String> get() = mutablePhone
     private val mutableBasketState: MutableLiveData<BasketState> = MutableLiveData()
@@ -48,29 +49,45 @@ class OrderViewModel @Inject constructor(
         Log.e("app", "inited")
     }
 
-    fun onCreateView() = viewModelScope.launch {
+    fun onViewCreated() = viewModelScope.launch {
+        if (interactor.getDeliveryCityId() == KHAS_ID)
+            callingDeliveryCostInfo.postValue(true)
+        else callingDeliveryCostInfo.postValue(false)
         loadBasket()
     }
 
     fun onPayClicked() {
         when (payVariantState.value) {
-            is CardVariant -> getOrderInfo()
-            is CashVariant -> onPaymentSuccess()
-            else -> callingDialog.call()
+            is CardVariant -> onCardPaySelected()
+            is CashVariant -> onPaymentSuccess() // никуда лезть не надо, сразу же подтверждаем заказ и отправляем запрос на сервер
+            is GPayVariant -> onGooglePaySelected()
+            else -> callingPayInfoDialog.call()
         }
     }
 
-    private fun getOrderInfo() {
+    fun onCardPaySelected() {
+        cardPayData.postValue(getOrderInfo())
+    }
+
+    fun onGooglePaySelected() {
+        gPayClick.postValue(getOrderInfo().amountSum.toLong())
+    }
+
+    fun onGooglePayResultSuccess(token: String) {
+        googlePayData.postValue(Pair(getOrderInfo() ,token))
+    }
+
+    private fun getOrderInfo(): PayData {
         val phone = interactor.getPhone().toString()
         val basket = interactor.getBasket()
-        val amountSum =
-            basket.amount + basket.deliveryCost
-        val receipt = Receipt(
-            ArrayList(receiptsItems(basket)),
-            "cron.devsystems@gmail.com",
-            Taxation.USN_INCOME
-        )
-        payData.postValue(PayData(phone, amountSum, receipt))
+        val payData = basket?.let {
+            PayData(amountSum = it.amount + it.deliveryCost, receipt = Receipt(
+                ArrayList(receiptsItems(it)),
+                "cron.devsystems@gmail.com",
+                Taxation.USN_INCOME
+            ), phone = phone)
+        }
+        return payData as PayData
     }
 
     fun receiptsItems(basket: Basket) =
@@ -99,7 +116,9 @@ class OrderViewModel @Inject constructor(
         viewModelScope.launch(handler) {
             try {
                 val basket = interactor.getBasket()
-                mutableBasketState.postValue(Default(basket))
+                mutableBasketState.postValue(basket?.let {
+                    Default(it)
+                })
             } catch (e: Exception) {
                 mutableBasketState.postValue(Error)
             }
@@ -115,13 +134,17 @@ class OrderViewModel @Inject constructor(
     }
 
     //метод для POST-запроса на отправку заказа после оплаты(если картой или GPay)/выбора налички
-    //TODO !!!!!!!!!! обработать ошибку отсутствия интернета при успешной оплате и отправке POST-запроса
+    //TODO обработать ошибку отсутствия интернета при успешной оплате и отправке POST-запроса
 
     fun onPaymentSuccess() {
-        //TODO сформировать OrderReq с введенных юзером данных
         viewModelScope.launch {
             val paymentMethod = if (payVariantState.value == CashVariant) 1 else 2
             val comment = commentTextLiveData.value.toString()
+            val basket = interactor.getBasket()
+            basket?.let {
+                val basketClearReq = interactor.getBasketClearReq(it)
+                interactor.clearBasket(basketClearReq)
+            }
             interactor.sendOrder(paymentMethod, comment)
         }
         paymentStatus.postValue(true)
@@ -129,7 +152,6 @@ class OrderViewModel @Inject constructor(
 
     //метод для вызова показа ошибки в экране корзины
     fun onPaymentFailed() {
-        /*TODO вызвать SingleLiveEvent для показа ошибки оплаты заказа*/
         paymentStatus.postValue(false)
     }
 
@@ -138,4 +160,8 @@ class OrderViewModel @Inject constructor(
 
     private fun Double.inCoins() =
         (this * 100).toLong()
+
+    companion object {
+        const val KHAS_ID = "2d0c08eb-da25-4afa-8de2-db70a29a9520"
+    }
 }

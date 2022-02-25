@@ -9,8 +9,9 @@ import okhttp3.logging.HttpLoggingInterceptor
 import ooo.cron.delivery.BuildConfig.BASE_URL
 import ooo.cron.delivery.data.DataManager
 import ooo.cron.delivery.data.OrderInteractor
-import ooo.cron.delivery.data.OrderPrefsRepository
-import ooo.cron.delivery.data.OrderRestRepository
+import ooo.cron.delivery.data.PrefsRepository
+import ooo.cron.delivery.data.RestRepository
+import ooo.cron.delivery.data.BasketInteractor
 import ooo.cron.delivery.data.network.RestService
 import ooo.cron.delivery.data.network.SPrefsService
 import ooo.cron.delivery.data.network.errors.ApiErrorsUtils
@@ -67,7 +68,7 @@ class AppModule {
     @Provides
     @Singleton
     fun provideOrderPrefsRepository(sharedPreferences: SharedPreferences) =
-        OrderPrefsRepository(sharedPreferences)
+        PrefsRepository(sharedPreferences)
 
     @Provides
     @Singleton
@@ -77,7 +78,7 @@ class AppModule {
     @Provides
     @Singleton
     fun provideOrderRestRepository(restService: RestService) =
-        OrderRestRepository(restService)
+        RestRepository(restService)
 
     @Provides
     @Singleton
@@ -88,9 +89,17 @@ class AppModule {
     @Provides
     @Singleton
     fun provideOrderInteractor(
-        restRepository: OrderRestRepository,
-        prefsRepository: OrderPrefsRepository
+        restRepository: RestRepository,
+        prefsRepository: PrefsRepository
     ): OrderInteractor =
         OrderInteractor(restRepository, prefsRepository)
+
+    @Provides
+    @Singleton
+    fun provideBasketInteractor(
+        restRepository: RestRepository,
+        prefsRepository: PrefsRepository
+    ): BasketInteractor =
+        BasketInteractor(restRepository, prefsRepository)
 
 }

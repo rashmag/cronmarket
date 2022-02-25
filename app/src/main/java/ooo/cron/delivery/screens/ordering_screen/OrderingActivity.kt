@@ -9,15 +9,14 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import com.google.android.material.tabs.TabLayoutMediator
 import ooo.cron.delivery.App
+import ooo.cron.delivery.BuildConfig
 import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.Basket
 import ooo.cron.delivery.data.network.request.OrderReq
 import ooo.cron.delivery.databinding.ActivityOrderingBinding
 import ooo.cron.delivery.screens.BaseActivity
-import ooo.cron.delivery.screens.basket_screen.BasketActivity
 import ooo.cron.delivery.screens.ordering_screen.delivery_details_fragment.DeliveryDetailsFragment
 import ooo.cron.delivery.screens.ordering_screen.order_cost_fragment.OrderCostFragment
-import ooo.cron.delivery.screens.pay_dialog_screen.PaymentVariant
 import ooo.cron.delivery.utils.Utils
 import ru.tinkoff.acquiring.sdk.TinkoffAcquiring
 import ru.tinkoff.acquiring.sdk.models.options.screen.PaymentOptions
@@ -41,7 +40,7 @@ class OrderingActivity : BaseActivity(), OrderContract.View {
 
     var isRequestParametersValid: Boolean = false
 
-    private var basketModel: Basket?= null
+    private var basketModel: Basket? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         basketModel = intent.getParcelableExtra(BASKET_MODEL)
@@ -209,7 +208,7 @@ class OrderingActivity : BaseActivity(), OrderContract.View {
             )
             tvOrderStatus.text = getString(R.string.ordering_pay_status_error)
             tvOrderDetailsStatus.text = getString(R.string.ordering_pay_status_error_detail_title)
-            btnOrder.text = getString(R.string.order_repeat_title)
+            btnOrder.text = getString(R.string.order_pay_fail_title)
             btnOrder.setOnClickListener {
                 vgOrderPayStatus.visibility = View.GONE
                 onOrderClick()
@@ -232,13 +231,11 @@ class OrderingActivity : BaseActivity(), OrderContract.View {
         resources.getStringArray(R.array.payment_method_array)[CARD_PAYMENT_TYPE_INDEX]
 
     override fun openPaymentScreen(paymentOptions: PaymentOptions) {
-        TinkoffAcquiring(
-            getString(R.string.tinkoff_terminal_key),
-            getString(R.string.tinkoff_terminal_public_key)
+        TinkoffAcquiring(BuildConfig.tinkoff_terminal_key, BuildConfig.tinkoff_terminal_public_key
         ).openPaymentScreen(
-            this,
-            paymentOptions,
-            TINKOFF_PAYMENT_REQUEST_CODE
+        this,
+        paymentOptions,
+        TINKOFF_PAYMENT_REQUEST_CODE
         )
     }
 

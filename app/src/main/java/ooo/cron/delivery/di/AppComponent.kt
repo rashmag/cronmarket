@@ -15,6 +15,7 @@ import ooo.cron.delivery.screens.ordering_screen.OrderComponent
 import ooo.cron.delivery.screens.ordering_screen.delivery_details_fragment.DeliveryDetailsComponent
 import ooo.cron.delivery.screens.ordering_screen.order_cost_fragment.OrderCostComponent
 import ooo.cron.delivery.screens.partners_screen.PartnersComponent
+import ooo.cron.delivery.screens.payment_status_screen.PaymentStatusComponent
 import ooo.cron.delivery.screens.splash_screen.SplashScreenComponent
 import javax.inject.Singleton
 
@@ -40,6 +41,7 @@ interface AppComponent {
     fun deliveryDetailsComponentBuilder(): DeliveryDetailsComponent.Builder
     fun orderCostComponentBuilder(): OrderCostComponent.Builder
     fun orderComponentBuilder(): ooo.cron.delivery.screens.pay_dialog_screen.OrderComponent.Builder
+    fun paymentStatusComponentBuilder(): PaymentStatusComponent.Builder
 
     @Component.Builder
     interface Builder {

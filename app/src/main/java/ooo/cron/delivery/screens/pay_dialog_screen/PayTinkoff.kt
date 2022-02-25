@@ -1,21 +1,21 @@
 package ooo.cron.delivery.screens.pay_dialog_screen
 
 import android.content.Context
-import android.util.Log
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import ooo.cron.delivery.BuildConfig
 import ooo.cron.delivery.R
 import ru.tinkoff.acquiring.sdk.TinkoffAcquiring
 import ru.tinkoff.acquiring.sdk.localization.AsdkSource
 import ru.tinkoff.acquiring.sdk.localization.Language
 import ru.tinkoff.acquiring.sdk.models.DarkThemeMode
-import ru.tinkoff.acquiring.sdk.models.Item
 import ru.tinkoff.acquiring.sdk.models.Receipt
 import ru.tinkoff.acquiring.sdk.models.enums.CheckType
-import ru.tinkoff.acquiring.sdk.models.enums.Tax
 import ru.tinkoff.acquiring.sdk.models.options.screen.PaymentOptions
 import ru.tinkoff.acquiring.sdk.utils.Money
 import java.util.*
-import javax.inject.Inject
+
+/**
+ * Created by Maya Nasrueva on 21.12.2021
+ * */
 
 class PayTinkoff (
     private val context: Context,
@@ -23,8 +23,8 @@ class PayTinkoff (
 ) {
     private fun openPaymentScreen(paymentOptions: PaymentOptions) {
         TinkoffAcquiring(
-            context.getString(R.string.tinkoff_terminal_key),
-            context.getString(R.string.tinkoff_terminal_public_key)
+            BuildConfig.tinkoff_terminal_key,
+            BuildConfig.tinkoff_terminal_public_key
         ).openPaymentScreen(
             fragment,
             paymentOptions,
@@ -33,6 +33,13 @@ class PayTinkoff (
     }
 
     fun payWithCard(amountSum: Double, receipt: Receipt, phone: String) {
+        openPaymentScreen(createPaymentOptions(amountSum, receipt, phone))
+    }
+
+    fun getGooglePaymentOptions(amountSum: Double, receipt: Receipt, phone: String) =
+        createPaymentOptions(amountSum,receipt, phone)
+
+    private fun createPaymentOptions(amountSum: Double, receipt: Receipt, phone: String): PaymentOptions {
         val paymentOptions = PaymentOptions().setOptions {
             orderOptions {
                 orderId = Calendar.getInstance().timeInMillis.toString()
@@ -58,8 +65,7 @@ class PayTinkoff (
                 theme = R.style.AcquiringThemeCustom
             }
         }
-        Log.d("payment", paymentOptions. toString())
-        openPaymentScreen(paymentOptions)
+        return paymentOptions
     }
 
     companion object {

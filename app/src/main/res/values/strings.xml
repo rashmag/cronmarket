@@ -226,7 +226,8 @@
     <string name="accept_warning_message">Нельзя заказать товары из разных заведений. Подтверждая вы удалите все товары из корзины.</string>
     <string name="accept">Подтвердить</string>
     <string name="cancel">Отмена</string>
-    <string name="order_repeat_title">Повторить</string>
+    <string name="order_pay_fail_title">Вернуться к оплате</string>
+    <string name="order_pay_success_title">Вернуться на главную</string>
     <string name="basket_make_order">Оформить заказ</string>
     <string name="price">%1$s₽</string>
     <string name="rate_delivery_price">Стоимость доставки\nпо тарифу</string>
@@ -262,9 +263,6 @@
     <string name="vacancies_second_phone_title">8(988) 790–79–03</string>
     <string name="become_courier_title">Стать курьером</string>
 
-    <string name="tinkoff_terminal_key">1616764866032</string>
-    <string name="tinkoff_terminal_password">37qcj6mk92hv5r8b</string>
-    <string name="tinkoff_terminal_public_key">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAv5yse9ka3ZQE0feuGtemYv3IqOlLck8zHUM7lTr0za6lXTszRSXfUO7jMb+L5C7e2QNFs+7sIX2OQJ6a+HG8kr+jwJ4tS3cVsWtd9NXpsU40PE4MeNr5RqiNXjcDxA+L4OsEm/BlyFOEOh2epGyYUd5/iO3OiQFRNicomT2saQYAeqIwuELPs1XpLk9HLx5qPbm8fRrQhjeUD5TLO8b+4yCnObe8vy/BMUwBfq+ieWADIjwWCMp2KTpMGLz48qnaD9kdrYJ0iyHqzb2mkDhdIzkim24A3lWoYitJCBrrB2xM05sm9+OdCI1f7nPNJbl5URHobSwR94IRGT7CJcUjvwIDAQAB</string>
     <string name="partner_closed">Заведение в данный момент закрыто\nОткроется в %1$s</string>
     <string name="enter_address">Введите адрес</string>
     <string name="cron_delivery_title">Доставка с CronMarket</string>
@@ -284,4 +282,7 @@
     <string name="order_inform_delivery_cost_message">Доставка оплачивается отдельно</string>
     <string name="order_no_payment_inform_message">Необходимо выбрать способ оплаты</string>
     <string name="order_inform_attention_btn">Понятно</string>
+    <string name="delivery_cost">Доставка от 99₽</string>
+    <string name="payment_result_cancel">Оплата отменена</string>
+    <string name="google_pay_result_error">Что-то пошло не так</string>
 </resources>

@@ -1,9 +1,6 @@
 package ooo.cron.delivery.screens.basket_screen
 
-import android.os.CountDownTimer
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
@@ -13,7 +10,6 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.BasketDish
-import ooo.cron.delivery.data.network.models.BasketItem
 import ooo.cron.delivery.databinding.ItemBasketHeaderBinding
 import ooo.cron.delivery.databinding.ItemBasketPersonsBinding
 import ooo.cron.delivery.databinding.ItemBasketProductBinding
@@ -26,9 +22,7 @@ import ooo.cron.delivery.utils.extensions.makeVisible
 /**
  * Created by Ramazan Gadzhikadiev on 10.05.2021.
  */
-class BasketAdapter(
-    private val isRestaurant: Int
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class BasketAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var products: List<BasketDish> = listOf()
 
@@ -37,6 +31,8 @@ class BasketAdapter(
 
     private var partnersEditClick: (quantity: Int) -> Unit = { _ -> }
     private var persons = 0
+
+    private var isRestaurant: Int? = null
 
     override fun getItemViewType(position: Int): Int =
         when (position) {
@@ -113,6 +109,7 @@ class BasketAdapter(
     fun setProducts(
         products: List<BasketDish>,
         persons: Int,
+        isRestaurant: Int,
         onPlusClick: (dish: BasketDish, extraQuantity: Int) -> Unit,
         onMinusClick: (dish: BasketDish, unwantedQuantity: Int) -> Unit,
         partnersEditClick: (quantity: Int) -> Unit
@@ -122,8 +119,10 @@ class BasketAdapter(
         this.minusClick = onMinusClick
         this.partnersEditClick = partnersEditClick
         this.persons = persons
+        this.isRestaurant = isRestaurant
         notifyDataSetChanged()
     }
+
 
     inner class ProductViewHolder(private val binding: ItemBasketProductBinding) :
         RecyclerView.ViewHolder(binding.root) {

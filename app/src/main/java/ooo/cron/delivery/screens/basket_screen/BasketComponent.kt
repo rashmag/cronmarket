@@ -14,17 +14,17 @@ import ooo.cron.delivery.data.network.models.Basket
 interface BasketComponent {
 
     fun inject(activity: BasketActivity)
+    fun inject(fragment: BasketFragment)
 
     @Subcomponent.Builder
     interface Builder {
 
         @BindsInstance
-        fun inflater(inflater: LayoutInflater): Builder
+        fun bindInflater(inflater: LayoutInflater): Builder
 
         @BindsInstance
         fun basketModel(basket: Basket?): Builder
 
         fun build(): BasketComponent
     }
-
 }

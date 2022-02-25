@@ -167,12 +167,12 @@ class BasketPresenter @Inject constructor(
     }
 
     override fun clickMakeOrder() {
-        if (dataManager.readToken().refreshToken.isEmpty()) {
+        if (dataManager.readToken()?.refreshToken?.isEmpty() == true) {
             view?.navigateAuthorization()
             return
-        }
-        dataManager.writeBasket(basket!!)
-        view?.showMakeOrderBottomDialog(basket!!)
+        } //todo нет обработки ошибки
+        dataManager.writeBasket(basket!!) //todo убрать !!
+        view?.showMakeOrderBottomDialog(basket!!) //todo убрать !!
     }
 
     private fun deserializeDishes() =

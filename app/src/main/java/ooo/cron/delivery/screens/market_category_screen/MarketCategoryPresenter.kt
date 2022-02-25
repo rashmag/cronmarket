@@ -87,8 +87,12 @@ class MarketCategoryPresenter @Inject constructor(
     }
 
     private suspend fun initCity() {
-        if (this::city.isInitialized.not())
-            city = dataManager.readChosenCity()
+        if (this::city.isInitialized.not()) {
+            val chosenCity = dataManager.readChosenCity()
+            if (chosenCity != null) {
+                city = chosenCity
+            }
+        }
     }
 
     private suspend fun initTags() {

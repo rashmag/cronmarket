@@ -42,5 +42,5 @@ class EnterNamePresenter @Inject constructor(
     }
 
     private fun accessTokenParameter() =
-        "Bearer ${dataManager.readToken().accessToken}"
+        "Bearer ${dataManager.readToken()?.accessToken}"
 }

@@ -1,31 +1,54 @@
 package ooo.cron.delivery.data
 
-import android.content.SharedPreferences
-import ooo.cron.delivery.data.network.RestService
 import ooo.cron.delivery.data.network.models.Basket
-import ooo.cron.delivery.data.network.request.OrderReq
+import ooo.cron.delivery.data.network.request.BasketClearReq
+import ooo.cron.delivery.utils.Result
 import javax.inject.Inject
+import kotlin.math.floor
+
+/**
+ * Created by Maya Nasrueva on 09.01.2022
+ * */
 
 class OrderInteractor @Inject constructor(
-    private val restRepo: OrderRestRepository,
-    private val prefsRepo: OrderPrefsRepository
+    private val restRepo: RestRepository,
+    private val prefsRepo: PrefsRepository
 ) {
     //suspend fun getBasket() = restRepo.getBasket(prefsRepo.readBasket().id)
 
     suspend fun sendOrder(paymentMethod: Int, comment: String ) {
+        val basket = prefsRepo.readBasket()
+        val token = prefsRepo.readToken()
+        if (basket == null || token == null) return
         restRepo.sendOrder(
-            prefsRepo.readToken().accessToken,
-            prefsRepo.readBasket().id,
+            token.accessToken,
+            basket.id,
             prefsRepo.readUserPhone(),
             comment,
-            prefsRepo.readDeliveryCityId(),
+            prefsRepo.readDeliveryCity().id,
+            address = null,
+            entrance = null,
+            floor = null,
+            flat = null,
+            deliveryAtTime = null,
+            saveAddress = null,
+            discount = null,
             paymentMethod
         )
     }
 
-    fun getBasket(): Basket =
+    suspend fun clearBasket(basketClearReq: BasketClearReq): Result<Basket> =
+        restRepo.clearBasket(basketClearReq)
+
+    fun getBasketClearReq(basket: Basket): BasketClearReq  =
+        restRepo.getBasketClearReq(basket)
+
+    fun getBasket(): Basket? =
         prefsRepo.readBasket()
 
     fun getPhone(): String? =
         prefsRepo.readUserPhone()
+
+    fun getDeliveryCityId(): String =
+        prefsRepo.readDeliveryCity().id
 }

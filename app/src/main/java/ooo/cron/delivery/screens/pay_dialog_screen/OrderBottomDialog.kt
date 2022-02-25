@@ -31,7 +31,7 @@ import javax.inject.Inject
  * Created by Maya Nasrueva on 14.12.2021
  * */
 
-class OrderBottomDialog() : BottomSheetDialogFragment() {
+class OrderBottomDialog : BottomSheetDialogFragment() {
 
     private val viewModel: OrderViewModel by activityViewModels {
         factory.create()
@@ -45,6 +45,8 @@ class OrderBottomDialog() : BottomSheetDialogFragment() {
 
     @Inject
     lateinit var factory: OrderViewModelFactory.Factory
+
+    private var isDeliveryInKhas: Boolean? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,7 +86,10 @@ class OrderBottomDialog() : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         AcquiringSdk.isDeveloperMode = BuildConfig.DEBUG
         AcquiringSdk.isDebug = BuildConfig.DEBUG
-        viewModel.onCreateView()
+        viewModel.onViewCreated()
+        viewModel.callingDeliveryCostInfo.observe(viewLifecycleOwner, {
+            isDeliveryInKhas = it
+        })
         viewModel.basketState.observe(viewLifecycleOwner, { basketState ->
             when (basketState) {
                 is Loading -> showLoadingState()
@@ -95,7 +100,7 @@ class OrderBottomDialog() : BottomSheetDialogFragment() {
         viewModel.paymentStatus.observe(viewLifecycleOwner, {
             openOrderStatusFragment(it)
         })
-        viewModel.callingDialog.observe(viewLifecycleOwner, {
+        viewModel.callingPayInfoDialog.observe(viewLifecycleOwner, {
             showInformDialog(R.string.order_no_payment_inform_message)
         })
         viewModel.payVariantState.observe(viewLifecycleOwner, {
@@ -146,8 +151,8 @@ class OrderBottomDialog() : BottomSheetDialogFragment() {
     private fun openOrderStatusFragment(isSuccessPayment: Boolean) {
         /*TODO сделать переход на фрагмент с открытием полноэкранного статуса заказа
         *  isSuccessPayment передавать в экран через Bundle или Extra*/
-        payCallback?.onPayClicked(isSuccessPayment)
         dismiss()
+        payCallback?.onPayClicked(isSuccessPayment)
     }
 
     private fun injectDependencies() {
@@ -157,36 +162,26 @@ class OrderBottomDialog() : BottomSheetDialogFragment() {
             .inject(this)
     }
 
-    //Показ ошибки получения баскета
     private fun showError() {
-        TODO("Not yet implemented")
+        //TODO Показ ошибки получения баскета
     }
 
     private fun removeLoadingState(basket: Basket) {
         binding.vgProgress.root.isVisible = !isVisible
+        if (isDeliveryInKhas == true) {
+            showInformDialog(R.string.order_inform_delivery_cost_message)
+            binding.tvBasketAmount.text = requireContext().getString(
+                R.string.price, basket.amount.toInt().toString()
+            )
+        } else
         binding.tvBasketAmount.text = requireContext().getString(
-            R.string.price, (basket.amount.toInt() + basket.deliveryCost.toInt()).toString()
+            R.string.price, (basket.amount.toInt() + 99).toString()
         )
+        binding.orderAmount.visibility = View.VISIBLE
     }
 
     private fun showLoadingState() {
         binding.vgProgress.root.isVisible = !isVisible
-    }
-
-    private fun showNoPaymentDialog() {
-        val dialog = MaterialDialog(requireContext())
-            .customView(R.layout.dialog_inform)
-        val customView = dialog.getCustomView()
-        val button = customView.rootView.findViewById<MaterialButton>(R.id.btn_inform_accept)
-        button.text = getString(R.string.order_inform_attention_btn)
-        button.setOnClickListener {
-            dialog.cancel()
-        }
-        val title = customView.rootView.findViewById<AppCompatTextView>(R.id.tv_inform_title)
-        title.text = getString(R.string.order_inform_attention)
-        val message = customView.rootView.findViewById<AppCompatTextView>(R.id.tv_inform_message)
-        message.text = getString(R.string.order_no_payment_inform_message)
-        dialog.show()
     }
 
     private fun showInformDialog(resMessage:Int) {
@@ -204,6 +199,4 @@ class OrderBottomDialog() : BottomSheetDialogFragment() {
         message.text = getString(resMessage)
         dialog.show()
     }
-
-
 }

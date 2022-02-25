@@ -17,6 +17,10 @@ import ru.tinkoff.acquiring.sdk.utils.Money
 import java.util.*
 import javax.inject.Inject
 
+/**
+ * Created by Maya Nasrueva on 21.12.2021
+ * */
+
 class PayTinkoff (
     private val context: Context,
     private val fragment: OrderBottomDialog

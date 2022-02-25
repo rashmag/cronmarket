@@ -1,5 +1,6 @@
 package ooo.cron.delivery.screens.partners_screen
 
+import android.util.Log
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -40,9 +41,9 @@ class PartnersPresenter @Inject constructor(
 
     suspend fun checkCityId() : Boolean {
         if (dataManager.readCurrentCityId() == EMPTY){
-            dataManager.writeCurrentCityId(dataManager.readChosenCity().id)
+            dataManager.readChosenCity()?.id?.let { dataManager.writeCurrentCityId(it) }
         }
-        return dataManager.readChosenCity().id == dataManager.readCurrentCityId()
+        return dataManager.readChosenCity()?.id == dataManager.readCurrentCityId()
     }
 
     private fun Response<PartnersInfoRes>.handlePartnersInfo() {
@@ -210,7 +211,11 @@ class PartnersPresenter @Inject constructor(
                             basketContent = deserializeDishes()
                             mergeBasketIntoProducts()
                             view?.showPartnerProducts(productCategoriesModel)
-                            dataManager.writeCurrentCityId(dataManager.readChosenCity().id)
+                            dataManager.readChosenCity()?.id?.let {
+                                dataManager.writeCurrentCityId(
+                                    it
+                                )
+                            }
                             view?.updateBasketPreview(
                                 basketContent?.sumBy { it.quantity } ?: 0,
                                 String.format("%.2f", basket!!.amount)
@@ -262,11 +267,10 @@ class PartnersPresenter @Inject constructor(
 
         withErrorsHandle(
             {
-                val accessToken = dataManager.readToken().accessToken
-                basket = if (accessToken.isNotEmpty())
+                val accessToken = dataManager.readToken()?.accessToken
+                basket = if (accessToken != null) {
                     dataManager.increaseProductInBasket("Bearer $accessToken", basketEditor)
-                else
-                    dataManager.increaseProductInBasket(basketEditor)
+                } else dataManager.increaseProductInBasket(basketEditor)
                 dataManager.writeUserBasketId(basket!!.id)
                 basketContent = deserializeDishes()
                 mergeBasketIntoProducts()

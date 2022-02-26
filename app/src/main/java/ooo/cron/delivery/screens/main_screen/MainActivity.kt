@@ -426,6 +426,12 @@ class MainActivity : BaseActivity(), MainContract.View {
         binding.tvBasketAmount.text = getString(R.string.main_btn_amount, basketAmount)
     }
 
+    override fun showPartnerName(partnerName: String?) {
+        if(partnerName?.isNotEmpty() == true)
+            binding.tvBasketTitle.text = partnerName
+        else
+            binding.tvBasketTitle.text = getString(R.string.basket_title)
+    }
     private fun setToolbarTitleVisibility(isVisible: Boolean, title: String?) {
         with(binding) {
             val visibility = if (isVisible) View.GONE else View.VISIBLE

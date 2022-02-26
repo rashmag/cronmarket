@@ -75,7 +75,9 @@ class MainPresenter @Inject constructor(
                         }else{
                             view?.hideContinueLastSession()
                         }
+                        val partnerInfo = partnerInfoResponse.body()
 
+                        view?.showPartnerName(partnerInfo?.name.toString())
                         view?.shouldLastBasketSessionBeVisible(true)
                         view?.showBasketAmount((basket?.amount?.toInt()).toString())
                     }

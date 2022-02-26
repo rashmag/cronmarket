@@ -1,5 +1,6 @@
 package ooo.cron.delivery.screens.login_screen.login_fragments.confirm_phone_fragment
 
+import android.util.Log
 import ooo.cron.delivery.data.DataManager
 import ooo.cron.delivery.data.network.errors.ApiErrorsUtils
 import ooo.cron.delivery.data.network.models.RefreshableToken
@@ -13,6 +14,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import ooo.cron.delivery.data.network.models.UserResponse
 
 /*
  * Created by Muhammad on 29.04.2021
@@ -25,11 +27,19 @@ class ConfirmPhonePresenter @Inject constructor(
 ) :
     BaseMvpPresenter<ConfirmPhoneContract.View>(), ConfirmPhoneContract.Presenter {
 
+    private var user: UserResponse? = null
     override fun detachView() {
         super.detachView()
         mainScope.cancel()
     }
 
+    private fun showAuthorizeUser(response: Response<UserResponse>) {
+        user = response.body()
+
+        user?.let {
+            view?.showAuthorizedUser(it.user.name)
+        }
+    }
     override fun sendConfirmCode() {
         val basketId = dataManager.readUserBasketId()
         dataManager.sentConfirmCode(
@@ -60,9 +70,10 @@ class ConfirmPhonePresenter @Inject constructor(
                                 dataManager.writeUserBasketId(
                                     userResponse.body()?.basket?.id ?: DataManager.EMPTY_UUID
                                 )
+                                showAuthorizeUser(userResponse)
+                            }else{
+                                view?.showNextScreen(2)
                             }
-                        }.invokeOnCompletion {
-                            view?.showNextScreen()
                         }
                     }
                     response.code() == 400 -> {

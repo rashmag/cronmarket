@@ -6,6 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -14,6 +17,7 @@ import com.bumptech.glide.request.RequestOptions
 import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.BasketDish
 import ooo.cron.delivery.data.network.models.BasketItem
+import ooo.cron.delivery.data.network.models.MarketCategory
 import ooo.cron.delivery.databinding.ItemBasketHeaderBinding
 import ooo.cron.delivery.databinding.ItemBasketPersonsBinding
 import ooo.cron.delivery.databinding.ItemBasketProductBinding
@@ -28,7 +32,7 @@ import ooo.cron.delivery.utils.extensions.makeVisible
  */
 class BasketAdapter(
     private val isRestaurant: Int
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+) : ListAdapter<BasketDish,RecyclerView.ViewHolder>(BasketDiffUtil()) {
 
     private var products: List<BasketDish> = listOf()
 
@@ -134,6 +138,16 @@ class BasketAdapter(
             this.product = product
 
             binding.tvBasketProductName.text = product.name
+            with(binding.rvAdditiveBasket) {
+                if(product.dishAdditives.isNotEmpty()) {
+                    visibility = View.VISIBLE
+                    setHasFixedSize(true)
+                    layoutManager = LinearLayoutManager(context)
+                    adapter = BasketAdditiveAdapter(product.dishAdditives)
+                } else {
+                    visibility = View.GONE
+                }
+            }
             binding.vgBasketCounter.tvBasketCounterQuantity.text = product.quantity.toString()
             binding.tvBasketProductAmount.text = itemView.context.getString(
                 R.string.price,
@@ -232,5 +246,13 @@ class BasketAdapter(
     companion object {
         const val RESTAURANT = 1
         const val DEVICE_MAX_COUNT = 20
+    }
+
+    class BasketDiffUtil: DiffUtil.ItemCallback<BasketDish>() {
+        override fun areItemsTheSame(oldItem: BasketDish, newItem: BasketDish): Boolean =
+            oldItem.id == newItem.id
+
+        override fun areContentsTheSame(oldItem: BasketDish, newItem: BasketDish): Boolean =
+            oldItem == newItem
     }
 }

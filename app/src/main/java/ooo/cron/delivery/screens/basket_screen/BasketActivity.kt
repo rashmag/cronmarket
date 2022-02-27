@@ -96,6 +96,7 @@ class BasketActivity : BaseActivity(), BasketContract.View {
             { dish, unwantedQuantity -> presenter.minusClick(dish, unwantedQuantity) },
             { presenter.personsQuantityEdited(it) }
         )
+        adapter.submitList(basket)
     }
 
     override fun showClearBasketDialog() {

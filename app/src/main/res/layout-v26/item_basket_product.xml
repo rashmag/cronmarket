@@ -40,6 +40,14 @@
             app:layout_constraintTop_toTopOf="@id/iv_basket_product"
             tools:text="Сет из 6 видов  ываываыва ываыва ывашываашлы ков" />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_additive_basket"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/vg_basket_counter"
+            app:layout_constraintEnd_toEndOf="@+id/tv_basket_product_name"
+            app:layout_constraintStart_toStartOf="@+id/tv_basket_product_name"
+            app:layout_constraintTop_toBottomOf="@+id/tv_basket_product_name" />
         <TextView
             android:id="@+id/tv_gram"
             android:layout_width="wrap_content"

@@ -187,6 +187,12 @@ class BasketPresenter @Inject constructor(
             view?.navigateAuthorization()
             return
         }
+
+        if((basket?.amount ?: EMPTY_BASKET) < view?.getMinOrderAmount().orZero()){
+            view?.showOrderFromDialog()
+            return
+        }
+
         dataManager.writeBasket(basket!!)
         view?.navigateMakeOrderScreen(basket!!)
     }
@@ -194,4 +200,8 @@ class BasketPresenter @Inject constructor(
     private fun deserializeDishes() =
         Gson().fromJson(basket!!.content, Array<BasketDish>::class.java)
             .asList()
+
+    private companion object{
+        const val EMPTY_BASKET = 0.0
+    }
 }

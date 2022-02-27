@@ -27,6 +27,7 @@ import ooo.cron.delivery.App
 import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.Basket
 import ooo.cron.delivery.data.network.models.BasketDishAdditive
+import ooo.cron.delivery.data.network.models.DeliveryCost
 import ooo.cron.delivery.data.network.models.PartnerCategoryRes
 import ooo.cron.delivery.data.network.models.PartnerProductsRes
 import ooo.cron.delivery.data.network.models.PartnersInfoRes
@@ -39,7 +40,9 @@ import ooo.cron.delivery.screens.first_address_selection_screen.FirstAddressSele
 import ooo.cron.delivery.utils.CustomLayoutManager
 import ooo.cron.delivery.utils.ProductBottomSheetDialog
 import ooo.cron.delivery.utils.enums.ReturningToScreenEnum
+import ooo.cron.delivery.utils.extensions.setDrawableStart
 import ooo.cron.delivery.utils.extensions.startBottomAnimate
+import ooo.cron.delivery.utils.extensions.uiLazy
 
 
 /*
@@ -65,9 +68,16 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
 
     private lateinit var productsAdapter: PartnerProductAdapter
 
+    private val deliveryTypePriceAdapter by uiLazy {
+        DeliveryTypePriceAdapter()
+    }
+
     var scrollRange = -1
     var overScroll = -1
     private var minOrderAmount = 0
+
+    private val deliveryTypePrices = arrayListOf<DeliveryCost>()
+    private var deliveryTypeName = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         injectDependencies()
@@ -172,43 +182,43 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
         return partnerId
     }
 
+    @SuppressLint("StringFormatMatches")
     override fun showPartnerInfo(partnerInfo: PartnersInfoRes) {
         presenter.getPartnerCategory()
         with(partnerInfo) {
             binding.run {
                 tvPartnersName.text = name
                 tvPartnersCategory.text = shortDescription
-                tvRating.text =
-                    if (feedbackCount == 0)
-                        rating.toString()
-                    else
-                        "$rating ($feedbackCount)"
 
-                val density = resources.displayMetrics.density.toDouble()
-                when {
-                    // standard screen
-                    density in 2.5..4.0 -> {
-                        tvFreeDelivery.text =
-                            String.format(
-                                getString(R.string.partners_activity_free_delivery_template),
-                                minAmountDelivery
-                            )
+                // Типы доставок --Начало-------------------------------------------
+
+                openDeliveryTypeBottomSheet()
+
+                deliveryFrames?.forEach { deliveryFrames ->
+
+                    deliveryTypePrices.clear()
+                    deliveryTypePrices.addAll(deliveryFrames.deliveryCosts)
+                    deliveryTypeName = deliveryFrames.deliveryTypeName
+
+                    if (deliveryFrames.deliveryTypeName == DELIVERY_CRON_MARKET) {
+                        deliveryTypeTitle.setDrawableStart(R.drawable.ic_cron_delivers)
+                    } else {
+                        deliveryTypeTitle.setDrawableStart(R.drawable.ic_partner_delivers)
                     }
 
-                    // small screen
-                    density >= 2.0 && density < 2.5 -> {
-                        tvFreeDelivery.text =
-                            String.format(
-                                getString(R.string.partners_activity_free_delivery_template_small_screen),
-                                minAmountDelivery
-                            )
-                    }
+                    deliveryTypeTitle.text = getString(
+                        R.string.partners_screen_delivery_type_title,
+                        deliveryFrames.deliveryCosts.last().deliveryCost,
+                        deliveryFrames.deliveryCosts.first().deliveryCost,
+                    )
                 }
 
-                tvMinOrderAmount.text = String.format(
-                    getString(R.string.partners_activity_min_order_template),
-                    minAmountOrder
+                deliveryFromTitle.text = getString(
+                    R.string.partners_screen_delivery_from_title,
+                    minAmountOrder.toString()
                 )
+
+                // Типы доставок --Конец-------------------------------------------
 
                 minOrderAmount = minAmountOrder
 
@@ -242,6 +252,37 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
         onBackButtonClick()
         onInfoButtonClick(partnerInfo)
         onRatingClick()
+    }
+
+    private fun openDeliveryTypeBottomSheet() {
+
+        binding.deliveryTypeTitle.setOnClickListener {
+            val bottomSheetInfoDialog =
+                BottomSheetDialog(this, R.style.BottomSheetDialogTheme)
+            val bottomSheetView =
+                LayoutInflater.from(this).inflate(R.layout.delivery_type_bottom_sheet, bottom_sheet)
+            bottomSheetView.findViewById<Button>(R.id.btn_ok).setOnClickListener {
+                bottomSheetInfoDialog.dismiss()
+            }
+
+            val title = bottomSheetView.findViewById<TextView>(R.id.title)
+
+            if (deliveryTypeName == DELIVERY_CRON_MARKET) {
+                title.setDrawableStart(R.drawable.ic_cron_delivers)
+                title.text = getString(R.string.partners_screen_delivery_type_delivers_cron)
+            } else {
+                title.setDrawableStart(R.drawable.ic_partner_delivers)
+                title.text = getString(R.string.partners_screen_delivery_type_delivers_partner)
+            }
+
+            val recyclerPrice = bottomSheetView.findViewById<RecyclerView>(R.id.recycler_delivery_type_price)
+
+            recyclerPrice?.adapter = deliveryTypePriceAdapter
+            deliveryTypePriceAdapter.submitList(deliveryTypePrices)
+
+            bottomSheetInfoDialog.setContentView(bottomSheetView)
+            bottomSheetInfoDialog.show()
+        }
     }
 
     private fun collapseToolbar() {
@@ -517,8 +558,10 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
         private const val NUMBER_SERVINGS_ON_BOTTOM_SHEET = 1
         private const val EMPTY_QUANTITY = 0
 
-        const val HEADER_IMAGE_SIZE_WHEN_PARTNER_CLOSE = 490f
+        const val HEADER_IMAGE_SIZE_WHEN_PARTNER_CLOSE = 590f
 
         const val EMPTY_TITLE = " "
+
+        private const val DELIVERY_CRON_MARKET = "Доставка КронМаркет"
     }
 }

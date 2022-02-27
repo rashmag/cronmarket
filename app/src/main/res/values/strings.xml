@@ -280,6 +280,13 @@
     <string name="order_comment">Комментарий к заказу</string>
     <string name="bank_cart">Карта</string>
     <string name="cash">Наличные</string>
+    <string name="partners_screen_delivery_type_title">Доставка %s-%s₽</string>
+    <string name="partners_screen_delivery_from_title">Заказ от %s₽</string>
+    <string name="partners_screen_delivery_from_title_second">Заказ от %s₽-%s₽</string>
+    <string name="partners_screen_delivery_type_price">%s₽</string>
+    <string name="partners_screen_delivery_type_delivers_cron">Доставит курьер CronMarket</string>
+    <string name="partners_screen_delivery_type_delivers_partner">Доставит курьер партнера</string>
+    <string name="partners_screen_delivery_type_delivers_btn_ok">Понятно</string>
 
     <!-- Orders history -->
     <string name="order_history_screen_total_amount_ruble">%s₽</string>

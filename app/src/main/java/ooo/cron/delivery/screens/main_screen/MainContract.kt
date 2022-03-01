@@ -36,6 +36,7 @@ interface MainContract {
         fun startVacanciesFragment()
         fun showSpecialOffers(promotions: List<Promotion>)
         fun hideSpecialOffers()
+        fun showPartnerName(parnerName: String?)
         fun showBasketAmount(basketAmount: String)
     }
 

@@ -116,7 +116,7 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
     override fun showSavedAddress(address: String) {
-        with(binding.tvMainUserAddress){
+        with(binding.tvMainUserAddress) {
             if (address.isNotEmpty()) {
                 setBackgroundResource(R.drawable.bg_main_address_correct)
                 text = address
@@ -296,7 +296,8 @@ class MainActivity : BaseActivity(), MainContract.View {
         with(binding.imageSlider) {
             val sliderHandler = Handler()
             val sliderRunnable = Runnable {
-                val position = (layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
+                val position =
+                    (layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
                 if (position + 1 >= sliderAdapter.itemCount) {
                     smoothScrollToPosition(0)
                 } else {
@@ -313,7 +314,7 @@ class MainActivity : BaseActivity(), MainContract.View {
         }
     }
 
-    private fun checkUserLoggedStatus(){
+    private fun checkUserLoggedStatus() {
         binding.vgMainMenu.tvDrawerMenuItemsOrders.isVisible = presenter.getUserLoggedStatus()
     }
 
@@ -424,6 +425,14 @@ class MainActivity : BaseActivity(), MainContract.View {
 
     override fun showBasketAmount(basketAmount: String) {
         binding.tvBasketAmount.text = getString(R.string.main_btn_amount, basketAmount)
+    }
+
+    override fun showPartnerName(partnerName: String?) {
+        binding.tvBasketTitle.text = if (partnerName.isNullOrEmpty().not()) {
+            partnerName
+        } else {
+            getString(R.string.basket_title)
+        }
     }
 
     private fun setToolbarTitleVisibility(isVisible: Boolean, title: String?) {

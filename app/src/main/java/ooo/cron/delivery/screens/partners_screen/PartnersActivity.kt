@@ -213,11 +213,6 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
                     )
                 }
 
-                deliveryFromTitle.text = getString(
-                    R.string.partners_screen_delivery_from_title,
-                    minAmountOrder.toString()
-                )
-
                 // Типы доставок --Конец-------------------------------------------
 
                 minOrderAmount = minAmountOrder

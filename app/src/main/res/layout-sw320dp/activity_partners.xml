@@ -218,40 +218,10 @@
                             android:drawablePadding="@dimen/dimen_8"
                             android:paddingHorizontal="@dimen/dimen_16"
                             android:paddingVertical="@dimen/dimen_10"
-                            tools:text="Доставка 0-199₽"
                             android:textColor="@color/black"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/delivery_from_title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/dimen_16"
-                            android:background="@drawable/delivery_type_round_corner"
-                            android:paddingHorizontal="@dimen/dimen_16"
-                            android:paddingVertical="@dimen/dimen_12"
-                            tools:text="Заказ от 500₽"
-                            android:textColor="@color/black"
-                            app:layout_constraintStart_toEndOf="@+id/delivery_type_title"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/delivery_time_title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/dimen_12"
-                            android:background="@drawable/delivery_type_round_corner"
-                            android:drawableStart="@drawable/ic_delivery_time"
-                            android:drawablePadding="@dimen/dimen_8"
-                            android:gravity="center"
-                            android:paddingHorizontal="@dimen/dimen_16"
-                            android:paddingVertical="@dimen/dimen_12"
-                            android:text="60-70 мин."
-                            android:textColor="@color/black"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/delivery_type_title" />
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:text="Доставка 0-199₽" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 

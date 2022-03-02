@@ -88,7 +88,8 @@ class MainPresenter @Inject constructor(
 
                     return@launch
                 }
-            }
+            }else
+                view?.hideContinueLastSession()
         }
     }
 

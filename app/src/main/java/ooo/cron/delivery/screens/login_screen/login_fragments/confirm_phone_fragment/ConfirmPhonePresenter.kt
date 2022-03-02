@@ -71,7 +71,7 @@ class ConfirmPhonePresenter @Inject constructor(
                                 )
                                 showAuthorizeUser(userResponse)
                             }else{
-                                view?.showNextScreen(2)
+                                view?.showNextScreen(ConfirmPhoneFragment.ENTER_NAME_FRAGMENT)
                             }
                         }
                     }

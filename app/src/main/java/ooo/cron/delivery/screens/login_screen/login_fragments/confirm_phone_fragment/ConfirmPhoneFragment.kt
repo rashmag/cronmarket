@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -13,11 +12,8 @@ import kotlinx.android.synthetic.main.fragment_confirm_phone.btn_next
 import kotlinx.android.synthetic.main.fragment_confirm_phone.tv_error
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
-import ooo.cron.delivery.data.network.models.RefreshableToken
 import ooo.cron.delivery.screens.login_screen.LoginActivity
 import ooo.cron.delivery.utils.Utils
-import retrofit2.Response
-import java.text.FieldPosition
 import javax.inject.Inject
 
 /*
@@ -118,8 +114,9 @@ class ConfirmPhoneFragment : Fragment(R.layout.fragment_confirm_phone), ConfirmP
     }
 
     override fun showNextScreen(position: Int) {
-        (activity as LoginActivity).setViewPagerPosition(position)
+        (activity as LoginActivity).setViewPagerPosition(2)
     }
+
     override fun showError(message: String) {
         tv_error.apply {
             visibility = View.VISIBLE
@@ -128,10 +125,11 @@ class ConfirmPhoneFragment : Fragment(R.layout.fragment_confirm_phone), ConfirmP
         et_code.background =
             ContextCompat.getDrawable(requireContext(), R.drawable.bg_edit_text_error)
     }
+
     override fun showAuthorizedUser(userName: String) {
-        if(userName.isNotEmpty()){
+        if (userName.isNotEmpty()) {
             showNextScreen(MAIN_ACTIVITY)
-        }else
+        } else
 
             showNextScreen(ENTER_NAME_FRAGMENT)
     }
@@ -142,7 +140,7 @@ class ConfirmPhoneFragment : Fragment(R.layout.fragment_confirm_phone), ConfirmP
         presenter.detachView()
     }
 
-    companion object{
+    companion object {
         val MAIN_ACTIVITY = 3
         val ENTER_NAME_FRAGMENT = 2
     }

@@ -132,4 +132,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
 
     implementation 'androidx.fragment:fragment-ktx:1.4.1'
+
+    // AppMetrica SDK.
+    implementation 'com.yandex.android:mobmetricalib:4.1.1'
 }

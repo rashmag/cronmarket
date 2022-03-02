@@ -20,18 +20,14 @@ import ooo.cron.delivery.databinding.ItemAdditiveBinding
 class AdditiveRecyclerAdapter(
     private val additives: List<PartnerProductsRes.Additive>
 ) : RecyclerView.Adapter<AdditiveRecyclerAdapter.ViewHolder>() {
-    private var mListener:onDopProductClickListener ?= null
+
+    private var mListener: onDopProductClickListener? = null
     private val checkedAdditives = mutableMapOf<Int, PartnerProductsRes.Additive>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.item_additive, parent, false)
         )
-    }
-
-    interface onDopProductClickListener {
-        fun setIncreasedPriceDopProduct(increasedPriceDopProduct:String)
-        fun setReducePriceDopProduct(reducePriceDopProduct:String)
     }
 
     fun setListener(listener:onDopProductClickListener){
@@ -47,6 +43,11 @@ class AdditiveRecyclerAdapter(
     fun getCheckedAdditives() =
         checkedAdditives.values.toList()
 
+    interface onDopProductClickListener {
+        fun setIncreasedPriceDopProduct(increasedPriceDopProduct: String)
+        fun setReducePriceDopProduct(reducePriceDopProduct: String)
+    }
+
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val binding = ItemAdditiveBinding.bind(itemView)
 
@@ -54,6 +55,7 @@ class AdditiveRecyclerAdapter(
             additive: PartnerProductsRes.Additive,
             position: Int
         ) {
+
             var additiveText = additive.name
             if (additive.cost != 0)
                 additiveText += " +${additive.cost}₽"
@@ -62,18 +64,18 @@ class AdditiveRecyclerAdapter(
 
             if (binding.chkAdditive.isChecked) {
                 checkedAdditives[position] = additive
-            }
-            else
+            } else {
                 checkedAdditives.remove(position)
+            }
 
             binding.chkAdditive.setOnCheckedChangeListener { buttonView, isChecked ->
                 if (isChecked) {
                     mListener?.setIncreasedPriceDopProduct(additive.cost.toString())
                     checkedAdditives[position] = additive
-                }
-                else
+                } else {
                     mListener?.setReducePriceDopProduct(additive.cost.toString())
-                checkedAdditives.remove(position)
+                    checkedAdditives.remove(position)
+                }
             }
         }
     }

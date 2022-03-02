@@ -135,7 +135,7 @@ class ProductBottomSheetDialog(
                     layoutManager = LinearLayoutManager(context)
                 }
                 val additiveRecyclerAdapter = AdditiveRecyclerAdapter(product.additives)
-                additiveRecyclerAdapter.setListener(this@ProductBottomSheetDialog)
+                additiveRecyclerAdapter.setListenerAndContext(this@ProductBottomSheetDialog)
                 rvAdditives.adapter = additiveRecyclerAdapter
             } else {
                 vgAdditives.visibility = View.GONE

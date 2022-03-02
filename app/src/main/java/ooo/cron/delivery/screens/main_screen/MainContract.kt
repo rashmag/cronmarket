@@ -40,6 +40,7 @@ interface MainContract {
     }
 
     interface Presenter : MvpPresenter<View> {
+        fun onCreateScreen()
         fun onResumeView(isFromPartnerScreen: Boolean)
         fun onMarketCategoryClicked(category: MarketCategory)
         fun onClickAddress()

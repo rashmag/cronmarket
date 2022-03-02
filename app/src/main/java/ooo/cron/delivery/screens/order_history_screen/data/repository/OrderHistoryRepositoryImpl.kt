@@ -11,6 +11,6 @@ class OrderHistoryRepositoryImpl @Inject constructor(
 ) : OrderHistoryRepository {
 
     override suspend fun loadOrderHistory(token: String): Response<List<OrderHistoryNetModel>> {
-        return api.getOrdersHistory(token,15, 30)
+        return api.getOrdersHistory(token)
     }
 }

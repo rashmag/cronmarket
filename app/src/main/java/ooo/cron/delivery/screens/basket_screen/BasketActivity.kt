@@ -1,12 +1,12 @@
 package ooo.cron.delivery.screens.basket_screen
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.activity_basket.*
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.Basket
@@ -35,9 +35,12 @@ class BasketActivity : BaseActivity(), BasketContract.View {
         BasketAdapter(marketCategoryId())
     }
 
+    private var orderAmount = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         val basketModel = intent.getParcelableExtra<Basket>(BASKET_MODEL)
+        orderAmount = intent.getIntExtra(MIN_AMOUNT_ORDER, 0)
 
         App.appComponent.basketComponentBuilder()
             .inflater(layoutInflater)
@@ -107,6 +110,21 @@ class BasketActivity : BaseActivity(), BasketContract.View {
         )
     }
 
+    override fun getMinOrderAmount() = orderAmount
+
+    override fun showOrderFromDialog() {
+        AlertDialog.Builder(this)
+            .setTitle(EMPTY_TITLE)
+            .setIcon(R.mipmap.ic_launcher)
+            .setMessage(getString(R.string.partners_activity_dialog_min_price_title, orderAmount.toString()))
+            .setCancelable(false)
+            .setPositiveButton(R.string.partners_activity_dialog_btn_ok_title) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .create()
+            .show()
+    }
+
     override fun navigateMakeOrderScreen(basket: Basket?) {
         startActivity(
             Intent(this, OrderingActivity::class.java).apply {
@@ -144,8 +162,9 @@ class BasketActivity : BaseActivity(), BasketContract.View {
         const val PARTNER_OPEN_MINUTES = "PARTNER_OPEN_MINUTES"
         const val PARTNER_CLOSE_HOURS = "PARTNER_CLOSE_HOURS"
         const val PARTNER_CLOSE_MINUTES = "PARTNER_CLOSE_MINUTES"
-        const val AMOUNT = "AMOUNT"
+        const val MIN_AMOUNT_ORDER = "MIN_AMOUNT_ORDER"
         const val BASKET_MODEL = "BASKET_MODEL"
+        const val EMPTY_TITLE = " "
 
         const val MARGIN_SPACING_VALUE_34 = 34
 

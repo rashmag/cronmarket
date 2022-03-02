@@ -2,13 +2,11 @@ package ooo.cron.delivery.utils
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -31,7 +29,6 @@ import ooo.cron.delivery.screens.partners_screen.RequireAdditivesAdapter
  */
 
 
-
 class ProductBottomSheetDialog(
     private val mContext: Context,
     private val product: PartnerProductsRes,
@@ -50,7 +47,7 @@ class ProductBottomSheetDialog(
         mContext, R.style.BottomSheetDialogTheme
     ),
     AdditivesAdapter.OnRequireAdditivesListener,
-    AdditiveRecyclerAdapter.onDopProductClickListener{
+    AdditiveRecyclerAdapter.onDopProductClickListener {
 
 
     private lateinit var binding: DialogProductInfoBinding
@@ -211,4 +208,5 @@ class ProductBottomSheetDialog(
         val price = binding.tvCost.text.toString().toInt().minus(reducePriceDopProduct.toInt())
         binding.tvCost.text = price.toString()
     }
+
 }

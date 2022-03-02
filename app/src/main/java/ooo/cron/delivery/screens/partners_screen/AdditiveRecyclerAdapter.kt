@@ -1,14 +1,10 @@
 package ooo.cron.delivery.screens.partners_screen
 
-import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import ooo.cron.delivery.R
-import ooo.cron.delivery.data.network.models.BasketDishAdditive
 import ooo.cron.delivery.data.network.models.PartnerProductsRes
 import ooo.cron.delivery.databinding.ItemAdditiveBinding
 
@@ -17,23 +13,20 @@ import ooo.cron.delivery.databinding.ItemAdditiveBinding
  */
 
 
-
-class AdditiveRecyclerAdapter(private val additives: List<PartnerProductsRes.Additive>
+class AdditiveRecyclerAdapter(
+    private val additives: List<PartnerProductsRes.Additive>
 ) : RecyclerView.Adapter<AdditiveRecyclerAdapter.ViewHolder>() {
+
     private var mListener: onDopProductClickListener? = null
     private val checkedAdditives = mutableMapOf<Int, PartnerProductsRes.Additive>()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.item_additive, parent, false)
         )
     }
 
-    interface onDopProductClickListener {
-        fun setIncreasedPriceDopProduct(increasedPriceDopProduct: String)
-        fun setReducePriceDopProduct(reducePriceDopProduct: String)
-    }
-
-    fun setListenerAndContext(listener: onDopProductClickListener) {
+    fun setListener(listener:onDopProductClickListener){
         this.mListener = listener
     }
 
@@ -46,6 +39,11 @@ class AdditiveRecyclerAdapter(private val additives: List<PartnerProductsRes.Add
     fun getCheckedAdditives() =
         checkedAdditives.values.toList()
 
+    interface onDopProductClickListener {
+        fun setIncreasedPriceDopProduct(increasedPriceDopProduct: String)
+        fun setReducePriceDopProduct(reducePriceDopProduct: String)
+    }
+
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val binding = ItemAdditiveBinding.bind(itemView)
 
@@ -53,6 +51,7 @@ class AdditiveRecyclerAdapter(private val additives: List<PartnerProductsRes.Add
             additive: PartnerProductsRes.Additive,
             position: Int
         ) {
+
             var additiveText = additive.name
             if (additive.cost != 0)
                 additiveText += " +${additive.cost}₽"

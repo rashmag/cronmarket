@@ -11,6 +11,7 @@ import ooo.cron.delivery.screens.base_mvp.BaseMvpPresenter
 import retrofit2.Response
 import java.lang.Exception
 import javax.inject.Inject
+import ooo.cron.delivery.analytics.BaseAnalytics
 
 /**
  * Created by Ramazan Gadzhikadiev on 08.04.2021.
@@ -19,7 +20,8 @@ import javax.inject.Inject
 @MainScope
 class MainPresenter @Inject constructor(
     private val dataManager: DataManager,
-    private val mainScope: CoroutineScope
+    private val mainScope: CoroutineScope,
+    private val analytics: BaseAnalytics
 ) :
     BaseMvpPresenter<MainContract.View>(), MainContract.Presenter {
 
@@ -31,6 +33,10 @@ class MainPresenter @Inject constructor(
     override fun detachView() {
         super.detachView()
         mainScope.cancel()
+    }
+
+    override fun onCreateScreen() {
+        analytics.trackOpenMainScreen(dataManager.readUserPhone().toString())
     }
 
     override fun onResumeView(isFromPartnerScreen: Boolean) {
@@ -82,7 +88,8 @@ class MainPresenter @Inject constructor(
 
                     return@launch
                 }
-            }
+            }else
+                view?.hideContinueLastSession()
         }
     }
 

@@ -25,7 +25,10 @@ import ooo.cron.delivery.di.screens.order_history.OrderHistoryComponent
  */
 
 @Singleton
-@Component(modules = [AppModule::class])
+@Component(modules = [
+    AppModule::class,
+    AnalyticsModule::class
+])
 interface AppComponent {
 
     fun splashScreenBuilder(): SplashScreenComponent.Builder

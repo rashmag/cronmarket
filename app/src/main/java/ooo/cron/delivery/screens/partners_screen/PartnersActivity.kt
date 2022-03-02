@@ -428,7 +428,8 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
                     BasketActivity.PARTNER_CLOSE_MINUTES, closeMinutes
                 ).putExtra(
                     BasketActivity.BASKET_MODEL, basket
-                )
+                ).putExtra(
+                    BasketActivity.MIN_AMOUNT_ORDER, minOrderAmount)
         )
     }
 

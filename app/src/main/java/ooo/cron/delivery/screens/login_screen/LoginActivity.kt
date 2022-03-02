@@ -1,10 +1,13 @@
 package ooo.cron.delivery.screens.login_screen
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_login.*
 import ooo.cron.delivery.R
+import ooo.cron.delivery.screens.login_screen.login_fragments.confirm_phone_fragment.ConfirmPhoneFragment
+import ooo.cron.delivery.screens.main_screen.MainActivity
 
 /*
  * Created by Muhammad on 26.04.2021
@@ -36,8 +39,11 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun setViewPagerPosition(position: Int) {
-        viewPager.post {
-            viewPager.setCurrentItem(position, true)
-        }
+        if(position == ConfirmPhoneFragment.MAIN_ACTIVITY)
+            startActivity(Intent(this,MainActivity::class.java))
+        else
+            viewPager.post {
+                viewPager.setCurrentItem(position, true)
+            }
     }
 }

@@ -113,7 +113,7 @@ class ConfirmPhoneFragment : Fragment(R.layout.fragment_confirm_phone), ConfirmP
         return et_code.text.toString()
     }
 
-    override fun showNextScreen() {
+    override fun showNextScreen(position: Int) {
         (activity as LoginActivity).setViewPagerPosition(2)
     }
 
@@ -126,9 +126,22 @@ class ConfirmPhoneFragment : Fragment(R.layout.fragment_confirm_phone), ConfirmP
             ContextCompat.getDrawable(requireContext(), R.drawable.bg_edit_text_error)
     }
 
+    override fun showAuthorizedUser(userName: String) {
+        if (userName.isNotEmpty()) {
+            showNextScreen(MAIN_ACTIVITY)
+        } else
+
+            showNextScreen(ENTER_NAME_FRAGMENT)
+    }
+
 
     override fun onDestroy() {
         super.onDestroy()
         presenter.detachView()
+    }
+
+    companion object {
+        val MAIN_ACTIVITY = 3
+        val ENTER_NAME_FRAGMENT = 2
     }
 }

@@ -280,6 +280,7 @@
     <string name="order_comment">Комментарий к заказу</string>
     <string name="bank_cart">Карта</string>
     <string name="cash">Наличные</string>
+    <string name="partners_screen_delivery_type_title_first">Доставка %s₽</string>
     <string name="partners_screen_delivery_type_title">Доставка от %s-%s₽</string>
     <string name="partners_screen_delivery_from_title">Заказ от %s₽</string>
     <string name="partners_screen_delivery_from_title_second">Заказ от %s₽ до %s₽</string>

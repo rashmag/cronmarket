@@ -206,11 +206,18 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
                         deliveryTypeTitle.setDrawableStart(R.drawable.ic_partner_delivers)
                     }
 
-                    deliveryTypeTitle.text = getString(
-                        R.string.partners_screen_delivery_type_title,
-                        deliveryFrames.deliveryCosts.last().deliveryCost,
-                        deliveryFrames.deliveryCosts.first().deliveryCost,
-                    )
+                    if (deliveryFrames.deliveryCosts.first().deliveryCost == deliveryFrames.deliveryCosts.last().deliveryCost) {
+                        deliveryTypeTitle.text = getString(
+                            R.string.partners_screen_delivery_type_title_first,
+                            deliveryFrames.deliveryCosts.last().deliveryCost
+                        )
+                    } else {
+                        deliveryTypeTitle.text = getString(
+                            R.string.partners_screen_delivery_type_title,
+                            deliveryFrames.deliveryCosts.last().deliveryCost,
+                            deliveryFrames.deliveryCosts.first().deliveryCost,
+                        )
+                    }
                 }
 
                 // Типы доставок --Конец-------------------------------------------

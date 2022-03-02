@@ -19,12 +19,17 @@ class AdditiveRecyclerAdapter(
     private val additives: List<PartnerProductsRes.Additive>
 ) : RecyclerView.Adapter<AdditiveRecyclerAdapter.ViewHolder>() {
 
+    private var mListener: onDopProductClickListener? = null
     private val checkedAdditives = mutableMapOf<Int, PartnerProductsRes.Additive>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.item_additive, parent, false)
         )
+    }
+
+    fun setListenerAndContext(listener: onDopProductClickListener) {
+        this.mListener = listener
     }
 
     override fun getItemCount() = additives.size
@@ -35,6 +40,11 @@ class AdditiveRecyclerAdapter(
 
     fun getCheckedAdditives() =
         checkedAdditives.values.toList()
+
+    interface onDopProductClickListener {
+        fun setIncreasedPriceDopProduct(increasedPriceDopProduct: String)
+        fun setReducePriceDopProduct(reducePriceDopProduct: String)
+    }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val binding = ItemAdditiveBinding.bind(itemView)
@@ -56,10 +66,13 @@ class AdditiveRecyclerAdapter(
                 checkedAdditives.remove(position)
 
             binding.chkAdditive.setOnCheckedChangeListener { buttonView, isChecked ->
-                if (isChecked)
+                if (isChecked) {
+                    mListener?.setIncreasedPriceDopProduct(additive.cost.toString())
                     checkedAdditives[position] = additive
-                else
+                } else {
+                    mListener?.setReducePriceDopProduct(additive.cost.toString())
                     checkedAdditives.remove(position)
+                }
             }
         }
     }

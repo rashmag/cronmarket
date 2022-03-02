@@ -114,7 +114,7 @@ class ConfirmPhoneFragment : Fragment(R.layout.fragment_confirm_phone), ConfirmP
     }
 
     override fun showNextScreen(position: Int) {
-        (activity as LoginActivity).setViewPagerPosition(2)
+        (activity as LoginActivity).setViewPagerPosition(position)
     }
 
     override fun showError(message: String) {

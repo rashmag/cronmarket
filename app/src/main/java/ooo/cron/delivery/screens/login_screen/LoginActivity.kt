@@ -6,6 +6,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_login.*
 import ooo.cron.delivery.R
+import ooo.cron.delivery.screens.login_screen.login_fragments.confirm_phone_fragment.ConfirmPhoneFragment
 import ooo.cron.delivery.screens.main_screen.MainActivity
 
 /*
@@ -38,7 +39,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun setViewPagerPosition(position: Int) {
-        if(position == 3)
+        if(position == ConfirmPhoneFragment.MAIN_ACTIVITY)
             startActivity(Intent(this,MainActivity::class.java))
         else
             viewPager.post {

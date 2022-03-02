@@ -47,6 +47,7 @@ class PartnersPresenter @Inject constructor(
         return dataManager.readPartnerId() != view?.getPartnerId()
     }
 
+
     private fun Response<PartnersInfoRes>.handlePartnersInfo() {
         if (isSuccessful) {
             partner = body()!!

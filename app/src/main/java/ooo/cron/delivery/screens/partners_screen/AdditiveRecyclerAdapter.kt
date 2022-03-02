@@ -1,20 +1,16 @@
 package ooo.cron.delivery.screens.partners_screen
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import ooo.cron.delivery.R
-import ooo.cron.delivery.data.network.models.BasketDishAdditive
 import ooo.cron.delivery.data.network.models.PartnerProductsRes
 import ooo.cron.delivery.databinding.ItemAdditiveBinding
 
 /*
  * Created by Muhammad on 17.05.2021
  */
-
 
 
 class AdditiveRecyclerAdapter(
@@ -60,7 +56,7 @@ class AdditiveRecyclerAdapter(
             if (additive.cost != 0)
                 additiveText += " +${additive.cost}₽"
 
-            binding.tvAdditive.text = additiveText
+            binding.chkAdditive.text = additiveText
 
             if (binding.chkAdditive.isChecked) {
                 checkedAdditives[position] = additive

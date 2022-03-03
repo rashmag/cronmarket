@@ -40,3 +40,12 @@ fun Int?.orZero(): Int = this ?: 0
 fun <T> uiLazy(operation: () -> T): Lazy<T> = lazy(LazyThreadSafetyMode.NONE) {
     operation()
 }
+
+internal fun View.requestNewSize(
+    width: Int = layoutParams.width,
+    height: Int = layoutParams.height
+) {
+    layoutParams.width = width
+    layoutParams.height = height
+    layoutParams = layoutParams
+}

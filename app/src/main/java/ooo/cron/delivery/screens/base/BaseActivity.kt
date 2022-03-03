@@ -1,4 +1,4 @@
-package ooo.cron.delivery.screens
+package ooo.cron.delivery.screens.base
 
 import android.content.Context
 import android.graphics.Color

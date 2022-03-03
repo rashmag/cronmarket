@@ -23,7 +23,7 @@ import ooo.cron.delivery.App
 import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.City
 import ooo.cron.delivery.databinding.ActivityFirstAddressSelectionBinding
-import ooo.cron.delivery.screens.BaseActivity
+import ooo.cron.delivery.screens.base.BaseActivity
 import ooo.cron.delivery.screens.main_screen.MainActivity
 import javax.inject.Inject
 import ooo.cron.delivery.data.network.models.SuggestAddress

@@ -34,4 +34,5 @@
             tools:text="65"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.cardview.widget.CardView>

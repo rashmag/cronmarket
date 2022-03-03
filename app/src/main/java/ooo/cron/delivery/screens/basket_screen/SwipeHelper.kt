@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import ooo.cron.delivery.R
 import kotlin.math.abs
+import ooo.cron.delivery.screens.basket_screen.adapters.AdapterBasket
 
 
 /**
@@ -36,7 +37,7 @@ class SwipeHelper(
         recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder
     ): Int =
-        if (viewHolder is BasketAdapter.ProductViewHolder) {
+        if (viewHolder is AdapterBasket.ProductViewHolder) {
             makeMovementFlags(0, ItemTouchHelper.LEFT)
         } else
             makeMovementFlags(0, 0)

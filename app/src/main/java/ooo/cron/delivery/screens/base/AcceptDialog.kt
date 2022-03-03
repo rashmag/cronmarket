@@ -1,6 +1,5 @@
-package ooo.cron.delivery.screens
+package ooo.cron.delivery.screens.base
 
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View

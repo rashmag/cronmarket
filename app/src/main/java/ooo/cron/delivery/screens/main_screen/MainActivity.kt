@@ -12,7 +12,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
-import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.appbar.AppBarLayout.ScrollingViewBehavior
 import nl.psdcompany.duonavigationdrawer.widgets.DuoDrawerToggle
 import ooo.cron.delivery.App
@@ -20,7 +19,7 @@ import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.MarketCategory
 import ooo.cron.delivery.data.network.models.Promotion
 import ooo.cron.delivery.databinding.ActivityMainBinding
-import ooo.cron.delivery.screens.BaseActivity
+import ooo.cron.delivery.screens.base.BaseActivity
 import ooo.cron.delivery.screens.about_service_screen.AboutServiceFragment
 import ooo.cron.delivery.screens.contacts_screen.ContactsFragment
 import ooo.cron.delivery.screens.first_address_selection_screen.FirstAddressSelectionActivity

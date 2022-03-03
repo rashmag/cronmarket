@@ -5,7 +5,7 @@ import android.view.View
 import android.widget.TextView
 import ooo.cron.delivery.App
 import ooo.cron.delivery.databinding.ActivityBaseErrorBinding
-import ooo.cron.delivery.screens.BaseActivity
+import ooo.cron.delivery.screens.base.BaseActivity
 import javax.inject.Inject
 
 /**

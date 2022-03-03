@@ -1,6 +1,6 @@
 package ooo.cron.delivery.screens.main_screen
 
-import ooo.cron.delivery.screens.AcceptDialog
+import ooo.cron.delivery.screens.base.AcceptDialog
 
 /**
  * Created by Ramazan Gadzhikadiev on 09.06.2021.

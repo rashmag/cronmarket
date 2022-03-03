@@ -3,20 +3,24 @@ package ooo.cron.delivery.screens.basket_screen
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.activity_basket.*
+import javax.inject.Inject
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.Basket
 import ooo.cron.delivery.data.network.models.BasketDish
 import ooo.cron.delivery.databinding.ActivityBasketBinding
-import ooo.cron.delivery.screens.BaseActivity
+import ooo.cron.delivery.screens.base.BaseActivity
+import ooo.cron.delivery.screens.base.adapters.AdapterHeader
+import ooo.cron.delivery.screens.base.adapters.AdapterSpace
+import ooo.cron.delivery.screens.base.adapters.SpacingValue
+import ooo.cron.delivery.screens.basket_screen.adapters.AdapterBasket
+import ooo.cron.delivery.screens.basket_screen.adapters.AdapterTableware
 import ooo.cron.delivery.screens.login_screen.LoginActivity
 import ooo.cron.delivery.screens.ordering_screen.OrderingActivity
-import javax.inject.Inject
 import ooo.cron.delivery.utils.extensions.startBottomAnimate
+import ooo.cron.delivery.utils.extensions.uiLazy
 import ooo.cron.delivery.utils.itemdecoration.SpaceItemDecoration
 
 /**
@@ -31,8 +35,27 @@ class BasketActivity : BaseActivity(), BasketContract.View {
     @Inject
     protected lateinit var binding: ActivityBasketBinding
 
-    private val adapter by lazy(LazyThreadSafetyMode.NONE){
-        BasketAdapter(marketCategoryId())
+    private val concatAdapter: ConcatAdapter by uiLazy {
+        ConcatAdapter()
+    }
+
+    private val adapter by uiLazy {
+        AdapterBasket(
+            plusClick = { dish, extraQuantity ->
+                presenter.plusClick(dish, extraQuantity)
+            },
+            minusClick = { dish, unwantedQuantity ->
+                presenter.minusClick(dish, unwantedQuantity)
+            }
+        )
+    }
+
+    private val adapterTableware by uiLazy {
+        AdapterTableware(
+            onQuantityEditClick = { quantity ->
+                presenter.personsQuantityEdited(quantity)
+            }
+        )
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,18 +93,30 @@ class BasketActivity : BaseActivity(), BasketContract.View {
         presenter.onStartView()
     }
 
-    private fun initAdapter(){
+    private fun initAdapter() {
+
+        with(concatAdapter) {
+            addAdapter(AdapterSpace(space = SpacingValue.SPACE_4))
+            addAdapter(AdapterHeader(title = getString(R.string.basket_order_title)))
+            addAdapter(AdapterSpace(space = SpacingValue.SPACE_4))
+            addAdapter(adapter)
+            addAdapter(AdapterSpace(space = SpacingValue.SPACE_16))
+            if (presenter.getMarketCategoryId() == RESTAURANT) {
+                addAdapter(adapterTableware)
+                addAdapter(AdapterSpace(space = SpacingValue.SPACE_16))
+            }
+        }
+
         with(binding) {
-            rvBasketContent.layoutManager = LinearLayoutManager(this@BasketActivity, RecyclerView.VERTICAL, false)
             rvBasketContent.addItemDecoration(
                 SpaceItemDecoration(
                     MARGIN_SPACING_VALUE_34
                 )
             )
-            rvBasketContent.adapter = adapter
+            rvBasketContent.adapter = concatAdapter
 
             val itemTouchHelper = ItemTouchHelper(SwipeHelper(this@BasketActivity) {
-                if (it is BasketAdapter.ProductViewHolder)
+                if (it is AdapterBasket.ProductViewHolder)
                     presenter.removeItemClicked(it.product)
             })
             itemTouchHelper.attachToRecyclerView(rvBasketContent)
@@ -89,14 +124,8 @@ class BasketActivity : BaseActivity(), BasketContract.View {
     }
 
     override fun updateBasket(basket: List<BasketDish>, personsQuantity: Int) {
-        adapter.setProducts(
-            basket,
-            personsQuantity,
-            { dish, extraQuantity -> presenter.plusClick(dish, extraQuantity) },
-            { dish, unwantedQuantity -> presenter.minusClick(dish, unwantedQuantity) },
-            { presenter.personsQuantityEdited(it) }
-        )
         adapter.submitList(basket)
+        adapterTableware.updateQuantity(personsQuantity)
     }
 
     override fun showClearBasketDialog() {
@@ -147,6 +176,8 @@ class BasketActivity : BaseActivity(), BasketContract.View {
         const val PARTNER_CLOSE_MINUTES = "PARTNER_CLOSE_MINUTES"
         const val AMOUNT = "AMOUNT"
         const val BASKET_MODEL = "BASKET_MODEL"
+
+        const val RESTAURANT = 1
 
         const val MARGIN_SPACING_VALUE_34 = 34
 

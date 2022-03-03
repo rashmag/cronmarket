@@ -13,7 +13,7 @@ import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.Basket
 import ooo.cron.delivery.data.network.request.OrderReq
 import ooo.cron.delivery.databinding.ActivityOrderingBinding
-import ooo.cron.delivery.screens.BaseActivity
+import ooo.cron.delivery.screens.base.BaseActivity
 import ooo.cron.delivery.screens.basket_screen.BasketActivity
 import ooo.cron.delivery.screens.ordering_screen.delivery_details_fragment.DeliveryDetailsFragment
 import ooo.cron.delivery.screens.ordering_screen.order_cost_fragment.OrderCostFragment

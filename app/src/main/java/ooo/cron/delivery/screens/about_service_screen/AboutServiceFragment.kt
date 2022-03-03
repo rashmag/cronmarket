@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import ooo.cron.delivery.R
-import ooo.cron.delivery.screens.BaseFragment
+import ooo.cron.delivery.screens.base.BaseFragment
 
 /*
  * Created by Muhammad on 03.06.2021

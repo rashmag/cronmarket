@@ -44,38 +44,20 @@ class BasketAdditiveAdapter : RecyclerView.Adapter<BasketAdditiveAdapter.Additiv
                 if (item.cost == 0.0) {
                     tvAdditiveBasketName.text = root.context.getString(
                         R.string.partner_product_additive_name,
-                        refactorName(item.name)
+                        item.name
                     )
                     return
                 }
 
                 tvAdditiveBasketName.text = root.context.getString(
                     R.string.partner_product_additive_name,
-                    refactorName(item.name)
+                    item.name
                 )
                 tvAdditiveBasketCost.text = root.context.getString(
                     R.string.partner_product_additive_price,
                     item.cost.toInt()
                 )
             }
-        }
-
-        fun refactorName(name: String):String{
-            if(name.isNotEmpty()){
-                if(name.substring(0,1).equals(" ")){
-                    val nameRefactor = name.substring(1)
-                    if(nameRefactor[0].isLowerCase())
-                        return nameRefactor.substring(0,1).toUpperCase() + nameRefactor.substring(1)
-                    else
-                        return nameRefactor
-                }else{
-                    if(name[0].isLowerCase())
-                        return name.substring(0,1).toUpperCase() + name.substring(1)
-                    else
-                        return name
-                }
-            }
-            return ""
         }
     }
 }

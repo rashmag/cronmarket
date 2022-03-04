@@ -101,7 +101,7 @@ class BasketPresenter @Inject constructor(
                     if(basket!!.amount.toInt() == 0)
                         view?.close()
                     else
-                        view?.updateBasketAmount(formatter.format(basket!!.amount))
+                        view?.updateBasketAmount(formatter.format(basket?.amount))
                 },
                 {
                     view?.showConnectionErrorScreen()
@@ -156,7 +156,7 @@ class BasketPresenter @Inject constructor(
             if(basket!!.amount.toInt() == 0)
                 view?.close()
             else
-                view?.updateBasketAmount(formatter.format(basket!!.amount))
+                view?.updateBasketAmount(formatter.format(basket?.amount))
         }
     }
 

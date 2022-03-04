@@ -45,7 +45,8 @@ import ooo.cron.delivery.utils.extensions.startBottomAnimate
  * Created by Muhammad on 02.05.2021
  */
 
-class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.OnProductClickListener {
+class PartnersActivity : BaseActivity(), PartnersContract.View,
+    CategoryAdapter.OnProductClickListener {
 
     @Inject
     lateinit var presenter: PartnersPresenter
@@ -403,7 +404,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
             product = product,
             onAddClick = presenter::plusClick,
             onMinusClick = presenter::minusClick,
-            quantity = if (product.inBasketQuantity == EMPTY_QUANTITY) NUMBER_SERVINGS_ON_BOTTOM_SHEET else product.inBasketQuantity
+            quantity = product.inBasketQuantity+1
         ).show()
     }
 
@@ -426,7 +427,8 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
                     BasketActivity.PARTNER_CLOSE_MINUTES, closeMinutes
                 ).putExtra(
                     BasketActivity.BASKET_MODEL, basket
-                )
+                ).putExtra(
+                    BasketActivity.MIN_AMOUNT_ORDER, minOrderAmount)
         )
     }
 

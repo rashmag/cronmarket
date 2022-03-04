@@ -17,13 +17,18 @@ import ooo.cron.delivery.screens.ordering_screen.order_cost_fragment.OrderCostCo
 import ooo.cron.delivery.screens.partners_screen.PartnersComponent
 import ooo.cron.delivery.screens.splash_screen.SplashScreenComponent
 import javax.inject.Singleton
+import ooo.cron.delivery.di.screens.order_history_detail.OrderHistoryDetailComponent
+import ooo.cron.delivery.di.screens.order_history.OrderHistoryComponent
 
 /**
  * Created by Ramazan Gadzhikadiev on 06.04.2021.
  */
 
 @Singleton
-@Component(modules = [AppModule::class])
+@Component(modules = [
+    AppModule::class,
+    AnalyticsModule::class
+])
 interface AppComponent {
 
     fun splashScreenBuilder(): SplashScreenComponent.Builder
@@ -39,6 +44,8 @@ interface AppComponent {
     fun orderingComponentBuilder(): OrderComponent.Builder
     fun deliveryDetailsComponentBuilder(): DeliveryDetailsComponent.Builder
     fun orderCostComponentBuilder(): OrderCostComponent.Builder
+    fun orderHistoryComponentBuilder(): OrderHistoryComponent.Builder
+    fun orderHistoryDetailComponentBuilder(): OrderHistoryDetailComponent.Builder
 
     @Component.Builder
     interface Builder {

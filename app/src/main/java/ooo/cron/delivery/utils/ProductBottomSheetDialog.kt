@@ -29,7 +29,6 @@ import ooo.cron.delivery.screens.partners_screen.RequireAdditivesAdapter
  */
 
 
-
 class ProductBottomSheetDialog(
     private val mContext: Context,
     private val product: PartnerProductsRes,
@@ -47,7 +46,8 @@ class ProductBottomSheetDialog(
     BottomSheetDialog(
         mContext, R.style.BottomSheetDialogTheme
     ),
-    AdditivesAdapter.OnRequireAdditivesListener {
+    AdditivesAdapter.OnRequireAdditivesListener,
+    AdditiveRecyclerAdapter.onDopProductClickListener {
 
 
     private lateinit var binding: DialogProductInfoBinding
@@ -131,8 +131,10 @@ class ProductBottomSheetDialog(
             if (product.additives.isNotEmpty()) {
                 rvAdditives.apply {
                     layoutManager = LinearLayoutManager(context)
-                    adapter = AdditiveRecyclerAdapter(product.additives)
                 }
+                val additiveRecyclerAdapter = AdditiveRecyclerAdapter(product.additives)
+                additiveRecyclerAdapter.setListener(this@ProductBottomSheetDialog)
+                rvAdditives.adapter = additiveRecyclerAdapter
             } else {
                 vgAdditives.visibility = View.GONE
             }
@@ -146,11 +148,12 @@ class ProductBottomSheetDialog(
                             else listOf()
                 else listOf()
 
-                if (quantity > product.inBasketQuantity) {
+                if (quantity >= product.inBasketQuantity) {
+                    var qua = quantity - product.inBasketQuantity
                     onAddClick(
                         product,
                         additives.map { BasketDishAdditive(it.id, it.name, it.cost.toDouble()) },
-                        quantity - product.inBasketQuantity
+                        qua
                     )
                 } else {
                     onMinusClick(
@@ -161,12 +164,14 @@ class ProductBottomSheetDialog(
                 dismiss()
             }
         }
+        binding.tvCost.text = product.cost.toString()
     }
 
     private fun initRequireAdditivesRecycler(requiredAdditiveGroups: ArrayList<RequireAdditiveModel>) {
         binding.rvRequireAdditives.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = RequireAdditivesAdapter(requiredAdditiveGroups, this@ProductBottomSheetDialog)
+            adapter = RequireAdditivesAdapter(requiredAdditiveGroups,
+                this@ProductBottomSheetDialog)
         }
     }
 
@@ -192,6 +197,16 @@ class ProductBottomSheetDialog(
             override fun onSlide(bottomSheet: View, slideOffset: Float) {}
 
         })
+    }
+
+    override fun setIncreasedPriceDopProduct(increasedPriceDopProduct: String) {
+        val price = binding.tvCost.text.toString().toInt().plus(increasedPriceDopProduct.toInt())
+        binding.tvCost.text = price.toString()
+    }
+
+    override fun setReducePriceDopProduct(reducePriceDopProduct: String) {
+        val price = binding.tvCost.text.toString().toInt().minus(reducePriceDopProduct.toInt())
+        binding.tvCost.text = price.toString()
     }
 
 }

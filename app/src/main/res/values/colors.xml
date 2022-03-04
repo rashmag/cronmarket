@@ -6,6 +6,7 @@
 
     <color name="background">#E5E5E5</color>
 
+    <color name="unBrand">#ADB5BD</color>
     <color name="brand">#F65F1E</color>
     <color name="brand_light">#ED926B</color>
     <color name="main_dark">#F65F1E</color>
@@ -47,4 +48,10 @@
 
     <!-- Choose city screen -->
     <color name="orange_ff4c30">#FF4C30</color>
+
+    <!-- Order history -->
+    <color name="yellow_ffc400">#FFC400</color>
+    <color name="orange_ff8b00">#FF8B00</color>
+    <color name="green_00875a">#00875A</color>
+    <color name="red_bf2600">#BF2600</color>
 </resources>

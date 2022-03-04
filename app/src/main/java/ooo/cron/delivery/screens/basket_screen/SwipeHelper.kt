@@ -22,7 +22,7 @@ class SwipeHelper(
     context: Context,
     val onRemoveClicked: (viewHolder: RecyclerView.ViewHolder) -> Unit
 ) : ItemTouchHelper.Callback() {
-
+    private var flagRemove = false
     private val backgroundRadius =
         context.resources.getDimension(R.dimen.basket_trash_background_radius)
     private val background = PaintDrawable(ContextCompat.getColor(context, R.color.errors)).apply {
@@ -58,7 +58,9 @@ class SwipeHelper(
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        Log.d(this::class.simpleName, "Basket item swiped")
+        if (!flagRemove) {
+            flagRemove = true
+        }
     }
 
     private var delta: Int? = null
@@ -121,7 +123,10 @@ class SwipeHelper(
                             y < itemView.bottom &&
                             dX < 0.0f
                         ) {
-                            onRemoveClicked(viewHolder)
+                            if (flagRemove) {
+                                onRemoveClicked(viewHolder)
+                                flagRemove = false
+                            }
                         }
                         return@setOnTouchListener true
                     }

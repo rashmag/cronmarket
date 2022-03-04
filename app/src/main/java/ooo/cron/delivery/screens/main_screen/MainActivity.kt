@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import com.google.android.material.appbar.AppBarLayout.ScrollingViewBehavior
@@ -31,6 +32,7 @@ import ooo.cron.delivery.screens.vacancies_screen.VacanciesFragment
 import ooo.cron.delivery.utils.extensions.startBottomAnimate
 import javax.inject.Inject
 import ooo.cron.delivery.screens.main_screen.special_offers_view.adapters.SliderAdapter
+import ooo.cron.delivery.screens.order_history_screen.presentation.OrderHistoryFragment
 import ooo.cron.delivery.utils.enums.ReturningToScreenEnum
 import ooo.cron.delivery.utils.extensions.makeGone
 import ooo.cron.delivery.utils.extensions.makeVisible
@@ -74,6 +76,7 @@ class MainActivity : BaseActivity(), MainContract.View {
         configureMarketCategoriesList()
         setContinueLastSessionClickListener()
         initSliderRecycler()
+        presenter.onCreateScreen()
     }
 
     private fun configureMarketCategoriesList() {
@@ -90,6 +93,7 @@ class MainActivity : BaseActivity(), MainContract.View {
         setTimerForImageSlider()
         presenter.onResumeView(isFromPartnerScreen)
         isFromPartnerScreen = false
+        checkUserLoggedStatus()
     }
 
     override fun onStop() {
@@ -113,7 +117,7 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
     override fun showSavedAddress(address: String) {
-        with(binding.tvMainUserAddress){
+        with(binding.tvMainUserAddress) {
             if (address.isNotEmpty()) {
                 setBackgroundResource(R.drawable.bg_main_address_correct)
                 text = address
@@ -202,6 +206,14 @@ class MainActivity : BaseActivity(), MainContract.View {
         presenter.onStartMarketCategory()
     }
 
+    override fun startOrdersHistoryFragment() {
+        setToolbarTitleVisibility(true, getString(R.string.drawer_menu_item_my_orders_title))
+        supportFragmentManager.beginTransaction().replace(
+            R.id.container_main,
+            OrderHistoryFragment()
+        ).commit()
+    }
+
     override fun startAboutServiceFragment() {
         setToolbarTitleVisibility(true, getString(R.string.drawer_menu_item_about_us))
         supportFragmentManager.beginTransaction().replace(
@@ -285,7 +297,8 @@ class MainActivity : BaseActivity(), MainContract.View {
         with(binding.imageSlider) {
             val sliderHandler = Handler()
             val sliderRunnable = Runnable {
-                val position = (layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
+                val position =
+                    (layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
                 if (position + 1 >= sliderAdapter.itemCount) {
                     smoothScrollToPosition(0)
                 } else {
@@ -300,6 +313,10 @@ class MainActivity : BaseActivity(), MainContract.View {
                 }
             }, IMAGE_SLIDE_DELAY, IMAGE_SLIDE_PERIOD)
         }
+    }
+
+    private fun checkUserLoggedStatus() {
+        binding.vgMainMenu.tvDrawerMenuItemsOrders.isVisible = presenter.getUserLoggedStatus()
     }
 
     private fun injectDependencies() =
@@ -376,34 +393,47 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
     private fun configureMenuItemsClick(onClick: (menuItem: View) -> Unit) {
-        val menuItems = listOf(
-            binding.vgMainMenu.tvDrawerMenuItemShops,
-            binding.vgMainMenu.tvDrawerMenuItemContacts,
-            binding.vgMainMenu.tvDrawerMenuItemAboutUs,
-            binding.vgMainMenu.tvDrawerMenuItemVacancies
-        )
+        with(binding) {
 
-        menuItems.forEach {
-            it.setOnClickListener { clickedView ->
-                menuItems.forEach { item ->
-                    item.isSelected = item == clickedView
-                }
+            val menuItems = listOf(
+                vgMainMenu.tvDrawerMenuItemShops,
+                vgMainMenu.tvDrawerMenuItemsOrders,
+                vgMainMenu.tvDrawerMenuItemContacts,
+                vgMainMenu.tvDrawerMenuItemAboutUs,
+                vgMainMenu.tvDrawerMenuItemVacancies
+            )
 
-                when (clickedView) {
-                    binding.vgMainMenu.tvDrawerMenuItemShops -> startMarketCategoryFragment(
-                        presenter.getMarketCategory()
-                    )
-                    binding.vgMainMenu.tvDrawerMenuItemAboutUs -> startAboutServiceFragment()
-                    binding.vgMainMenu.tvDrawerMenuItemContacts -> startContactsFragment()
-                    binding.vgMainMenu.tvDrawerMenuItemVacancies -> startVacanciesFragment()
+            menuItems.forEach {
+                it.setOnClickListener { clickedView ->
+                    menuItems.forEach { item ->
+                        item.isSelected = item == clickedView
+                    }
+
+                    when (clickedView) {
+                        vgMainMenu.tvDrawerMenuItemShops -> startMarketCategoryFragment(
+                            presenter.getMarketCategory()
+                        )
+                        vgMainMenu.tvDrawerMenuItemsOrders -> startOrdersHistoryFragment()
+                        vgMainMenu.tvDrawerMenuItemAboutUs -> startAboutServiceFragment()
+                        vgMainMenu.tvDrawerMenuItemContacts -> startContactsFragment()
+                        vgMainMenu.tvDrawerMenuItemVacancies -> startVacanciesFragment()
+                    }
+                    onClick(clickedView)
                 }
-                onClick(clickedView)
             }
         }
     }
 
     override fun showBasketAmount(basketAmount: String) {
         binding.tvBasketAmount.text = getString(R.string.main_btn_amount, basketAmount)
+    }
+
+    override fun showPartnerName(partnerName: String?) {
+        binding.tvBasketTitle.text = if (partnerName.isNullOrEmpty().not()) {
+            partnerName
+        } else {
+            getString(R.string.basket_title)
+        }
     }
 
     private fun setToolbarTitleVisibility(isVisible: Boolean, title: String?) {

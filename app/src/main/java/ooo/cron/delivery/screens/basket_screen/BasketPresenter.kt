@@ -11,6 +11,8 @@ import ooo.cron.delivery.screens.base_mvp.BaseMvpPresenter
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import javax.inject.Inject
+import ooo.cron.delivery.analytics.BaseAnalytics
+import ooo.cron.delivery.utils.extensions.orZero
 
 /**
  * Created by Ramazan Gadzhikadiev on 10.05.2021.
@@ -18,7 +20,8 @@ import javax.inject.Inject
 class BasketPresenter @Inject constructor(
     private val dataManager: DataManager,
     private val mainScope: CoroutineScope,
-    private var basket: Basket?
+    private var basket: Basket?,
+    private val analytics: BaseAnalytics
 ) :
     BaseMvpPresenter<BasketContract.View>(),
     BasketContract.Presenter {
@@ -31,6 +34,11 @@ class BasketPresenter @Inject constructor(
                     if (response.isSuccessful) {
                         basket = response.body()!!
                     }
+                    analytics.trackOpenBasketScreen(
+                        quantity = deserializeDishes().size,
+                        phoneNumber = dataManager.readUserPhone().toString(),
+                        amount = basket?.amount?.toInt().orZero()
+                    )
                 },
                 onConnectionError = { view?.showConnectionErrorScreen() },
                 onAnyError = { view?.showAnyErrorScreen() }
@@ -188,6 +196,12 @@ class BasketPresenter @Inject constructor(
             view?.navigateAuthorization()
             return
         }
+
+        if((basket?.amount ?: EMPTY_BASKET) < view?.getMinOrderAmount().orZero()){
+            view?.showOrderFromDialog()
+            return
+        }
+
         dataManager.writeBasket(basket!!)
         view?.navigateMakeOrderScreen(basket!!)
     }
@@ -195,4 +209,8 @@ class BasketPresenter @Inject constructor(
     private fun deserializeDishes() =
         Gson().fromJson(basket!!.content, Array<BasketDish>::class.java)
             .asList()
+
+    private companion object{
+        const val EMPTY_BASKET = 0.0
+    }
 }

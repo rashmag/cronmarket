@@ -24,6 +24,9 @@ interface BasketContract {
         fun close()
 
         fun marketCategoryId(): Int
+
+        fun getMinOrderAmount(): Int
+        fun showOrderFromDialog()
     }
 
     interface Presenter : MvpPresenter<View> {

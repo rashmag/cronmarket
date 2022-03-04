@@ -55,7 +55,7 @@
     <string name="drawer_menu_item_orders">Заказы</string>
     <string name="drawer_menu_item_contacts">Связаться с нами</string>
     <string name="drawer_menu_item_about_us">О сервисе</string>
-    <string name="drawer_menu_item_vacancies">Стать курьером</string>
+    <string name="drawer_menu_item_vacancies">Работа в CronMarket</string>
     <string name="drawer_menu_settings">Настройки</string>
     <string name="drawer_log_in">Вход / Регистрация</string>
     <string name="drawer_log_out">Выйти из профиля</string>
@@ -265,7 +265,7 @@
     <string name="vacancies_phones_title">Телефоны:</string>
     <string name="vacancies_first_phone_title">8(928) 578–13–07</string>
     <string name="vacancies_second_phone_title">8(988) 790–79–03</string>
-    <string name="become_courier_title">Стать курьером</string>
+    <string name="become_courier_title">Работа в CronMarket</string>
 
     <string name="tinkoff_terminal_key">1616764866032DEMO</string>
     <string name="tinkoff_terminal_password">37qcj6mk92hv5r8b</string>

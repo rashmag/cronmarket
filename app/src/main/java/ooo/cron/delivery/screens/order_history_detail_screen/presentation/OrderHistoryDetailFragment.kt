@@ -14,7 +14,7 @@ import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.OrderHistoryDetailDish
 import ooo.cron.delivery.data.network.models.OrderHistoryDetailNetModel
 import ooo.cron.delivery.databinding.FragmentOrderHistoryDetailBinding
-import ooo.cron.delivery.screens.BaseFragment
+import ooo.cron.delivery.screens.base.BaseFragment
 import ooo.cron.delivery.screens.order_history_screen.presentation.OrderHistoryFragment
 import ooo.cron.delivery.utils.extensions.makeGone
 import ooo.cron.delivery.utils.extensions.makeInvisible

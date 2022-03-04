@@ -13,7 +13,7 @@ import ooo.cron.delivery.App
 import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.OrderHistoryNetModel
 import ooo.cron.delivery.databinding.FragmentOrderHistoryBinding
-import ooo.cron.delivery.screens.BaseFragment
+import ooo.cron.delivery.screens.base.BaseFragment
 import ooo.cron.delivery.screens.order_history_detail_screen.presentation.OrderHistoryDetailFragment
 import ooo.cron.delivery.utils.extensions.makeGone
 import ooo.cron.delivery.utils.extensions.uiLazy

@@ -39,9 +39,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun setViewPagerPosition(position: Int) {
-        if(position == ConfirmPhoneFragment.MAIN_ACTIVITY)
-            startActivity(Intent(this,MainActivity::class.java))
-        else
             viewPager.post {
                 viewPager.setCurrentItem(position, true)
             }

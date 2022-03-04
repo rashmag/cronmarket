@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
@@ -8,11 +9,11 @@
         android:id="@+id/iv_basket_counter_minus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/bg_add_product_bottom_sheet"
+        android:contentDescription="@string/basket_counter_minus"
         android:paddingHorizontal="@dimen/dimen_8"
         android:paddingVertical="15dp"
         android:src="@drawable/ic_minus"
-        android:background="@drawable/bg_add_product_bottom_sheet"
-        android:contentDescription="@string/basket_counter_minus"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -21,24 +22,24 @@
         android:id="@+id/tv_basket_counter_quantity"
         android:layout_width="48dp"
         android:layout_height="wrap_content"
-        android:text="1"
-        android:textSize="14sp"
-        android:textColor="@color/grey90"
-        android:paddingHorizontal="@dimen/dimen_12"
-        android:textStyle="bold"
         android:gravity="center"
+        android:paddingHorizontal="@dimen/dimen_12"
+        android:textColor="@color/grey90"
+        android:textSize="14sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/iv_basket_counter_minus"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="1" />
 
     <ImageView
         android:id="@+id/iv_basket_counter_plus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="@dimen/dimen_8"
-        android:src="@drawable/ic_plus"
         android:background="@drawable/bg_add_product_bottom_sheet"
         android:contentDescription="@string/basket_counter_plus"
+        android:padding="@dimen/dimen_8"
+        android:src="@drawable/ic_plus"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tv_basket_counter_quantity"

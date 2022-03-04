@@ -11,7 +11,7 @@ import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import ooo.cron.delivery.R
 import ooo.cron.delivery.databinding.FragmentContactsBinding
-import ooo.cron.delivery.screens.BaseFragment
+import ooo.cron.delivery.screens.base.BaseFragment
 
 
 /*

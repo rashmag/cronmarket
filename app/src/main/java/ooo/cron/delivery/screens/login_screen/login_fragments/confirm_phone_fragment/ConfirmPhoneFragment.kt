@@ -128,9 +128,8 @@ class ConfirmPhoneFragment : Fragment(R.layout.fragment_confirm_phone), ConfirmP
 
     override fun showAuthorizedUser(userName: String) {
         if (userName.isNotEmpty()) {
-            showNextScreen(MAIN_ACTIVITY)
+            requireActivity().finish()
         } else
-
             showNextScreen(ENTER_NAME_FRAGMENT)
     }
 
@@ -141,7 +140,6 @@ class ConfirmPhoneFragment : Fragment(R.layout.fragment_confirm_phone), ConfirmP
     }
 
     companion object {
-        val MAIN_ACTIVITY = 3
         val ENTER_NAME_FRAGMENT = 2
     }
 }

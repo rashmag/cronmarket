@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -44,7 +43,7 @@
                     <FrameLayout
                         android:id="@+id/image_container"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="497dp"
                         android:fitsSystemWindows="true"
                         android:scaleType="centerCrop"
                         app:layout_collapseMode="parallax"
@@ -198,89 +197,37 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-
-                    <LinearLayout
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/vg_rating"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dimen_16"
                         android:layout_marginTop="@dimen/dimen_16"
                         android:layout_marginEnd="@dimen/dimen_16"
-                        android:gravity="center"
                         android:background="@drawable/bg_partners_activity_rating"
-                        android:orientation="horizontal"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tv_partners_category">
 
-                        <ImageView
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/delivery_type_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/dimen_8"
-                            android:layout_marginTop="@dimen/dimen_4"
-                            android:layout_marginBottom="@dimen/dimen_4"
-                            android:src="@drawable/ic_star_empty" />
+                            android:background="@drawable/delivery_type_round_corner"
+                            android:drawableStart="@drawable/ic_partner_delivers"
+                            android:drawablePadding="@dimen/dimen_8"
+                            android:paddingHorizontal="@dimen/dimen_16"
+                            android:paddingVertical="@dimen/dimen_10"
+                            android:textColor="@color/black"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:text="Доставка 0-199₽" />
 
-                        <TextView
-                            android:id="@+id/tv_rating"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/dimen_8"
-                            android:layout_marginTop="@dimen/dimen_4"
-                            android:layout_marginBottom="@dimen/dimen_4"
-                            android:textColor="@color/grey70"
-                            android:textSize="@dimen/text_min_12"
-                            android:textStyle="bold"
-                            tools:text="4.3 (2480)" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/dimen_16"
-                            android:layout_marginTop="@dimen/dimen_4"
-                            android:layout_marginBottom="@dimen/dimen_4"
-                            android:src="@drawable/ic_car" />
-
-                        <TextView
-                            android:id="@+id/tv_free_delivery"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/dimen_8"
-                            android:layout_marginTop="@dimen/dimen_4"
-                            android:layout_marginBottom="@dimen/dimen_4"
-                            android:textColor="@color/grey70"
-                            android:textSize="@dimen/text_min_12"
-                            android:textStyle="bold"
-                            tools:text="от 5000₽ бесплатно" />
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/dimen_16"
-                            android:layout_marginTop="@dimen/dimen_4"
-                            android:layout_marginBottom="@dimen/dimen_4"
-                            android:src="@drawable/ic_market_category_partner_min_price" />
-
-                        <TextView
-                            android:id="@+id/tv_min_order_amount"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/dimen_8"
-                            android:layout_marginTop="@dimen/dimen_4"
-                            android:layout_marginBottom="@dimen/dimen_4"
-                            android:textColor="@color/grey70"
-                            android:textSize="@dimen/text_min_12"
-                            android:textStyle="bold"
-                            android:maxLines="2"
-                            tools:text="Заказ от 500₽" />
-
-
-                    </LinearLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
-
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -356,7 +303,7 @@
             android:layout_marginEnd="@dimen/dimen_24"
             android:textColor="@color/white"
             android:textSize="@dimen/text_middle_16"
-            tools:text="10900₽"/>
+            tools:text="10900₽" />
 
     </FrameLayout>
 

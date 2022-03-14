@@ -4,7 +4,6 @@ import ooo.cron.delivery.data.network.models.Basket
 import ooo.cron.delivery.data.network.request.BasketClearReq
 import ooo.cron.delivery.utils.Result
 import javax.inject.Inject
-import kotlin.math.floor
 
 /**
  * Created by Maya Nasrueva on 09.01.2022

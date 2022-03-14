@@ -88,7 +88,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cont_delivery_time"
@@ -149,13 +149,14 @@
             android:layout_marginEnd="@dimen/dimen_20"
             android:layout_marginStart="4dp"
             style="@style/RadiogroupStyle"
+            android:visibility="gone"
             android:drawableStart="@drawable/gpay_button_content_black"/>
 
         <androidx.appcompat.widget.AppCompatRadioButton
             android:id="@+id/card_radiobutton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="12dp"
+            android:layout_marginEnd="40dp"
             android:layout_marginStart="12dp"
             style="@style/RadiogroupStyle"
             android:text="@string/bank_cart" />

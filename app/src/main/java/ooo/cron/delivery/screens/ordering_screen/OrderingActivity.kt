@@ -9,6 +9,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import com.google.android.material.tabs.TabLayoutMediator
 import ooo.cron.delivery.App
+import ooo.cron.delivery.BuildConfig
 import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.Basket
 import ooo.cron.delivery.data.network.request.OrderReq
@@ -39,7 +40,7 @@ class OrderingActivity : BaseActivity(), OrderContract.View {
 
     var isRequestParametersValid: Boolean = false
 
-    private var basketModel: Basket?= null
+    private var basketModel: Basket? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         basketModel = intent.getParcelableExtra(BASKET_MODEL)
@@ -230,13 +231,11 @@ class OrderingActivity : BaseActivity(), OrderContract.View {
         resources.getStringArray(R.array.payment_method_array)[CARD_PAYMENT_TYPE_INDEX]
 
     override fun openPaymentScreen(paymentOptions: PaymentOptions) {
-        TinkoffAcquiring(
-            getString(R.string.tinkoff_terminal_key),
-            getString(R.string.tinkoff_terminal_public_key)
+        TinkoffAcquiring(BuildConfig.tinkoff_terminal_key, BuildConfig.tinkoff_terminal_public_key
         ).openPaymentScreen(
-            this,
-            paymentOptions,
-            TINKOFF_PAYMENT_REQUEST_CODE
+        this,
+        paymentOptions,
+        TINKOFF_PAYMENT_REQUEST_CODE
         )
     }
 

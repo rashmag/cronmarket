@@ -1,5 +1,6 @@
 package ooo.cron.delivery.screens.pay_dialog_screen
 
+
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -29,10 +30,12 @@ class OrderViewModel @Inject constructor(
     private val handler = CoroutineExceptionHandler { context, exception ->
         Log.e("exception", exception.toString())
     }
-    val payData: SingleLiveEvent<PayData> = SingleLiveEvent()
+    val cardPayData: SingleLiveEvent<PayData> = SingleLiveEvent()
+    val googlePayData: SingleLiveEvent<Pair<PayData, String>> = SingleLiveEvent()
     val callingPayInfoDialog: SingleLiveEvent<Unit> = SingleLiveEvent()
     val callingDeliveryCostInfo: SingleLiveEvent<Boolean> = SingleLiveEvent()
     val paymentStatus: SingleLiveEvent<Boolean> = SingleLiveEvent()
+    val gPayClick: SingleLiveEvent<Long> = SingleLiveEvent()
     private val mutablePhone: MutableLiveData<String> = MutableLiveData()
     val phone: LiveData<String> get() = mutablePhone
     private val mutableBasketState: MutableLiveData<BasketState> = MutableLiveData()
@@ -55,26 +58,36 @@ class OrderViewModel @Inject constructor(
 
     fun onPayClicked() {
         when (payVariantState.value) {
-            is CardVariant -> getOrderInfo()
-            is CashVariant -> onPaymentSuccess()
+            is CardVariant -> onCardPaySelected()
+            is CashVariant -> onPaymentSuccess() // никуда лезть не надо, сразу же подтверждаем заказ и отправляем запрос на сервер
+            is GPayVariant -> onGooglePaySelected()
             else -> callingPayInfoDialog.call()
         }
     }
 
-    private fun getOrderInfo() {
+    fun onCardPaySelected() {
+        cardPayData.postValue(getOrderInfo())
+    }
+
+    fun onGooglePaySelected() {
+        gPayClick.postValue(getOrderInfo().amountSum.toLong())
+    }
+
+    fun onGooglePayResultSuccess(token: String) {
+        googlePayData.postValue(Pair(getOrderInfo() ,token))
+    }
+
+    private fun getOrderInfo(): PayData {
         val phone = interactor.getPhone().toString()
         val basket = interactor.getBasket()
-        //Todo исправить стоимость доставки
-        basket?.let {
-            val amountSum = it.amount + it.deliveryCost
-            val receipt =
-                Receipt(
+        val payData = basket?.let {
+            PayData(amountSum = it.amount + it.deliveryCost, receipt = Receipt(
                 ArrayList(receiptsItems(it)),
                 "cron.devsystems@gmail.com",
                 Taxation.USN_INCOME
-            )
-            payData.postValue(PayData(phone, amountSum, receipt))
+            ), phone = phone)
         }
+        return payData as PayData
     }
 
     fun receiptsItems(basket: Basket) =
@@ -121,7 +134,7 @@ class OrderViewModel @Inject constructor(
     }
 
     //метод для POST-запроса на отправку заказа после оплаты(если картой или GPay)/выбора налички
-    //TODO !!!!!!!!!! обработать ошибку отсутствия интернета при успешной оплате и отправке POST-запроса
+    //TODO обработать ошибку отсутствия интернета при успешной оплате и отправке POST-запроса
 
     fun onPaymentSuccess() {
         viewModelScope.launch {

@@ -38,7 +38,11 @@ class MainPresenter @Inject constructor(
     override fun onCreateScreen() {
         analytics.trackOpenMainScreen(dataManager.readUserPhone().toString())
     }
-
+    override fun onCheckEmptyBasket() {
+        val basketId = dataManager.readUserBasketId()
+        if (basketId == DataManager.EMPTY_UUID)
+            view?.hideContinueLastSessionMainMenu()
+    }
     override fun onResumeView(isFromPartnerScreen: Boolean) {
         mainScope.launch {
             defineAddress()
@@ -105,7 +109,7 @@ class MainPresenter @Inject constructor(
     }
 
     override fun onClickAddress() {
-            view?.navigateFirstAddressSelection()
+        view?.navigateFirstAddressSelection()
     }
 
     override fun onProfileClick() {

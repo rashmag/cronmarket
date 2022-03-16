@@ -188,6 +188,10 @@ class MainActivity : BaseActivity(), MainContract.View {
         binding.vgMainContinueLastSession.startBottomAnimate(false)
     }
 
+    override fun hideContinueLastSessionMainMenu() {
+        binding.vgMainContinueLastSession.visibility = View.GONE
+    }
+
     override fun startMarketCategoryFragment(category: MarketCategory) {
         setToolbarTitleVisibility(false, null)
         supportFragmentManager.beginTransaction().replace(
@@ -201,6 +205,7 @@ class MainActivity : BaseActivity(), MainContract.View {
             (binding.vgMainContent.layoutParams as CoordinatorLayout.LayoutParams).behavior =
                 ScrollingViewBehavior()
             binding.vgMainContent.requestLayout()
+            presenter.onCheckEmptyBasket()
         }
 
         presenter.onStartMarketCategory()
@@ -429,8 +434,9 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
     override fun showPartnerName(partnerName: String?) {
-        binding.tvBasketTitle.text = if (partnerName.isNullOrEmpty().not()) {
-            partnerName
+        if (partnerName.isNullOrEmpty().not()) {
+            binding.tvBasketTitle.text = partnerName
+            binding.tvBasketTitle.setCompoundDrawablesWithIntrinsicBounds(0,0,0,0)
         } else {
             getString(R.string.basket_title)
         }

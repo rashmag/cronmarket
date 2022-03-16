@@ -7,18 +7,19 @@
     android:layout_height="wrap_content">
 
     <CheckBox
+        android:textSize="18sp"
         android:textColor="@color/grey90"
         android:id="@+id/chk_additive"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:buttonTint="@color/brand"/>
+        android:button="@drawable/selector_custom_checkbox"/>
 
     <TextView
-        android:id="@+id/tv_additive"
+        android:id="@+id/cost_additive_TV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/grey90"
-        android:textSize="16sp"
-        tools:text="eshkere" />
+        android:textColor="@android:color/darker_gray"
+        android:textSize="18sp"
+        tools:text="Цена" />
 
 </LinearLayout>

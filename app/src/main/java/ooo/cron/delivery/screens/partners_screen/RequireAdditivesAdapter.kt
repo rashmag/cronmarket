@@ -1,5 +1,6 @@
 package ooo.cron.delivery.screens.partners_screen
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,14 @@ import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.PartnerProductsRes
 import ooo.cron.delivery.data.network.models.RequireAdditiveModel
 import ooo.cron.delivery.databinding.ItemRequireAdditivesBinding
+import android.text.SpannableString
+
+import android.text.Spannable
+import android.text.style.ForegroundColorSpan
+import android.util.Log
+import android.widget.TextView
+import androidx.core.content.ContextCompat
+import ooo.cron.delivery.utils.itemdecoration.LineItemDicoration
 
 
 /*
@@ -40,6 +49,14 @@ class RequireAdditivesAdapter(
                 AdditivesAdapter(requireAdditivesList[position].additiveList, listener) {
                     checkedAdditives[position] = it
                 }
+            recyclerView.addItemDecoration(
+                LineItemDicoration(
+                    ContextCompat.getDrawable(
+                        recyclerView.context,
+                        R.drawable.line_gray
+                    )!!
+                )
+            )
         }
 
     }
@@ -68,6 +85,9 @@ class AdditivesAdapter(
         onChecked(requireAdditivesList[checkedPosition])
         val item = requireAdditivesList[position]
         with(holder) {
+            costAdditiveTV.text = costAdditiveTV.context.getString(
+                R.string.partner_product_additive_space_price, item.cost
+            )
             rbAdditives.apply {
                 text = item.name
                 isChecked = adapterPosition == checkedPosition
@@ -87,6 +107,7 @@ class AdditivesAdapter(
 
         private val binding = ItemRequireAdditivesBinding.bind(itemView)
         val rbAdditives: RadioButton = binding.rbAdditives
+        val costAdditiveTV: TextView = binding.costAdditiveTV
 
     }
 

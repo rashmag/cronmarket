@@ -1,5 +1,9 @@
 package ooo.cron.delivery.screens.partners_screen
 
+import android.graphics.Color
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,7 +30,7 @@ class AdditiveRecyclerAdapter(
         )
     }
 
-    fun setListener(listener:onDopProductClickListener){
+    fun setListener(listener: onDopProductClickListener) {
         this.mListener = listener
     }
 
@@ -51,13 +55,12 @@ class AdditiveRecyclerAdapter(
             additive: PartnerProductsRes.Additive,
             position: Int
         ) {
-
-            var additiveText = additive.name
-            if (additive.cost != 0)
-                additiveText += " +${additive.cost}₽"
-
-            binding.chkAdditive.text = additiveText
-
+            with(binding) {
+                costAdditiveTV.text = costAdditiveTV.context.getString(
+                    R.string.partner_product_additive_space_price, additive.cost
+                )
+                chkAdditive.text = additive.name
+            }
             if (binding.chkAdditive.isChecked) {
                 checkedAdditives[position] = additive
             } else {

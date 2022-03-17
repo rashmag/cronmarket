@@ -19,9 +19,12 @@ class BasketActivity : BaseActivity(), PayClickCallback {
 
     @Inject
     protected lateinit var binding: ActivityBasketBinding
+    private var orderAmount = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val basketModel = intent.getParcelableExtra<Basket>(BASKET_MODEL)
+        orderAmount = intent.getIntExtra(MIN_AMOUNT_ORDER, 0)
+
         App.appComponent.basketComponentBuilder()
             .bindInflater(layoutInflater)
             .basketModel(basketModel)
@@ -49,8 +52,9 @@ class BasketActivity : BaseActivity(), PayClickCallback {
         const val PARTNER_OPEN_MINUTES = "PARTNER_OPEN_MINUTES"
         const val PARTNER_CLOSE_HOURS = "PARTNER_CLOSE_HOURS"
         const val PARTNER_CLOSE_MINUTES = "PARTNER_CLOSE_MINUTES"
-        const val AMOUNT = "AMOUNT"
+        const val MIN_AMOUNT_ORDER = "MIN_AMOUNT_ORDER"
         const val BASKET_MODEL = "BASKET_MODEL"
+        const val EMPTY_TITLE = " "
 
         const val MARGIN_SPACING_VALUE_34 = 34
     }

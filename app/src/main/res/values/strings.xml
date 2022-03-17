@@ -52,13 +52,16 @@
     <string name="drawer_profile_image_description">Профиль</string>
 
     <string name="drawer_menu_item_shops">Магазины</string>
+    <string name="drawer_menu_item_orders">Заказы</string>
     <string name="drawer_menu_item_contacts">Связаться с нами</string>
     <string name="drawer_menu_item_about_us">О сервисе</string>
-    <string name="drawer_menu_item_vacancies">Стать курьером</string>
+    <string name="drawer_menu_item_vacancies">Работа в CronMarket</string>
     <string name="drawer_menu_settings">Настройки</string>
     <string name="drawer_log_in">Вход / Регистрация</string>
     <string name="drawer_log_out">Выйти из профиля</string>
     <string name="drawer_profile_name_unauthorized">Вход \nне выполнен</string>
+
+    <string name="drawer_menu_item_my_orders_title">Мои заказы</string>
 
     <string name="enter_phone_title">Укажите номер</string>
     <string name="confirm_phone_title">Подтвердите номер</string>
@@ -261,7 +264,7 @@
     <string name="vacancies_phones_title">Телефоны:</string>
     <string name="vacancies_first_phone_title">8(928) 578–13–07</string>
     <string name="vacancies_second_phone_title">8(988) 790–79–03</string>
-    <string name="become_courier_title">Стать курьером</string>
+    <string name="become_courier_title">Работа в CronMarket</string>
 
     <string name="partner_closed">Заведение в данный момент закрыто\nОткроется в %1$s</string>
     <string name="enter_address">Введите адрес</string>
@@ -272,6 +275,29 @@
 
     <!-- Partners screen -->
     <string name="partners_screen_error_close_shop_text">Заведение в данный момент закрыто\n Откроется в 11:00</string>
+    <string name="partners_screen_delivery_type_title_first">Доставка %s₽</string>
+    <string name="partners_screen_delivery_type_title">Доставка от %s-%s₽</string>
+    <string name="partners_screen_delivery_from_title">Заказ от %s₽</string>
+    <string name="partners_screen_delivery_from_title_second">Заказ от %s₽ до %s₽</string>
+    <string name="partners_screen_delivery_type_price">%s₽</string>
+    <string name="partners_screen_delivery_type_delivers_cron">Доставит курьер CronMarket</string>
+    <string name="partners_screen_delivery_type_delivers_partner">Доставит курьер партнера</string>
+    <string name="partners_screen_delivery_type_delivers_btn_ok">Понятно</string>
+
+    <!-- Orders history -->
+    <string name="order_history_screen_total_amount_ruble">%s₽</string>
+    <string name="order_history_screen_cancelled_title">Отменен</string>
+    <string name="order_history_screen_delivery_to_title">Доставка к %s</string>
+    <string name="order_history_screen_moderation_title">Модерация</string>
+    <string name="order_history_screen_process_title">Готовится</string>
+    <string name="order_history_screen_way_title">В пути</string>
+    <string name="order_history_screen_done_title">Доставлен</string>
+    <string name="order_history_screen_total_amount">Итого:</string>
+
+    <!-- Orders history detail -->
+    <string name="order_history_detail_screen_additive_plus">+ %s</string>
+
+    <!-- Payment dialog -->
     <string name="order_comment">Комментарий к заказу</string>
     <string name="bank_cart">Карта</string>
     <string name="cash">Наличные</string>

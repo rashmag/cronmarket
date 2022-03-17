@@ -3,13 +3,16 @@ package ooo.cron.delivery.screens.main_screen
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.os.Parcelable
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.PagerSnapHelper
 import com.google.android.material.appbar.AppBarLayout.ScrollingViewBehavior
 import nl.psdcompany.duonavigationdrawer.widgets.DuoDrawerToggle
 import ooo.cron.delivery.App
@@ -26,12 +29,14 @@ import ooo.cron.delivery.screens.main_screen.special_offers_view.models.SlideMod
 import ooo.cron.delivery.screens.market_category_screen.MarketCategoryFragment
 import ooo.cron.delivery.screens.partners_screen.PartnersActivity
 import ooo.cron.delivery.screens.vacancies_screen.VacanciesFragment
-import ooo.cron.delivery.utils.dipToPixels
 import ooo.cron.delivery.utils.extensions.startBottomAnimate
 import javax.inject.Inject
+import ooo.cron.delivery.screens.main_screen.special_offers_view.adapters.SliderAdapter
+import ooo.cron.delivery.screens.order_history_screen.presentation.OrderHistoryFragment
 import ooo.cron.delivery.utils.enums.ReturningToScreenEnum
 import ooo.cron.delivery.utils.extensions.makeGone
 import ooo.cron.delivery.utils.extensions.makeVisible
+import java.util.*
 
 
 class MainActivity : BaseActivity(), MainContract.View {
@@ -45,6 +50,9 @@ class MainActivity : BaseActivity(), MainContract.View {
     private var shouldLastBasketSessionBeVisible = false
     private var isFromPartnerScreen = false
 
+    private var swipeTimer: Timer? = null
+    private var sliderPosition = 0
+
     private val partnerActivityLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result: ActivityResult ->
@@ -52,6 +60,10 @@ class MainActivity : BaseActivity(), MainContract.View {
             isFromPartnerScreen = true
         }
 
+    }
+
+    private val sliderAdapter by lazy(LazyThreadSafetyMode.NONE) {
+        SliderAdapter()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,6 +75,8 @@ class MainActivity : BaseActivity(), MainContract.View {
         configureNavigationDrawer()
         configureMarketCategoriesList()
         setContinueLastSessionClickListener()
+        initSliderRecycler()
+        presenter.onCreateScreen()
     }
 
     private fun configureMarketCategoriesList() {
@@ -76,12 +90,22 @@ class MainActivity : BaseActivity(), MainContract.View {
 
     override fun onResume() {
         super.onResume()
+        setTimerForImageSlider()
         presenter.onResumeView(isFromPartnerScreen)
         isFromPartnerScreen = false
+        checkUserLoggedStatus()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        swipeTimer?.cancel()
+        swipeTimer?.purge()
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        swipeTimer?.cancel()
+        swipeTimer?.purge()
         presenter.detachView()
     }
 
@@ -93,14 +117,14 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
     override fun showSavedAddress(address: String) {
-            binding.tvMainUserAddress.run {
-                if(address.isNotEmpty()) {
-                    setBackgroundResource(R.drawable.bg_main_address_correct)
-                    text = address
-                }else{
-                    setBackgroundResource(R.drawable.bg_main_address_incorrect)
-                    text = getString(R.string.main_address_incorrect)
-                }
+        with(binding.tvMainUserAddress){
+            if (address.isNotEmpty()) {
+                setBackgroundResource(R.drawable.bg_main_address_correct)
+                text = address
+            } else {
+                setBackgroundResource(R.drawable.bg_main_address_incorrect)
+                text = getString(R.string.main_address_incorrect)
+            }
         }
     }
 
@@ -182,6 +206,14 @@ class MainActivity : BaseActivity(), MainContract.View {
         presenter.onStartMarketCategory()
     }
 
+    override fun startOrdersHistoryFragment() {
+        setToolbarTitleVisibility(true, getString(R.string.drawer_menu_item_my_orders_title))
+        supportFragmentManager.beginTransaction().replace(
+            R.id.container_main,
+            OrderHistoryFragment()
+        ).commit()
+    }
+
     override fun startAboutServiceFragment() {
         setToolbarTitleVisibility(true, getString(R.string.drawer_menu_item_about_us))
         supportFragmentManager.beginTransaction().replace(
@@ -242,24 +274,48 @@ class MainActivity : BaseActivity(), MainContract.View {
             specialOffersTitle.makeVisible()
             imageSlider.makeVisible()
 
-            imageSlider.viewPager?.pageMargin = resources.dipToPixels(16f).toInt()
-            imageSlider.viewPager?.clipToPadding = false
-
-            imageSlider.viewPager?.setPadding(
-                resources.dipToPixels(16f).toInt(),
-                0,
-                resources.dipToPixels(16f).toInt(),
-                0
-            )
-            imageSlider.setImageList(promotions.map { SlideModel(it.imgUri, "") })
+            sliderAdapter.setData(promotions.map { SlideModel(it.imgUri) })
         }
     }
 
     override fun hideSpecialOffers() {
-        with(binding){
+        with(binding) {
             specialOffersTitle.makeGone()
             imageSlider.makeGone()
         }
+    }
+
+    private fun initSliderRecycler() {
+        with(binding.imageSlider) {
+            PagerSnapHelper().attachToRecyclerView(this)
+            adapter = sliderAdapter
+        }
+    }
+
+    private fun setTimerForImageSlider() {
+
+        with(binding.imageSlider) {
+            val sliderHandler = Handler()
+            val sliderRunnable = Runnable {
+                val position = (layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
+                if (position + 1 >= sliderAdapter.itemCount) {
+                    smoothScrollToPosition(0)
+                } else {
+                    smoothScrollToPosition(position + 1)
+                }
+            }
+
+            swipeTimer = Timer()
+            swipeTimer?.schedule(object : TimerTask() {
+                override fun run() {
+                    sliderHandler.post(sliderRunnable)
+                }
+            }, IMAGE_SLIDE_DELAY, IMAGE_SLIDE_PERIOD)
+        }
+    }
+
+    private fun checkUserLoggedStatus(){
+        binding.vgMainMenu.tvDrawerMenuItemsOrders.isVisible = presenter.getUserLoggedStatus()
     }
 
     private fun injectDependencies() =
@@ -338,28 +394,33 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
     private fun configureMenuItemsClick(onClick: (menuItem: View) -> Unit) {
-        val menuItems = listOf(
-            binding.vgMainMenu.tvDrawerMenuItemShops,
-            binding.vgMainMenu.tvDrawerMenuItemContacts,
-            binding.vgMainMenu.tvDrawerMenuItemAboutUs,
-            binding.vgMainMenu.tvDrawerMenuItemVacancies
-        )
+        with(binding) {
 
-        menuItems.forEach {
-            it.setOnClickListener { clickedView ->
-                menuItems.forEach { item ->
-                    item.isSelected = item == clickedView
-                }
+            val menuItems = listOf(
+                vgMainMenu.tvDrawerMenuItemShops,
+                vgMainMenu.tvDrawerMenuItemsOrders,
+                vgMainMenu.tvDrawerMenuItemContacts,
+                vgMainMenu.tvDrawerMenuItemAboutUs,
+                vgMainMenu.tvDrawerMenuItemVacancies
+            )
 
-                when (clickedView) {
-                    binding.vgMainMenu.tvDrawerMenuItemShops -> startMarketCategoryFragment(
-                        presenter.getMarketCategory()
-                    )
-                    binding.vgMainMenu.tvDrawerMenuItemAboutUs -> startAboutServiceFragment()
-                    binding.vgMainMenu.tvDrawerMenuItemContacts -> startContactsFragment()
-                    binding.vgMainMenu.tvDrawerMenuItemVacancies -> startVacanciesFragment()
+            menuItems.forEach {
+                it.setOnClickListener { clickedView ->
+                    menuItems.forEach { item ->
+                        item.isSelected = item == clickedView
+                    }
+
+                    when (clickedView) {
+                        vgMainMenu.tvDrawerMenuItemShops -> startMarketCategoryFragment(
+                            presenter.getMarketCategory()
+                        )
+                        vgMainMenu.tvDrawerMenuItemsOrders -> startOrdersHistoryFragment()
+                        vgMainMenu.tvDrawerMenuItemAboutUs -> startAboutServiceFragment()
+                        vgMainMenu.tvDrawerMenuItemContacts -> startContactsFragment()
+                        vgMainMenu.tvDrawerMenuItemVacancies -> startVacanciesFragment()
+                    }
+                    onClick(clickedView)
                 }
-                onClick(clickedView)
             }
         }
     }
@@ -393,5 +454,8 @@ class MainActivity : BaseActivity(), MainContract.View {
 
     companion object {
         const val RETURNING_SCREEN_KEY = "RETURNING_SCREEN_KEY"
+        private const val IMAGE_SLIDE_DELAY = 0L
+        private const val IMAGE_SLIDE_PERIOD = 3000L
+        private const val FIRST_IMAGE = 0
     }
 }

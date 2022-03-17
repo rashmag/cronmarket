@@ -19,7 +19,8 @@ data class PartnersInfoRes(
     var rating: Float,
     var feedbackCount: Int,
     var marketCategoryId: Int,
-    val schedule: Schedule
+    val schedule: Schedule,
+    val deliveryFrames: List<DeliveryFrames> ?= null
 ) {
 
     fun map() = Partner(

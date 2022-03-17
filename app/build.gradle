@@ -11,8 +11,8 @@ android {
         applicationId "ooo.cron.delivery"
         minSdkVersion 21
         targetSdkVersion 31
-        versionCode 33
-        versionName "4.0"
+        versionCode 36
+        versionName "4.1.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -139,4 +139,7 @@ dependencies {
 
     //affolestad
     implementation 'com.afollestad.material-dialogs:core:3.3.0'
+
+    // AppMetrica SDK.
+    implementation 'com.yandex.android:mobmetricalib:4.1.1'
 }

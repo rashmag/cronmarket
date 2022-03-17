@@ -1,6 +1,5 @@
 package ooo.cron.delivery.screens.partners_screen
 
-import android.util.Log
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -12,6 +11,8 @@ import ooo.cron.delivery.screens.base_mvp.BaseMvpPresenter
 import retrofit2.Response
 import java.util.*
 import javax.inject.Inject
+import ooo.cron.delivery.analytics.BaseAnalytics
+import ooo.cron.delivery.utils.extensions.orZero
 
 /*
  * Created by Muhammad on 05.05.2021
@@ -20,7 +21,8 @@ import javax.inject.Inject
 @PartnersScope
 class PartnersPresenter @Inject constructor(
     private val dataManager: DataManager,
-    private val mainScope: CoroutineScope
+    private val mainScope: CoroutineScope,
+    private val analytics: BaseAnalytics
 ) :
     BaseMvpPresenter<PartnersContract.View>(), PartnersContract.Presenter {
 
@@ -29,6 +31,8 @@ class PartnersPresenter @Inject constructor(
     private val productCategoriesModel = ArrayList<ProductCategoryModel>()
     private var basket: Basket? = null
     private var basketContent: List<BasketDish>? = null
+
+    private var categoryName = ""
 
     override fun getPartnerInfo() {
         mainScope.launch {
@@ -39,17 +43,19 @@ class PartnersPresenter @Inject constructor(
         }
     }
 
-    suspend fun checkCityId() : Boolean {
-        if (dataManager.readCurrentCityId() == EMPTY){
-            dataManager.readChosenCity()?.id?.let { dataManager.writeCurrentCityId(it) }
-        }
-        return dataManager.readChosenCity()?.id == dataManager.readCurrentCityId()
+    fun checkPartnerId(): Boolean {
+        return dataManager.readPartnerId() != view?.getPartnerId()
     }
 
     private fun Response<PartnersInfoRes>.handlePartnersInfo() {
         if (isSuccessful) {
             partner = body()!!
             view?.showPartnerInfo(partner)
+            analytics.trackOpenPartnersCard(
+                partnerName = partner.name,
+                categoryName = dataManager.readSelectedMarketCategory().categoryName,
+                phoneNumber = dataManager.readUserPhone().toString()
+            )
         } else {
             view?.showAnyErrorScreen()
         }
@@ -92,7 +98,6 @@ class PartnersPresenter @Inject constructor(
                     view?.showPartnerProducts(productCategoriesModel)
                     view?.updateBasketPreview(basketContent?.sumBy { it.quantity } ?: 0,
                         String.format("%.2f", basket?.amount ?: 0.00))
-
                 },
                 { view?.showConnectionErrorScreen() },
                 { view?.showAnyErrorScreen() }
@@ -109,31 +114,39 @@ class PartnersPresenter @Inject constructor(
     }
 
     override fun onBasketClicked() {
-        partner.schedule.let { schedule ->
-            val openTime =
-                if (schedule.begin.isNotEmpty())
-                    schedule.begin.split(':')
-                        .map { it.toInt() }
-                else
-                    listOf(0, 0, 0)
+        if ((basket?.amount ?: EMPTY_BASKET) < view?.getMinOrderAmount().orZero()) {
+            view?.showOrderFromDialog()
+        } else {
+            partner.schedule.let { schedule ->
+                val openTime =
+                    if (schedule.begin.isNotEmpty())
+                        schedule.begin.split(':')
+                            .map { it.toInt() }
+                    else
+                        listOf(0, 0, 0)
 
-            val closeTime =
-                if (schedule.end.isNotEmpty())
-                    schedule.end.split(':')
-                        .map { it.toInt() }
-                else listOf(23, 59, 59)
+                val closeTime =
+                    if (schedule.end.isNotEmpty())
+                        schedule.end.split(':')
+                            .map { it.toInt() }
+                    else listOf(23, 59, 59)
 
-            view?.navigateBasket(
-                openTime[0],
-                openTime[1],
-                closeTime[0],
-                closeTime[1],
-                basket
-            )
+                view?.navigateBasket(
+                    openTime[0],
+                    openTime[1],
+                    closeTime[0],
+                    closeTime[1],
+                    basket
+                )
+            }
         }
     }
 
     override fun productClick(product: PartnerProductsRes) {
+        analytics.trackOpenProductCard(
+            productName = product.name,
+            phoneNumber = dataManager.readUserPhone().toString()
+        )
         view?.showProductInfo(product)
     }
 
@@ -172,6 +185,9 @@ class PartnersPresenter @Inject constructor(
                         basketContent = deserializeDishes()
                         mergeBasketIntoProducts()
                         view?.showPartnerProducts(productCategoriesModel)
+                        productCategoriesModel.forEach {
+                            categoryName = it.categoryName
+                        }
                         view?.updateBasketPreview(basketContent?.sumBy { it.quantity } ?: 0,
                             String.format("%.2f", basket!!.amount))
                     },
@@ -248,6 +264,8 @@ class PartnersPresenter @Inject constructor(
                 return@forEach
             }
         }
+
+        dataManager.writePartnerId(partner.id)
 
         val addingProduct = BasketDish(
             dishId,
@@ -349,7 +367,7 @@ class PartnersPresenter @Inject constructor(
         Gson().fromJson(basket!!.content, Array<BasketDish>::class.java)
             .asList()
 
-    private companion object{
+    private companion object {
         private const val EMPTY_BASKET = 0.0
         private const val EMPTY = ""
     }

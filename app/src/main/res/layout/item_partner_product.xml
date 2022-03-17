@@ -83,21 +83,25 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintHorizontal_bias="0.0">
 
-
-            <TextView
-                android:id="@+id/tv_cost"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/container_add_to_basket"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:drawableLeft="@drawable/ic_cart"
-                android:drawablePadding="12dp"
-                android:gravity="center"
-                android:textColor="@color/grey90"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                tools:text="1000₽" />
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_cost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:drawablePadding="@dimen/dimen_12"
+                    android:gravity="center"
+                    android:textColor="@color/grey90"
+                    android:textStyle="bold"
+                    tools:text="1000₽"
+                    app:drawableLeftCompat="@drawable/ic_cart" />
+
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/vg_add_product"

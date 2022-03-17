@@ -14,14 +14,12 @@ import javax.inject.Inject
 class SPrefsService @Inject constructor(
     private val sharedPreferences: SharedPreferences
 ) {
-    //можно имрпавить жсончики
     fun writeChosenCity(city: City) {
         sharedPreferences.edit()
             .putString(CITY, Gson().toJson(city).toString())
             .apply()
     }
 
-    //можно имрпавить жсончики
     fun readChosenCity(): City? {
         val cityIdPrevious = sharedPreferences.getString(CITY_ID, "")
         val cityNamePrevious = sharedPreferences.getString(CITY_NAME, "")
@@ -57,13 +55,11 @@ class SPrefsService @Inject constructor(
     fun readCurrentCityPosition() =
         sharedPreferences.getInt(CURRENT_CITY_POSITION, -1)
 
-    //можно имправить жсончики
     fun writeSelectedMarketCategory(category: MarketCategory) =
         sharedPreferences.edit()
             .putString(MARKET_CATEGORY, Gson().toJson(category).toString())
             .apply()
 
-    //можно имправить жсончики
     fun readSelectedMarketCategory(): MarketCategory? {
         val marketCategoryIdPrevious = sharedPreferences.getInt(MARKET_CATEGORY_ID, -1)
         val marketCategoryNamePrevious = sharedPreferences.getString(MARKET_CATEGORY_NAME, "")
@@ -151,6 +147,14 @@ class SPrefsService @Inject constructor(
             .remove(TOKEN)
             .apply()
 
+    fun writePartnerId(id: String){
+        sharedPreferences.edit()
+            .putString(PARTNER_ID, id)
+            .commit()
+    }
+
+    fun readPartnerId() = sharedPreferences.getString(PARTNER_ID, "")
+
     companion object {
         const val EMPTY_UUID = "00000000-0000-0000-0000-000000000000"
 
@@ -181,6 +185,6 @@ class SPrefsService @Inject constructor(
         const val MARKET_CATEGORY_NAME = "market_category_name"
         const val MARKET_CATEGORY_IMAGE = "market_category_image"
 
-        const val MARKET_CATEGORY = "market_category"
+        const val PARTNER_ID = "PARTNER_ID"
     }
 }

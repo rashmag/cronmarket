@@ -25,6 +25,8 @@ interface MainContract {
         fun showNotAuthorizedMessage()
         fun showLogOutDialog()
         fun startMarketCategoryFragment(category: MarketCategory?)
+        fun startMarketCategoryFragment(category: MarketCategory)
+        fun startOrdersHistoryFragment()
         fun startContactsFragment()
         fun reopenMainScreen()
         fun navigateFirstAddressSelection()
@@ -39,6 +41,7 @@ interface MainContract {
     }
 
     interface Presenter : MvpPresenter<View> {
+        fun onCreateScreen()
         fun onResumeView(isFromPartnerScreen: Boolean)
         fun onMarketCategoryClicked(category: MarketCategory)
         fun onClickAddress()
@@ -48,5 +51,6 @@ interface MainContract {
         fun continueLastSessionCLick()
         fun getMarketCategory(): MarketCategory?
         fun onStartMarketCategory()
+        fun getUserLoggedStatus(): Boolean
     }
 }

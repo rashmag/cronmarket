@@ -61,7 +61,7 @@ class FirstAddressSelectionPresenter @Inject constructor(
         view?.disableAddressPopup()
 
         if (typedAddress.length > MIN_ADDRESS_LETTERS) {
-            loadAddresses(typedAddress)
+            loadAddressesWhenTyping(typedAddress)
         } else if (typedAddress.isEmpty())
             view?.showInfoMessage()
     }
@@ -133,12 +133,12 @@ class FirstAddressSelectionPresenter @Inject constructor(
         }
     }
 
-    private fun loadAddresses(addressPart: String) {
+    private fun loadAddressesWhenTyping(addressPart: String) {
         addressScope.coroutineContext.cancelChildren()
         addressScope.launch {
             selectedCity?.let {
                 withErrorsHandle(
-                    { dataManager.getSuggestAddress(it.kladrId, addressPart).handleAddresses() },
+                    { dataManager.getSuggestAddress(it.kladrId, addressPart).handleAddressesWhenTyping() },
                     { view?.showConnectionErrorScreen() },
                     { view?.showAnyErrorScreen() }
                 )
@@ -167,35 +167,50 @@ class FirstAddressSelectionPresenter @Inject constructor(
         if (isSuccessful && body().isNullOrEmpty().not()) {
             cities = body()!!
             view?.showCities(cities)
-            lastSelectedCity = dataManager.readChosenCity()?.city.toString()
+            lastSelectedCity = dataManager.readChosenCity().city
             view?.removeCitiesProgress()
             view?.showStartShopping()
         } else
             view?.showAnyErrorScreen()
     }
 
-    private fun Response<List<SuggestAddress>>.handleAddresses() {
-        if (isSuccessful && body() != null) {
-            if (body()!!.isNotEmpty()) {
-                suggestedAddresses = body()!!.weedOutNullAddresses()
+    // Вставка предложенного города, при поиске своего местоположения
+    private suspend fun Response<List<SuggestAddress>>.handleAddresses() {
+        if (isSuccessful && body().isNullOrEmpty().not()) {
+                suggestedAddresses = body()?.weedOutNullAddresses() ?: listOf()
                 if (suggestedAddresses.isNotEmpty()) {
-                    if (suggestedAddresses.firstOrNull { it.city == selectedCity?.city } != null) {
-                        view?.showAddressesPopup(suggestedAddresses)
-                    } else {
-                        view?.showWarningMessage()
-                    }
-                } else
-                    view?.showLocationNotFoundMessage()
-            }
 
-            view?.let {
-                if (it.getAddress().isValidAddress()) {
-                    it.showSuccessMessage()
-                } else if (it.getAddress().isNotEmpty())
-                    it.showWarningMessage()
-            }
+                    suggestedAddresses.forEach {
+                        view?.setFoundCity(it.city)
+                        delay(DELAY_FOR_SEARCH_ADDRESS)
+                        view?.setFoundAddress(it.streetWithType.plus(" " + it.house))
+                    }
+                } else {
+                    view?.showWarningMessage()
+                }
         } else {
-            view?.showAnyErrorScreen()
+            view?.showLocationNotFoundMessage()
+        }
+    }
+
+    // Отображение предложенных адресов, при вводе текста
+    private fun Response<List<SuggestAddress>>.handleAddressesWhenTyping() {
+        if (isSuccessful && body().isNullOrEmpty().not()) {
+                suggestedAddresses = body()?.weedOutNullAddresses() ?: listOf()
+
+                if (suggestedAddresses.isNotEmpty()) {
+                    view?.showAddressesPopup(suggestedAddresses)
+                }else{
+                    view?.showWarningMessage()
+                }
+            }else
+                view?.showLocationNotFoundMessage()
+
+        view?.let {
+            if (it.getAddress().isValidAddress()) {
+                it.showSuccessMessage()
+            } else if (it.getAddress().isNotEmpty())
+                it.showWarningMessage()
         }
     }
 
@@ -242,6 +257,7 @@ class FirstAddressSelectionPresenter @Inject constructor(
 
     companion object {
         const val MIN_ADDRESS_LETTERS = 2
+        const val DELAY_FOR_SEARCH_ADDRESS = 500L
         const val EMPTY_ADDRESS = ""
     }
 }

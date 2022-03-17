@@ -22,6 +22,7 @@ import ru.tinkoff.acquiring.sdk.utils.Money
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
+import ooo.cron.delivery.analytics.BaseAnalytics
 import ooo.cron.delivery.data.network.models.RefreshableToken
 
 /*
@@ -31,8 +32,13 @@ import ooo.cron.delivery.data.network.models.RefreshableToken
 class OrderPresenter @Inject constructor(
     private val dataManager: DataManager,
     private val mainScope: CoroutineScope,
-    private var basket: Basket?
+    private var basket: Basket?,
+    private val analytics: BaseAnalytics
 ) : BaseMvpPresenter<OrderContract.View>(), OrderContract.Presenter {
+
+    override fun onCreateMakingOrderScreen() {
+        analytics.trackOpenMakingOrderScreen(dataManager.readUserPhone().toString())
+    }
 
     override fun onCreateView() {
 
@@ -71,6 +77,11 @@ class OrderPresenter @Inject constructor(
             view?.getCardPaymentType() ->
                 onPaymentClick()
         }
+
+        analytics.trackMakeOrderClick(
+            phoneNumber = dataManager.readUserPhone().toString(),
+            paymentType = view?.getPaymentType().orEmpty()
+        )
     }
 
     fun getDeliveryCityId(): String? {

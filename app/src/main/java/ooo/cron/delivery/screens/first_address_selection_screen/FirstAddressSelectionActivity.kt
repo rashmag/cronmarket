@@ -22,12 +22,13 @@ import androidx.core.widget.doAfterTextChanged
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.City
-import ooo.cron.delivery.data.network.models.SuggestAddress
 import ooo.cron.delivery.databinding.ActivityFirstAddressSelectionBinding
 import ooo.cron.delivery.screens.BaseActivity
 import ooo.cron.delivery.screens.main_screen.MainActivity
 import javax.inject.Inject
+import ooo.cron.delivery.data.network.models.SuggestAddress
 import ooo.cron.delivery.utils.enums.ReturningToScreenEnum
+import ooo.cron.delivery.utils.extensions.uiLazy
 
 /**
  * Created by Ramazan Gadzhikadiev on 13.04.2021.
@@ -58,6 +59,12 @@ class FirstAddressSelectionActivity :
     private var updateAddressesPopupTimer: CountDownTimer? = null
 
     private var returningScreen: ReturningToScreenEnum ?= null
+
+    var citiesList = arrayListOf<String>()
+
+    private val citiesAdapter by uiLazy {
+        CitiesAdapter(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         injectDependencies()
@@ -133,6 +140,10 @@ class FirstAddressSelectionActivity :
 
     override fun getAddress(): String =
         binding.etFirstAddressSelectionAddress.text.toString()
+
+    override fun setFoundAddress(suggestAddresses: String) {
+        binding.etFirstAddressSelectionAddress.setText(suggestAddresses)
+    }
 
     override fun showAddressesPopup(suggestAddresses: List<SuggestAddress>) {
         addressesPopupWindow.setAdapter(
@@ -299,7 +310,7 @@ class FirstAddressSelectionActivity :
     }
 
     private fun configureSelectionCity() {
-        binding.spinnerFirstAddressSelectionCity.adapter = CitiesAdapter(this)
+        binding.spinnerFirstAddressSelectionCity.adapter = citiesAdapter
         binding.spinnerFirstAddressSelectionCity.onItemSelectedListener =
             createSelectionCityListener(presenter::onCitySelected, presenter::onNoCitySelected)
         binding.spinnerFirstAddressSelectionCity.isEnabled = returningScreen != ReturningToScreenEnum.FROM_ORDERING
@@ -365,17 +376,25 @@ class FirstAddressSelectionActivity :
             }
         }
 
+    override fun setFoundCity(city: String) {
+        val foundCityList = arrayListOf<String>(city)
+
+        citiesList.forEachIndexed { i, value ->
+            if (foundCityList.firstOrNull() == value) {
+                binding.spinnerFirstAddressSelectionCity.setSelection(i)
+            }
+        }
+    }
+
     private suspend fun updateCities(cities: List<City>) {
-        with(binding) {
-            (spinnerFirstAddressSelectionCity.adapter as CitiesAdapter).run {
-                clear()
-                if (presenter.checkingFirstLaunch()) {
-                    spinnerFirstAddressSelectionCity.setSelection(presenter.getCurrentCityPosition())
-                }
-                cities.forEachIndexed { index, city ->
-                    insert(city, index)
-                }
-                notifyDataSetChanged()
+        with(binding.spinnerFirstAddressSelectionCity) {
+            citiesList.clear()
+            if (presenter.checkingFirstLaunch()) {
+                setSelection(presenter.getCurrentCityPosition())
+            }
+            citiesAdapter.setData(cities)
+            cities.forEach {
+                citiesList.add(it.city)
             }
         }
     }

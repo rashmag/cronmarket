@@ -8,10 +8,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 
-
-
-
-
 class LineItemDicoration(divider: Drawable) : ItemDecoration() {
     private var mDivider: Drawable = divider
     private var mOrientation = 0

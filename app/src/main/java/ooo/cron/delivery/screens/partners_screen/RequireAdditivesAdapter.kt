@@ -82,33 +82,33 @@ class AdditivesAdapter(
     override fun getItemCount() = requireAdditivesList.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        onChecked(requireAdditivesList[checkedPosition])
-        val item = requireAdditivesList[position]
-        with(holder) {
-            costAdditiveTV.text = costAdditiveTV.context.getString(
-                R.string.partner_product_additive_space_price, item.cost
-            )
-            rbAdditives.apply {
-                text = item.name
-                isChecked = adapterPosition == checkedPosition
-                setOnClickListener {
-                    if (checkedPosition != holder.adapterPosition) {
-                        notifyItemChanged(checkedPosition)
-                        checkedPosition = holder.adapterPosition
+        holder.bind(requireAdditivesList[position])
+        holder.onCheck()
+    }
+
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val binding = ItemRequireAdditivesBinding.bind(itemView)
+
+        fun onCheck(){
+            onChecked(requireAdditivesList[checkedPosition])
+        }
+        fun bind(item:PartnerProductsRes.Additive){
+            with(binding) {
+                costAdditiveTV.text = costAdditiveTV.context.getString(
+                    ooo.cron.delivery.R.string.partner_product_additive_space_price, item.cost
+                )
+                rbAdditives.apply {
+                    text = item.name
+                    isChecked = adapterPosition == checkedPosition
+                    setOnClickListener {
+                        if (checkedPosition != adapterPosition) {
+                            notifyItemChanged(checkedPosition)
+                            checkedPosition = adapterPosition
+                        }
                     }
                 }
             }
-
         }
-    }
-
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-
-        private val binding = ItemRequireAdditivesBinding.bind(itemView)
-        val rbAdditives: RadioButton = binding.rbAdditives
-        val costAdditiveTV: TextView = binding.costAdditiveTV
-
     }
 
     interface OnRequireAdditivesListener

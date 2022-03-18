@@ -51,11 +51,13 @@ class PartnersPresenter @Inject constructor(
         if (isSuccessful) {
             partner = body()!!
             view?.showPartnerInfo(partner)
-            analytics.trackOpenPartnersCard(
-                partnerName = partner.name,
-                categoryName = dataManager.readSelectedMarketCategory().categoryName,
-                phoneNumber = dataManager.readUserPhone().toString()
-            )
+            dataManager.readSelectedMarketCategory()?.let {
+                analytics.trackOpenPartnersCard(
+                    partnerName = partner.name,
+                    categoryName = it.categoryName,
+                    phoneNumber = dataManager.readUserPhone().toString()
+                )
+            }
         } else {
             view?.showAnyErrorScreen()
         }

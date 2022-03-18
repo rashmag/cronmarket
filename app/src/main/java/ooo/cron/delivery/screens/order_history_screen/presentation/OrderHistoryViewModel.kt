@@ -29,7 +29,7 @@ class OrderHistoryViewModel @Inject constructor(
     private fun loadOrderHistory(){
         viewModelScope.launch {
             try {
-                _orderHistoryList.value = orderHistoryUseCase.invoke("Bearer ${dataManager.readToken().accessToken}")
+                _orderHistoryList.value = orderHistoryUseCase.invoke("Bearer ${dataManager.readToken()?.accessToken}")
             }catch (e: Exception){
                 _serverError.value = e.message
             }

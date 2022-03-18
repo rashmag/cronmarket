@@ -167,7 +167,9 @@ class FirstAddressSelectionPresenter @Inject constructor(
         if (isSuccessful && body().isNullOrEmpty().not()) {
             cities = body()!!
             view?.showCities(cities)
-            lastSelectedCity = dataManager.readChosenCity().city
+            dataManager.readChosenCity()?.let {
+                lastSelectedCity = it.city
+            }
             view?.removeCitiesProgress()
             view?.showStartShopping()
         } else

@@ -1,17 +1,21 @@
 package ooo.cron.delivery.screens.basket_screen
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.customview.customView
+import com.afollestad.materialdialogs.customview.getCustomView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.gson.Gson
-import kotlinx.android.synthetic.main.activity_basket.*
+import com.google.android.material.button.MaterialButton
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.Basket
@@ -20,6 +24,7 @@ import ooo.cron.delivery.databinding.FragmentBasketBinding
 import ooo.cron.delivery.screens.BaseMVVMFragment
 import ooo.cron.delivery.screens.login_screen.LoginActivity
 import ooo.cron.delivery.screens.pay_dialog_screen.OrderBottomDialog
+import ooo.cron.delivery.utils.extensions.orZero
 import ooo.cron.delivery.utils.extensions.startBottomAnimate
 import ooo.cron.delivery.utils.itemdecoration.SpaceItemDecoration
 import java.math.RoundingMode
@@ -31,6 +36,20 @@ import javax.inject.Inject
  * */
 
 class BasketFragment : BaseMVVMFragment() {
+
+    companion object {
+        const val MIN_ORDER_AMOUNT_FLAG = "min_order_amount"
+        const val EMPTY_TITLE = " "
+
+        fun newInstance(minAmount : Int): BasketFragment {
+            val bundle = Bundle().apply {
+                putInt(MIN_ORDER_AMOUNT_FLAG, minAmount)
+            }
+            return BasketFragment().apply {
+                arguments = bundle
+            }
+        }
+    }
 
     @Inject
     lateinit var binding: FragmentBasketBinding
@@ -67,7 +86,6 @@ class BasketFragment : BaseMVVMFragment() {
         adapter = null
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -83,11 +101,11 @@ class BasketFragment : BaseMVVMFragment() {
             showClearBasketDialog()
         }
         binding.btnBasketOrder.setOnClickListener {
-            baseViewModel.onMakeOrderClicked()
+            baseViewModel.onMakeOrderClicked(arguments?.getInt(MIN_ORDER_AMOUNT_FLAG).orZero())
         }
         initAdapter()
 
-        baseViewModel.basket.observe(viewLifecycleOwner, {
+        baseViewModel.basket.observe(viewLifecycleOwner) {
             basket = it.first
             isRestaurant = it.first.marketCategoryId
             updateBasket(it.second, it.first.cutleryCount)
@@ -95,20 +113,22 @@ class BasketFragment : BaseMVVMFragment() {
                 roundingMode = RoundingMode.CEILING
             }
             updateBasketAmount(formatter.format(it.first.amount))
+        }
 
-        })
-
-        baseViewModel.basketClearAccept.observe(viewLifecycleOwner, {
+        baseViewModel.basketClearAccept.observe(viewLifecycleOwner) {
             closeBasketScreen()
-        })
+        }
 
-        baseViewModel.navigationAuth.observe(viewLifecycleOwner, {
+        baseViewModel.navigationAuth.observe(viewLifecycleOwner) {
             navigateAuthorization()
-        })
+        }
 
-        baseViewModel.showingMakeOrderDialog.observe(viewLifecycleOwner, {
+        baseViewModel.showingMakeOrderDialog.observe(viewLifecycleOwner) {
             showMakeOrderBottomDialog()
-        })
+        }
+        baseViewModel.showingOrderFromDialog.observe(viewLifecycleOwner) {
+            arguments?.getInt(MIN_ORDER_AMOUNT_FLAG)?.let { it -> showOrderFromDialog(it) }
+        }
     }
 
     private fun initAdapter() {
@@ -164,7 +184,19 @@ class BasketFragment : BaseMVVMFragment() {
             parentFragmentManager,
             bottomDialog::class.simpleName
         )
+    }
 
+    fun showOrderFromDialog(orderAmount: Int) {
+        AlertDialog.Builder(requireContext())
+            .setTitle(EMPTY_TITLE)
+            .setIcon(R.mipmap.ic_launcher)
+            .setMessage(getString(R.string.partners_activity_dialog_min_price_title, orderAmount.toString()))
+            .setCancelable(false)
+            .setPositiveButton(R.string.partners_activity_dialog_btn_ok_title) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .create()
+            .show()
     }
 
     private fun navigateAuthorization() {

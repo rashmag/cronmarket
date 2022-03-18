@@ -34,7 +34,7 @@ class OrderHistoryDetailViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 _orderHistoryDetail.value = loadOrderHistoryDetailUseCase.invoke(
-                    token = "Bearer ${dataManager.readToken().accessToken}",
+                    token = "Bearer ${dataManager.readToken()?.accessToken}",
                     orderId = orderId
                 )
 

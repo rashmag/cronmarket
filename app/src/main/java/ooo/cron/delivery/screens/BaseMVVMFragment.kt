@@ -17,12 +17,12 @@ abstract class BaseMVVMFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        baseViewModel.connectionErrorScreen.observe(viewLifecycleOwner, {
+        baseViewModel.connectionErrorScreen.observe(viewLifecycleOwner) {
             showConnectionErrorScreen()
-        })
-        baseViewModel.anyErrorScreen.observe(viewLifecycleOwner, {
+        }
+        baseViewModel.anyErrorScreen.observe(viewLifecycleOwner) {
             showAnyErrorScreen()
-        })
+        }
     }
 
     fun showAnyErrorScreen() {

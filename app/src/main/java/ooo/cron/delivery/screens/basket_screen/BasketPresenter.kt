@@ -186,9 +186,6 @@ class BasketPresenter @Inject constructor(
         if (dataManager.readToken()?.refreshToken?.isEmpty() == true) {
             view?.navigateAuthorization()
             return
-        } //todo нет обработки ошибки
-        dataManager.writeBasket(basket!!) //todo убрать !!
-        view?.showMakeOrderBottomDialog(basket!!) //todo убрать !!
         }
 
         if((basket?.amount ?: EMPTY_BASKET) < view?.getMinOrderAmount().orZero()){
@@ -197,7 +194,7 @@ class BasketPresenter @Inject constructor(
         }
 
         dataManager.writeBasket(basket!!)
-        view?.navigateMakeOrderScreen(basket!!)
+        //view?.navigateMakeOrderScreen(basket!!)
     }
 
     private fun deserializeDishes() =

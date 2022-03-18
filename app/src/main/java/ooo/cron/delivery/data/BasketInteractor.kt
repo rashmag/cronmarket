@@ -52,4 +52,7 @@ class BasketInteractor @Inject constructor(
 
     fun getBasketEditorReq(basket: Basket, addingProduct: BasketDish): BasketEditorReq =
         restRepository.getBasketEditorReq(basket, addingProduct)
+
+    fun getUserPhone(): String? =
+        prefsRepository.readUserPhone()
 }

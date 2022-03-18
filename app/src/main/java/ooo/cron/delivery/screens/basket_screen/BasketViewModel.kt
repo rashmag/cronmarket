@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
+import ooo.cron.delivery.analytics.BaseAnalytics
 import ooo.cron.delivery.data.BasketInteractor
 import ooo.cron.delivery.data.network.models.Basket
 import ooo.cron.delivery.data.network.models.BasketDish
@@ -20,7 +21,8 @@ import javax.inject.Inject
  * */
 
 class BasketViewModel @Inject constructor(
-    private val interactor: BasketInteractor
+    private val interactor: BasketInteractor,
+    private val analytics: BaseAnalytics
 ) : BaseViewModel() {
     private val handler = CoroutineExceptionHandler { context, exception ->
         Log.e("exception", exception.toString())
@@ -30,13 +32,18 @@ class BasketViewModel @Inject constructor(
     val basketClearAccept: SingleLiveEvent<Unit> = SingleLiveEvent()
     val navigationAuth: SingleLiveEvent<Unit> = SingleLiveEvent()
     val showingMakeOrderDialog: SingleLiveEvent<Unit> = SingleLiveEvent()
+    val showingOrderFromDialog: SingleLiveEvent<Unit> = SingleLiveEvent()
 
 
     fun onStart() {
         viewModelScope.launch(handler) {
             val basket = interactor.getBasketId()?.let { interactor.getBasket(it) }
             basket?.process { mutableBasket.postValue(Pair(it, deserializeDishes(it))) }
-
+            analytics.trackOpenBasketScreen(
+                quantity = basket?.process { deserializeDishes(it) } as Int,
+                phoneNumber = interactor.getUserPhone().toString(),
+                amount = basket.process { it } as Int
+            )
         }
     }
 
@@ -86,14 +93,20 @@ class BasketViewModel @Inject constructor(
         }
     }
 
-    fun onMakeOrderClicked() {
+    fun onMakeOrderClicked(orderAmount: Int) {
         if (interactor.getToken()?.refreshToken == null)
             navigationAuth.call()
+
+        viewModelScope.launch(handler) {
+            val basket = interactor.getBasketId()?.let { interactor.getBasket(it) }
+            if (basket?.process { (it.amount ?: 0.0) < orderAmount} as Boolean) {
+                showingOrderFromDialog.call()
+            }
+        }
         mutableBasket.value?.let {
             interactor.writeBasket(it.first)
         }
         showingMakeOrderDialog.call()
-
     }
 
     private fun prepareEditor(dish: BasketDish, extraQuantity: Int): BasketEditorReq? {

@@ -118,13 +118,11 @@ class SPrefsService @Inject constructor(
         sharedPreferences.edit().putString(USER_BASKET, EMPTY_UUID)
             .commit()
 
-    //можно имправить жсончики
     fun writeToken(token: RefreshableToken) =
         sharedPreferences.edit()
             .putString(TOKEN, Gson().toJson(token).toString())
             .apply()
 
-    //можно имправить жсончики
     fun readToken(): RefreshableToken? {
         val tokenPreviousAccess = sharedPreferences.getString(ACCESS_TOKEN, "")
         val tokenPreviousRefresh = sharedPreferences.getString(REFRESH_TOKEN, "")
@@ -141,7 +139,6 @@ class SPrefsService @Inject constructor(
         } else null
     }
 
-    //можно имправить жсончики
     fun removeToken() =
         sharedPreferences.edit()
             .remove(TOKEN)
@@ -184,6 +181,8 @@ class SPrefsService @Inject constructor(
         const val MARKET_CATEGORY_ID = "market_category_id"
         const val MARKET_CATEGORY_NAME = "market_category_name"
         const val MARKET_CATEGORY_IMAGE = "market_category_image"
+
+        const val MARKET_CATEGORY = "market_category"
 
         const val PARTNER_ID = "PARTNER_ID"
     }

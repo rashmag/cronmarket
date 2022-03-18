@@ -4,13 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
 import ooo.cron.delivery.databinding.FragmentPaymentStatusBinding
-import ooo.cron.delivery.screens.basket_screen.BasketActivity
-import ooo.cron.delivery.screens.login_screen.LoginActivity
 import ooo.cron.delivery.screens.main_screen.MainActivity
 import javax.inject.Inject
 

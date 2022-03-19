@@ -1,13 +1,10 @@
-package ooo.cron.delivery.screens.partners_screen
+package ooo.cron.delivery.screens.partners_screen.bottom_sheet_dialog
 
-import android.graphics.Color
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RadioButton
 import androidx.recyclerview.widget.RecyclerView
-import com.github.fajaragungpramana.sectionrecyclerview.SectionRecyclerViewAdapter
-import com.github.fajaragungpramana.sectionrecyclerview.SectionRecyclerViewHolder
 import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.PartnerProductsRes
 import ooo.cron.delivery.data.network.models.RequireAdditiveModel
@@ -15,11 +12,12 @@ import ooo.cron.delivery.databinding.ItemRequireAdditivesBinding
 import android.text.SpannableString
 
 import android.text.Spannable
+import android.text.Spanned
 import android.text.style.ForegroundColorSpan
-import android.util.Log
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import ooo.cron.delivery.utils.itemdecoration.LineItemDicoration
+import ooo.cron.delivery.utils.additive_section_recycler_view.AdapterAdditiveSectionRecyclerView
+import ooo.cron.delivery.utils.additive_section_recycler_view.HolderAdditiveSectionRecyclerView
 
 
 /*
@@ -31,8 +29,7 @@ import ooo.cron.delivery.utils.itemdecoration.LineItemDicoration
 class RequireAdditivesAdapter(
     private val requireAdditivesList: ArrayList<RequireAdditiveModel>,
     private val listener: AdditivesAdapter.OnRequireAdditivesListener
-) : SectionRecyclerViewAdapter<RequireAdditivesAdapter.ViewHolder, RequireAdditiveModel>(
-    requireAdditivesList
+) : AdapterAdditiveSectionRecyclerView<RequireAdditivesAdapter.ViewHolderSectionRecyclerViewHolderAdditiveSectionRecyclerView, RequireAdditiveModel>(
 ) {
 
     private val checkedAdditives = mutableMapOf<Int, PartnerProductsRes.Additive>()
@@ -40,9 +37,9 @@ class RequireAdditivesAdapter(
     fun getCheckedAdditives() =
         checkedAdditives.values.toList()
 
-    override fun viewHolder(view: View) = ViewHolder(view)
+    override fun viewHolder(view: View) = ViewHolderSectionRecyclerViewHolderAdditiveSectionRecyclerView(view)
 
-    inner class ViewHolder(view: View) : SectionRecyclerViewHolder(view) {
+    inner class ViewHolderSectionRecyclerViewHolderAdditiveSectionRecyclerView(view: View) : HolderAdditiveSectionRecyclerView(view) {
 
         override fun bindSectionListAdapter(recyclerView: RecyclerView, position: Int) {
             recyclerView.adapter =
@@ -60,6 +57,11 @@ class RequireAdditivesAdapter(
         }
 
     }
+
+    override fun getSectionList(): ArrayList<RequireAdditiveModel> {
+        return requireAdditivesList
+    }
+
 
 }
 
@@ -94,11 +96,12 @@ class AdditivesAdapter(
         }
         fun bind(item:PartnerProductsRes.Additive){
             with(binding) {
-                costAdditiveTV.text = costAdditiveTV.context.getString(
-                    ooo.cron.delivery.R.string.partner_product_additive_space_price, item.cost
+                val context = rbAdditives.context
+                val nameAndPrice = item.name + context.getString(
+                    R.string.partner_product_additive_space_price, item.cost
                 )
                 rbAdditives.apply {
-                    text = item.name
+                    text = setAnotherColorForPrice(nameAndPrice,context, item.name)
                     isChecked = adapterPosition == checkedPosition
                     setOnClickListener {
                         if (checkedPosition != adapterPosition) {
@@ -108,6 +111,16 @@ class AdditivesAdapter(
                     }
                 }
             }
+        }
+        private fun setAnotherColorForPrice(nameAndPrice:String,
+                                            context: Context,
+                                            name:String):Spannable {
+            val nameAdditive = SpannableString(nameAndPrice)
+            nameAdditive.setSpan(
+                ForegroundColorSpan(ContextCompat.getColor(context, R.color.priceAdditive)), name.length,
+                nameAndPrice.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+            return nameAdditive
         }
     }
 

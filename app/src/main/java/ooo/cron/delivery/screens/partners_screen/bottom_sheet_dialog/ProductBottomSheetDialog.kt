@@ -1,4 +1,4 @@
-package ooo.cron.delivery.utils
+package ooo.cron.delivery.screens.partners_screen.bottom_sheet_dialog
 
 import android.content.Context
 import android.os.Bundle
@@ -20,10 +20,6 @@ import ooo.cron.delivery.data.network.models.BasketDishAdditive
 import ooo.cron.delivery.data.network.models.PartnerProductsRes
 import ooo.cron.delivery.data.network.models.RequireAdditiveModel
 import ooo.cron.delivery.databinding.DialogProductInfoBinding
-import ooo.cron.delivery.screens.partners_screen.AdditiveRecyclerAdapter
-import ooo.cron.delivery.screens.partners_screen.AdditivesAdapter
-import ooo.cron.delivery.screens.partners_screen.RequireAdditivesAdapter
-import androidx.recyclerview.widget.DividerItemDecoration
 import ooo.cron.delivery.utils.itemdecoration.LineItemDicoration
 
 

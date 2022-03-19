@@ -1,5 +1,6 @@
 package ooo.cron.delivery.screens.splash_screen
 
+import android.util.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import ooo.cron.delivery.data.DataManager
@@ -48,7 +49,7 @@ class SplashScreenPresenter @Inject constructor(
     }
 
     companion object {
-        const val STABLE_API_VERSION = "6"
+        const val STABLE_API_VERSION = "7"
     }
 
 }

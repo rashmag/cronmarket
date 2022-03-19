@@ -1,5 +1,6 @@
 package ooo.cron.delivery.utils.section_recycler_view
 
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
@@ -12,6 +13,7 @@ abstract class SectionRecyclerViewHolder(private val mView: View) : RecyclerView
     private val mSectionList by lazy { mView.findViewById<RecyclerView>(R.id.rv_section_list) }
 
     fun bindSectionTitle(title: String, position: Int) {
+        Log.d("test2","title = " + title)
         mSectionTitle.text = title
 
         bindSectionListAdapter(mSectionList.also {

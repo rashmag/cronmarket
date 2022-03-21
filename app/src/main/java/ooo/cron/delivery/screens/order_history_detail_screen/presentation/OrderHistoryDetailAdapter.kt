@@ -50,11 +50,11 @@ class OrderHistoryDetailAdapter : ListAdapter<OrderHistoryDetailDish, OrderHisto
         }
     }
     fun addAdditivePrice(model: OrderHistoryDetailDish):String{
-        val price = model.cost * model.quantity
-        val sum = model.dishAdditives.sumOf {
-            price + it.cost
+        var price = model.cost * model.quantity
+        model.dishAdditives.forEach {
+            price += it.cost
         }
-        return sum.toString()
+        return price.toString()
     }
 
     companion object {

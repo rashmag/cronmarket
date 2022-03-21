@@ -204,18 +204,23 @@
 10.2. Телефон: 8 965 417 39 04, Email: krosstom@yandex.ru</string>
     <string name="basket_title">Корзина</string>
     <string name="common_navigate_on_screen_before">Перейти на предыдущий экран</string>
+
     <string name="basket_clear">Очистить корзину</string>
     <string name="basket_order_title">Ваш заказ</string>
     <string name="basket_portions">Количество \nприборов</string>
     <string name="basket_counter_minus">Уменьшить количество</string>
     <string name="basket_counter_plus">Увеличить количество</string>
     <string name="basket_item_image_description">Изображение блюда</string>
-    <string name="main_continue_last_session">Продолжить покупки</string>
+
     <string name="partner_basket">В корзине %1$d товаров \nна сумму:</string>
     <string name="partner_basket_price">%1$s₽</string>
     <string name="partner_product_image">Изображение продукта</string>
     <string name="partner_product_decrease_quantity">Уменьшить количество на 1</string>
     <string name="partner_product_increase_product">Увеличить количество на 1</string>
+    <string name="partner_product_additive_name">+ %s</string>
+    <string name="partner_product_additive_price">+%d₽</string>
+
+    <string name="main_continue_last_session">Продолжить покупки</string>
     <string name="about_service_advantages_title">Наши основные преимущества</string>
     <string name="about_service_other_products_title">Еда, продукты и любые товары</string>
     <string name="about_service_other_products_description">В нашем приложение вы можете заказать еду уже сейчас. За это лето мы добавим продукты, книги, аптеки и косметику и т.д. Также будем рады если вы сообщите нам что бы вы хотели видеть у нас в ассортименте.</string>

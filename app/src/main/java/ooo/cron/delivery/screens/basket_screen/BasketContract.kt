@@ -10,7 +10,7 @@ import ooo.cron.delivery.screens.base_mvp.MvpView
  */
 interface BasketContract {
     interface View : MvpView {
-        fun updateBasket(basket: List<BasketDish>, partnersQuantity: Int)
+        fun updateBasket(basket: List<BasketDish>, personsQuantity: Int)
 
         fun showAnyErrorScreen()
         fun showConnectionErrorScreen()

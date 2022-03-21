@@ -1,13 +1,12 @@
 package ooo.cron.delivery.screens.basket_screen
 
-import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.Basket
 import ooo.cron.delivery.databinding.ActivityBasketBinding
-import ooo.cron.delivery.screens.BaseActivity
+import ooo.cron.delivery.screens.base.BaseActivity
 import ooo.cron.delivery.screens.pay_dialog_screen.PayClickCallback
 import ooo.cron.delivery.screens.payment_status_screen.PaymentStatusFragment
 import javax.inject.Inject
@@ -21,6 +20,7 @@ class BasketActivity : BaseActivity(), PayClickCallback {
     @Inject
     protected lateinit var binding: ActivityBasketBinding
     private var orderAmount = 0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val basketModel = intent.getParcelableExtra<Basket>(BASKET_MODEL)
@@ -55,8 +55,6 @@ class BasketActivity : BaseActivity(), PayClickCallback {
         const val PARTNER_CLOSE_MINUTES = "PARTNER_CLOSE_MINUTES"
         const val MIN_AMOUNT_ORDER = "MIN_AMOUNT_ORDER"
         const val BASKET_MODEL = "BASKET_MODEL"
-        const val EMPTY_TITLE = " "
-
         const val MARGIN_SPACING_VALUE_34 = 34
     }
 }

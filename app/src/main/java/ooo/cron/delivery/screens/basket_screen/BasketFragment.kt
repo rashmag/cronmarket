@@ -6,26 +6,29 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.afollestad.materialdialogs.MaterialDialog
-import com.afollestad.materialdialogs.customview.customView
-import com.afollestad.materialdialogs.customview.getCustomView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.android.material.button.MaterialButton
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.Basket
 import ooo.cron.delivery.data.network.models.BasketDish
 import ooo.cron.delivery.databinding.FragmentBasketBinding
 import ooo.cron.delivery.screens.BaseMVVMFragment
+import ooo.cron.delivery.screens.base.adapters.AdapterHeader
+import ooo.cron.delivery.screens.base.adapters.AdapterSpace
+import ooo.cron.delivery.screens.base.adapters.SpacingValue
+import ooo.cron.delivery.screens.basket_screen.BasketActivity.Companion.MARGIN_SPACING_VALUE_34
+import ooo.cron.delivery.screens.basket_screen.adapters.AdapterBasket
+import ooo.cron.delivery.screens.basket_screen.adapters.AdapterTableware
 import ooo.cron.delivery.screens.login_screen.LoginActivity
 import ooo.cron.delivery.screens.pay_dialog_screen.OrderBottomDialog
 import ooo.cron.delivery.utils.extensions.orZero
 import ooo.cron.delivery.utils.extensions.startBottomAnimate
+import ooo.cron.delivery.utils.extensions.uiLazy
 import ooo.cron.delivery.utils.itemdecoration.SpaceItemDecoration
 import java.math.RoundingMode
 import java.text.DecimalFormat
@@ -40,6 +43,7 @@ class BasketFragment : BaseMVVMFragment() {
     companion object {
         const val MIN_ORDER_AMOUNT_FLAG = "min_order_amount"
         const val EMPTY_TITLE = " "
+        const val RESTAURANT = 1
 
         fun newInstance(minAmount : Int): BasketFragment {
             val bundle = Bundle().apply {
@@ -60,8 +64,30 @@ class BasketFragment : BaseMVVMFragment() {
     override val baseViewModel: BasketViewModel by viewModels {
         factory.create()
     }
+
+    private val concatAdapter: ConcatAdapter by uiLazy {
+        ConcatAdapter()
+    }
+
+    private val adapter by uiLazy {
+        AdapterBasket(
+            plusClick = { dish, extraQuantity ->
+                baseViewModel.onPlusClicked(dish, extraQuantity)
+            },
+            minusClick = { dish, unwantedQuantity ->
+                baseViewModel.onMinusClicked(dish, unwantedQuantity)
+            }
+        )
+    }
+
+    private val adapterTableware by uiLazy {
+        AdapterTableware(
+            onQuantityEditClick = { quantity ->
+                baseViewModel.onPersonsQuantityEdited(quantity)
+            }
+        )
+    }
     private var basket: Basket? = null
-    private var adapter: BasketAdapter? = null
     private var isRestaurant: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,7 +109,6 @@ class BasketFragment : BaseMVVMFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        adapter = null
     }
 
     override fun onCreateView(
@@ -129,39 +154,45 @@ class BasketFragment : BaseMVVMFragment() {
         baseViewModel.showingOrderFromDialog.observe(viewLifecycleOwner) {
             arguments?.getInt(MIN_ORDER_AMOUNT_FLAG)?.let { it -> showOrderFromDialog(it) }
         }
+        baseViewModel.marketCategoryId.observe(viewLifecycleOwner) {
+            if (it == RESTAURANT) {
+                with(concatAdapter) {
+                    addAdapter(adapterTableware)
+                    addAdapter(AdapterSpace(space = SpacingValue.SPACE_16))
+                }
+            }
+        }
     }
 
     private fun initAdapter() {
+        with(concatAdapter) {
+            addAdapter(AdapterSpace(space = SpacingValue.SPACE_4))
+            addAdapter(AdapterHeader(title = getString(R.string.basket_order_title)))
+            addAdapter(AdapterSpace(space = SpacingValue.SPACE_4))
+            addAdapter(adapter)
+            addAdapter(AdapterSpace(space = SpacingValue.SPACE_16))
+            baseViewModel.onAdapterInited()
+        }
+
         with(binding) {
-            rvBasketContent.layoutManager =
-                LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
             rvBasketContent.addItemDecoration(
                 SpaceItemDecoration(
-                    BasketActivity.MARGIN_SPACING_VALUE_34
+                    MARGIN_SPACING_VALUE_34
                 )
             )
-            adapter = BasketAdapter()
-            rvBasketContent.adapter = adapter
+            rvBasketContent.adapter = concatAdapter
 
             val itemTouchHelper = ItemTouchHelper(SwipeHelper(requireContext()) {
-                if (it is BasketAdapter.ProductViewHolder)
+                if (it is AdapterBasket.ProductViewHolder)
                     baseViewModel.onItemRemoveClicked(it.product)
             })
             itemTouchHelper.attachToRecyclerView(rvBasketContent)
         }
     }
 
-    private fun updateBasket(basket: List<BasketDish>, partnersQuantity: Int) {
-        isRestaurant?.let {
-            adapter?.setProducts(
-                basket,
-                partnersQuantity,
-                it,
-                { dish, extraQuantity -> baseViewModel.onPlusClicked(dish, extraQuantity) },
-                { dish, unwantedQuantity -> baseViewModel.onMinusClicked(dish, unwantedQuantity) },
-                { quantity ->  baseViewModel.onPersonsQuantityEdited(quantity) }
-            )
-        }
+    private fun updateBasket(basket: List<BasketDish>, personsQuantity: Int) {
+        adapter.submitList(basket)
+        adapterTableware.updateQuantity(personsQuantity)
     }
 
     //Todo сделать материал диалог

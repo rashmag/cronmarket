@@ -8,7 +8,7 @@ import ooo.cron.delivery.App
 import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.Basket
 import ooo.cron.delivery.databinding.FragmentOrderCostBinding
-import ooo.cron.delivery.screens.BaseFragment
+import ooo.cron.delivery.screens.base.BaseFragment
 import javax.inject.Inject
 
 /*

@@ -12,7 +12,7 @@ import ooo.cron.delivery.App
 import ooo.cron.delivery.data.network.models.Partner
 import ooo.cron.delivery.data.network.models.TagsResult
 import ooo.cron.delivery.databinding.FragmentMarketCategoryBinding
-import ooo.cron.delivery.screens.BaseFragment
+import ooo.cron.delivery.screens.base.BaseFragment
 import ooo.cron.delivery.screens.partners_screen.PartnersActivity
 import java.lang.Exception
 import java.util.concurrent.Executors

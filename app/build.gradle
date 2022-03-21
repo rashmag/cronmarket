@@ -4,13 +4,13 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     buildToolsVersion "30.0.0"
 
     defaultConfig {
         applicationId "ooo.cron.delivery"
         minSdkVersion 21
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode 39
         versionName "4.1.5"
 
@@ -19,6 +19,16 @@ android {
         packagingOptions {
             exclude 'META-INF/core.kotlin_module'
         }
+    }
+
+    configurations.all {
+        resolutionStrategy {
+            force 'androidx.core:core-ktx:1.6.0'
+        }
+    }
+
+    kapt {
+        correctErrorTypes true
     }
 
     compileOptions {
@@ -62,7 +72,7 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.6.0'
-    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.paging:paging-runtime-ktx:2.1.2'
     implementation 'androidx.fragment:fragment-ktx:1.4.1'
@@ -127,7 +137,7 @@ dependencies {
     implementation "com.github.fajaragungpramana:section-recyclerview:$section_recycler_view"
 
     //Tinkoff Acquiring
-    def tinkoff_acquiring_version = '2.5.4'
+    def tinkoff_acquiring_version = '2.5.5'
     implementation "ru.tinkoff.acquiring:ui:$tinkoff_acquiring_version"
 
     //Android Image Slider

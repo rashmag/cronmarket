@@ -5,12 +5,11 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import androidx.core.content.ContextCompat
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.internal.button.DialogActionButton
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
-import ooo.cron.delivery.screens.BaseActivity
+import ooo.cron.delivery.screens.base.BaseActivity
 import ooo.cron.delivery.screens.first_address_selection_screen.FirstAddressSelectionActivity
 import ooo.cron.delivery.screens.main_screen.MainActivity
 import javax.inject.Inject

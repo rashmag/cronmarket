@@ -33,7 +33,7 @@ class BasketViewModel @Inject constructor(
     val navigationAuth: SingleLiveEvent<Unit> = SingleLiveEvent()
     val showingMakeOrderDialog: SingleLiveEvent<Unit> = SingleLiveEvent()
     val showingOrderFromDialog: SingleLiveEvent<Unit> = SingleLiveEvent()
-
+    val marketCategoryId: SingleLiveEvent<Int> = SingleLiveEvent()
 
     fun onStart() {
         viewModelScope.launch(handler) {
@@ -66,7 +66,7 @@ class BasketViewModel @Inject constructor(
     fun onPersonsQuantityEdited(quantity: Int) {
         viewModelScope.launch(handler) {
             val basketPersonsReq = mutableBasket.value?.let {
-                interactor.getBasketPersonReq(it.first,quantity)
+                interactor.getBasketPersonReq(it.first, quantity)
             }
             basketPersonsReq?.let { interactor.editPersonsQuantity(it) }
                 ?.process { mutableBasket.postValue(Pair(it, deserializeDishes(it))) }
@@ -99,7 +99,7 @@ class BasketViewModel @Inject constructor(
 
         viewModelScope.launch(handler) {
             val basket = interactor.getBasketId()?.let { interactor.getBasket(it) }
-            if (basket?.process { (it.amount ?: 0.0) < orderAmount} as Boolean) {
+            if (basket?.process { (it.amount ?: 0.0) < orderAmount } as Boolean) {
                 showingOrderFromDialog.call()
             }
         }
@@ -107,6 +107,14 @@ class BasketViewModel @Inject constructor(
             interactor.writeBasket(it.first)
         }
         showingMakeOrderDialog.call()
+    }
+
+    fun onAdapterInited() {
+        viewModelScope.launch {
+            interactor.getBasketId()?.let {
+                interactor.getBasket(it)
+            }?.process { marketCategoryId.postValue(it.marketCategoryId) }
+        }
     }
 
     private fun prepareEditor(dish: BasketDish, extraQuantity: Int): BasketEditorReq? {

@@ -13,7 +13,7 @@ import com.redmadrobot.inputmask.MaskedTextChangedListener
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
 import ooo.cron.delivery.databinding.FragmentDeliveryDetailsBinding
-import ooo.cron.delivery.screens.BaseFragment
+import ooo.cron.delivery.screens.base.BaseFragment
 import ooo.cron.delivery.screens.first_address_selection_screen.FirstAddressSelectionActivity
 import ooo.cron.delivery.screens.ordering_screen.OrderContract
 import ooo.cron.delivery.screens.ordering_screen.OrderingActivity

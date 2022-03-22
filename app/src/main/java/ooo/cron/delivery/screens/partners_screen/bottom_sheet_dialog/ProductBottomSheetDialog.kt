@@ -140,13 +140,21 @@ class ProductBottomSheetDialog(
             }
 
             btnAdd.setOnClickListener {
-                val additives = if (rvRequireAdditives.adapter is RequireAdditivesAdapter)
-                    (rvRequireAdditives.adapter as RequireAdditivesAdapter).getCheckedAdditives() +
-                            if (rvAdditives.adapter is AdditiveRecyclerAdapter)
-                                (rvAdditives.adapter as AdditiveRecyclerAdapter)
-                                    .getCheckedAdditives()
-                            else listOf()
-                else listOf()
+                val adapterRequireAdditives = rvRequireAdditives.adapter
+                val adapterAdditives = rvAdditives.adapter
+                val additives = when {
+                    adapterRequireAdditives is RequireAdditivesAdapter -> {
+                        if (adapterAdditives is AdditiveRecyclerAdapter) {
+                            adapterRequireAdditives.getCheckedAdditives() + adapterAdditives.getCheckedAdditives()
+                        } else {
+                            adapterRequireAdditives.getCheckedAdditives()
+                        }
+                    }
+                    adapterAdditives is AdditiveRecyclerAdapter -> {
+                        adapterAdditives.getCheckedAdditives()
+                    }
+                    else -> emptyList()
+                }
 
                 if (quantity >= product.inBasketQuantity) {
                     var qua = quantity - product.inBasketQuantity

@@ -182,7 +182,6 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         return partnerId
     }
 
-    @SuppressLint("StringFormatMatches")
     override fun showPartnerInfo(partnerInfo: PartnersInfoRes) {
         presenter.getPartnerCategory()
         with(partnerInfo) {
@@ -206,16 +205,23 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
                         deliveryTypeTitle.setDrawableStart(R.drawable.ic_partner_delivers)
                     }
 
+                    val formatPrice = getString(R.string.price)
                     if (deliveryFrames.deliveryCosts.first().deliveryCost == deliveryFrames.deliveryCosts.last().deliveryCost) {
                         deliveryTypeTitle.text = getString(
                             R.string.partners_screen_delivery_type_title_first,
-                            deliveryFrames.deliveryCosts.last().deliveryCost
+                            String.format(
+                                formatPrice,
+                                deliveryFrames.deliveryCosts.last().deliveryCost
+                            )
                         )
                     } else {
                         deliveryTypeTitle.text = getString(
                             R.string.partners_screen_delivery_type_title,
-                            deliveryFrames.deliveryCosts.last().deliveryCost,
-                            deliveryFrames.deliveryCosts.first().deliveryCost,
+                                deliveryFrames.deliveryCosts.last().deliveryCost,
+                            String.format(
+                                formatPrice,
+                                deliveryFrames.deliveryCosts.first().deliveryCost
+                            ),
                         )
                     }
                 }

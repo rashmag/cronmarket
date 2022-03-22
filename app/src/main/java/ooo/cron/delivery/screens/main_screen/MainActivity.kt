@@ -429,10 +429,13 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
     override fun showPartnerName(partnerName: String?) {
-        binding.tvBasketTitle.text = if (partnerName.isNullOrEmpty().not()) {
-            partnerName
-        } else {
-            getString(R.string.basket_title)
+        with(binding.tvBasketTitle) {
+            if (partnerName.isNullOrEmpty()) {
+                text = getString(R.string.basket_title)
+            } else {
+                text = partnerName
+                setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
+            }
         }
     }
 

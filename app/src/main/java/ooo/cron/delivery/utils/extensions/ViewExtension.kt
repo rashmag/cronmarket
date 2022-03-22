@@ -97,3 +97,12 @@ fun ImageView.setDoneIndicator(){
 fun ProgressBar.setDoneColor(){
     progressTintList = ColorStateList.valueOf(Color.parseColor("#00875A"))
 }
+
+fun TextView.setDrawableStart(icon: Int){
+    setCompoundDrawablesWithIntrinsicBounds(
+        icon,
+        0,
+        0,
+        0
+    )
+}

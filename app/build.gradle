@@ -11,8 +11,8 @@ android {
         applicationId "ooo.cron.delivery"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 36
-        versionName "4.1.2"
+        versionCode 39
+        versionName "4.1.5"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -46,7 +46,8 @@ android {
             minifyEnabled false
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "BASE_URL", "\"https://api.crondostavka.ru/\""
+            buildConfigField "String", "BASE_URL", "\"https://api.crondostavka.ru\""
+//            buildConfigField "String", "BASE_URL", "\"https://staging-api.crondostav.ru/\""
         }
     }
 }

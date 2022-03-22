@@ -36,7 +36,7 @@ import ooo.cron.delivery.screens.base.BaseActivity
 import ooo.cron.delivery.screens.basket_screen.BasketActivity
 import ooo.cron.delivery.screens.first_address_selection_screen.FirstAddressSelectionActivity
 import ooo.cron.delivery.utils.CustomLayoutManager
-import ooo.cron.delivery.utils.ProductBottomSheetDialog
+import ooo.cron.delivery.screens.partners_screen.bottom_sheet_dialog.ProductBottomSheetDialog
 import ooo.cron.delivery.utils.enums.ReturningToScreenEnum
 import ooo.cron.delivery.utils.extensions.startBottomAnimate
 

@@ -219,6 +219,7 @@
     <string name="partner_product_increase_product">Увеличить количество на 1</string>
     <string name="partner_product_additive_name">+ %s</string>
     <string name="partner_product_additive_price">+%d₽</string>
+    <string name="partner_product_additive_space_price">&#160;+%d₽</string>
 
     <string name="main_continue_last_session">Продолжить покупки</string>
     <string name="about_service_advantages_title">Наши основные преимущества</string>

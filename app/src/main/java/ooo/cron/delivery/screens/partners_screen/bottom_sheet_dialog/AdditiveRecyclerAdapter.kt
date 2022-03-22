@@ -1,8 +1,15 @@
-package ooo.cron.delivery.screens.partners_screen
+package ooo.cron.delivery.screens.partners_screen.bottom_sheet_dialog
 
+import android.content.Context
+import android.graphics.Color
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.PartnerProductsRes
@@ -26,7 +33,7 @@ class AdditiveRecyclerAdapter(
         )
     }
 
-    fun setListener(listener:onDopProductClickListener){
+    fun setListener(listener: onDopProductClickListener) {
         this.mListener = listener
     }
 
@@ -52,12 +59,13 @@ class AdditiveRecyclerAdapter(
             position: Int
         ) {
 
-            var additiveText = additive.name
-            if (additive.cost != 0)
-                additiveText += " +${additive.cost}₽"
-
-            binding.chkAdditive.text = additiveText
-
+            with(binding) {
+                val context = chkAdditive.context
+                val nameAndPrice = additive.name + context.getString(
+                    R.string.partner_product_additive_space_price, additive.cost
+                )
+                chkAdditive.text = setAnotherColorForPrice(nameAndPrice,context, additive.name)
+            }
             if (binding.chkAdditive.isChecked) {
                 checkedAdditives[position] = additive
             } else {
@@ -74,5 +82,17 @@ class AdditiveRecyclerAdapter(
                 }
             }
         }
+        private fun setAnotherColorForPrice(nameAndPrice:String,
+                                            context: Context,
+                                            name:String):Spannable {
+            val nameAdditive = SpannableString(nameAndPrice)
+            nameAdditive.setSpan(
+                ForegroundColorSpan(ContextCompat.getColor(context, R.color.priceAdditive)), name.length,
+                nameAndPrice.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+            return nameAdditive
+        }
     }
+
+
 }

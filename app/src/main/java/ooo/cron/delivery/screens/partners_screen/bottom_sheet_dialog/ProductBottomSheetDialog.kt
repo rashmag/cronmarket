@@ -1,4 +1,4 @@
-package ooo.cron.delivery.utils
+package ooo.cron.delivery.screens.partners_screen.bottom_sheet_dialog
 
 import android.content.Context
 import android.os.Bundle
@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -19,9 +20,7 @@ import ooo.cron.delivery.data.network.models.BasketDishAdditive
 import ooo.cron.delivery.data.network.models.PartnerProductsRes
 import ooo.cron.delivery.data.network.models.RequireAdditiveModel
 import ooo.cron.delivery.databinding.DialogProductInfoBinding
-import ooo.cron.delivery.screens.partners_screen.AdditiveRecyclerAdapter
-import ooo.cron.delivery.screens.partners_screen.AdditivesAdapter
-import ooo.cron.delivery.screens.partners_screen.RequireAdditivesAdapter
+import ooo.cron.delivery.utils.itemdecoration.LineItemDicoration
 
 
 /*
@@ -131,6 +130,7 @@ class ProductBottomSheetDialog(
             if (product.additives.isNotEmpty()) {
                 rvAdditives.apply {
                     layoutManager = LinearLayoutManager(context)
+                    addItemDecoration(LineItemDicoration(ContextCompat.getDrawable(mContext, R.drawable.line_gray)!!))
                 }
                 val additiveRecyclerAdapter = AdditiveRecyclerAdapter(product.additives)
                 additiveRecyclerAdapter.setListener(this@ProductBottomSheetDialog)

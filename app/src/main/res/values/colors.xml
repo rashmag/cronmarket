@@ -5,9 +5,11 @@
     <color name="colorAccent">@color/brand</color>
 
     <color name="background">#E5E5E5</color>
-
-    <color name="unBrand">#ADB5BD</color>
+    <color name="priceAdditive">#76767A</color>
+    <color name="titleAdditive">#908E8E</color>
+    <color name="colorLine">#06000000</color>
     <color name="brand">#F65F1E</color>
+    <color name="colorCheckBoxAdnRB">#ADB5BD</color>
     <color name="brand_light">#ED926B</color>
     <color name="main_dark">#F65F1E</color>
 

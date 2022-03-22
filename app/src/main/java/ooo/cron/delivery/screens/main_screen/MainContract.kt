@@ -21,6 +21,7 @@ interface MainContract {
         fun shouldLastBasketSessionBeVisible(boolean: Boolean)
         fun showContinueLastSession()
         fun hideContinueLastSession()
+        fun hideContinueLastSessionMainMenu()
         fun removeMarketCategoriesProgress()
         fun showNotAuthorizedMessage()
         fun showLogOutDialog()
@@ -36,6 +37,7 @@ interface MainContract {
         fun startVacanciesFragment()
         fun showSpecialOffers(promotions: List<Promotion>)
         fun hideSpecialOffers()
+        fun showPartnerName(parnerName: String?)
         fun showBasketAmount(basketAmount: String)
     }
 
@@ -45,6 +47,7 @@ interface MainContract {
         fun onMarketCategoryClicked(category: MarketCategory)
         fun onClickAddress()
         fun onProfileClick()
+        fun onCheckEmptyBasket()
         fun onLogInLogOutClick()
         fun onLogOutApplied()
         fun continueLastSessionCLick()

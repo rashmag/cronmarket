@@ -79,8 +79,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:text="Дополнения"
-                        android:textColor="@color/grey90"
-                        android:textStyle="bold" />
+                        android:fontFamily="@font/sf_pro_text_regular"
+                        android:layout_weight="400"
+                        android:textColor="@color/titleAdditive"
+                        android:textStyle="normal" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_additives"

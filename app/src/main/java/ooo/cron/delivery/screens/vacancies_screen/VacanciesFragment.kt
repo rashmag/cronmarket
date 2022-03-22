@@ -10,7 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import ooo.cron.delivery.databinding.FragmentVacanciesBinding
-import ooo.cron.delivery.screens.BaseFragment
+import ooo.cron.delivery.screens.base.BaseFragment
 import ooo.cron.delivery.screens.contacts_screen.ContactsFragment
 
 /*

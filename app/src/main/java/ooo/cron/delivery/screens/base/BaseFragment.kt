@@ -1,4 +1,4 @@
-package ooo.cron.delivery.screens
+package ooo.cron.delivery.screens.base
 
 import androidx.fragment.app.Fragment
 import ooo.cron.delivery.screens.any_error_screen.AnyErrorActivity

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
@@ -32,7 +33,7 @@
         app:layout_constraintTop_toTopOf="@id/iv_basket_portions" />
 
     <include
-        android:id="@+id/vg_basket_counter"
+        android:id="@+id/basketTablewareCounter"
         layout="@layout/layout_basket_counter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -43,13 +44,14 @@
 
     <ProgressBar
         android:id="@+id/pb_persons_progress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/vg_basket_counter"
-        app:layout_constraintEnd_toEndOf="@id/vg_basket_counter"
-        app:layout_constraintStart_toStartOf="@id/vg_basket_counter"
-        app:layout_constraintTop_toTopOf="@id/vg_basket_counter" />
+        app:layout_constraintBottom_toBottomOf="@id/basketTablewareCounter"
+        app:layout_constraintEnd_toEndOf="@id/basketTablewareCounter"
+        app:layout_constraintStart_toStartOf="@id/basketTablewareCounter"
+        app:layout_constraintTop_toTopOf="@id/basketTablewareCounter"
+        tools:visibility="visible" />
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/sw_basket_persons"
@@ -62,6 +64,5 @@
         app:layout_constraintHorizontal_bias="1"
         app:layout_constraintTop_toTopOf="parent"
         app:track="@drawable/track_basket_portions" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -20,7 +20,7 @@ import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.MarketCategory
 import ooo.cron.delivery.data.network.models.Promotion
 import ooo.cron.delivery.databinding.ActivityMainBinding
-import ooo.cron.delivery.screens.BaseActivity
+import ooo.cron.delivery.screens.base.BaseActivity
 import ooo.cron.delivery.screens.about_service_screen.AboutServiceFragment
 import ooo.cron.delivery.screens.contacts_screen.ContactsFragment
 import ooo.cron.delivery.screens.first_address_selection_screen.FirstAddressSelectionActivity
@@ -117,7 +117,7 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
     override fun showSavedAddress(address: String) {
-        with(binding.tvMainUserAddress){
+        with(binding.tvMainUserAddress) {
             if (address.isNotEmpty()) {
                 setBackgroundResource(R.drawable.bg_main_address_correct)
                 text = address
@@ -188,6 +188,10 @@ class MainActivity : BaseActivity(), MainContract.View {
         binding.vgMainContinueLastSession.startBottomAnimate(false)
     }
 
+    override fun hideContinueLastSessionMainMenu() {
+        binding.vgMainContinueLastSession.visibility = View.GONE
+    }
+
     override fun startMarketCategoryFragment(category: MarketCategory) {
         setToolbarTitleVisibility(false, null)
         supportFragmentManager.beginTransaction().replace(
@@ -201,6 +205,7 @@ class MainActivity : BaseActivity(), MainContract.View {
             (binding.vgMainContent.layoutParams as CoordinatorLayout.LayoutParams).behavior =
                 ScrollingViewBehavior()
             binding.vgMainContent.requestLayout()
+            presenter.onCheckEmptyBasket()
         }
 
         presenter.onStartMarketCategory()
@@ -297,7 +302,8 @@ class MainActivity : BaseActivity(), MainContract.View {
         with(binding.imageSlider) {
             val sliderHandler = Handler()
             val sliderRunnable = Runnable {
-                val position = (layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
+                val position =
+                    (layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
                 if (position + 1 >= sliderAdapter.itemCount) {
                     smoothScrollToPosition(0)
                 } else {
@@ -314,7 +320,7 @@ class MainActivity : BaseActivity(), MainContract.View {
         }
     }
 
-    private fun checkUserLoggedStatus(){
+    private fun checkUserLoggedStatus() {
         binding.vgMainMenu.tvDrawerMenuItemsOrders.isVisible = presenter.getUserLoggedStatus()
     }
 
@@ -425,6 +431,17 @@ class MainActivity : BaseActivity(), MainContract.View {
 
     override fun showBasketAmount(basketAmount: String) {
         binding.tvBasketAmount.text = getString(R.string.main_btn_amount, basketAmount)
+    }
+
+    override fun showPartnerName(partnerName: String?) {
+        with(binding.tvBasketTitle) {
+            if (partnerName.isNullOrEmpty()) {
+                text = getString(R.string.basket_title)
+            } else {
+                text = partnerName
+                setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
+            }
+        }
     }
 
     private fun setToolbarTitleVisibility(isVisible: Boolean, title: String?) {

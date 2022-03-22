@@ -1,5 +1,6 @@
 package ooo.cron.delivery.screens.splash_screen
 
+import android.util.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import ooo.cron.delivery.data.DataManager

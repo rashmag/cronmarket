@@ -14,8 +14,9 @@ interface ConfirmPhoneContract {
 
     interface View: MvpView {
         fun getCode(): String
-        fun showNextScreen()
+        fun showNextScreen(position: Int)
         fun showError(message: String)
+        fun showAuthorizedUser(username: String)
     }
 
     interface Presenter : MvpPresenter<View> {

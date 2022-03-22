@@ -1,6 +1,5 @@
 package ooo.cron.delivery.screens.partners_screen
 
-import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
@@ -33,12 +32,12 @@ import ooo.cron.delivery.data.network.models.PartnerProductsRes
 import ooo.cron.delivery.data.network.models.PartnersInfoRes
 import ooo.cron.delivery.data.network.models.ProductCategoryModel
 import ooo.cron.delivery.databinding.ActivityPartnersBinding
-import ooo.cron.delivery.screens.AcceptDialog
-import ooo.cron.delivery.screens.BaseActivity
+import ooo.cron.delivery.screens.base.AcceptDialog
+import ooo.cron.delivery.screens.base.BaseActivity
 import ooo.cron.delivery.screens.basket_screen.BasketActivity
 import ooo.cron.delivery.screens.first_address_selection_screen.FirstAddressSelectionActivity
 import ooo.cron.delivery.utils.CustomLayoutManager
-import ooo.cron.delivery.utils.ProductBottomSheetDialog
+import ooo.cron.delivery.screens.partners_screen.bottom_sheet_dialog.ProductBottomSheetDialog
 import ooo.cron.delivery.utils.enums.ReturningToScreenEnum
 import ooo.cron.delivery.utils.extensions.setDrawableStart
 import ooo.cron.delivery.utils.extensions.startBottomAnimate
@@ -49,7 +48,8 @@ import ooo.cron.delivery.utils.extensions.uiLazy
  * Created by Muhammad on 02.05.2021
  */
 
-class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.OnProductClickListener {
+class PartnersActivity : BaseActivity(), PartnersContract.View,
+    CategoryAdapter.OnProductClickListener {
 
     @Inject
     lateinit var presenter: PartnersPresenter
@@ -182,7 +182,6 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
         return partnerId
     }
 
-    @SuppressLint("StringFormatMatches")
     override fun showPartnerInfo(partnerInfo: PartnersInfoRes) {
         presenter.getPartnerCategory()
         with(partnerInfo) {
@@ -206,16 +205,23 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
                         deliveryTypeTitle.setDrawableStart(R.drawable.ic_partner_delivers)
                     }
 
+                    val formatPrice = getString(R.string.price)
                     if (deliveryFrames.deliveryCosts.first().deliveryCost == deliveryFrames.deliveryCosts.last().deliveryCost) {
                         deliveryTypeTitle.text = getString(
                             R.string.partners_screen_delivery_type_title_first,
-                            deliveryFrames.deliveryCosts.last().deliveryCost
+                            String.format(
+                                formatPrice,
+                                deliveryFrames.deliveryCosts.last().deliveryCost
+                            )
                         )
                     } else {
                         deliveryTypeTitle.text = getString(
                             R.string.partners_screen_delivery_type_title,
-                            deliveryFrames.deliveryCosts.last().deliveryCost,
-                            deliveryFrames.deliveryCosts.first().deliveryCost,
+                                deliveryFrames.deliveryCosts.last().deliveryCost,
+                            String.format(
+                                formatPrice,
+                                deliveryFrames.deliveryCosts.first().deliveryCost
+                            ),
                         )
                     }
                 }
@@ -447,7 +453,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
             product = product,
             onAddClick = presenter::plusClick,
             onMinusClick = presenter::minusClick,
-            quantity = if (product.inBasketQuantity == EMPTY_QUANTITY) NUMBER_SERVINGS_ON_BOTTOM_SHEET else product.inBasketQuantity
+            quantity = product.inBasketQuantity+1
         ).show()
     }
 

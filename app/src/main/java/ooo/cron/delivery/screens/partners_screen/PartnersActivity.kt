@@ -39,6 +39,9 @@ import ooo.cron.delivery.screens.first_address_selection_screen.FirstAddressSele
 import ooo.cron.delivery.utils.CustomLayoutManager
 import ooo.cron.delivery.screens.partners_screen.bottom_sheet_dialog.ProductBottomSheetDialog
 import ooo.cron.delivery.utils.enums.ReturningToScreenEnum
+import ooo.cron.delivery.utils.extensions.makeGone
+import ooo.cron.delivery.utils.extensions.makeVisible
+import ooo.cron.delivery.utils.extensions.orZero
 import ooo.cron.delivery.utils.extensions.setDrawableStart
 import ooo.cron.delivery.utils.extensions.startBottomAnimate
 import ooo.cron.delivery.utils.extensions.uiLazy
@@ -217,7 +220,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
                     } else {
                         deliveryTypeTitle.text = getString(
                             R.string.partners_screen_delivery_type_title,
-                                deliveryFrames.deliveryCosts.last().deliveryCost,
+                            deliveryFrames.deliveryCosts.last().deliveryCost,
                             String.format(
                                 formatPrice,
                                 deliveryFrames.deliveryCosts.first().deliveryCost
@@ -453,7 +456,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
             product = product,
             onAddClick = presenter::plusClick,
             onMinusClick = presenter::minusClick,
-            quantity = product.inBasketQuantity+1
+            quantity = product.inBasketQuantity + 1
         ).show()
     }
 
@@ -477,7 +480,8 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
                 ).putExtra(
                     BasketActivity.BASKET_MODEL, basket
                 ).putExtra(
-                    BasketActivity.MIN_AMOUNT_ORDER, minOrderAmount)
+                    BasketActivity.MIN_AMOUNT_ORDER, minOrderAmount
+                )
         )
     }
 
@@ -499,32 +503,36 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         var isShow = false
         var scrollRange = -1
 
-        binding.appbar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { barLayout, verticalOffset ->
-            if (scrollRange == -1) {
-                scrollRange = barLayout?.totalScrollRange!!
-            }
+        with(binding) {
+            appbar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { barLayout, verticalOffset ->
+                if (scrollRange == -1) {
+                    scrollRange = barLayout?.totalScrollRange.orZero()
+                }
 
 
-            if (scrollRange + verticalOffset < 150) {
-                binding.vgPartnerInfo.animate().alpha(0f).setDuration(0).start()
-            } else if (!isShow) {
-                binding.vgPartnerInfo.animate().alpha(1f).setDuration(600).start()
-            }
+                if (scrollRange + verticalOffset < 150) {
+                    vgPartnerInfo.animate().alpha(0f).setDuration(0).start()
+                    vgRating.makeGone()
+                } else if (isShow.not()) {
+                    vgPartnerInfo.animate().alpha(1f).setDuration(600).start()
+                    vgRating.makeVisible()
+                }
 
 
-            if (scrollRange + verticalOffset == 0) {
-                binding.tvTitle.text = binding.tvPartnersName.text
-                binding.tvTitle.animate().alpha(1f).setDuration(0).start()
-                isShow = true
-            } else if (isShow) {
-                binding.tvTitle.animate().alpha(0f).setDuration(600).start()
+                if (scrollRange + verticalOffset == 0) {
+                    tvTitle.text = tvPartnersName.text
+                    tvTitle.animate().alpha(1f).setDuration(0).start()
+                    isShow = true
+                } else if (isShow) {
+                    tvTitle.animate().alpha(0f).setDuration(600).start()
 
-                isShow = false
-            }
+                    isShow = false
+                }
 
-            productsLayoutManager.setScrollEnabled(true)
-            println("scrollRange ${scrollRange + verticalOffset == 0}")
-        })
+                productsLayoutManager.setScrollEnabled(true)
+                println("scrollRange ${scrollRange + verticalOffset == 0}")
+            })
+        }
     }
 
     private fun showCloseShopError() {

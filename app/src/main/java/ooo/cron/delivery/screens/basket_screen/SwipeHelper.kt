@@ -1,9 +1,8 @@
 package ooo.cron.delivery.screens.basket_screen
 
 import android.content.Context
-import android.graphics.Canvas
+import android.graphics.*
 import android.graphics.drawable.PaintDrawable
-import android.util.Log
 import android.view.MotionEvent
 import androidx.core.content.ContextCompat
 import androidx.core.view.marginStart
@@ -12,26 +11,36 @@ import androidx.recyclerview.widget.RecyclerView
 import ooo.cron.delivery.R
 import kotlin.math.abs
 import ooo.cron.delivery.screens.basket_screen.adapters.AdapterBasket
-
+import java.util.*
 
 /**
  * Created by Ramazan Gadzhikadiev on 17.05.2021.
  */
 
-class SwipeHelper(
-    context: Context,
-    val onRemoveClicked: (viewHolder: RecyclerView.ViewHolder) -> Unit
-) : ItemTouchHelper.Callback() {
-    private var flagRemove = false
+class SwipeHelper(context: Context,
+                  val onRemoveClicked: (viewHolder: RecyclerView.ViewHolder?) -> Unit
+) : ItemTouchHelper.SimpleCallback(ItemTouchHelper.ACTION_STATE_IDLE,
+    ItemTouchHelper.LEFT
+) {
+    private var recyclerViewMain:RecyclerView? = null
+    private var swipedPosition = -1
     private val backgroundRadius =
         context.resources.getDimension(R.dimen.basket_trash_background_radius)
     private val background = PaintDrawable(ContextCompat.getColor(context, R.color.errors)).apply {
         setCornerRadius(backgroundRadius)
     }
-
+    private var swipeDirection = Direction.TO_LEFT
+    private var lastDx = 0.0f
     private val itemTrash = ContextCompat.getDrawable(context, R.drawable.ic_basket_item_trash)
     private val itemTrashMargin = context.resources.getDimension(R.dimen.basket_trash_margin)
         .toInt()
+    private var delta: Int? = null
+    private val recoverQueue = object : LinkedList<Int>() {
+        override fun add(element: Int): Boolean {
+            if (contains(element)) return false
+            return super.add(element)
+        }
+    }
 
     override fun getMovementFlags(
         recyclerView: RecyclerView,
@@ -53,20 +62,23 @@ class SwipeHelper(
     override fun getSwipeThreshold(viewHolder: RecyclerView.ViewHolder): Float {
         if (swipeDirection == Direction.TO_LEFT)
             return 0.01f
-
         return 0.99f
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        if (!flagRemove) {
-            flagRemove = true
+        val position = viewHolder.position
+        if (swipedPosition != position) recoverQueue.add(swipedPosition)
+        swipedPosition = position
+        recoverSwipedItem()
+    }
+
+    private fun recoverSwipedItem() {
+        while (!recoverQueue.isEmpty()) {
+            val position = recoverQueue.poll() ?: return
+            recyclerViewMain?.adapter?.notifyItemChanged(position)
         }
     }
 
-    private var delta: Int? = null
-
-    private var swipeDirection = Direction.TO_LEFT
-    private var lastDx = 0.0f
 
     override fun onChildDraw(
         c: Canvas,
@@ -79,10 +91,10 @@ class SwipeHelper(
     ) {
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
             val itemView = viewHolder.itemView
+            recyclerViewMain = recyclerView
 
             if (delta == null)
                 delta = itemView.marginStart + itemView.width / 5
-
             swipeDirection = if (dX > lastDx || lastDx == 0.0f)
                 Direction.TO_RIGHT
             else
@@ -123,10 +135,7 @@ class SwipeHelper(
                             y < itemView.bottom &&
                             dX < 0.0f
                         ) {
-                            if (flagRemove) {
-                                onRemoveClicked(viewHolder)
-                                flagRemove = false
-                            }
+                            onRemoveClicked(viewHolder)
                         }
                         return@setOnTouchListener true
                     }

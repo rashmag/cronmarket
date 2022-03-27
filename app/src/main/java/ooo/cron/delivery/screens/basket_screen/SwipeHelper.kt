@@ -1,8 +1,9 @@
 package ooo.cron.delivery.screens.basket_screen
 
 import android.content.Context
-import android.graphics.*
+import android.graphics.Canvas
 import android.graphics.drawable.PaintDrawable
+import android.util.Log
 import android.view.MotionEvent
 import androidx.core.content.ContextCompat
 import androidx.core.view.marginStart
@@ -11,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ooo.cron.delivery.R
 import kotlin.math.abs
 import ooo.cron.delivery.screens.basket_screen.adapters.AdapterBasket
-import java.util.*
+import java.util.LinkedList
 
 /**
  * Created by Ramazan Gadzhikadiev on 17.05.2021.
@@ -24,6 +25,8 @@ class SwipeHelper(context: Context,
 ) {
     private var recyclerViewMain:RecyclerView? = null
     private var swipedPosition = -1
+    private var swipedPositionScroll = -1
+    private var isDelete = true
     private val backgroundRadius =
         context.resources.getDimension(R.dimen.basket_trash_background_radius)
     private val background = PaintDrawable(ContextCompat.getColor(context, R.color.errors)).apply {
@@ -67,13 +70,17 @@ class SwipeHelper(context: Context,
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         val position = viewHolder.position
-        if (swipedPosition != position) recoverQueue.add(swipedPosition)
-        swipedPosition = position
-        recoverSwipedItem()
+        if(isDelete) isDelete = false
+        if(swipedPositionScroll == position) {
+            swipedPositionScroll = -1
+        }
+        if (swipedPosition != position) {
+            swipedPosition = position
+        }
     }
 
     private fun recoverSwipedItem() {
-        while (!recoverQueue.isEmpty()) {
+        while (recoverQueue.isNotEmpty()) {
             val position = recoverQueue.poll() ?: return
             recyclerViewMain?.adapter?.notifyItemChanged(position)
         }
@@ -91,6 +98,7 @@ class SwipeHelper(context: Context,
     ) {
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
             val itemView = viewHolder.itemView
+            val position = viewHolder.position
             recyclerViewMain = recyclerView
 
             if (delta == null)
@@ -127,6 +135,14 @@ class SwipeHelper(context: Context,
             recyclerView.setOnTouchListener { v, event ->
                 val x = event.x
                 val y = event.y
+                if(y < itemView.top || y > itemView.bottom){
+                    if(!isDelete) isDelete = true
+                    if (swipedPositionScroll != position) {
+                        recoverQueue.add(swipedPosition)
+                        swipedPositionScroll = position
+                        recoverSwipedItem()
+                    }
+                }
                 when (event.action) {
                     MotionEvent.ACTION_DOWN -> {
                         if (x > itemView.right - delta!! &&
@@ -135,7 +151,11 @@ class SwipeHelper(context: Context,
                             y < itemView.bottom &&
                             dX < 0.0f
                         ) {
-                            onRemoveClicked(viewHolder)
+                            if(!isDelete){
+                                onRemoveClicked(viewHolder)
+                                swipedPositionScroll = position-1
+                                isDelete = true
+                            }
                         }
                         return@setOnTouchListener true
                     }

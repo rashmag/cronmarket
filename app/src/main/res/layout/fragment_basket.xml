@@ -104,6 +104,20 @@
                 tools:text="9384₽"
                 tools:visibility="visible" />
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_basket_delivery_cost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_min_8"
+                android:textStyle="bold"
+                android:text="@string/delivery_cost"
+                app:layout_constraintTop_toBottomOf="@id/tv_basket_amount"
+                app:layout_constraintStart_toStartOf="@id/tv_basket_amount"
+                app:layout_constraintEnd_toEndOf="@id/tv_basket_amount"
+                />
+
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_basket_order"
                 android:layout_width="0dp"

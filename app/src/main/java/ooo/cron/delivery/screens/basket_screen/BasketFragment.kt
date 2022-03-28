@@ -3,6 +3,7 @@ package ooo.cron.delivery.screens.basket_screen
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -132,12 +133,13 @@ class BasketFragment : BaseMVVMFragment() {
 
         baseViewModel.basket.observe(viewLifecycleOwner) {
             basket = it.first
+            Log.d("basket", basket.toString())
             isRestaurant = it.first.marketCategoryId
             updateBasket(it.second, it.first.cutleryCount)
             val formatter = DecimalFormat("#.##").apply {
                 roundingMode = RoundingMode.CEILING
             }
-            updateBasketAmount(formatter.format(it.first.amount))
+            updateBasketAmount(formatter.format(it.first.amount+it.first.deliveryCost), it.first.deliveryCost.toInt().toString())
         }
 
         baseViewModel.basketClearAccept.observe(viewLifecycleOwner) {
@@ -234,9 +236,10 @@ class BasketFragment : BaseMVVMFragment() {
         startActivity(Intent(requireContext(), LoginActivity::class.java))
     }
 
-    private fun updateBasketAmount(price: String) {
+    private fun updateBasketAmount(price: String, deliveryCost: String) {
         binding.tvBasketAmount.text = getString(R.string.price, price)
         binding.tvBasketAmount.startBottomAnimate(true)
+        binding.tvBasketDeliveryCost.text = getString(R.string.delivery_cost, deliveryCost)
     }
 
     private fun closeBasketScreen() {

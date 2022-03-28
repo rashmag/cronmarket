@@ -23,8 +23,8 @@ class PayTinkoff (
 ) {
     private fun openPaymentScreen(paymentOptions: PaymentOptions) {
         TinkoffAcquiring(
-            BuildConfig.tinkoff_terminal_key,
-            BuildConfig.tinkoff_terminal_public_key
+            context.getString(R.string.tinkoff_terminal_key),
+            context.getString(R.string.tinkoff_terminal_public_key)
         ).openPaymentScreen(
             fragment,
             paymentOptions,

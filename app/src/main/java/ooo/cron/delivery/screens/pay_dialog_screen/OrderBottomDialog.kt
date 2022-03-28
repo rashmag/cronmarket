@@ -247,9 +247,12 @@ class OrderBottomDialog : BottomSheetDialogFragment() {
             )
         } else
             binding.tvBasketAmount.text = requireContext().getString(
-                R.string.price, (basket.amount.toInt() + 99).toString()
+                R.string.price, (basket.amount+basket.deliveryCost).toInt().toString()
             )
         binding.orderAmount.visibility = View.VISIBLE
+        binding.tvBasketDeliveryCost.text = requireContext().getString(
+            R.string.delivery_cost, basket.deliveryCost.toInt().toString()
+        )
     }
 
     private fun showLoadingState() {

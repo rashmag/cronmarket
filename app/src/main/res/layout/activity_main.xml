@@ -27,9 +27,9 @@
             android:id="@+id/tb_main"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:contentInsetStart="0dp"
+            android:background="@color/white"
             app:contentInsetEnd="0dp"
-            android:background="@color/white">
+            app:contentInsetStart="0dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -46,12 +46,12 @@
                     android:ellipsize="end"
                     android:gravity="start|center_vertical"
                     android:lines="1"
-                    app:contentInsetStart="0dp"
                     android:paddingStart="12dp"
                     android:paddingEnd="12sp"
                     android:text="@string/main_address_incorrect"
                     android:textColor="@color/grey90"
                     android:textSize="14sp"
+                    app:contentInsetStart="0dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/iv_main_search"
                     app:layout_constraintStart_toStartOf="parent"
@@ -131,35 +131,17 @@
                             tools:layout_height="100dp"
                             tools:listitem="@layout/item_main_market_category" />
 
-
-                        <TextView
-                            android:id="@+id/special_offers_title"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:textStyle="bold"
-                            android:layout_marginStart="16dp"
-                            android:text="@string/main_special_offers_title"
-                            android:textFontWeight="600"
-                            android:letterSpacing="0.05"
-                            android:textSize="17sp"
-                            android:ellipsize="end"
-                            android:maxLines="2"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/rv_main_market_category" />
-
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/image_slider"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:clipToPadding="false"
-                            android:layout_marginTop="@dimen/dimen_16"
                             android:orientation="horizontal"
                             android:paddingHorizontal="@dimen/dimen_6"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/special_offers_title" />
+                            app:layout_constraintTop_toBottomOf="@id/rv_main_market_category" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -203,41 +185,41 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            tools:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintStart_toStartOf="parent"
+            tools:visibility="visible">
 
             <FrameLayout
                 android:id="@+id/btn_main_continue_last_session"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="@drawable/button_continue_buy_corners"
                 android:layout_marginHorizontal="16dp"
-                android:layout_marginVertical="12dp">
+                android:layout_marginVertical="12dp"
+                android:background="@drawable/button_continue_buy_corners">
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_basket_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/basket_title"
                     android:layout_gravity="center|left"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
+                    android:layout_marginStart="24dp"
                     android:drawableLeft="@drawable/ic_basket_white"
                     android:drawablePadding="8dp"
-                    android:layout_marginStart="24dp" />
+                    android:text="@string/basket_title"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_basket_amount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    tools:text="10900₽"
                     android:layout_gravity="center|right"
+                    android:layout_marginEnd="24dp"
                     android:textColor="@color/white"
                     android:textSize="16sp"
-                    android:layout_marginEnd="24dp" />
+                    tools:text="10900₽" />
 
             </FrameLayout>
 

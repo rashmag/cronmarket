@@ -9,7 +9,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ooo.cron.delivery.databinding.PagerRowBinding
 import ooo.cron.delivery.screens.main_screen.special_offers_view.models.SlideModel
 
-class SliderAdapter : RecyclerView.Adapter<SliderAdapter.SliderViewHolder>() {
+class SliderAdapter(private val onClick: (slideModel: SlideModel) -> Unit) : RecyclerView.Adapter<SliderAdapter.SliderViewHolder>() {
 
     private var imageList = arrayListOf<SlideModel>()
 
@@ -34,7 +34,9 @@ class SliderAdapter : RecyclerView.Adapter<SliderAdapter.SliderViewHolder>() {
     inner class SliderViewHolder(private val itemBinding: PagerRowBinding): RecyclerView.ViewHolder(itemBinding.root) {
 
         fun bind(model: SlideModel){
-
+            itemView.setOnClickListener {
+                onClick(model)
+            }
             Glide.with(itemView.context)
                 .load(model.imageUrl)
                 .transform(CenterInside(), RoundedCorners(IMAGE_ROUND_CORNER))

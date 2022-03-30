@@ -10,15 +10,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.Basket
 import ooo.cron.delivery.data.network.models.BasketDish
 import ooo.cron.delivery.databinding.FragmentBasketBinding
-import ooo.cron.delivery.screens.BaseMVVMFragment
+import ooo.cron.delivery.screens.base.BaseMVVMFragment
 import ooo.cron.delivery.screens.base.adapters.AdapterHeader
 import ooo.cron.delivery.screens.base.adapters.AdapterSpace
 import ooo.cron.delivery.screens.base.adapters.SpacingValue

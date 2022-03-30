@@ -85,21 +85,4 @@ class AppModule {
     fun provideApiErrorUtils(): ApiErrorsUtils {
         return ApiErrorsUtils()
     }
-
-    @Provides
-    @Singleton
-    fun provideOrderInteractor(
-        restRepository: RestRepository,
-        prefsRepository: PrefsRepository
-    ): OrderInteractor =
-        OrderInteractor(restRepository, prefsRepository)
-
-    @Provides
-    @Singleton
-    fun provideBasketInteractor(
-        restRepository: RestRepository,
-        prefsRepository: PrefsRepository
-    ): BasketInteractor =
-        BasketInteractor(restRepository, prefsRepository)
-
 }

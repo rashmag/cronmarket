@@ -56,7 +56,7 @@ class RestRepository @Inject constructor(
         discount: Int?,
         paymentMethod: Int
 
-    ) =
+    ) {
         restService.sendOrder(
             token, OrderReq(
                 basketId,
@@ -73,6 +73,7 @@ class RestRepository @Inject constructor(
                 paymentMethod
             )
         )
+    }
 
     suspend fun increaseProductInBasket(editor: BasketEditorReq): Result<Basket> {
         val result = restService.increaseProductInBasket(editor)
@@ -112,26 +113,30 @@ class RestRepository @Inject constructor(
         }
     }
 
-    fun getBasketPersonReq(basket:Basket, quantity: Int): BasketPersonsReq =
-        BasketPersonsReq(
+    fun getBasketPersonReq(basket:Basket, quantity: Int): BasketPersonsReq {
+        return BasketPersonsReq(
             basket.id,
             quantity
         )
+    }
 
-    fun getBasketClearReq(basket: Basket): BasketClearReq =
-        BasketClearReq(basket.id)
+    fun getBasketClearReq(basket: Basket): BasketClearReq {
+        return BasketClearReq(basket.id)
+    }
 
-    fun getRemoveBasketItemReq(product: BasketDish?, basket: Basket): RemoveBasketItemReq =
-        RemoveBasketItemReq(
+    fun getRemoveBasketItemReq(product: BasketDish?, basket: Basket): RemoveBasketItemReq {
+        return RemoveBasketItemReq(
             product?.id.orEmpty(),
             basket.id
         )
+    }
 
-    fun getBasketEditorReq(basket: Basket, addingProduct: BasketDish): BasketEditorReq =
-        BasketEditorReq(
+    fun getBasketEditorReq(basket: Basket, addingProduct: BasketDish): BasketEditorReq {
+        return BasketEditorReq(
             basket.id,
             basket.partnerId,
             basket.marketCategoryId,
             Gson().toJson(addingProduct)
         )
+    }
 }

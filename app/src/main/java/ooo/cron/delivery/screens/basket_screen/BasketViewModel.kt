@@ -12,7 +12,7 @@ import ooo.cron.delivery.data.BasketInteractor
 import ooo.cron.delivery.data.network.models.Basket
 import ooo.cron.delivery.data.network.models.BasketDish
 import ooo.cron.delivery.data.network.request.BasketEditorReq
-import ooo.cron.delivery.screens.BaseViewModel
+import ooo.cron.delivery.screens.base.BaseViewModel
 import ooo.cron.delivery.utils.SingleLiveEvent
 import javax.inject.Inject
 

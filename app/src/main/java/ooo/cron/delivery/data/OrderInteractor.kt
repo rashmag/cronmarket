@@ -36,18 +36,24 @@ class OrderInteractor @Inject constructor(
         )
     }
 
-    suspend fun clearBasket(basketClearReq: BasketClearReq): Result<Basket> =
-        restRepo.clearBasket(basketClearReq)
+    suspend fun clearBasket(basketClearReq: BasketClearReq): Result<Basket> {
+        return restRepo.clearBasket(basketClearReq)
+    }
 
-    fun getBasketClearReq(basket: Basket): BasketClearReq  =
-        restRepo.getBasketClearReq(basket)
 
-    fun getBasket(): Basket? =
-        prefsRepo.readBasket()
+    fun getBasketClearReq(basket: Basket): BasketClearReq {
+        return restRepo.getBasketClearReq(basket)
+    }
 
-    fun getPhone(): String? =
-        prefsRepo.readUserPhone()
+    fun getBasket(): Basket? {
+        return prefsRepo.readBasket()
+    }
 
-    fun getDeliveryCityId(): String =
-        prefsRepo.readDeliveryCity().id
+    fun getPhone(): String? {
+        return prefsRepo.readUserPhone()
+    }
+
+    fun getDeliveryCityId(): String {
+        return prefsRepo.readDeliveryCity().id
+    }
 }

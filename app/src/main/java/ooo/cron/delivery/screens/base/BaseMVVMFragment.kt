@@ -1,9 +1,8 @@
-package ooo.cron.delivery.screens
+package ooo.cron.delivery.screens.base
 
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import ooo.cron.delivery.screens.any_error_screen.AnyErrorActivity
 import ooo.cron.delivery.screens.connection_error_screen.ConnectionErrorActivity
 

@@ -266,10 +266,10 @@
     <string name="vacancies_delivery_transport_title">Выдача транспорта</string>
     <string name="vacancies_delivery_transport_description">Мы выдаем своим курьерам велосипеды.</string>
     <string name="vacancies_contacts_title">Контакты для связи</string>
-    <string name="vacancies_artem_title">Артем Абдулгалимов</string>
-    <string name="vacancies_position_title">Координатор курьерского сервиса</string>
+    <string name="vacancies_artem_title">Магомед Рамазанович</string>
+    <string name="vacancies_position_title">Руководитель курьерского сервиса</string>
     <string name="vacancies_phones_title">Телефон:</string>
-    <string name="vacancies_first_phone_title">8(928) 514–79–23</string>
+    <string name="vacancies_first_phone_title">+79285147923</string>
     <string name="become_courier_title">Стать курьером</string>
 
     <string name="tinkoff_terminal_key">1616764866032DEMO</string>

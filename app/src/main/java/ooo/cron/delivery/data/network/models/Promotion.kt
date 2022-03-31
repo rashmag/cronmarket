@@ -5,5 +5,7 @@ package ooo.cron.delivery.data.network.models
  */
 data class Promotion(
     val id: String,
-    val imgUri: String
+    val imgUri: String,
+    val partnerId: String,
+    val description: String
 )

@@ -63,7 +63,9 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
     private val sliderAdapter by lazy(LazyThreadSafetyMode.NONE) {
-        SliderAdapter()
+        SliderAdapter{
+            presenter.onPartnerClickedBaner(it.partnerId)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -259,6 +261,15 @@ class MainActivity : BaseActivity(), MainContract.View {
         TODO("Not yet implemented")
     }
 
+    override fun setPartnerClickedBaner(partnerId: String?) {
+        startActivityForResult(
+            Intent(this, PartnersActivity::class.java)
+                .apply {
+                    putExtra(EXTRA_PARTNER_ID, partnerId)
+                }, RESULT_CODE
+        )
+    }
+
     override fun navigateLoginActivity() {
         startActivity(Intent(this, LoginActivity::class.java))
     }
@@ -278,7 +289,7 @@ class MainActivity : BaseActivity(), MainContract.View {
         with(binding) {
             imageSlider.makeVisible()
 
-            sliderAdapter.setData(promotions.map { SlideModel(it.imgUri) })
+            sliderAdapter.setData(promotions.map { SlideModel(it.imgUri, it.id, it.partnerId) })
         }
     }
 
@@ -464,6 +475,8 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
     companion object {
+        const val RESULT_CODE = 1
+        const val EXTRA_PARTNER_ID = "partnerId"
         const val RETURNING_SCREEN_KEY = "RETURNING_SCREEN_KEY"
         private const val IMAGE_SLIDE_DELAY = 0L
         private const val IMAGE_SLIDE_PERIOD = 3000L

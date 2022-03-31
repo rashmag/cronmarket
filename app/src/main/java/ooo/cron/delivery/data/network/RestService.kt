@@ -139,7 +139,7 @@ interface RestService {
     @GET("/api/v1/SystemInfo/version")
     suspend fun getStableVersion(): String
 
-    @GET("/api/v1/MainWindow/promotions")
+    @GET("/api/v2/MainWindow/promotions")
     suspend fun getSpecialOffers(
         @Query("CityId") cityId: String,
         @Query("MarketCategoryId") marketCategoryId: Int

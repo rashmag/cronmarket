@@ -117,6 +117,10 @@ class MainPresenter @Inject constructor(
             view?.navigateLoginActivity()
     }
 
+    override fun onPartnerClickedBaner(partnerId: String?) {
+        view?.setPartnerClickedBaner(partnerId)
+    }
+
     override fun onLogInLogOutClick() {
         if (user == null)
             return view?.navigateLoginActivity() ?: Unit

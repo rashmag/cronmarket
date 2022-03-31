@@ -55,7 +55,7 @@
     <string name="drawer_menu_item_orders">Заказы</string>
     <string name="drawer_menu_item_contacts">Связаться с нами</string>
     <string name="drawer_menu_item_about_us">О сервисе</string>
-    <string name="drawer_menu_item_vacancies">Работа в CronMarket</string>
+    <string name="drawer_menu_item_vacancies">Стать курьером</string>
     <string name="drawer_menu_settings">Настройки</string>
     <string name="drawer_log_in">Вход / Регистрация</string>
     <string name="drawer_log_out">Выйти из профиля</string>
@@ -255,8 +255,8 @@
     <string name="magomed_email">magomed.g@cron.ooo</string>
     <string name="contacts_magomed_email_title">Эл.почта: <font color="#e66835">magomed.g@cron.ooo</font></string>
     <string name="contacts_title">Связаться с нами</string>
-    <string name="vacancies_word_in_cron_delivery_title">Работа в CronДоставка</string>
-    <string name="vacancies_description_title">Наша команда доставки находится на передовой и в снег, и зной, и в гололед. Мы доставляем заказы и никогда не поднимаем цены для наших клиентов из-за погоды. Наши курьеры работают из нескольких комфортабельных офисов. \n\n\n В нашу команду принимаются лучшие, молодые и амбициозные.</string>
+    <string name="vacancies_word_in_cron_delivery_title">CronMarket</string>
+    <string name="vacancies_description_title">Наша команда доставки находится на передовой и в снег, и зной, и в гололед. Мы доставляем заказы и никогда не поднимаем цены для наших клиентов из-за погоды. Наши курьеры работают из нескольких комфортабельных офисов. \n\n\nВ нашу команду принимаются лучшие, молодые и амбициозные.</string>
     <string name="vacancies_every_week_payment_title">Еженедельные выплаты</string>
     <string name="vacancies_every_week_payment_description">Средний ежедневный доход - 1000р.</string>
     <string name="vacancies_bonuses_title">Бонусы</string>
@@ -266,12 +266,11 @@
     <string name="vacancies_delivery_transport_title">Выдача транспорта</string>
     <string name="vacancies_delivery_transport_description">Мы выдаем своим курьерам велосипеды.</string>
     <string name="vacancies_contacts_title">Контакты для связи</string>
-    <string name="vacancies_artem_title">Артем Абдулгалимов</string>
-    <string name="vacancies_position_title">Координатор курьерского сервиса</string>
-    <string name="vacancies_phones_title">Телефоны:</string>
-    <string name="vacancies_first_phone_title">8(928) 578–13–07</string>
-    <string name="vacancies_second_phone_title">8(988) 790–79–03</string>
-    <string name="become_courier_title">Работа в CronMarket</string>
+    <string name="vacancies_artem_title">Магомед Рамазанович</string>
+    <string name="vacancies_position_title">Руководитель курьерского сервиса</string>
+    <string name="vacancies_phones_title">Телефон:</string>
+    <string name="vacancies_first_phone_title">+79285147923</string>
+    <string name="become_courier_title">Стать курьером</string>
 
     <string name="tinkoff_terminal_key">1616764866032DEMO</string>
     <string name="tinkoff_terminal_password">37qcj6mk92hv5r8b</string>

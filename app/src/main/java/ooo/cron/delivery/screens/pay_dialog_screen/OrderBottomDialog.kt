@@ -2,7 +2,9 @@ package ooo.cron.delivery.screens.pay_dialog_screen
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -22,6 +24,11 @@ import ooo.cron.delivery.BuildConfig
 import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.Basket
 import ooo.cron.delivery.databinding.DialogOrderBinding
+import ooo.cron.delivery.screens.first_address_selection_screen.FirstAddressSelectionActivity
+import ooo.cron.delivery.utils.enums.ReturningToScreenEnum
+import ooo.cron.delivery.utils.extensions.*
+import ooo.cron.delivery.utils.extensions.makeGone
+import ooo.cron.delivery.utils.extensions.makeVisible
 import ru.tinkoff.acquiring.sdk.AcquiringSdk
 import ru.tinkoff.acquiring.sdk.TinkoffAcquiring
 import ru.tinkoff.acquiring.sdk.TinkoffAcquiring.Companion.RESULT_ERROR
@@ -54,6 +61,10 @@ class OrderBottomDialog : BottomSheetDialogFragment() {
     lateinit var factory: OrderViewModelFactory.Factory
 
     private var isDeliveryInKhas: Boolean? = null
+
+    private val address by uiLazy {
+        requireArguments().getString(ARG_ADDRESS)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,16 +103,17 @@ class OrderBottomDialog : BottomSheetDialogFragment() {
         }
     }
 
-    private fun handleGooglePayResult(resultCode: Int,  data: Intent?) {
+    private fun handleGooglePayResult(resultCode: Int, data: Intent?) {
         if (data != null && resultCode == Activity.RESULT_OK) {
-            val token= GooglePayHelper.getGooglePayToken(data)
+            val token = GooglePayHelper.getGooglePayToken(data)
             if (token != null) {
                 viewModel.onGooglePayResultSuccess(token)
             } else {
                 Toast.makeText(
                     requireContext(),
                     getString(R.string.google_pay_result_error),
-                    Toast.LENGTH_SHORT).show()
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
@@ -111,67 +123,90 @@ class OrderBottomDialog : BottomSheetDialogFragment() {
         AcquiringSdk.isDeveloperMode = BuildConfig.DEBUG
         AcquiringSdk.isDebug = BuildConfig.DEBUG
         viewModel.onViewCreated()
-        viewModel.callingDeliveryCostInfo.observe(viewLifecycleOwner) {
-            isDeliveryInKhas = it
-        }
-        viewModel.basketState.observe(viewLifecycleOwner) { basketState ->
-            when (basketState) {
-                is Loading -> showLoadingState()
-                is Default -> removeLoadingState(basketState.basket)
-                is Error -> showError()
-            }
-        }
-        viewModel.paymentStatus.observe(viewLifecycleOwner) {
-            openOrderStatusFragment(it)
-        }
-        viewModel.callingPayInfoDialog.observe(viewLifecycleOwner) {
-            showInformDialog(R.string.order_no_payment_inform_message)
-        }
-        viewModel.payVariantState.observe(viewLifecycleOwner) {
-            binding.btnOrder.text = getString(R.string.order_cash_payment)
-            binding.btnOrder.setBackgroundResource(R.drawable.bg_btn_order)
-            binding.btnGpayOrder.isVisible = it is GPayVariant
-            binding.btnOrder.isVisible = it !is GPayVariant
-            if (it is GPayVariant) viewModel.onGooglePaySelected()
-        }
-        viewModel.commentTextLiveData.observe(viewLifecycleOwner) {
-            updateCommentText(it)
-        }
-        viewModel.cardPayData.observe(viewLifecycleOwner) {
-            payTinkoff.payWithCard(it.amountSum, it.receipt, it.phone)
-        }
+        with(binding) {
 
-        viewModel.googlePayData.observe(viewLifecycleOwner) {
-            val tinkoffAcquiring = TinkoffAcquiring(BuildConfig.tinkoff_terminal_key, BuildConfig.tinkoff_terminal_public_key)
-            tinkoffAcquiring.initPayment(it.second, payTinkoff.getGooglePaymentOptions(it.first.amountSum, it.first.receipt, it.first.phone))
-                .subscribe(createPaymentListener())
-                .start()
-        }
-        viewModel.gPayClick.observe(viewLifecycleOwner) {
-            startGooglePay(it)
-        }
-        binding.etComments.showSoftInputOnFocus = false
-        binding.etComments.setOnClickListener {
-            OrderCommentBottomDialog().show(parentFragmentManager, "")
-        }
-        binding.rgPayment.setOnCheckedChangeListener { radioGroup, i ->
-            when (radioGroup.checkedRadioButtonId) {
-                R.id.card_radiobutton -> viewModel.setPayVariant(CardVariant)
-                R.id.cash_radiobutton -> viewModel.setPayVariant(CashVariant)
-                R.id.gpay_radiobutton -> viewModel.setPayVariant(GPayVariant)
+            viewModel.callingDeliveryCostInfo.observe(viewLifecycleOwner) {
+                isDeliveryInKhas = it
             }
-        }
-        binding.btnOrder.setOnClickListener {
-            viewModel.onPayClicked()
-        }
+            viewModel.basketState.observe(viewLifecycleOwner) { basketState ->
+                when (basketState) {
+                    is Loading -> showLoadingState()
+                    is Default -> removeLoadingState(basketState.basket)
+                    is Error -> showError()
+                }
+            }
 
-        binding.btnGpayOrder.setOnClickListener {
-            viewModel.onPayClicked()
+            if (address?.isEmpty() == true) {
+                tvMainTitle.setTextColor(Color.parseColor("#FF4C30"))
+                icHome.setTint(R.color.orange_ff4c30)
+                addressChevron.setTint(R.color.orange_ff4c30)
+            } else {
+                tvMainTitle.text = address.orEmpty()
+                tvMainTitle.setTextColor(Color.parseColor("#000000"))
+                icHome.setTint(R.color.black)
+                addressChevron.setTint(R.color.black)
+
+                deliveryTimeChevron.setTint(R.color.black)
+            }
+
+            viewModel.paymentStatus.observe(viewLifecycleOwner) {
+                openOrderStatusFragment(it)
+            }
+            viewModel.callingPayInfoDialog.observe(viewLifecycleOwner) {
+                showInformDialog(R.string.order_no_payment_inform_message)
+            }
+            viewModel.payVariantState.observe(viewLifecycleOwner) {
+                btnOrder.text = getString(R.string.order_cash_payment)
+                btnOrder.setBackgroundResource(R.drawable.bg_btn_order)
+                btnGpayOrder.isVisible = it is GPayVariant
+                btnOrder.isVisible = it !is GPayVariant
+                if (it is GPayVariant) viewModel.onGooglePaySelected()
+            }
+            viewModel.commentTextLiveData.observe(viewLifecycleOwner) {
+                updateCommentText(it)
+            }
+            viewModel.cardPayData.observe(viewLifecycleOwner) {
+                payTinkoff.payWithCard(it.amountSum, it.receipt, it.phone)
+            }
+
+            viewModel.googlePayData.observe(viewLifecycleOwner) {
+                val tinkoffAcquiring =
+                    TinkoffAcquiring(BuildConfig.tinkoff_terminal_key, BuildConfig.tinkoff_terminal_public_key)
+                tinkoffAcquiring.initPayment(
+                    it.second,
+                    payTinkoff.getGooglePaymentOptions(it.first.amountSum, it.first.receipt, it.first.phone)
+                )
+                    .subscribe(createPaymentListener())
+                    .start()
+            }
+            viewModel.gPayClick.observe(viewLifecycleOwner) {
+                startGooglePay(it)
+            }
+            etComments.showSoftInputOnFocus = false
+            etComments.setOnClickListener {
+                OrderCommentBottomDialog().show(parentFragmentManager, "")
+            }
+            rgPayment.setOnCheckedChangeListener { radioGroup, i ->
+                when (radioGroup.checkedRadioButtonId) {
+                    R.id.card_radiobutton -> viewModel.setPayVariant(CardVariant)
+                    R.id.cash_radiobutton -> viewModel.setPayVariant(CashVariant)
+                    R.id.gpay_radiobutton -> viewModel.setPayVariant(GPayVariant)
+                }
+            }
+            btnOrder.setOnClickListener {
+                viewModel.onPayClicked()
+            }
+
+            btnGpayOrder.setOnClickListener {
+                viewModel.onPayClicked()
+            }
+
         }
+        addClickForChooseAddressContainer()
     }
 
     private fun createPaymentListener(): PaymentListener {
-        return object  : PaymentListenerAdapter() {
+        return object : PaymentListenerAdapter() {
             override fun onError(throwable: Throwable) {
                 openOrderStatusFragment(false)
             }
@@ -192,19 +227,21 @@ class OrderBottomDialog : BottomSheetDialogFragment() {
         }
     }
 
-    private fun startGooglePay(amount:Long) {
+    private fun startGooglePay(amount: Long) {
         val googlePayButton = binding.btnGpayOrder // определяем кнопку, вставленную в разметку
-        val googleParams = GooglePayParams(BuildConfig.tinkoff_terminal_key,     // конфигурируем основные параметры
+        val googleParams = GooglePayParams(
+            BuildConfig.tinkoff_terminal_key,     // конфигурируем основные параметры
             environment = WalletConstants.ENVIRONMENT_TEST // тестовое окружение
         )
         val googlePayHelper = GooglePayHelper(googleParams) // передаем параметры в класс-помощник
         googlePayHelper.initGooglePay(requireContext()) { ready ->      // вызываем метод для определения доступности Google Pay на девайсе
             if (ready) {                                    // если Google Pay доступен и настроен правильно, по клику на кнопку открываем экран оплаты Google Pay
                 googlePayButton.setOnClickListener {
-                    googlePayHelper.openGooglePay(requireActivity(), Money.ofCoins(amount) , GOOGLE_PAY_REQUEST_CODE)
+                    googlePayHelper.openGooglePay(requireActivity(), Money.ofCoins(amount), GOOGLE_PAY_REQUEST_CODE)
                 }
             } else {
-                googlePayButton.visibility = View.GONE      // если Google Pay недоступен на девайсе, необходимо скрыть кнопку
+                googlePayButton.visibility =
+                    View.GONE      // если Google Pay недоступен на девайсе, необходимо скрыть кнопку
             }
         }
     }
@@ -239,7 +276,7 @@ class OrderBottomDialog : BottomSheetDialogFragment() {
     }
 
     private fun removeLoadingState(basket: Basket) {
-        binding.vgProgress.root.isVisible = !isVisible
+        binding.vgProgress.root.makeGone()
         if (isDeliveryInKhas == true) {
             showInformDialog(R.string.order_inform_delivery_cost_message)
             binding.tvBasketAmount.text = requireContext().getString(
@@ -247,7 +284,7 @@ class OrderBottomDialog : BottomSheetDialogFragment() {
             )
         } else
             binding.tvBasketAmount.text = requireContext().getString(
-                R.string.price, (basket.amount+basket.deliveryCost).toInt().toString()
+                R.string.price, (basket.amount + basket.deliveryCost).toInt().toString()
             )
         binding.orderAmount.visibility = View.VISIBLE
         binding.tvBasketDeliveryCost.text = requireContext().getString(
@@ -256,7 +293,7 @@ class OrderBottomDialog : BottomSheetDialogFragment() {
     }
 
     private fun showLoadingState() {
-        binding.vgProgress.root.isVisible = !isVisible
+        binding.vgProgress.root.makeVisible()
     }
 
     private fun showInformDialog(resMessage: Int) {
@@ -275,8 +312,27 @@ class OrderBottomDialog : BottomSheetDialogFragment() {
         dialog.show()
     }
 
+    private fun addClickForChooseAddressContainer() {
+        with(binding) {
+            contDeliveryAddress.setOnClickListener {
+                startActivity(
+                    Intent(requireContext(), FirstAddressSelectionActivity::class.java)
+                        .putExtra(RETURNING_SCREEN_KEY, ReturningToScreenEnum.FROM_PAY_DIALOG as? Parcelable)
+                )
+            }
+        }
+    }
+
     companion object {
         const val GOOGLE_PAY_REQUEST_CODE = 3
         const val TINKOFF_PAYMENT_REQUEST_CODE = 1
+
+        const val RETURNING_SCREEN_KEY = "RETURNING_SCREEN_KEY"
+
+        const val ARG_ADDRESS = "ARG_ADDRESS"
+
+        fun newInstance(address: String) = OrderBottomDialog().withArgs {
+            putString(ARG_ADDRESS, address)
+        }
     }
 }

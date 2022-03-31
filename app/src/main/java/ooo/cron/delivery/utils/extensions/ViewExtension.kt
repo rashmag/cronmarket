@@ -15,6 +15,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isGone
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
@@ -105,4 +106,11 @@ internal fun View.requestNewSize(
     layoutParams.width = width
     layoutParams.height = height
     layoutParams = layoutParams
+}
+
+fun ImageView.setTint(color: Int){
+    DrawableCompat.setTint(
+        DrawableCompat.wrap(this.drawable),
+        ContextCompat.getColor(context, color)
+    )
 }

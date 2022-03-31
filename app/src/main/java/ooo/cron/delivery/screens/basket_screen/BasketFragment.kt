@@ -43,10 +43,12 @@ class BasketFragment : BaseMVVMFragment() {
         const val MIN_ORDER_AMOUNT_FLAG = "min_order_amount"
         const val EMPTY_TITLE = " "
         const val RESTAURANT = 1
+        const val ADDRESS = "ADDRESS"
 
-        fun newInstance(minAmount : Int): BasketFragment {
+        fun newInstance(minAmount : Int, address: String ?= ""): BasketFragment {
             val bundle = Bundle().apply {
                 putInt(MIN_ORDER_AMOUNT_FLAG, minAmount)
+                putString(ADDRESS, address)
             }
             return BasketFragment().apply {
                 arguments = bundle
@@ -89,9 +91,17 @@ class BasketFragment : BaseMVVMFragment() {
     private var basket: Basket? = null
     private var isRestaurant: Int? = null
 
+    private val address by uiLazy {
+        requireArguments().getString(ADDRESS)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         injectDependencies()
         super.onCreate(savedInstanceState)
+
+        if(address?.isNotEmpty() == true){
+            showMakeOrderBottomDialog()
+        }
     }
 
     private fun injectDependencies() {
@@ -206,7 +216,7 @@ class BasketFragment : BaseMVVMFragment() {
     }
 
     private fun showMakeOrderBottomDialog() {
-        showBottomDialog(OrderBottomDialog())
+        showBottomDialog(OrderBottomDialog.newInstance(address = address.orEmpty()))
     }
 
     //Метод для показа любого боттом диалога

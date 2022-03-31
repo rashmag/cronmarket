@@ -27,6 +27,7 @@ import ooo.cron.delivery.screens.base.BaseActivity
 import ooo.cron.delivery.screens.main_screen.MainActivity
 import javax.inject.Inject
 import ooo.cron.delivery.data.network.models.SuggestAddress
+import ooo.cron.delivery.screens.basket_screen.BasketActivity
 import ooo.cron.delivery.utils.enums.ReturningToScreenEnum
 import ooo.cron.delivery.utils.extensions.uiLazy
 
@@ -264,42 +265,70 @@ class FirstAddressSelectionActivity :
             ReturningToScreenEnum.FROM_MAIN,
             ReturningToScreenEnum.FROM_ORDERING,
             ReturningToScreenEnum.FROM_PARTNERS -> onBackPressed()
+            ReturningToScreenEnum.FROM_PAY_DIALOG -> {
+                val basketIntent = Intent(this, BasketActivity::class.java)
+                basketIntent.apply {
+                    flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    putExtra(
+                        ARG_ADDRESS,
+                        binding.etFirstAddressSelectionAddress.text.toString()
+                    )
+                    startActivity(this)
+                }
+            }
 
             else -> startActivity(Intent(this, MainActivity::class.java))
         }
-        finish()
     }
 
     override fun showInfoMessage() {
-        binding.vgFirstAddressSelectionMessage.setBackgroundResource(R.color.white)
-        binding.ivFirstAddressSelectionMessage.setImageResource(R.drawable.ic_first_address_selection_info)
-        binding.tvFirstAddressSelectionMessage.setTextColor(color(R.color.grey90))
-        binding.tvFirstAddressSelectionMessage.text =
-            getString(R.string.first_address_selection_info_message)
+        with(binding) {
+            vgFirstAddressSelectionMessage.setBackgroundResource(R.color.white)
+            ivFirstAddressSelectionMessage.setImageResource(R.drawable.ic_first_address_selection_info)
+            tvFirstAddressSelectionMessage.setTextColor(color(R.color.grey90))
+            tvFirstAddressSelectionMessage.text = getString(R.string.first_address_selection_info_message)
+            btnFirstAddressSelectionSubmit.isClickable = true
+        }
     }
 
     override fun showWarningMessage() {
-        binding.vgFirstAddressSelectionMessage.setBackgroundResource(R.color.question_light)
-        binding.ivFirstAddressSelectionMessage.setImageResource(R.drawable.ic_warning)
-        binding.tvFirstAddressSelectionMessage.setTextColor(color(R.color.grey90))
-        binding.tvFirstAddressSelectionMessage.text =
-            getString(R.string.first_address_selection_warning_message)
+        with(binding) {
+            vgFirstAddressSelectionMessage.setBackgroundResource(R.color.question_light)
+            ivFirstAddressSelectionMessage.setImageResource(R.drawable.ic_warning)
+            tvFirstAddressSelectionMessage.setTextColor(color(R.color.grey90))
+            tvFirstAddressSelectionMessage.text = getString(R.string.first_address_selection_warning_message)
+            btnFirstAddressSelectionSubmit.isClickable = false
+        }
+    }
+
+    override fun showWriteHouseNumberMessage() {
+        with(binding) {
+            vgFirstAddressSelectionMessage.setBackgroundResource(R.color.question_light)
+            ivFirstAddressSelectionMessage.setImageResource(R.drawable.ic_warning)
+            tvFirstAddressSelectionMessage.setTextColor(color(R.color.grey90))
+            tvFirstAddressSelectionMessage.text = getString(R.string.first_address_selection_write_house_number_message)
+            btnFirstAddressSelectionSubmit.isClickable = false
+        }
     }
 
     override fun showLocationNotFoundMessage() {
-        binding.vgFirstAddressSelectionMessage.setBackgroundResource(R.color.false_light)
-        binding.ivFirstAddressSelectionMessage.setImageResource(R.drawable.ic_first_address_selection_error)
-        binding.tvFirstAddressSelectionMessage.setTextColor(color(R.color.grey90))
-        binding.tvFirstAddressSelectionMessage.text =
-            getString(R.string.first_address_selection_location_error_message)
+        with(binding) {
+            vgFirstAddressSelectionMessage.setBackgroundResource(R.color.false_light)
+            ivFirstAddressSelectionMessage.setImageResource(R.drawable.ic_first_address_selection_error)
+            tvFirstAddressSelectionMessage.setTextColor(color(R.color.grey90))
+            tvFirstAddressSelectionMessage.text = getString(R.string.first_address_selection_location_error_message)
+            btnFirstAddressSelectionSubmit.isClickable = false
+        }
     }
 
     override fun showSuccessMessage() {
-        binding.vgFirstAddressSelectionMessage.setBackgroundResource(R.color.true_light)
-        binding.ivFirstAddressSelectionMessage.setImageResource(R.drawable.ic_first_address_selection_success)
-        binding.tvFirstAddressSelectionMessage.setTextColor(color(R.color.true_dark))
-        binding.tvFirstAddressSelectionMessage.text =
-            getString(R.string.first_address_selection_success_message)
+        with(binding) {
+            vgFirstAddressSelectionMessage.setBackgroundResource(R.color.true_light)
+            ivFirstAddressSelectionMessage.setImageResource(R.drawable.ic_first_address_selection_success)
+            tvFirstAddressSelectionMessage.setTextColor(color(R.color.true_dark))
+            tvFirstAddressSelectionMessage.text = getString(R.string.first_address_selection_success_message)
+            btnFirstAddressSelectionSubmit.isClickable = true
+        }
     }
 
     private fun injectDependencies() {
@@ -479,5 +508,7 @@ class FirstAddressSelectionActivity :
         const val LOCATION_REQUEST_CODE = 83
 
         const val RETURNING_SCREEN_KEY = "RETURNING_SCREEN_KEY"
+
+        const val ARG_ADDRESS = "ARG_ADDRESS"
     }
 }

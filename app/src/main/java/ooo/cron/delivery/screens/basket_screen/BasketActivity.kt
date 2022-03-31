@@ -21,10 +21,10 @@ class BasketActivity : BaseActivity(), PayClickCallback {
     protected lateinit var binding: ActivityBasketBinding
     private var orderAmount = 0
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         val basketModel = intent.getParcelableExtra<Basket>(BASKET_MODEL)
         orderAmount = intent.getIntExtra(MIN_AMOUNT_ORDER, 0)
+        val address = intent.getStringExtra(ARG_ADDRESS).orEmpty()
 
         App.appComponent.basketComponentBuilder()
             .bindInflater(layoutInflater)
@@ -33,7 +33,7 @@ class BasketActivity : BaseActivity(), PayClickCallback {
             .inject(this)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        openRootFragment(BasketFragment.newInstance(orderAmount))
+        openRootFragment(BasketFragment.newInstance(orderAmount, address))
     }
 
     fun openRootFragment(fragment: Fragment) {
@@ -56,5 +56,7 @@ class BasketActivity : BaseActivity(), PayClickCallback {
         const val MIN_AMOUNT_ORDER = "MIN_AMOUNT_ORDER"
         const val BASKET_MODEL = "BASKET_MODEL"
         const val MARGIN_SPACING_VALUE_34 = 34
+
+        const val ARG_ADDRESS = "ARG_ADDRESS"
     }
 }

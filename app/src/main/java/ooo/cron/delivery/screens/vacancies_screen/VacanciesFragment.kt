@@ -44,10 +44,6 @@ class VacanciesFragment : BaseFragment() {
             tvFirstPhone.setOnClickListener {
                 startCall(tvFirstPhone.text.toString())
             }
-
-            tvSecondPhone.setOnClickListener {
-                startCall(tvSecondPhone.text.toString())
-            }
         }
     }
 

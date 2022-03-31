@@ -163,15 +163,6 @@
                     android:layout_height="wrap_content"
                     android:text="@string/vacancies_first_phone_title"
                     android:textColor="@color/vacancies_phones_color"/>
-
-
-                <TextView
-                    android:id="@+id/tv_second_phone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="@string/vacancies_second_phone_title"
-                    android:textColor="@color/vacancies_phones_color"/>
             </LinearLayout>
 
         </LinearLayout>

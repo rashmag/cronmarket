@@ -265,9 +265,8 @@ class MainActivity : BaseActivity(), MainContract.View {
         startActivityForResult(
             Intent(this, PartnersActivity::class.java)
                 .apply {
-                    putExtra(PartnersActivity.EXTRA_PARTNER_ID, partnerId)
-                },
-            PartnersActivity.RESULT_CODE
+                    putExtra(EXTRA_PARTNER_ID, partnerId)
+                }, RESULT_CODE
         )
     }
 
@@ -480,6 +479,8 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
     companion object {
+        const val RESULT_CODE = 1
+        const val EXTRA_PARTNER_ID = "partnerId"
         const val RETURNING_SCREEN_KEY = "RETURNING_SCREEN_KEY"
         private const val IMAGE_SLIDE_DELAY = 0L
         private const val IMAGE_SLIDE_PERIOD = 3000L

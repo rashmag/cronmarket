@@ -261,7 +261,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
             }
         }
         onBackButtonClick()
-        onInfoButtonClick(partnerInfo)
+//        onInfoButtonClick(partnerInfo)
         onRatingClick()
     }
 

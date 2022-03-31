@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import ooo.cron.delivery.data.OrderInteractor
+import ooo.cron.delivery.data.network.SPrefsService
 import ooo.cron.delivery.data.network.models.Basket
 import ooo.cron.delivery.data.network.models.Basket.Companion.deserializeDishes
 import ooo.cron.delivery.data.network.models.PayData
@@ -24,7 +25,8 @@ import javax.inject.Inject
  * */
 
 class OrderViewModel @Inject constructor(
-    private val interactor: OrderInteractor
+    private val interactor: OrderInteractor,
+    private val sPrefsService: SPrefsService
 ) : ViewModel() {
 
     private val handler = CoroutineExceptionHandler { context, exception ->
@@ -153,6 +155,10 @@ class OrderViewModel @Inject constructor(
     //метод для вызова показа ошибки в экране корзины
     fun onPaymentFailed() {
         paymentStatus.postValue(false)
+    }
+
+    fun getAddress(): String{
+        return sPrefsService.readBuildingAddress().toString()
     }
 
     private fun Int.inCoins() =

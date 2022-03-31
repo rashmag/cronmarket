@@ -8,6 +8,7 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.os.Parcelable
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
@@ -271,7 +272,7 @@ class FirstAddressSelectionActivity :
                     flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                     putExtra(
                         ARG_ADDRESS,
-                        binding.etFirstAddressSelectionAddress.text.toString()
+                        ReturningToScreenEnum.IS_FROM_CHOOSE_ADDRESS as? Parcelable
                     )
                     startActivity(this)
                 }

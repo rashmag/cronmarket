@@ -62,10 +62,6 @@ class OrderBottomDialog : BottomSheetDialogFragment() {
 
     private var isDeliveryInKhas: Boolean? = null
 
-    private val address by uiLazy {
-        requireArguments().getString(ARG_ADDRESS)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         injectDependencies()
@@ -136,18 +132,7 @@ class OrderBottomDialog : BottomSheetDialogFragment() {
                 }
             }
 
-            if (address?.isEmpty() == true) {
-                tvMainTitle.setTextColor(Color.parseColor("#FF4C30"))
-                icHome.setTint(R.color.orange_ff4c30)
-                addressChevron.setTint(R.color.orange_ff4c30)
-            } else {
-                tvMainTitle.text = address.orEmpty()
-                tvMainTitle.setTextColor(Color.parseColor("#000000"))
-                icHome.setTint(R.color.black)
-                addressChevron.setTint(R.color.black)
-
-                deliveryTimeChevron.setTint(R.color.black)
-            }
+            setAddress()
 
             viewModel.paymentStatus.observe(viewLifecycleOwner) {
                 openOrderStatusFragment(it)
@@ -203,6 +188,24 @@ class OrderBottomDialog : BottomSheetDialogFragment() {
 
         }
         addClickForChooseAddressContainer()
+        addClickForChooseDeliveryTimeContainer()
+    }
+
+    private fun setAddress(){
+        with(binding) {
+            if (viewModel.getAddress().isEmpty()) {
+                tvMainTitle.setTextColor(Color.parseColor("#FF4C30"))
+                icHome.setTint(R.color.orange_ff4c30)
+                addressChevron.setTint(R.color.orange_ff4c30)
+            } else {
+                tvMainTitle.text = viewModel.getAddress()
+                tvMainTitle.setTextColor(Color.parseColor("#000000"))
+                icHome.setTint(R.color.black)
+                addressChevron.setTint(R.color.black)
+
+                deliveryTimeChevron.setTint(R.color.black)
+            }
+        }
     }
 
     private fun createPaymentListener(): PaymentListener {
@@ -323,16 +326,18 @@ class OrderBottomDialog : BottomSheetDialogFragment() {
         }
     }
 
+    private fun addClickForChooseDeliveryTimeContainer(){
+        with(binding){
+            contDeliveryTime.setOnClickListener {
+                OrderDeliveryTimeBottomSheet().show(parentFragmentManager, "")
+            }
+        }
+    }
+
     companion object {
         const val GOOGLE_PAY_REQUEST_CODE = 3
         const val TINKOFF_PAYMENT_REQUEST_CODE = 1
 
         const val RETURNING_SCREEN_KEY = "RETURNING_SCREEN_KEY"
-
-        const val ARG_ADDRESS = "ARG_ADDRESS"
-
-        fun newInstance(address: String) = OrderBottomDialog().withArgs {
-            putString(ARG_ADDRESS, address)
-        }
     }
 }

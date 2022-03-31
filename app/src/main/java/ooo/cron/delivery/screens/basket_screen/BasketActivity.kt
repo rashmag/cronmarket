@@ -9,6 +9,7 @@ import ooo.cron.delivery.databinding.ActivityBasketBinding
 import ooo.cron.delivery.screens.base.BaseActivity
 import ooo.cron.delivery.screens.pay_dialog_screen.PayClickCallback
 import ooo.cron.delivery.screens.payment_status_screen.PaymentStatusFragment
+import ooo.cron.delivery.utils.enums.ReturningToScreenEnum
 import javax.inject.Inject
 
 /**
@@ -24,7 +25,7 @@ class BasketActivity : BaseActivity(), PayClickCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         val basketModel = intent.getParcelableExtra<Basket>(BASKET_MODEL)
         orderAmount = intent.getIntExtra(MIN_AMOUNT_ORDER, 0)
-        val address = intent.getStringExtra(ARG_ADDRESS).orEmpty()
+        val address = intent.getParcelableExtra<ReturningToScreenEnum>(ARG_ADDRESS)
 
         App.appComponent.basketComponentBuilder()
             .bindInflater(layoutInflater)
@@ -33,7 +34,7 @@ class BasketActivity : BaseActivity(), PayClickCallback {
             .inject(this)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        openRootFragment(BasketFragment.newInstance(orderAmount, address))
+        openRootFragment(BasketFragment.newInstance(orderAmount, address?.name))
     }
 
     fun openRootFragment(fragment: Fragment) {

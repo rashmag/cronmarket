@@ -216,7 +216,7 @@ class BasketFragment : BaseMVVMFragment() {
     }
 
     private fun showMakeOrderBottomDialog() {
-        showBottomDialog(OrderBottomDialog.newInstance(address = address.orEmpty()))
+        showBottomDialog(OrderBottomDialog())
     }
 
     //Метод для показа любого боттом диалога

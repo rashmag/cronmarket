@@ -276,7 +276,6 @@ class MainActivity : BaseActivity(), MainContract.View {
 
     override fun showSpecialOffers(promotions: List<Promotion>) {
         with(binding) {
-            specialOffersTitle.makeVisible()
             imageSlider.makeVisible()
 
             sliderAdapter.setData(promotions.map { SlideModel(it.imgUri) })
@@ -284,10 +283,7 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
     override fun hideSpecialOffers() {
-        with(binding) {
-            specialOffersTitle.makeGone()
-            imageSlider.makeGone()
-        }
+            binding.imageSlider.makeGone()
     }
 
     private fun initSliderRecycler() {

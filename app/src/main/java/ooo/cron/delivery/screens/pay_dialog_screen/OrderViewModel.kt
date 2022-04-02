@@ -47,6 +47,15 @@ class OrderViewModel @Inject constructor(
     private val mutablePayVariantState: MutableLiveData<PaymentVariant> = MutableLiveData()
     val payVariantState: LiveData<PaymentVariant> get() = mutablePayVariantState
 
+    private val mutableDeliveryTime: MutableLiveData<String> = MutableLiveData()
+    val deliveryTime: LiveData<String> get() = mutableDeliveryTime
+
+//    private val mutablePartnerWorkStartTime: MutableLiveData<String> = MutableLiveData()
+//    val partnerWorkStartTime: LiveData<String> get() = mutablePartnerWorkStartTime
+
+//    private val mutablePartnerWorkEndTime: MutableLiveData<String> = MutableLiveData()
+//    val partnerWorkEndTime: LiveData<String> get() = mutablePartnerWorkEndTime
+
     init {
         Log.e("app", "inited")
     }
@@ -159,6 +168,22 @@ class OrderViewModel @Inject constructor(
 
     fun getAddress(): String{
         return sPrefsService.readBuildingAddress().toString()
+    }
+
+//    fun getPartnerWorkStartTime(){
+//        viewModelScope.launch {
+//            mutablePartnerWorkStartTime.postValue(interactor.getPartnerWorkStartTime())
+//        }
+//    }
+//
+//    fun getPartnerWorkEndTime(){
+//        viewModelScope.launch {
+//            mutablePartnerWorkEndTime.postValue(interactor.getPartnerWorkEndTime())
+//        }
+//    }
+
+    fun setDeliveryTime(time: String){
+        mutableDeliveryTime.postValue(time)
     }
 
     private fun Int.inCoins() =

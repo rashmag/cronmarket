@@ -186,6 +186,9 @@ class OrderBottomDialog : BottomSheetDialogFragment() {
                 viewModel.onPayClicked()
             }
 
+            viewModel.deliveryTime.observe(viewLifecycleOwner){ chosenTime ->
+                tvDeliveryTime.text = chosenTime
+            }
         }
         addClickForChooseAddressContainer()
         addClickForChooseDeliveryTimeContainer()
@@ -329,7 +332,7 @@ class OrderBottomDialog : BottomSheetDialogFragment() {
     private fun addClickForChooseDeliveryTimeContainer(){
         with(binding){
             contDeliveryTime.setOnClickListener {
-                OrderDeliveryTimeBottomSheet().show(parentFragmentManager, "")
+                OrderDeliveryTimeBottomSheet.newInstance("10","23").show(parentFragmentManager, "")
             }
         }
     }

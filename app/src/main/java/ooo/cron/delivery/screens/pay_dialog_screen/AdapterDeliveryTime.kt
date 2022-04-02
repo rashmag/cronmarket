@@ -7,7 +7,9 @@ import androidx.recyclerview.widget.RecyclerView
 import ooo.cron.delivery.R
 import ooo.cron.delivery.databinding.DeliveryTimeItemBinding
 
-class AdapterDeliveryTime : RecyclerView.Adapter<AdapterDeliveryTime.DeliveryTimeViewHolder>() {
+class AdapterDeliveryTime(
+    private val getChosenTime:(time: String) -> Unit
+) : RecyclerView.Adapter<AdapterDeliveryTime.DeliveryTimeViewHolder>() {
 
     private val deliveryTimes = arrayListOf<String>()
 
@@ -50,9 +52,9 @@ class AdapterDeliveryTime : RecyclerView.Adapter<AdapterDeliveryTime.DeliveryTim
 
                     timeSelected = deliveryTimes[bindingAdapterPosition].replace(" ", "")
 
-//                    timeSelectListener?.invoke(array[position])
-
                     timeText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24f)
+
+                    getChosenTime.invoke(timeText.text.toString())
 
                 } else if (bindingAdapterPosition == parentItem - 1 || bindingAdapterPosition == parentItem + 1) {
                     timeText.setTextColor(

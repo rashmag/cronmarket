@@ -14,6 +14,7 @@ interface OrderComponent {
 
     fun inject(fragment: OrderBottomDialog)
     fun inject(fragment: OrderCommentBottomDialog)
+    fun inject(fragment: OrderDeliveryTimeBottomSheet)
 
     @Subcomponent.Builder
     interface Builder {

@@ -100,17 +100,17 @@
                             android:textColor="@color/grey90"
                             android:textStyle="bold"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@id/iv_favorite"
+                            app:layout_constraintEnd_toStartOf="@id/cb_favorite"
                             app:layout_constraintStart_toEndOf="@id/iv_back"
                             app:layout_constraintTop_toTopOf="parent" />
 
-                        <ImageView
-                            android:id="@+id/iv_favorite"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/dimen_8"
-                            android:src="@drawable/ic_favorite"
-                            android:visibility="gone"
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/cb_favorite"
+                            android:layout_width="65dp"
+                            android:layout_height="65dp"
+                            android:visibility="visible"
+                            android:checked="false"
+                            android:button="@drawable/bg_favorite_partner"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@id/iv_search"
                             app:layout_constraintTop_toTopOf="parent" />

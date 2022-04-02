@@ -185,12 +185,29 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         return partnerId
     }
 
+    override fun showLikePartner() {
+        binding.cbFavorite.isChecked = true
+    }
+
+    override fun showUnlikePartner() {
+        binding.cbFavorite.isChecked = false
+    }
+
     override fun showPartnerInfo(partnerInfo: PartnersInfoRes) {
         presenter.getPartnerCategory()
         with(partnerInfo) {
             binding.run {
                 tvPartnersName.text = name
                 tvPartnersCategory.text = shortDescription
+                cbFavorite.isChecked = isFavorite
+                cbFavorite.setOnClickListener {
+                    if (cbFavorite.isChecked) {
+                        presenter.likePartner(partnerId)
+                    }
+                    else {
+                        presenter.unlikePartner(partnerId)
+                    }
+                }
 
                 // Типы доставок --Начало-------------------------------------------
 
@@ -499,6 +516,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
     override fun onMinusClick(product: PartnerProductsRes, quantity: Int) =
         presenter.minusClick(product, quantity)
 
+
     private fun setTitleVisibility() {
         var isShow = false
         var scrollRange = -1
@@ -528,12 +546,13 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
 
                     isShow = false
                 }
-
                 productsLayoutManager.setScrollEnabled(true)
                 println("scrollRange ${scrollRange + verticalOffset == 0}")
             })
         }
     }
+
+
 
     private fun showCloseShopError() {
         val hours = if ((openHours?.div(10) ?: 0) > 0) openHours else "0$openHours"
@@ -556,6 +575,8 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
             "${hours}:${minutes}"
         )
     }
+
+
 
     override fun onDestroy() {
         super.onDestroy()

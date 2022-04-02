@@ -3,6 +3,7 @@ package ooo.cron.delivery.screens.partners_screen
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import okhttp3.ResponseBody
 import ooo.cron.delivery.data.DataManager
 import ooo.cron.delivery.data.network.models.*
 import ooo.cron.delivery.data.network.request.BasketClearReq
@@ -242,6 +243,42 @@ class PartnersPresenter @Inject constructor(
 
             increaseProductInBasket(product, additives, quantity)
         }
+    }
+
+    override fun likePartner(partnerId: String) {
+        mainScope.launch {
+            withErrorsHandle(
+                { dataManager.likePartner(partnerId).handleLikeResponse()
+                },
+                { view?.showConnectionErrorScreen() },
+                { view?.showAnyErrorScreen() }
+            )
+        }
+    }
+
+    private fun Response<ResponseBody>.handleLikeResponse() {
+        if (isSuccessful) {
+            view?.showLikePartner()
+        }
+        else view?.showAnyErrorScreen()
+    }
+
+
+    override fun unlikePartner(partnerId: String) {
+        mainScope.launch {
+            withErrorsHandle(
+                { dataManager.unlikePartner(partnerId).handleUnlikeResponse() },
+                { view?.showConnectionErrorScreen() },
+                { view?.showAnyErrorScreen() }
+            )
+        }
+    }
+
+    private fun Response<ResponseBody>.handleUnlikeResponse() {
+        if (isSuccessful) {
+            view?.showUnlikePartner()
+        }
+        else view?.showAnyErrorScreen()
     }
 
     private suspend fun increaseProductInBasket(

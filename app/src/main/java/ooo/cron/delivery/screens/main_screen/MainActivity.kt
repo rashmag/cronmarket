@@ -25,6 +25,7 @@ import ooo.cron.delivery.screens.about_service_screen.AboutServiceFragment
 import ooo.cron.delivery.screens.contacts_screen.ContactsFragment
 import ooo.cron.delivery.screens.first_address_selection_screen.FirstAddressSelectionActivity
 import ooo.cron.delivery.screens.login_screen.LoginActivity
+import ooo.cron.delivery.screens.favorite_screen.view.FavoritePartnersFragment
 import ooo.cron.delivery.screens.main_screen.special_offers_view.models.SlideModel
 import ooo.cron.delivery.screens.market_category_screen.MarketCategoryFragment
 import ooo.cron.delivery.screens.partners_screen.PartnersActivity
@@ -211,6 +212,14 @@ class MainActivity : BaseActivity(), MainContract.View {
         }
 
         presenter.onStartMarketCategory()
+    }
+
+    override fun startFavoritePartnersFragment() {
+        setToolbarTitleVisibility(true, getString(R.string.favorite))
+        supportFragmentManager.beginTransaction().replace(
+            R.id.container_main,
+            FavoritePartnersFragment()
+        ).commit()
     }
 
     override fun startOrdersHistoryFragment() {
@@ -410,6 +419,7 @@ class MainActivity : BaseActivity(), MainContract.View {
             val menuItems = listOf(
                 vgMainMenu.tvDrawerMenuItemShops,
                 vgMainMenu.tvDrawerMenuItemsOrders,
+                vgMainMenu.tvDrawerMenuFavoritePartners,
                 vgMainMenu.tvDrawerMenuItemContacts,
                 vgMainMenu.tvDrawerMenuItemAboutUs,
                 vgMainMenu.tvDrawerMenuItemVacancies
@@ -426,6 +436,7 @@ class MainActivity : BaseActivity(), MainContract.View {
                             presenter.getMarketCategory()
                         )
                         vgMainMenu.tvDrawerMenuItemsOrders -> startOrdersHistoryFragment()
+                        vgMainMenu.tvDrawerMenuFavoritePartners -> startFavoritePartnersFragment()
                         vgMainMenu.tvDrawerMenuItemAboutUs -> startAboutServiceFragment()
                         vgMainMenu.tvDrawerMenuItemContacts -> startContactsFragment()
                         vgMainMenu.tvDrawerMenuItemVacancies -> startVacanciesFragment()

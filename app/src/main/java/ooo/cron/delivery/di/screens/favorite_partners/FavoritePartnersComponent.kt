@@ -1,19 +1,15 @@
-package ooo.cron.delivery.screens.main_screen
+package ooo.cron.delivery.di.screens.favorite_partners
 
 import android.view.LayoutInflater
 import dagger.BindsInstance
 import dagger.Subcomponent
 import ooo.cron.delivery.screens.favorite_screen.view.FavoritePartnersFragment
 
-/**
- * Created by Ramazan Gadzhikadiev on 08.04.2021.
- */
+@FavoritePartnersScope
+@Subcomponent(modules = [FavoritePartnersModule::class])
+interface FavoritePartnersComponent {
 
-@MainScope
-@Subcomponent (modules = [MainModule::class])
-interface MainComponent {
-
-    fun inject(activity: MainActivity)
+    fun inject(fragment: FavoritePartnersFragment)
 
     @Subcomponent.Builder
     interface Builder {
@@ -21,6 +17,6 @@ interface MainComponent {
         @BindsInstance
         fun bindInflater(inflater: LayoutInflater): Builder
 
-        fun build(): MainComponent
+        fun build(): FavoritePartnersComponent
     }
 }

@@ -1,6 +1,7 @@
 package ooo.cron.delivery.data.network.models
 
 import androidx.recyclerview.widget.DiffUtil
+import com.google.gson.annotations.SerializedName
 import java.util.*
 
 /**
@@ -18,7 +19,9 @@ data class Partner(
     val minAmountDelivery: Double?,
     val rating: Float = 0f,
     val feedbackCount: Int = 0,
-    val schedule: Schedule
+    val schedule: Schedule,
+    @SerializedName("isFavorite")
+    val isFavorite: Boolean
 ) {
     fun isOpen(): Boolean {
         val currentCalendar = Calendar.getInstance()

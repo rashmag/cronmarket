@@ -58,20 +58,35 @@
         tools:ignore="SpUsage" />
 
     <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_drawer_menu_favorite_partners"
+        style="@style/DrawerMenuItem"
+        android:layout_width="204dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dimen_24"
+        android:background="@drawable/bg_drawer_menu_item"
+        android:drawableStart="@drawable/ic_favorite"
+        android:paddingHorizontal="@dimen/dimen_16"
+        android:text="@string/favorite"
+        android:textSize="@dimen/text_middle_16"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_drawer_menu_item_shops" />
+
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_drawer_menu_items_orders"
         style="@style/DrawerMenuItem"
         android:layout_width="204dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_drawer_menu_item"
         android:layout_marginStart="@dimen/dimen_24"
+        android:background="@drawable/bg_drawer_menu_item"
+        android:drawableStart="@drawable/ic_drawer_menu_item_orders"
         android:paddingHorizontal="@dimen/dimen_18"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_drawer_menu_item_shops"
         android:text="@string/drawer_menu_item_orders"
         android:textSize="@dimen/text_middle_16"
-        android:drawableStart="@drawable/ic_drawer_menu_item_orders"
         android:visibility="gone"
-        tools:visibility="visible"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_drawer_menu_favorite_partners"
+        tools:visibility="visible" />
+
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_drawer_menu_item_contacts"

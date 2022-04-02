@@ -1,5 +1,6 @@
 package ooo.cron.delivery.data
 
+import android.util.Log
 import ooo.cron.delivery.data.network.RestService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -242,6 +243,16 @@ class DataManager @Inject constructor(
     }
 
     fun readPartnerId() = sPrefsService.readPartnerId()
+
+    suspend fun likePartner(partnerId:String): Response<ResponseBody> {
+        val a = restService.likePartner(LikePartnerReq(partnerId = partnerId))
+        Log.d("aaa", a.body().toString())
+        return restService.likePartner(partnerId)
+    }
+
+    suspend fun unlikePartner(partnerId: String): Response<ResponseBody> {
+        return restService.unlikePartner(LikePartnerReq(partnerId = partnerId))
+    }
 
     companion object {
         const val EMPTY_UUID = SPrefsService.EMPTY_UUID

@@ -26,6 +26,7 @@ interface MainContract {
         fun showNotAuthorizedMessage()
         fun showLogOutDialog()
         fun startMarketCategoryFragment(category: MarketCategory)
+        fun startFavoritePartnersFragment()
         fun startOrdersHistoryFragment()
         fun startContactsFragment()
         fun reopenMainScreen()

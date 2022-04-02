@@ -41,6 +41,9 @@ interface PartnersContract {
             closeMinutes: Int,
             basket: Basket?
         )
+
+        fun showLikePartner()
+        fun showUnlikePartner()
     }
 
     interface Presenter : MvpPresenter<View> {
@@ -64,6 +67,13 @@ interface PartnersContract {
             product: PartnerProductsRes,
             additives: List<BasketDishAdditive>,
             quantity: Int
+        )
+
+        fun likePartner(
+            partnerId: String
+        )
+        fun unlikePartner(
+            partnerId: String
         )
     }
 }

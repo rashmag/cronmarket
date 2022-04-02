@@ -3,6 +3,7 @@ package ooo.cron.delivery.di
 import android.content.Context
 import dagger.BindsInstance
 import dagger.Component
+import ooo.cron.delivery.di.screens.favorite_partners.FavoritePartnersComponent
 import ooo.cron.delivery.screens.base_error_screen.BaseErrorComponent
 import ooo.cron.delivery.screens.basket_screen.BasketComponent
 import ooo.cron.delivery.screens.first_address_selection_screen.FirstAddressSelectionComponent
@@ -46,6 +47,7 @@ interface AppComponent {
     fun orderCostComponentBuilder(): OrderCostComponent.Builder
     fun orderHistoryComponentBuilder(): OrderHistoryComponent.Builder
     fun orderHistoryDetailComponentBuilder(): OrderHistoryDetailComponent.Builder
+    fun favoritePartnersComponentBuilder(): FavoritePartnersComponent.Builder
 
     @Component.Builder
     interface Builder {

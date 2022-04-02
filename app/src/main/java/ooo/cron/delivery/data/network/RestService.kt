@@ -158,6 +158,22 @@ interface RestService {
         @Query("id") orderId: String
     ) : Response<OrderHistoryDetailNetModel>
 
+    @GET("/api/v1/User/favorite_partners")
+    suspend fun getFavoritePartners(
+        @Header("Authorization") token: String,
+        @Query("cityId") cityId: String
+    ) : Response<FavoritePartners>
+
+    @POST("/api/v1/User/favorite_partners")
+    suspend fun likePartner(
+        @Body likePartnerReq: LikePartnerReq
+    ): Response<ResponseBody>
+
+    @DELETE("/api/v1/User/favorite_partners")
+    suspend fun unlikePartner(
+        @Body likePartnerReq: LikePartnerReq
+    ): Response<ResponseBody>
+
     companion object {
         const val PARTNERS_PAGINATION_LIMIT = 15
     }

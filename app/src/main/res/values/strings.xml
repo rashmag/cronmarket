@@ -306,4 +306,7 @@
 
     <!-- Orders history detail -->
     <string name="order_history_detail_screen_additive_plus">+ %s</string>
+    <string name="favorite">Избранное</string>
+    <string name="favorite_list_empty">Ваш список избранных заведений пуст</string>
+    <string name="favorite_list_empty_info">Кликайте по иконке сердечка на страницах ваших любимых мест, и вы всегда найдете их в списке избранных.</string>
 </resources>

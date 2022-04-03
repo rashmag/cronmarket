@@ -248,7 +248,12 @@ class PartnersPresenter @Inject constructor(
     override fun likePartner(partnerId: String) {
         mainScope.launch {
             withErrorsHandle(
-                { dataManager.likePartner(partnerId).handleLikeResponse()
+                {
+                    dataManager.likePartner(
+                        token = "Bearer ${ dataManager.readToken().accessToken }",
+                        partnerId = partnerId
+                    )
+                        .handleLikeResponse()
                 },
                 { view?.showConnectionErrorScreen() },
                 { view?.showAnyErrorScreen() }
@@ -259,15 +264,17 @@ class PartnersPresenter @Inject constructor(
     private fun Response<ResponseBody>.handleLikeResponse() {
         if (isSuccessful) {
             view?.showLikePartner()
-        }
-        else view?.showAnyErrorScreen()
+        } else view?.showAnyErrorScreen()
     }
 
 
     override fun unlikePartner(partnerId: String) {
         mainScope.launch {
             withErrorsHandle(
-                { dataManager.unlikePartner(partnerId).handleUnlikeResponse() },
+                { dataManager.unlikePartner(
+                    token = "Bearer ${ dataManager.readToken().accessToken }",
+                    partnerId = partnerId
+                ).handleUnlikeResponse() },
                 { view?.showConnectionErrorScreen() },
                 { view?.showAnyErrorScreen() }
             )
@@ -277,8 +284,7 @@ class PartnersPresenter @Inject constructor(
     private fun Response<ResponseBody>.handleUnlikeResponse() {
         if (isSuccessful) {
             view?.showUnlikePartner()
-        }
-        else view?.showAnyErrorScreen()
+        } else view?.showAnyErrorScreen()
     }
 
     private suspend fun increaseProductInBasket(

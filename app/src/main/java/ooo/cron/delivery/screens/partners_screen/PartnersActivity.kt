@@ -202,7 +202,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
                 cbFavorite.isChecked = isFavorite
                 cbFavorite.setOnClickListener {
                     if (cbFavorite.isChecked) {
-                        presenter.likePartner(partnerId)
+                        presenter.likePartner(partnerInfo.id)
                     }
                     else {
                         presenter.unlikePartner(partnerId)

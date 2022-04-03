@@ -21,7 +21,7 @@ data class PartnersInfoRes(
     var marketCategoryId: Int,
     val schedule: Schedule,
     val deliveryFrames: List<DeliveryFrames> ?= null,
-    var isFavorite: Boolean
+    val isFavorite: Boolean
 ) {
 
     fun map() = Partner(

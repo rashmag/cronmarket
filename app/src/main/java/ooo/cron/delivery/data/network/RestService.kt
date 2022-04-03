@@ -164,13 +164,15 @@ interface RestService {
         @Query("cityId") cityId: String
     ) : Response<FavoritePartners>
 
-    @POST("/api/v1/User/favorite_partners")
+    @POST("/api/v1/User/favorite_partner")
     suspend fun likePartner(
+        @Header("Authorization") token: String,
         @Body likePartnerReq: LikePartnerReq
     ): Response<ResponseBody>
 
-    @DELETE("/api/v1/User/favorite_partners")
+    @DELETE("/api/v1/User/favorite_partner")
     suspend fun unlikePartner(
+        @Header("Authorization") token: String,
         @Body likePartnerReq: LikePartnerReq
     ): Response<ResponseBody>
 

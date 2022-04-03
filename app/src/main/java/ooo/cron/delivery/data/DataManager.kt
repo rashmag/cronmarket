@@ -244,14 +244,13 @@ class DataManager @Inject constructor(
 
     fun readPartnerId() = sPrefsService.readPartnerId()
 
-    suspend fun likePartner(partnerId:String): Response<ResponseBody> {
-        val a = restService.likePartner(LikePartnerReq(partnerId = partnerId))
-        Log.d("aaa", a.body().toString())
-        return restService.likePartner(partnerId)
+    suspend fun likePartner(token: String, partnerId: String): Response<ResponseBody> {
+
+        return restService.likePartner(token, LikePartnerReq(partnerId = partnerId))
     }
 
-    suspend fun unlikePartner(partnerId: String): Response<ResponseBody> {
-        return restService.unlikePartner(LikePartnerReq(partnerId = partnerId))
+    suspend fun unlikePartner(token: String, partnerId: String): Response<ResponseBody> {
+        return restService.unlikePartner(token, LikePartnerReq(partnerId = partnerId))
     }
 
     companion object {

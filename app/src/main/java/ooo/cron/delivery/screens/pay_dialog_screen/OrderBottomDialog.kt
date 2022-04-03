@@ -62,6 +62,14 @@ class OrderBottomDialog : BottomSheetDialogFragment() {
 
     private var isDeliveryInKhas: Boolean? = null
 
+    private val openHours by uiLazy {
+        requireArguments().getInt(PARTNER_OPEN_HOURS).orZero()
+    }
+
+    private val closeHours by uiLazy {
+        requireArguments().getInt(PARTNER_CLOSE_HOURS).orZero()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         injectDependencies()
@@ -186,7 +194,7 @@ class OrderBottomDialog : BottomSheetDialogFragment() {
                 viewModel.onPayClicked()
             }
 
-            viewModel.deliveryTime.observe(viewLifecycleOwner){ chosenTime ->
+            viewModel.deliveryTime.observe(viewLifecycleOwner) { chosenTime ->
                 tvDeliveryTime.text = chosenTime
             }
         }
@@ -194,15 +202,15 @@ class OrderBottomDialog : BottomSheetDialogFragment() {
         addClickForChooseDeliveryTimeContainer()
     }
 
-    private fun setAddress(){
+    private fun setAddress() {
         with(binding) {
             if (viewModel.getAddress().isEmpty()) {
-                tvMainTitle.setTextColor(Color.parseColor("#FF4C30"))
+                tvMainTitle.setCustomTextColor(R.color.orange_ff4c30)
                 icHome.setTint(R.color.orange_ff4c30)
                 addressChevron.setTint(R.color.orange_ff4c30)
             } else {
                 tvMainTitle.text = viewModel.getAddress()
-                tvMainTitle.setTextColor(Color.parseColor("#000000"))
+                tvMainTitle.setCustomTextColor(R.color.black)
                 icHome.setTint(R.color.black)
                 addressChevron.setTint(R.color.black)
 
@@ -329,10 +337,10 @@ class OrderBottomDialog : BottomSheetDialogFragment() {
         }
     }
 
-    private fun addClickForChooseDeliveryTimeContainer(){
-        with(binding){
+    private fun addClickForChooseDeliveryTimeContainer() {
+        with(binding) {
             contDeliveryTime.setOnClickListener {
-                OrderDeliveryTimeBottomSheet.newInstance("10","23").show(parentFragmentManager, "")
+                OrderDeliveryTimeBottomSheet.newInstance(openHours, closeHours).show(parentFragmentManager, "")
             }
         }
     }
@@ -342,5 +350,22 @@ class OrderBottomDialog : BottomSheetDialogFragment() {
         const val TINKOFF_PAYMENT_REQUEST_CODE = 1
 
         const val RETURNING_SCREEN_KEY = "RETURNING_SCREEN_KEY"
+
+        private const val PARTNER_OPEN_HOURS = "PARTNER_OPEN_HOURS"
+        private const val PARTNER_OPEN_MINUTES = "PARTNER_OPEN_MINUTES"
+        private const val PARTNER_CLOSE_HOURS = "PARTNER_CLOSE_HOURS"
+        private const val PARTNER_CLOSE_MINUTES = "PARTNER_CLOSE_MINUTES"
+
+        fun newInstance(
+            openHours: Int,
+            openMinutes: Int,
+            closeHours: Int,
+            closeMinutes: Int
+        ) = OrderBottomDialog().withArgs {
+            putInt(PARTNER_OPEN_HOURS, openHours)
+            putInt(PARTNER_OPEN_MINUTES, openMinutes)
+            putInt(PARTNER_CLOSE_HOURS, closeHours)
+            putInt(PARTNER_CLOSE_MINUTES, closeMinutes)
+        }
     }
 }

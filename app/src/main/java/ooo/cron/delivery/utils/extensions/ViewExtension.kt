@@ -114,3 +114,7 @@ fun ImageView.setTint(color: Int){
         ContextCompat.getColor(context, color)
     )
 }
+
+fun TextView.setCustomTextColor(color: Int){
+    setTextColor(ContextCompat.getColor(context, color))
+}

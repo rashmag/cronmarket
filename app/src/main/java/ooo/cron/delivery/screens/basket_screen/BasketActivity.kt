@@ -10,6 +10,8 @@ import ooo.cron.delivery.screens.base.BaseActivity
 import ooo.cron.delivery.screens.pay_dialog_screen.PayClickCallback
 import ooo.cron.delivery.screens.payment_status_screen.PaymentStatusFragment
 import ooo.cron.delivery.utils.enums.ReturningToScreenEnum
+import ooo.cron.delivery.utils.extensions.orZero
+import ooo.cron.delivery.utils.extensions.uiLazy
 import javax.inject.Inject
 
 /**
@@ -21,6 +23,22 @@ class BasketActivity : BaseActivity(), PayClickCallback {
     @Inject
     protected lateinit var binding: ActivityBasketBinding
     private var orderAmount = 0
+
+    private val openHours by uiLazy {
+        intent.getIntExtra(PARTNER_OPEN_HOURS, 0).orZero()
+    }
+
+    private val openMinutes by uiLazy {
+        intent.getIntExtra(PARTNER_OPEN_MINUTES,0).orZero()
+    }
+
+    private val closeHours by uiLazy {
+        intent.getIntExtra(PARTNER_CLOSE_HOURS,0).orZero()
+    }
+
+    private val closeMinutes by uiLazy {
+        intent.getIntExtra(PARTNER_CLOSE_MINUTES,0).orZero()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val basketModel = intent.getParcelableExtra<Basket>(BASKET_MODEL)
@@ -34,7 +52,15 @@ class BasketActivity : BaseActivity(), PayClickCallback {
             .inject(this)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        openRootFragment(BasketFragment.newInstance(orderAmount, address?.name))
+
+        openRootFragment(BasketFragment.newInstance(
+            orderAmount,
+            address?.name,
+            openHours,
+            openMinutes,
+            closeHours,
+            closeMinutes
+        ))
     }
 
     fun openRootFragment(fragment: Fragment) {

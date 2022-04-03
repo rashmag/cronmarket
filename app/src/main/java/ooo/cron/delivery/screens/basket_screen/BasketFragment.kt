@@ -45,10 +45,26 @@ class BasketFragment : BaseMVVMFragment() {
         const val RESTAURANT = 1
         const val ADDRESS = "ADDRESS"
 
-        fun newInstance(minAmount : Int, address: String ?= ""): BasketFragment {
+        const val PARTNER_OPEN_HOURS = "PARTNER_OPEN_HOURS"
+        const val PARTNER_OPEN_MINUTES = "PARTNER_OPEN_MINUTES"
+        const val PARTNER_CLOSE_HOURS = "PARTNER_CLOSE_HOURS"
+        const val PARTNER_CLOSE_MINUTES = "PARTNER_CLOSE_MINUTES"
+
+        fun newInstance(
+            minAmount : Int,
+            address: String ?= "",
+            openHours: Int,
+            openMinutes: Int,
+            closeHours: Int,
+            closeMinutes: Int
+        ): BasketFragment {
             val bundle = Bundle().apply {
                 putInt(MIN_ORDER_AMOUNT_FLAG, minAmount)
                 putString(ADDRESS, address)
+                putInt(PARTNER_OPEN_HOURS, openHours)
+                putInt(PARTNER_OPEN_MINUTES, openMinutes)
+                putInt(PARTNER_CLOSE_HOURS, closeHours)
+                putInt(PARTNER_CLOSE_MINUTES, closeMinutes)
             }
             return BasketFragment().apply {
                 arguments = bundle
@@ -93,6 +109,22 @@ class BasketFragment : BaseMVVMFragment() {
 
     private val address by uiLazy {
         requireArguments().getString(ADDRESS)
+    }
+
+    private val openHours by uiLazy {
+        requireArguments().getInt(PARTNER_OPEN_HOURS).orZero()
+    }
+
+    private val openMinutes by uiLazy {
+        requireArguments().getInt(PARTNER_OPEN_MINUTES).orZero()
+    }
+
+    private val closeHours by uiLazy {
+        requireArguments().getInt(PARTNER_CLOSE_HOURS).orZero()
+    }
+
+    private val closeMinutes by uiLazy {
+        requireArguments().getInt(PARTNER_CLOSE_MINUTES).orZero()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -216,7 +248,12 @@ class BasketFragment : BaseMVVMFragment() {
     }
 
     private fun showMakeOrderBottomDialog() {
-        showBottomDialog(OrderBottomDialog())
+        showBottomDialog(OrderBottomDialog.newInstance(
+            openHours,
+            openMinutes,
+            closeHours,
+            closeMinutes
+        ))
     }
 
     //Метод для показа любого боттом диалога

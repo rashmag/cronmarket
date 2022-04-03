@@ -274,38 +274,38 @@
 
 
     <FrameLayout
-        android:id="@+id/vg_partner_basket"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@drawable/button_continue_buy_corners"
-        android:layout_marginHorizontal="@dimen/dimen_16"
-        android:layout_marginVertical="@dimen/dimen_12"
-        android:visibility="gone">
+            android:id="@+id/vg_partner_basket"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginHorizontal="@dimen/dimen_16"
+            android:layout_marginVertical="@dimen/dimen_12"
+            android:background="@drawable/button_continue_buy_corners"
+            android:visibility="gone">
 
 
         <TextView
-            android:id="@+id/tv_partner_basket"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/basket_title"
-            android:layout_gravity="center|left"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_middle_16"
-            android:textStyle="bold"
-            android:drawableLeft="@drawable/ic_basket_white"
-            android:drawablePadding="@dimen/dimen_8"
-            android:layout_marginStart="@dimen/dimen_24" />
+                android:id="@+id/tv_partner_basket"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|left"
+                android:layout_marginStart="@dimen/dimen_24"
+                android:drawableLeft="@drawable/ic_basket_white"
+                android:drawablePadding="@dimen/dimen_8"
+                android:text="@string/basket_title"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_middle_16"
+                android:textStyle="bold" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_partner_basket_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center|right"
-            android:background="#0000"
-            android:layout_marginEnd="@dimen/dimen_24"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_middle_16"
-            tools:text="10900₽"/>
+                android:id="@+id/btn_partner_basket_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|right"
+                android:layout_marginEnd="@dimen/dimen_24"
+                android:background="#0000"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_middle_16"
+                tools:text="10900₽" />
 
     </FrameLayout>
 

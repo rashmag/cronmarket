@@ -1,6 +1,5 @@
 package ooo.cron.delivery.screens.pay_dialog_screen
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,10 +12,13 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
 import ooo.cron.delivery.databinding.PopUpChooseDeliveryTimeBinding
-import ooo.cron.delivery.utils.extensions.*
+import ooo.cron.delivery.utils.extensions.uiLazy
+import ooo.cron.delivery.utils.extensions.orZero
+import ooo.cron.delivery.utils.extensions.setCustomTextColor
+import ooo.cron.delivery.utils.extensions.withArgs
 import ooo.cron.delivery.utils.extensions.makeGone
 import ooo.cron.delivery.utils.extensions.makeVisible
-import java.util.*
+import java.util.Calendar
 import javax.inject.Inject
 
 class OrderDeliveryTimeBottomSheet : BottomSheetDialogFragment() {
@@ -28,12 +30,6 @@ class OrderDeliveryTimeBottomSheet : BottomSheetDialogFragment() {
         factory.create()
     }
 
-    private val adapterDeliveryTime by uiLazy {
-        AdapterDeliveryTime { chosenTime ->
-            addClickForDoneBtn(chosenTime)
-        }
-    }
-
     private var _binding: PopUpChooseDeliveryTimeBinding? = null
     private val binding get() = _binding!!
 
@@ -42,11 +38,17 @@ class OrderDeliveryTimeBottomSheet : BottomSheetDialogFragment() {
     private var isMidnight = false
 
     private val startTime by uiLazy {
-        requireArguments().getString(ARG_START_TIME).orEmpty()
+        requireArguments().getInt(ARG_START_TIME).orZero()
     }
 
     private val endTime by uiLazy {
-        requireArguments().getString(ARG_END_TIME).orEmpty()
+        requireArguments().getInt(ARG_END_TIME).orZero()
+    }
+
+    private val adapterDeliveryTime by uiLazy {
+        AdapterDeliveryTime { chosenTime ->
+            addClickForDoneBtn(chosenTime)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,14 +63,6 @@ class OrderDeliveryTimeBottomSheet : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-//        viewModel.partnerWorkStartTime.observe(viewLifecycleOwner){
-//            startTime = it
-//        }
-//
-//        viewModel.partnerWorkEndTime.observe(viewLifecycleOwner){
-//            endTime = it
-//        }
 
         addClicksForDeliveryTypesBtn()
         initDeliveryTimeAdapter()
@@ -89,52 +83,57 @@ class OrderDeliveryTimeBottomSheet : BottomSheetDialogFragment() {
 
     private fun getTimeToday(): ArrayList<String> {
 
-        val arrayTimeToday = ArrayList<String>()
-
-        val stepMinute = 30
-//        var iteration = 0
-
-        isMidnight = false
+        val arrayTimeToday = arrayListOf<String>()
 
         val currentTime = Calendar.getInstance().time
         var hourNow = currentTime.hours
         var minuteNow = 0
 
+        isMidnight = false
+
+        // Проверка текущих минут
+        // Н-р
+        // Если сейчас 12:00 -> доступное время доставки будет 12:30
+        // Если 12:20 -> доступное время доставки будет 13:00
+        // Если сейчас 12:40 -> доступное время доставки будет 13:30
+
         when (currentTime.minutes) {
-            in 0..15 -> minuteNow = 0
-            in 16..39 -> minuteNow = 30
-            in 40..60 -> {
+            0 -> minuteNow = MINUTE_STEP
+            in 1..30 -> {
                 minuteNow = 0
+                hourNow++
+            }
+            in 31..39 -> {
+                minuteNow = MINUTE_STEP
+                hourNow++
+            }
+            in 40..60 -> {
+                minuteNow = MINUTE_STEP
                 hourNow++
             }
         }
 
         while (isMidnight.not()) {
 
-            val zeroHour = if (hourNow < 10) "0" else ""
-            val zeroMinute = if (minuteNow < 10) "0" else ""
+            // Если текущее время < 10, то добавляем 0
+            // Н-р если сейчас 9:00 -> то мы увидим 09:00
 
-            if (hourNow > startTime.toInt()) {
+            val zeroHour = if (hourNow < 10) ZERO_TIME else EMPTY
+            val zeroMinute = if (minuteNow < 10) ZERO_TIME else EMPTY
+
+            if (hourNow > startTime) {
                 arrayTimeToday.add("$zeroHour$hourNow:$zeroMinute$minuteNow")
             }
 
-//            iteration++
-//
-//            if (iteration > 5) stepMinute = 60
-
-            minuteNow += stepMinute
+            minuteNow += MINUTE_STEP
 
             if (minuteNow > 59) {
                 minuteNow -= 60
                 hourNow++
             }
 
-//            if(hourNow < startTime.toInt() + 1){
-//                hourNow = startTime.toInt()
-//            }
-
-            if (hourNow > endTime.toInt() - 1) {
-//                minuteNow = 0
+            if (hourNow > endTime - 1) {
+                // Удаляю, потому что показывалось ненужное время
                 arrayTimeToday.removeLast()
                 isMidnight = true
             }
@@ -151,10 +150,8 @@ class OrderDeliveryTimeBottomSheet : BottomSheetDialogFragment() {
 
                 val parentPos = deliveryTimeLayoutManager?.findLastCompletelyVisibleItemPosition()
 
-                if (parentPos != adapterDeliveryTime.parentItem && parentPos != -1) {
-
-                    adapterDeliveryTime.parentItem = parentPos.orZero()
-
+                if (parentPos != adapterDeliveryTime.selectedItem && parentPos != -1) {
+                    adapterDeliveryTime.updateSelectedItem(parentPos.orZero())
                     adapterDeliveryTime.notifyDataSetChanged()
                 }
             }
@@ -166,10 +163,10 @@ class OrderDeliveryTimeBottomSheet : BottomSheetDialogFragment() {
             btnAsap.apply {
                 setOnClickListener {
                     setBackgroundResource(R.drawable.bg_market_category_tag_not_selected_item)
-                    setTextColor(Color.parseColor("#FF4C30"))
+                    setCustomTextColor(R.color.orange_ff4c30)
 
                     btnByTime.setBackgroundResource(R.drawable.btn_delivery_type_not_selected)
-                    btnByTime.setTextColor(Color.parseColor("#000000"))
+                    btnByTime.setCustomTextColor(R.color.black)
 
                     defaultTimeContainer.makeVisible()
                     scrollTimeContainer.makeGone()
@@ -179,10 +176,10 @@ class OrderDeliveryTimeBottomSheet : BottomSheetDialogFragment() {
             btnByTime.apply {
                 setOnClickListener {
                     setBackgroundResource(R.drawable.bg_market_category_tag_not_selected_item)
-                    setTextColor(Color.parseColor("#FF4C30"))
+                    setCustomTextColor(R.color.orange_ff4c30)
 
                     btnAsap.setBackgroundResource(R.drawable.btn_delivery_type_not_selected)
-                    btnAsap.setTextColor(Color.parseColor("#000000"))
+                    btnAsap.setCustomTextColor(R.color.black)
 
                     defaultTimeContainer.makeGone()
                     scrollTimeContainer.makeVisible()
@@ -191,7 +188,7 @@ class OrderDeliveryTimeBottomSheet : BottomSheetDialogFragment() {
         }
     }
 
-    private fun addClickForDoneBtn(time: String ?= "") {
+    private fun addClickForDoneBtn(time: String?= "") {
         with(binding) {
 
             btnDone.setOnClickListener {
@@ -214,12 +211,16 @@ class OrderDeliveryTimeBottomSheet : BottomSheetDialogFragment() {
 
     companion object {
 
+        private const val MINUTE_STEP = 30
+        private const val ZERO_TIME = "0"
+        private const val EMPTY = ""
+
         const val ARG_START_TIME = "ARG_START_TIME"
         const val ARG_END_TIME = "ARG_END_TIME"
 
-        fun newInstance(startTime: String, endTime: String) = OrderDeliveryTimeBottomSheet().withArgs {
-            putString(ARG_START_TIME, startTime)
-            putString(ARG_END_TIME, endTime)
+        fun newInstance(startTime: Int, endTime: Int) = OrderDeliveryTimeBottomSheet().withArgs {
+            putInt(ARG_START_TIME, startTime)
+            putInt(ARG_END_TIME, endTime)
         }
     }
 }

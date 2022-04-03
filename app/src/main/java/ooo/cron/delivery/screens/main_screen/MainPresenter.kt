@@ -158,7 +158,7 @@ class MainPresenter @Inject constructor(
     )
 
     private suspend fun loadUser(token: RefreshableToken, isFromPartnerScreen: Boolean) {
-        val response = dataManager.getUser("Bearer ${token.accessToken}")
+        val response = dataManager.getUser()
 
         if (response.isSuccessful) {
             updateUser(response, isFromPartnerScreen)
@@ -184,7 +184,7 @@ class MainPresenter @Inject constructor(
         if (isSuccessful) {
             dataManager.writeToken(body()!!)
 
-            val userResponse = dataManager.getUser("Bearer ${body()!!.accessToken}")
+            val userResponse = dataManager.getUser()
             if (userResponse.isSuccessful)
                 return updateUser(userResponse, isFromPartnerScreen)
         }

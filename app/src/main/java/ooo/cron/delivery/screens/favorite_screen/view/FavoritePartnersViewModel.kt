@@ -23,10 +23,9 @@ class FavoritePartnersViewModel @Inject constructor(
     private val mutableFavPartners: MutableLiveData<FavoritePartners> = MutableLiveData()
     val favPartners : LiveData<FavoritePartners> get() = mutableFavPartners
 
-    fun onCreate() {
+    fun onStart() {
         viewModelScope.launch {
             val data = interactor.getFavoritePartners(
-                token = "Bearer ${ dataManager.readToken().accessToken }",
                 cityId = dataManager.readChosenCityId()
             )
             data.process { mutableFavPartners.postValue(it)}

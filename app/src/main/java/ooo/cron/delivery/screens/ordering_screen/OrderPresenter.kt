@@ -96,7 +96,6 @@ class OrderPresenter @Inject constructor(
 
                         if (orderReq != null) {
                             dataManager.sendOrder(
-                                "Bearer ${dataManager.readToken().accessToken}",
                                 orderReq
                             ).handleOrderResponse()
                         }

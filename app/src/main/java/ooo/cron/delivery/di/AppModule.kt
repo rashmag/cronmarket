@@ -8,6 +8,9 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import ooo.cron.delivery.BuildConfig.BASE_URL
 import ooo.cron.delivery.data.DataManager
+import ooo.cron.delivery.data.PrefsRepository
+import ooo.cron.delivery.data.RestRepository
+import ooo.cron.delivery.data.network.AuthInterceptor
 import ooo.cron.delivery.data.network.RestService
 import ooo.cron.delivery.data.network.SPrefsService
 import ooo.cron.delivery.data.network.errors.ApiErrorsUtils
@@ -29,9 +32,15 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient =
+    fun provideAuthInterceptor(repository: PrefsRepository): AuthInterceptor =
+        AuthInterceptor(repository)
+
+    @Provides
+    @Singleton
+    fun provideOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor, authInterceptor: AuthInterceptor): OkHttpClient =
         OkHttpClient.Builder()
             .addInterceptor(httpLoggingInterceptor)
+            .addInterceptor(authInterceptor)
             .build()
 
     @Provides
@@ -60,8 +69,18 @@ class AppModule {
 
     @Provides
     @Singleton
+    fun provideOrderPrefsRepository(sharedPreferences: SharedPreferences) =
+        PrefsRepository(sharedPreferences)
+
+    @Provides
+    @Singleton
     fun provideDataManager(restService: RestService, sPrefsService: SPrefsService) =
         DataManager(restService, sPrefsService)
+
+    @Provides
+    @Singleton
+    fun provideOrderRestRepository(restService: RestService) =
+        RestRepository(restService)
 
     @Provides
     @Singleton

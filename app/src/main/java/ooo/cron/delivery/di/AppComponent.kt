@@ -28,7 +28,8 @@ import ooo.cron.delivery.di.screens.order_history.OrderHistoryComponent
 @Singleton
 @Component(modules = [
     AppModule::class,
-    AnalyticsModule::class
+    AnalyticsModule::class,
+    InteractorModule::class
 ])
 interface AppComponent {
 

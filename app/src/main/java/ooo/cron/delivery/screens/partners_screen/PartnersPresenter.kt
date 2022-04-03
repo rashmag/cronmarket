@@ -1,5 +1,6 @@
 package ooo.cron.delivery.screens.partners_screen
 
+import android.util.Log
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -14,6 +15,7 @@ import java.util.*
 import javax.inject.Inject
 import ooo.cron.delivery.analytics.BaseAnalytics
 import ooo.cron.delivery.utils.extensions.orZero
+import java.lang.Exception
 
 /*
  * Created by Muhammad on 05.05.2021
@@ -38,7 +40,8 @@ class PartnersPresenter @Inject constructor(
     override fun getPartnerInfo() {
         mainScope.launch {
             withErrorsHandle(
-                { dataManager.getPartnersInfo(view?.getPartnerId()!!).handlePartnersInfo() },
+                { dataManager.getPartnersInfo(
+                    view?.getPartnerId()!!).handlePartnersInfo() },
                 { view?.showConnectionErrorScreen() },
                 { view?.showAnyErrorScreen() })
         }
@@ -250,7 +253,6 @@ class PartnersPresenter @Inject constructor(
             withErrorsHandle(
                 {
                     dataManager.likePartner(
-                        token = "Bearer ${ dataManager.readToken().accessToken }",
                         partnerId = partnerId
                     )
                         .handleLikeResponse()
@@ -271,10 +273,7 @@ class PartnersPresenter @Inject constructor(
     override fun unlikePartner(partnerId: String) {
         mainScope.launch {
             withErrorsHandle(
-                { dataManager.unlikePartner(
-                    token = "Bearer ${ dataManager.readToken().accessToken }",
-                    partnerId = partnerId
-                ).handleUnlikeResponse() },
+                { dataManager.unlikePartner(partnerId = partnerId).handleUnlikeResponse() },
                 { view?.showConnectionErrorScreen() },
                 { view?.showAnyErrorScreen() }
             )
@@ -325,11 +324,11 @@ class PartnersPresenter @Inject constructor(
 
         withErrorsHandle(
             {
-                val accessToken = dataManager.readToken().accessToken
-                basket = if (accessToken.isNotEmpty())
+/*                val accessToken = dataManager.readToken().accessToken
+*//*                basket = if (accessToken.isNotEmpty())
                     dataManager.increaseProductInBasket("Bearer $accessToken", basketEditor)
-                else
-                    dataManager.increaseProductInBasket(basketEditor)
+                else*/
+                dataManager.increaseProductInBasket(basketEditor)
                 dataManager.writeUserBasketId(basket!!.id)
                 basketContent = deserializeDishes()
                 mergeBasketIntoProducts()

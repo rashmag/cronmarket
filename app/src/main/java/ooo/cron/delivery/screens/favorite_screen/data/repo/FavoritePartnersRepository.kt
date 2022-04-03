@@ -16,8 +16,8 @@ import javax.inject.Inject
 class FavoritePartnersRepository @Inject constructor(
     private val api: RestService
 ) {
-    suspend fun getFavoritePartners(token:String, cityId: String) : Result<FavoritePartners> {
-        val response = api.getFavoritePartners(token, cityId)
+    suspend fun getFavoritePartners( cityId: String) : Result<FavoritePartners> {
+        val response = api.getFavoritePartners(cityId)
         val body = response.body()
         return try {
             if (response.isSuccessful && body != null)

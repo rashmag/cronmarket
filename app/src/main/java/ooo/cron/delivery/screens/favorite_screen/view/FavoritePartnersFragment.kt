@@ -7,13 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import ooo.cron.delivery.App
-import ooo.cron.delivery.data.network.models.FavoritePartners
 import ooo.cron.delivery.data.network.models.Partner
 import ooo.cron.delivery.databinding.FragmentFavoritePartnersBinding
 import ooo.cron.delivery.di.screens.favorite_partners.FavoritePartnersViewModelFactory
 import ooo.cron.delivery.screens.base.BaseMVVMFragment
-import ooo.cron.delivery.screens.base.BaseViewModel
-import ooo.cron.delivery.screens.market_category_screen.PartnersAdapter
 import ooo.cron.delivery.screens.partners_screen.PartnersActivity
 import ooo.cron.delivery.utils.extensions.uiLazy
 import javax.inject.Inject
@@ -41,7 +38,11 @@ class FavoritePartnersFragment() : BaseMVVMFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         injectDependencies()
-        baseViewModel.onCreate()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        baseViewModel.onStart()
     }
 
     override fun onCreateView(

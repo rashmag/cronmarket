@@ -12,7 +12,6 @@ import ooo.cron.delivery.screens.order_history_screen.domain.usecases.LoadOrderH
 import retrofit2.Response
 
 class OrderHistoryViewModel @Inject constructor(
-    private val dataManager: DataManager,
     private val orderHistoryUseCase: LoadOrderHistoryUseCase
 ): ViewModel() {
 
@@ -29,7 +28,7 @@ class OrderHistoryViewModel @Inject constructor(
     private fun loadOrderHistory(){
         viewModelScope.launch {
             try {
-                _orderHistoryList.value = orderHistoryUseCase.invoke("Bearer ${dataManager.readToken().accessToken}")
+                _orderHistoryList.value = orderHistoryUseCase.invoke()
             }catch (e: Exception){
                 _serverError.value = e.message
             }

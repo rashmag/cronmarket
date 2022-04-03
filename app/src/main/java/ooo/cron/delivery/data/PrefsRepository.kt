@@ -44,6 +44,10 @@ class PrefsRepository @Inject constructor(
     fun readBasketId() =
         sharedPreferences.getString(USER_BASKET_ID, null)
 
+    fun isLogin(): Boolean {
+        return sharedPreferences.contains(TOKEN)
+    }
+
     companion object {
         const val USER_PHONE = "user_phone"
 

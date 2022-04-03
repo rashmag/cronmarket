@@ -15,7 +15,6 @@ interface RestService {
 
     @GET("/api/v1/User")
     suspend fun getUser(
-        @Header("Authorization") token: String
     ): Response<UserResponse>
 
     @GET("/api/v1/Address/delivery_cities")
@@ -68,7 +67,8 @@ interface RestService {
     fun sentConfirmCode(@Body sentConformCodeReq: ConfirmCodeReq): Call<RefreshableToken>
 
     @POST("/api/v1/User/name")
-    fun setUserName(@Header("Authorization") token: String, @Body name: SetUserNameReq): Call<Void>
+    fun setUserName(
+        @Body name: SetUserNameReq) : Call<Void>
 
     @GET("/api/v1/PartnerCard/partnerInfo")
     suspend fun getPartnersInfo(
@@ -96,7 +96,6 @@ interface RestService {
 
     @POST("/api/v1/Order")
     suspend fun sendOrder(
-        @Header("Authorization") token: String,
         @Body orderReq: OrderReq
     ): Response<ResponseBody>
 
@@ -107,12 +106,6 @@ interface RestService {
 
     @POST("/api/v1/Basket/inc_product")
     suspend fun increaseProductInBasket(
-        @Body editor: BasketEditorReq
-    ): Basket
-
-    @POST("/api/v1/Basket/inc_product")
-    suspend fun increaseProductInBasket(
-        @Header("Authorization") token: String,
         @Body editor: BasketEditorReq
     ): Basket
 
@@ -147,32 +140,27 @@ interface RestService {
 
     @GET("/api/v1/Order/all")
     suspend fun getOrdersHistory(
-        @Header("Authorization") token: String,
         @Query("Offset") offset: Int = 0,
         @Query("Limit") limit: Int = 0
     ) : Response<List<OrderHistoryNetModel>>
 
     @GET("/api/v1/Order")
     suspend fun getOrderHistoryDetail(
-        @Header("Authorization") token: String,
         @Query("id") orderId: String
     ) : Response<OrderHistoryDetailNetModel>
 
     @GET("/api/v1/User/favorite_partners")
     suspend fun getFavoritePartners(
-        @Header("Authorization") token: String,
         @Query("cityId") cityId: String
     ) : Response<FavoritePartners>
 
     @POST("/api/v1/User/favorite_partner")
     suspend fun likePartner(
-        @Header("Authorization") token: String,
         @Body likePartnerReq: LikePartnerReq
     ): Response<ResponseBody>
 
-    @DELETE("/api/v1/User/favorite_partner")
+    @HTTP(method = "DELETE", path = "/api/v1/User/favorite_partner", hasBody = true)
     suspend fun unlikePartner(
-        @Header("Authorization") token: String,
         @Body likePartnerReq: LikePartnerReq
     ): Response<ResponseBody>
 

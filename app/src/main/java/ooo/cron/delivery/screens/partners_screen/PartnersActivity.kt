@@ -205,7 +205,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
                         presenter.likePartner(partnerInfo.id)
                     }
                     else {
-                        presenter.unlikePartner(partnerId)
+                        presenter.unlikePartner(partnerInfo.id)
                     }
                 }
 

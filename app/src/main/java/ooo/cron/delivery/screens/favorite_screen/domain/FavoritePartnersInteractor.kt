@@ -9,7 +9,7 @@ import javax.inject.Inject
 class FavoritePartnersInteractor @Inject constructor(
     private val favoritePartnersRepository: FavoritePartnersRepository
 ) {
-    suspend fun getFavoritePartners(token:String, cityId: String) : Result<FavoritePartners> {
-        return favoritePartnersRepository.getFavoritePartners(token, cityId)
+    suspend fun getFavoritePartners( cityId: String) : Result<FavoritePartners> {
+        return favoritePartnersRepository.getFavoritePartners(cityId)
     }
 }

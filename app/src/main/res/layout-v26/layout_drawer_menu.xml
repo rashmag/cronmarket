@@ -61,7 +61,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
         android:background="@drawable/bg_drawer_menu_item"
-        android:drawableStart="@drawable/ic_drawer_menu_favorite_partners_not_selected"
+        android:drawableStart="@drawable/ic_drawer_menu_favorite_partners"
         android:paddingHorizontal="@dimen/dimen_16"
         android:text="@string/favorite"
         app:layout_constraintStart_toStartOf="parent"

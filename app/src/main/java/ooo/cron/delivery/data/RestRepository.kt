@@ -57,7 +57,7 @@ class RestRepository @Inject constructor(
 
     ) {
         restService.sendOrder(
-            token, OrderReq(
+            OrderReq(
                 basketId,
                 phone,
                 comment,
@@ -119,8 +119,6 @@ class RestRepository @Inject constructor(
             }
 
     }*/
-
-
 
     private fun errorHandleResult(result: Basket): Result<Basket> {
         return try {

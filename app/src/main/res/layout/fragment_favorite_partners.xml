@@ -20,35 +20,38 @@
             android:visibility="invisible"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_favorite_partners"/>
-
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/fav_list_empty"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginHorizontal="34dp"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="20dp"
-                android:layout_marginStart="36dp"
-                android:layout_marginEnd="36dp"
-                android:drawableLeft="@drawable/ic_favorite_empty"
-                android:maxLines="2"
-                android:textStyle="bold"
-                android:textColor="@color/grey90"
-                android:text="@string/favorite_list_empty"
-                android:textAlignment="textStart" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/favorite_list_empty_info"
-                android:textAlignment="center"
-                android:textColor="@color/grey90"/>
-        </androidx.appcompat.widget.LinearLayoutCompat>
     </FrameLayout>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/fav_list_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="36dp"
+        android:gravity="center"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="20dp"
+            android:layout_marginHorizontal="36dp"
+            android:drawableStart="@drawable/ic_favorite_empty"
+            android:drawablePadding="12dp"
+            android:maxLines="2"
+            android:gravity="start"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:textColor="@color/grey90"
+            android:text="@string/favorite_list_empty" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/favorite_list_empty_info"
+            android:textAlignment="center"
+            android:textColor="@color/grey90"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -133,6 +133,9 @@ class PartnersPresenter @Inject constructor(
                             .map { it.toInt() }
                     else listOf(23, 59, 59)
 
+                dataManager.writePartnerOpenHours(openTime[0])
+                dataManager.writePartnerCloseTime(closeTime[0])
+
                 view?.navigateBasket(
                     openTime[0],
                     openTime[1],

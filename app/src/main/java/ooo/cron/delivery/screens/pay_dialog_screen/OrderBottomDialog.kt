@@ -62,14 +62,6 @@ class OrderBottomDialog : BottomSheetDialogFragment() {
 
     private var isDeliveryInKhas: Boolean? = null
 
-    private val openHours by uiLazy {
-        requireArguments().getInt(PARTNER_OPEN_HOURS).orZero()
-    }
-
-    private val closeHours by uiLazy {
-        requireArguments().getInt(PARTNER_CLOSE_HOURS).orZero()
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         injectDependencies()
@@ -340,7 +332,7 @@ class OrderBottomDialog : BottomSheetDialogFragment() {
     private fun addClickForChooseDeliveryTimeContainer() {
         with(binding) {
             contDeliveryTime.setOnClickListener {
-                OrderDeliveryTimeBottomSheet.newInstance(openHours, closeHours).show(parentFragmentManager, "")
+                OrderDeliveryTimeBottomSheet().show(parentFragmentManager, "")
             }
         }
     }
@@ -350,22 +342,5 @@ class OrderBottomDialog : BottomSheetDialogFragment() {
         const val TINKOFF_PAYMENT_REQUEST_CODE = 1
 
         const val RETURNING_SCREEN_KEY = "RETURNING_SCREEN_KEY"
-
-        private const val PARTNER_OPEN_HOURS = "PARTNER_OPEN_HOURS"
-        private const val PARTNER_OPEN_MINUTES = "PARTNER_OPEN_MINUTES"
-        private const val PARTNER_CLOSE_HOURS = "PARTNER_CLOSE_HOURS"
-        private const val PARTNER_CLOSE_MINUTES = "PARTNER_CLOSE_MINUTES"
-
-        fun newInstance(
-            openHours: Int,
-            openMinutes: Int,
-            closeHours: Int,
-            closeMinutes: Int
-        ) = OrderBottomDialog().withArgs {
-            putInt(PARTNER_OPEN_HOURS, openHours)
-            putInt(PARTNER_OPEN_MINUTES, openMinutes)
-            putInt(PARTNER_CLOSE_HOURS, closeHours)
-            putInt(PARTNER_CLOSE_MINUTES, closeMinutes)
-        }
     }
 }

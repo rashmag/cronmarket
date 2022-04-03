@@ -12,12 +12,11 @@ import ooo.cron.delivery.data.network.SPrefsService
  * */
 
 class OrderViewModelFactory @AssistedInject constructor(
-    private val interactor: OrderInteractor,
-    private val sPrefsService: SPrefsService
+    private val interactor: OrderInteractor
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         require(modelClass == OrderViewModel::class.java)
-        return OrderViewModel(interactor, sPrefsService) as T
+        return OrderViewModel(interactor) as T
     }
 
     @AssistedFactory

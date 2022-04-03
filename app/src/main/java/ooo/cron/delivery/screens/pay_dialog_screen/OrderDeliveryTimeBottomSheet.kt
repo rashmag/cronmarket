@@ -37,14 +37,6 @@ class OrderDeliveryTimeBottomSheet : BottomSheetDialogFragment() {
 
     private var isMidnight = false
 
-    private val startTime by uiLazy {
-        requireArguments().getInt(ARG_START_TIME).orZero()
-    }
-
-    private val endTime by uiLazy {
-        requireArguments().getInt(ARG_END_TIME).orZero()
-    }
-
     private val adapterDeliveryTime by uiLazy {
         AdapterDeliveryTime { chosenTime ->
             addClickForDoneBtn(chosenTime)
@@ -121,7 +113,7 @@ class OrderDeliveryTimeBottomSheet : BottomSheetDialogFragment() {
             val zeroHour = if (hourNow < 10) ZERO_TIME else EMPTY
             val zeroMinute = if (minuteNow < 10) ZERO_TIME else EMPTY
 
-            if (hourNow > startTime) {
+            if (hourNow > viewModel.getPartnerOpenHours()) {
                 arrayTimeToday.add("$zeroHour$hourNow:$zeroMinute$minuteNow")
             }
 
@@ -132,7 +124,7 @@ class OrderDeliveryTimeBottomSheet : BottomSheetDialogFragment() {
                 hourNow++
             }
 
-            if (hourNow > endTime - 1) {
+            if (hourNow > viewModel.getPartnerCloseHours() - 1) {
                 // Удаляю, потому что показывалось ненужное время
                 arrayTimeToday.removeLast()
                 isMidnight = true
@@ -214,13 +206,5 @@ class OrderDeliveryTimeBottomSheet : BottomSheetDialogFragment() {
         private const val MINUTE_STEP = 30
         private const val ZERO_TIME = "0"
         private const val EMPTY = ""
-
-        const val ARG_START_TIME = "ARG_START_TIME"
-        const val ARG_END_TIME = "ARG_END_TIME"
-
-        fun newInstance(startTime: Int, endTime: Int) = OrderDeliveryTimeBottomSheet().withArgs {
-            putInt(ARG_START_TIME, startTime)
-            putInt(ARG_END_TIME, endTime)
-        }
     }
 }

@@ -239,24 +239,27 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
                         .centerCrop()
                         .into(backdrop)
                 } else {
-
-                    binding.vgPartnerInfo.animate().alpha(0f).setDuration(600).start()
-
-
-                    val collapsingParams =
-                        appbar.layoutParams as CollapsingToolbarLayout.LayoutParams
-                    collapsingParams.collapseMode =
-                        CollapsingToolbarLayout.LayoutParams.COLLAPSE_MODE_OFF
-                    appbar.layoutParams = collapsingParams
-                    appbar.setExpanded(false)
-
-                    nestedScrollViewConfigured = true
-
-
-                    val appBarParams = CoordinatorLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
-                    appBarParams.height = LinearLayout.LayoutParams.WRAP_CONTENT
-
-                    appbar.layoutParams = appBarParams
+                    Glide.with(binding.root)
+                        .load(R.color.white)
+                        .centerCrop()
+                        .into(backdrop)
+//                    binding.vgPartnerInfo.animate().alpha(0f).setDuration(600).start()
+//
+//
+//                    val collapsingParams =
+//                        appbar.layoutParams as CollapsingToolbarLayout.LayoutParams
+//                    collapsingParams.collapseMode =
+//                        CollapsingToolbarLayout.LayoutParams.COLLAPSE_MODE_OFF
+//                    appbar.layoutParams = collapsingParams
+//                    appbar.setExpanded(false)
+//
+//                    nestedScrollViewConfigured = true
+//
+//
+//                    val appBarParams = CoordinatorLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+//                    appBarParams.height = LinearLayout.LayoutParams.WRAP_CONTENT
+//
+//                    appbar.layoutParams = appBarParams
                 }
             }
         }

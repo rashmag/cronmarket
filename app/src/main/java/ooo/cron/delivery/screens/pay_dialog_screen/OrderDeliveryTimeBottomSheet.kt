@@ -15,7 +15,6 @@ import ooo.cron.delivery.databinding.PopUpChooseDeliveryTimeBinding
 import ooo.cron.delivery.utils.extensions.uiLazy
 import ooo.cron.delivery.utils.extensions.orZero
 import ooo.cron.delivery.utils.extensions.setCustomTextColor
-import ooo.cron.delivery.utils.extensions.withArgs
 import ooo.cron.delivery.utils.extensions.makeGone
 import ooo.cron.delivery.utils.extensions.makeVisible
 import java.util.Calendar
@@ -35,7 +34,7 @@ class OrderDeliveryTimeBottomSheet : BottomSheetDialogFragment() {
 
     private var deliveryTimeLayoutManager: LinearLayoutManager? = null
 
-    private var isMidnight = false
+    private var isPartnerClosed = false
 
     private val adapterDeliveryTime by uiLazy {
         AdapterDeliveryTime { chosenTime ->
@@ -81,31 +80,47 @@ class OrderDeliveryTimeBottomSheet : BottomSheetDialogFragment() {
         var hourNow = currentTime.hours
         var minuteNow = 0
 
-        isMidnight = false
+        val partnerOpenTime = viewModel.getPartnerOpenHours()
+        val partnerCloseTime = viewModel.getPartnerCloseHours() - 1
+
+        isPartnerClosed = false
 
         // Проверка текущих минут
-        // Н-р
-        // Если сейчас 12:00 -> доступное время доставки будет 12:30
-        // Если 12:20 -> доступное время доставки будет 13:00
-        // Если сейчас 12:40 -> доступное время доставки будет 13:30
+        // Один из примеров
+        // Если сейчас 13:12 -> то заказать можно будет на 14:20 (т.е на час позже)
 
         when (currentTime.minutes) {
-            0 -> minuteNow = MINUTE_STEP
-            in 1..30 -> {
+            0 -> {
                 minuteNow = 0
                 hourNow++
             }
-            in 31..39 -> {
-                minuteNow = MINUTE_STEP
+            in 1..10 -> {
+                minuteNow = 10
                 hourNow++
             }
-            in 40..60 -> {
-                minuteNow = MINUTE_STEP
+            in 11..20 -> {
+                minuteNow = 20
                 hourNow++
+            }
+            in 21..30 -> {
+                minuteNow = 30
+                hourNow++
+            }
+            in 31..40 -> {
+                minuteNow = 40
+                hourNow++
+            }
+            in 41..50 -> {
+                minuteNow = 50
+                hourNow++
+            }
+            in 51..60 -> {
+                minuteNow = 0
+                hourNow += 2
             }
         }
 
-        while (isMidnight.not()) {
+        while (isPartnerClosed.not()) {
 
             // Если текущее время < 10, то добавляем 0
             // Н-р если сейчас 9:00 -> то мы увидим 09:00
@@ -113,7 +128,8 @@ class OrderDeliveryTimeBottomSheet : BottomSheetDialogFragment() {
             val zeroHour = if (hourNow < 10) ZERO_TIME else EMPTY
             val zeroMinute = if (minuteNow < 10) ZERO_TIME else EMPTY
 
-            if (hourNow > viewModel.getPartnerOpenHours()) {
+            // Добавление доступного времени доставки
+            if (hourNow > partnerOpenTime) {
                 arrayTimeToday.add("$zeroHour$hourNow:$zeroMinute$minuteNow")
             }
 
@@ -124,10 +140,13 @@ class OrderDeliveryTimeBottomSheet : BottomSheetDialogFragment() {
                 hourNow++
             }
 
-            if (hourNow > viewModel.getPartnerCloseHours() - 1) {
-                // Удаляю, потому что показывалось ненужное время
-                arrayTimeToday.removeLast()
-                isMidnight = true
+            // Для того, чтобы в конце вставлялось Н-р не 20:50, а 21:00 (если партнер закрывается в 22:00)
+            if(hourNow == partnerCloseTime && minuteNow == 0){
+                arrayTimeToday.add("$hourNow:$ZERO_TIME$ZERO_TIME")
+            }
+
+            if (hourNow >= partnerCloseTime) {
+                isPartnerClosed = true
             }
         }
 
@@ -203,7 +222,7 @@ class OrderDeliveryTimeBottomSheet : BottomSheetDialogFragment() {
 
     companion object {
 
-        private const val MINUTE_STEP = 30
+        private const val MINUTE_STEP = 10
         private const val ZERO_TIME = "0"
         private const val EMPTY = ""
     }

@@ -15,6 +15,10 @@ import ooo.cron.delivery.screens.partners_screen.PartnersActivity
 import ooo.cron.delivery.utils.extensions.uiLazy
 import javax.inject.Inject
 
+/**
+ * Created by Maya Nasrueva on 02.04.2022
+ * */
+
 class FavoritePartnersFragment() : BaseMVVMFragment() {
 
     @Inject

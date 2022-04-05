@@ -4,17 +4,20 @@ import okhttp3.HttpUrl
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
-import ooo.cron.delivery.data.PrefsRepository
 import javax.inject.Inject
 
+/**
+ * Created by Maya Nasrueva on 03.04.2022
+ * */
+
 class AuthInterceptor @Inject constructor(
-    private val repository: PrefsRepository
+    private val interactor: AuthInteractor
 ): Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         var original : Request = chain.request()
-        if (repository.isLogin() != null) {
+        if (interactor.isLogged()) {
             original = original.newBuilder()
-                .addHeader(AUTHORIZATION_KEY, "Bearer ${repository.readToken()?.accessToken}")
+                .addHeader(AUTHORIZATION_KEY, "Bearer ${interactor.getToken()}")
                 .build()
         }
         val originalHttpUrl: HttpUrl = original.url

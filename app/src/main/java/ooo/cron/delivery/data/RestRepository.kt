@@ -41,7 +41,6 @@ class RestRepository @Inject constructor(
     }
 
     suspend fun sendOrder(
-        token: String,
         basketId: String,
         phone: String?,
         comment: String,

@@ -170,9 +170,11 @@ class OrderPresenter @Inject constructor(
 
         val token = dataManager.readToken()
 
-        if (code() == 401 && token.accessToken.isNotEmpty() && token.refreshToken.isNotEmpty()) {
-            return dataManager.refreshToken(token)
-                .handleRefreshToken()
+        if (token != null) {
+            if (code() == 401 && token.accessToken.isNotEmpty() && token.refreshToken.isNotEmpty()) {
+                return dataManager.refreshToken(token)
+                    .handleRefreshToken()
+            }
         }
 
         if (isSuccessful) {

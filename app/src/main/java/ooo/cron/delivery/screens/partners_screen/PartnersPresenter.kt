@@ -263,6 +263,10 @@ class PartnersPresenter @Inject constructor(
         }
     }
 
+    override fun getUserLoggedStatus(): Boolean {
+        return dataManager.readToken()?.accessToken?.isNotEmpty() ?: false
+    }
+
     private fun Response<ResponseBody>.handleLikeResponse() {
         if (isSuccessful) {
             view?.showLikePartner()
@@ -406,6 +410,8 @@ class PartnersPresenter @Inject constructor(
     private fun deserializeDishes() =
         Gson().fromJson(basket!!.content, Array<BasketDish>::class.java)
             .asList()
+
+
 
     private companion object {
         private const val EMPTY_BASKET = 0.0

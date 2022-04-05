@@ -338,6 +338,7 @@ class MainActivity : BaseActivity(), MainContract.View {
 
     private fun checkUserLoggedStatus() {
         binding.vgMainMenu.tvDrawerMenuItemsOrders.isVisible = presenter.getUserLoggedStatus()
+        binding.vgMainMenu.tvDrawerMenuFavoritePartners.isVisible = presenter.getUserLoggedStatus()
     }
 
     private fun injectDependencies() =

@@ -5,6 +5,10 @@ import dagger.BindsInstance
 import dagger.Subcomponent
 import ooo.cron.delivery.screens.favorite_screen.view.FavoritePartnersFragment
 
+/**
+ * Created by Maya Nasrueva on 02.04.2022
+ * */
+
 @FavoritePartnersScope
 @Subcomponent(modules = [FavoritePartnersModule::class])
 interface FavoritePartnersComponent {

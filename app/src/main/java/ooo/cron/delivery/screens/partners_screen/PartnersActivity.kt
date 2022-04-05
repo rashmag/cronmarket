@@ -115,6 +115,11 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         setImageSize()
         onProductRecyclerViewScrollChanged()
         initPartnerRecyclerView()
+        checkUserLoggedStatus()
+    }
+
+    private fun checkUserLoggedStatus() {
+        binding.cbFavorite.isVisible = presenter.getUserLoggedStatus()
     }
 
     override fun onResume() {

@@ -5,6 +5,10 @@ import dagger.Module
 import dagger.Provides
 import ooo.cron.delivery.databinding.FragmentFavoritePartnersBinding
 
+/**
+ * Created by Maya Nasrueva on 02.04.2022
+ * */
+
 @Module
 class FavoritePartnersModule {
 

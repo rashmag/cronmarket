@@ -8,6 +8,10 @@ import ooo.cron.delivery.data.DataManager
 import ooo.cron.delivery.screens.favorite_screen.view.FavoritePartnersViewModel
 import ooo.cron.delivery.screens.favorite_screen.domain.FavoritePartnersInteractor
 
+/**
+ * Created by Maya Nasrueva on 02.04.2022
+ * */
+
 class FavoritePartnersViewModelFactory @AssistedInject constructor(
     private val interactor: FavoritePartnersInteractor,
     private val dataManager: DataManager

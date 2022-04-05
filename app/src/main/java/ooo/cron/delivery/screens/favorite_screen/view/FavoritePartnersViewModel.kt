@@ -13,6 +13,10 @@ import ooo.cron.delivery.screens.favorite_screen.domain.FavoritePartnersInteract
 import ooo.cron.delivery.utils.SingleLiveEvent
 import javax.inject.Inject
 
+/**
+ * Created by Maya Nasrueva on 02.04.2022
+ * */
+
 class FavoritePartnersViewModel @Inject constructor(
     private val interactor: FavoritePartnersInteractor,
     private val dataManager: DataManager

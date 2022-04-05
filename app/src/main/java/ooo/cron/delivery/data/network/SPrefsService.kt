@@ -1,6 +1,7 @@
 package ooo.cron.delivery.data.network
 
 import android.content.SharedPreferences
+import android.util.Log
 import com.google.gson.Gson
 import ooo.cron.delivery.data.network.models.Basket
 import ooo.cron.delivery.data.network.models.City
@@ -97,21 +98,32 @@ class SPrefsService @Inject constructor(
 
     fun writeToken(token: RefreshableToken) =
         sharedPreferences.edit()
-            .putString(ACCESS_TOKEN, token.accessToken)
-            .putString(REFRESH_TOKEN, token.refreshToken)
-            .commit()
+            .putString(TOKEN, Gson().toJson(token).toString())
+            .apply()
 
-    fun readToken() =
-        RefreshableToken(
-            sharedPreferences.getString(ACCESS_TOKEN, "")!!,
-            sharedPreferences.getString(REFRESH_TOKEN, "")!!
-        )
+    fun readToken(): RefreshableToken? {
+        val tokenPreviousAccess = sharedPreferences.getString(ACCESS_TOKEN, "")
+        val tokenPreviousRefresh = sharedPreferences.getString(REFRESH_TOKEN, "")
+        val token = sharedPreferences.getString(TOKEN, "")
+        return if (token != "")
+            Gson().fromJson(token, RefreshableToken::class.java)
+        else if (tokenPreviousAccess != "" && tokenPreviousRefresh != "") {
+            val tokenPrevious = RefreshableToken(
+                tokenPreviousAccess.toString(),
+                tokenPreviousRefresh.toString()
+            )
+            writeToken(tokenPrevious)
+            tokenPrevious
+        } else null
+    }
 
-    fun removeToken() =
+    fun removeToken() {
         sharedPreferences.edit()
+            .remove(TOKEN)
             .remove(ACCESS_TOKEN)
             .remove(REFRESH_TOKEN)
-            .commit()
+            .apply()
+    }
 
     fun writePartnerId(id: String){
         sharedPreferences.edit()
@@ -142,6 +154,8 @@ class SPrefsService @Inject constructor(
 
         const val ACCESS_TOKEN = "access_token"
         const val REFRESH_TOKEN = "refresh_token"
+
+        const val TOKEN = "token"
 
         const val MARKET_CATEGORY_ID = "market_category_id"
         const val MARKET_CATEGORY_NAME = "market_category_name"

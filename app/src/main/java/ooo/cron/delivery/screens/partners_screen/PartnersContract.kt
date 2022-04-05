@@ -50,30 +50,25 @@ interface PartnersContract {
         fun getPartnerInfo()
         fun getPartnerCategory()
         fun getPartnerProducts()
-
         fun requiredAddressDialogAccepted()
         fun requiredAddressDialogDeclined()
-
         fun onBasketClicked()
-
         fun productClick(product: PartnerProductsRes)
-
         fun minusClick(
             product: PartnerProductsRes,
             quantity: Int
         )
-
         fun plusClick(
             product: PartnerProductsRes,
             additives: List<BasketDishAdditive>,
             quantity: Int
         )
-
         fun likePartner(
             partnerId: String
         )
         fun unlikePartner(
             partnerId: String
         )
+        fun getUserLoggedStatus(): Boolean
     }
 }

@@ -41,7 +41,6 @@ abstract class BaseMvpPresenter<V : MvpView> : MvpPresenter<V> {
                     onConnectionError?.invoke()
                 is CancellationException -> showJobCancellationLogMessage(e)
                 else -> {
-                    Log.d("exp", e.toString())
                     onAnyError()
                 }
             }

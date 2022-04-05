@@ -6,6 +6,10 @@ import retrofit2.Response
 import ooo.cron.delivery.utils.Result
 import javax.inject.Inject
 
+/**
+ * Created by Maya Nasrueva on 02.04.2021
+ * */
+
 class FavoritePartnersInteractor @Inject constructor(
     private val favoritePartnersRepository: FavoritePartnersRepository
 ) {

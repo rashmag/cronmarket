@@ -14,6 +14,10 @@ import ooo.cron.delivery.data.network.models.FavoritePartners
 import ooo.cron.delivery.data.network.models.Partner
 import ooo.cron.delivery.databinding.ItemFavoritePartnersBinding
 
+/**
+ * Created by Maya Nasrueva on 02.04.2022
+ * */
+
 class FavoritePartnersAdapter(
     private val onPartnerClick: (partner: Partner) -> Unit
 ) : ListAdapter<Partner, FavoritePartnersAdapter.FavoritePartnersViewHolder>(DIFF_CALLBACK) {

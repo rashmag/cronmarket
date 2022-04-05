@@ -10,6 +10,7 @@ import ooo.cron.delivery.BuildConfig.BASE_URL
 import ooo.cron.delivery.data.DataManager
 import ooo.cron.delivery.data.PrefsRepository
 import ooo.cron.delivery.data.RestRepository
+import ooo.cron.delivery.data.network.AuthInteractor
 import ooo.cron.delivery.data.network.AuthInterceptor
 import ooo.cron.delivery.data.network.RestService
 import ooo.cron.delivery.data.network.SPrefsService
@@ -32,8 +33,8 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideAuthInterceptor(repository: PrefsRepository): AuthInterceptor =
-        AuthInterceptor(repository)
+    fun provideAuthInterceptor(interactor: AuthInteractor): AuthInterceptor =
+        AuthInterceptor(interactor)
 
     @Provides
     @Singleton

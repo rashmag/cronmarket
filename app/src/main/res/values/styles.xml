@@ -110,4 +110,10 @@
         <item name="android:background">@drawable/bg_btn_select_payment</item>
     </style>
 
+    <!-- Bottom Sheet style -->
+    <style name="BottomSheetDialogThemeNoFloating" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowSoftInputMode">adjustResize|stateVisible</item>
+    </style>
+
 </resources>

@@ -60,7 +60,7 @@ class FirstAddressSelectionActivity :
 
     private var updateAddressesPopupTimer: CountDownTimer? = null
 
-    private var returningScreen: ReturningToScreenEnum ?= null
+    private var returningScreen: ReturningToScreenEnum? = null
 
     var citiesList = arrayListOf<String>()
 
@@ -108,7 +108,7 @@ class FirstAddressSelectionActivity :
             LOCATION_REQUEST_CODE -> {
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     presenter.onLocationPermissionGranted()
-                }else{
+                } else {
                     Toast.makeText(this, getString(R.string.common_gps_enabled), Toast.LENGTH_SHORT).show()
                 }
                 return
@@ -262,20 +262,20 @@ class FirstAddressSelectionActivity :
     }
 
     override fun navigateMainScreen() {
-        when(returningScreen){
+        when (returningScreen) {
             ReturningToScreenEnum.FROM_MAIN,
             ReturningToScreenEnum.FROM_ORDERING,
             ReturningToScreenEnum.FROM_PARTNERS -> onBackPressed()
             ReturningToScreenEnum.FROM_PAY_DIALOG -> {
                 val basketIntent = Intent(this, BasketActivity::class.java)
-                basketIntent.apply {
-                    flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-                    putExtra(
-                        ARG_ADDRESS,
-                        ReturningToScreenEnum.IS_FROM_CHOOSE_ADDRESS as? Parcelable
-                    )
-                    startActivity(this)
-                }
+                    .apply {
+                        flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                        putExtra(
+                            ARG_ADDRESS,
+                            ReturningToScreenEnum.IS_FROM_CHOOSE_ADDRESS as? Parcelable
+                        )
+                    }
+                startActivity(basketIntent)
             }
 
             else -> startActivity(Intent(this, MainActivity::class.java))

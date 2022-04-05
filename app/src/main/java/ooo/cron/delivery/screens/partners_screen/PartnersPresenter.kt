@@ -137,9 +137,9 @@ class PartnersPresenter @Inject constructor(
                 dataManager.writePartnerCloseTime(closeTime[0])
 
                 view?.navigateBasket(
-                    openTime[0],
+                    openTime.first(),
                     openTime[1],
-                    closeTime[0],
+                    closeTime.first(),
                     closeTime[1],
                     basket
                 )

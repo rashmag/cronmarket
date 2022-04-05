@@ -64,7 +64,6 @@ class AdapterDeliveryTime(
     }
 
     private companion object{
-
         private const val SMALL_TEXT = 14f
         private const val MIDDLE_TEXT = 16f
         private const val MAX_TEXT = 24f

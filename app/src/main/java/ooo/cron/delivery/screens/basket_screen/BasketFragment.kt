@@ -94,7 +94,7 @@ class BasketFragment : BaseMVVMFragment() {
     private var basket: Basket? = null
     private var isRestaurant: Int? = null
 
-    private val address by uiLazy {
+    private val address: String? by uiLazy {
         requireArguments().getString(ADDRESS)
     }
 

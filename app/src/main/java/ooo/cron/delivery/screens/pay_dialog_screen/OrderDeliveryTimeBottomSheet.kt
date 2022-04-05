@@ -1,5 +1,6 @@
 package ooo.cron.delivery.screens.pay_dialog_screen
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,8 +18,9 @@ import ooo.cron.delivery.utils.extensions.orZero
 import ooo.cron.delivery.utils.extensions.setCustomTextColor
 import ooo.cron.delivery.utils.extensions.makeGone
 import ooo.cron.delivery.utils.extensions.makeVisible
-import java.util.Calendar
+import java.time.ZonedDateTime
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 class OrderDeliveryTimeBottomSheet : BottomSheetDialogFragment() {
 
@@ -72,12 +74,14 @@ class OrderDeliveryTimeBottomSheet : BottomSheetDialogFragment() {
         }
     }
 
+
+    @SuppressLint("NewApi")
     private fun getTimeToday(): ArrayList<String> {
 
         val arrayTimeToday = arrayListOf<String>()
 
-        val currentTime = Calendar.getInstance().time
-        var hourNow = currentTime.hours
+        val currentTime = ZonedDateTime.now()
+        var hourNow = currentTime.hour
         var minuteNow = 0
 
         val partnerOpenTime = viewModel.getPartnerOpenHours()
@@ -89,7 +93,7 @@ class OrderDeliveryTimeBottomSheet : BottomSheetDialogFragment() {
         // Один из примеров
         // Если сейчас 13:12 -> то заказать можно будет на 14:20 (т.е на час позже)
 
-        when (currentTime.minutes) {
+        when (currentTime.minute) {
             0 -> {
                 minuteNow = 0
                 hourNow++
@@ -221,7 +225,6 @@ class OrderDeliveryTimeBottomSheet : BottomSheetDialogFragment() {
     }
 
     companion object {
-
         private const val MINUTE_STEP = 10
         private const val ZERO_TIME = "0"
         private const val EMPTY = ""

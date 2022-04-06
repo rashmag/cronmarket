@@ -2,7 +2,6 @@ package ooo.cron.delivery.data
 
 import android.content.SharedPreferences
 import com.google.gson.Gson
-import ooo.cron.delivery.data.network.SPrefsService
 import ooo.cron.delivery.data.network.models.Basket
 import ooo.cron.delivery.data.network.models.City
 import ooo.cron.delivery.data.network.models.RefreshableToken
@@ -18,7 +17,7 @@ class PrefsRepository @Inject constructor(
 
     fun readBasket(): Basket? {
         val basketPrefs = sharedPreferences.getString(BASKET, null)
-        return if (!basketPrefs.isNullOrEmpty())
+        return if (basketPrefs.isNullOrEmpty().not())
             Gson().fromJson(basketPrefs, Basket::class.java)
         else null
     }

@@ -68,7 +68,8 @@ interface RestService {
 
     @POST("/api/v1/User/name")
     fun setUserName(
-        @Body name: SetUserNameReq) : Call<Void>
+        @Body name: SetUserNameReq
+    ): Call<Void>
 
     @GET("/api/v1/PartnerCard/partnerInfo")
     suspend fun getPartnersInfo(
@@ -136,23 +137,23 @@ interface RestService {
     suspend fun getSpecialOffers(
         @Query("CityId") cityId: String,
         @Query("MarketCategoryId") marketCategoryId: Int
-    ) : PromotionsResponse
+    ): PromotionsResponse
 
     @GET("/api/v1/Order/all")
     suspend fun getOrdersHistory(
         @Query("Offset") offset: Int = 0,
         @Query("Limit") limit: Int = 0
-    ) : Response<List<OrderHistoryNetModel>>
+    ): Response<List<OrderHistoryNetModel>>
 
     @GET("/api/v1/Order")
     suspend fun getOrderHistoryDetail(
         @Query("id") orderId: String
-    ) : Response<OrderHistoryDetailNetModel>
+    ): Response<OrderHistoryDetailNetModel>
 
     @GET("/api/v1/User/favorite_partners")
     suspend fun getFavoritePartners(
         @Query("cityId") cityId: String
-    ) : Response<FavoritePartners>
+    ): Response<FavoritePartners>
 
     @POST("/api/v1/User/favorite_partner")
     suspend fun likePartner(

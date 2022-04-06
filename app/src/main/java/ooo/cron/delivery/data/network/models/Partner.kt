@@ -20,8 +20,7 @@ data class Partner(
     val rating: Float = 0f,
     val feedbackCount: Int = 0,
     val schedule: Schedule,
-    @SerializedName("isFavorite")
-    val isFavorite: Boolean
+    @SerializedName("isFavorite") val isFavorite: Boolean
 ) {
     fun isOpen(): Boolean {
         val currentCalendar = Calendar.getInstance()

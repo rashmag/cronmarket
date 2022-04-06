@@ -7,6 +7,5 @@ import com.google.gson.annotations.SerializedName
  * */
 
 data class FavoritePartners(
-    @SerializedName("partners")
-    val partners: List<Partner>
+    @SerializedName("partners") val partners: List<Partner>
 )

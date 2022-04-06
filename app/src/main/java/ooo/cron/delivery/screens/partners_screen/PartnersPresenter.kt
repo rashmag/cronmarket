@@ -332,8 +332,10 @@ class PartnersPresenter @Inject constructor(
 *//*                basket = if (accessToken.isNotEmpty())
                     dataManager.increaseProductInBasket("Bearer $accessToken", basketEditor)
                 else*/
-                dataManager.increaseProductInBasket(basketEditor)
-                dataManager.writeUserBasketId(basket!!.id)
+                basket = dataManager.increaseProductInBasket(basketEditor)
+                basket.let { it?.let { it1 ->
+                    dataManager.writeUserBasketId(it1.id) }
+                }
                 basketContent = deserializeDishes()
                 mergeBasketIntoProducts()
                 view?.showPartnerProducts(productCategoriesModel)

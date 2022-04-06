@@ -12,6 +12,8 @@ import ooo.cron.delivery.databinding.FragmentFavoritePartnersBinding
 import ooo.cron.delivery.di.screens.favorite_partners.FavoritePartnersViewModelFactory
 import ooo.cron.delivery.screens.base.BaseMVVMFragment
 import ooo.cron.delivery.screens.partners_screen.PartnersActivity
+import ooo.cron.delivery.utils.extensions.makeGone
+import ooo.cron.delivery.utils.extensions.makeVisible
 import ooo.cron.delivery.utils.extensions.uiLazy
 import javax.inject.Inject
 
@@ -70,26 +72,26 @@ class FavoritePartnersFragment() : BaseMVVMFragment() {
     }
 
     private fun showNoFavoriteInfo() {
-        binding.rvFavoritePartners.visibility = View.GONE
-        binding.favListEmpty.visibility = View.VISIBLE
+        binding.rvFavoritePartners.makeGone()
+        binding.favListEmpty.makeVisible()
     }
 
     fun navigatePartnerScreen(partner:Partner) {
         startActivityForResult(
             Intent(requireContext(), PartnersActivity::class.java)
                 .apply {
-                    putExtra(PartnersActivity.EXTRA_PARTNER_ID, partner.id)
-                    putExtra(PartnersActivity.EXTRA_IS_OPEN, partner.isOpen())
-                    putExtra(PartnersActivity.EXTRA_OPEN_HOURS, partner.openTime()[HOURS])
-                    putExtra(PartnersActivity.EXTRA_OPEN_MINUTES, partner.openTime()[MINUTES])
+                    putExtra(EXTRA_PARTNER_ID, partner.id)
+                    putExtra(EXTRA_IS_OPEN, partner.isOpen())
+                    putExtra(EXTRA_OPEN_HOURS, partner.openTime()[HOURS])
+                    putExtra(EXTRA_OPEN_MINUTES, partner.openTime()[MINUTES])
                 },
             PartnersActivity.RESULT_CODE
         )
     }
 
     private fun showFavoritePartners(partners: List<Partner>) {
-        binding.rvFavoritePartners.visibility = View.VISIBLE
-        binding.favListEmpty.visibility = View.GONE
+        binding.rvFavoritePartners.makeVisible()
+        binding.favListEmpty.makeGone()
         favoritePartnersAdapter.submitList(partners)
     }
 
@@ -103,5 +105,9 @@ class FavoritePartnersFragment() : BaseMVVMFragment() {
     companion object {
         const val HOURS = 0
         const val MINUTES = 1
+        const val EXTRA_PARTNER_ID = "partnerId"
+        const val EXTRA_IS_OPEN = "is_open"
+        const val EXTRA_OPEN_HOURS = "open_hours"
+        const val EXTRA_OPEN_MINUTES = "open_minutes"
     }
 }

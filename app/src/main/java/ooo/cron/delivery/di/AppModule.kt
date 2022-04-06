@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import dagger.Module
 import dagger.Provides
+import dagger.Reusable
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import ooo.cron.delivery.BuildConfig.BASE_URL
@@ -84,7 +85,7 @@ class AppModule {
         RestRepository(restService)
 
     @Provides
-    @Singleton
+    @Reusable
     fun provideApiErrorUtils(): ApiErrorsUtils {
         return ApiErrorsUtils()
     }

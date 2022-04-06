@@ -2,6 +2,7 @@ package ooo.cron.delivery.di
 
 import dagger.Module
 import dagger.Provides
+import dagger.Reusable
 import ooo.cron.delivery.data.PrefsRepository
 import ooo.cron.delivery.data.network.AuthInteractor
 import javax.inject.Singleton
@@ -14,7 +15,7 @@ import javax.inject.Singleton
 class InteractorModule {
 
     @Provides
-    @Singleton
+    @Reusable
     fun provideAuthInteractor(
         prefsRepository: PrefsRepository
     ): AuthInteractor =

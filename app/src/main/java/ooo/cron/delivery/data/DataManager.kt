@@ -1,10 +1,9 @@
 package ooo.cron.delivery.data
 
-import android.util.Log
-import ooo.cron.delivery.data.network.RestService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.ResponseBody
+import ooo.cron.delivery.data.network.RestService
 import ooo.cron.delivery.data.network.SPrefsService
 import ooo.cron.delivery.data.network.models.*
 import ooo.cron.delivery.data.network.request.*
@@ -84,7 +83,7 @@ class DataManager @Inject constructor(
         }
 
     suspend fun getPartnersInfo(partnerId: String) = withContext(Dispatchers.IO) {
-        restService.getPartnersInfo( partnerId)
+        restService.getPartnersInfo(partnerId)
     }
 
     suspend fun getPartnerCategory(partnerId: String) = withContext(Dispatchers.IO) {
@@ -240,11 +239,11 @@ class DataManager @Inject constructor(
 
     fun readPartnerId() = sPrefsService.readPartnerId()
 
-    suspend fun likePartner( partnerId: String): Response<ResponseBody> {
+    suspend fun likePartner(partnerId: String): Response<ResponseBody> {
         return restService.likePartner( LikePartnerReq(partnerId = partnerId))
     }
 
-    suspend fun unlikePartner( partnerId: String): Response<ResponseBody> {
+    suspend fun unlikePartner(partnerId: String): Response<ResponseBody> {
         return restService.unlikePartner(LikePartnerReq(partnerId = partnerId))
     }
 

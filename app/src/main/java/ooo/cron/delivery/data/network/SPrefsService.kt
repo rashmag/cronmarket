@@ -1,7 +1,6 @@
 package ooo.cron.delivery.data.network
 
 import android.content.SharedPreferences
-import android.util.Log
 import com.google.gson.Gson
 import ooo.cron.delivery.data.network.models.Basket
 import ooo.cron.delivery.data.network.models.City
@@ -82,7 +81,7 @@ class SPrefsService @Inject constructor(
     }
 
     fun readBasket() =
-        Gson().fromJson(sharedPreferences.getString(BASKET,""),Basket::class.java)
+        Gson().fromJson(sharedPreferences.getString(BASKET, ""), Basket::class.java)
 
     fun writeUserBasketId(id: String) =
         sharedPreferences.edit()
@@ -125,7 +124,7 @@ class SPrefsService @Inject constructor(
             .apply()
     }
 
-    fun writePartnerId(id: String){
+    fun writePartnerId(id: String) {
         sharedPreferences.edit()
             .putString(PARTNER_ID, id)
             .commit()

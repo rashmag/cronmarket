@@ -7,6 +7,5 @@ import com.google.gson.annotations.SerializedName
  * */
 
 data class LikePartnerReq (
-    @SerializedName("partnerId")
-    val partnerId: String
+    @SerializedName("partnerId") val partnerId: String
 )

@@ -1,16 +1,13 @@
 package ooo.cron.delivery.screens.favorite_screen.view
 
-import android.opengl.Visibility
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import ooo.cron.delivery.R
-import ooo.cron.delivery.data.network.models.FavoritePartners
 import ooo.cron.delivery.data.network.models.Partner
 import ooo.cron.delivery.databinding.ItemFavoritePartnersBinding
 
@@ -26,7 +23,7 @@ class FavoritePartnersAdapter(
         RecyclerView.ViewHolder(itemBinding.root) {
 
         fun bind(favoritePartner: Partner) {
-            itemView.setOnClickListener{
+            itemView.setOnClickListener {
                 onPartnerClick.invoke(favoritePartner)
             }
             with(itemBinding) {

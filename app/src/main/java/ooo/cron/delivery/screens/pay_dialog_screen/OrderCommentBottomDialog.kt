@@ -4,12 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import ooo.cron.delivery.App
+import ooo.cron.delivery.R
 import ooo.cron.delivery.databinding.FragmentCommentBinding
 import javax.inject.Inject
-
 
 class OrderCommentBottomDialog() : BottomSheetDialogFragment() {
 
@@ -25,6 +26,7 @@ class OrderCommentBottomDialog() : BottomSheetDialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomSheetDialogThemeNoFloating)
         injectDependencies()
     }
 

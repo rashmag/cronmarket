@@ -149,7 +149,12 @@ class OrderViewModel @Inject constructor(
                 val basketClearReq = interactor.getBasketClearReq(it)
                 interactor.clearBasket(basketClearReq)
             }
-            interactor.sendOrder(paymentMethod, comment)
+            interactor.sendOrder(
+                paymentMethod = paymentMethod,
+                comment = comment,
+                address = getAddress(),
+                deliveryAtTime = deliveryTime.value.orEmpty()
+            )
         }
         paymentStatus.postValue(true)
     }

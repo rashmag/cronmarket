@@ -15,7 +15,12 @@ class OrderInteractor @Inject constructor(
 ) {
     //suspend fun getBasket() = restRepo.getBasket(prefsRepo.readBasket().id)
 
-    suspend fun sendOrder(paymentMethod: Int, comment: String ) {
+    suspend fun sendOrder(
+        paymentMethod: Int,
+        comment: String,
+        address: String,
+        deliveryAtTime: String
+    ) {
         val basket = prefsRepo.readBasket()
         val token = prefsRepo.readToken()
         if (basket == null || token == null) return
@@ -25,11 +30,11 @@ class OrderInteractor @Inject constructor(
             prefsRepo.readUserPhone(),
             comment,
             prefsRepo.readDeliveryCity().id,
-            address = null,
+            address = address,
             entrance = null,
             floor = null,
             flat = null,
-            deliveryAtTime = null,
+            deliveryAtTime = deliveryAtTime,
             saveAddress = null,
             discount = null,
             paymentMethod

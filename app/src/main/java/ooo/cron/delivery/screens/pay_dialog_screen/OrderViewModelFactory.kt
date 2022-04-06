@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import ooo.cron.delivery.data.OrderInteractor
+import ooo.cron.delivery.data.network.SPrefsService
 
 /**
  * Created by Maya Nasrueva on 14.12.2021

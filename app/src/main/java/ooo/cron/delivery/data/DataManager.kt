@@ -243,6 +243,20 @@ class DataManager @Inject constructor(
 
     fun readPartnerId() = sPrefsService.readPartnerId()
 
+    fun writePartnerOpenHours(openHours: Int){
+        sPrefsService.writePartnerOpenHours(openHours)
+    }
+
+    fun readPartnerOpenHours() =
+        sPrefsService.readPartnerOpenHours()
+
+    fun writePartnerCloseTime(closeHours: Int){
+        sPrefsService.writePartnerCloseHours(closeHours)
+    }
+
+    fun readPartnerCloseHours() =
+        sPrefsService.readPartnerCloseHours()
+
     companion object {
         const val EMPTY_UUID = SPrefsService.EMPTY_UUID
     }

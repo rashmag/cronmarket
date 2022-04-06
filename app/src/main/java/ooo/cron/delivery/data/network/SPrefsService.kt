@@ -150,6 +150,24 @@ class SPrefsService @Inject constructor(
             .commit()
     }
 
+    fun writePartnerOpenHours(openHours: Int){
+        sharedPreferences.edit()
+            .putInt(PARTNER_OPEN_HOURS, openHours)
+            .commit()
+    }
+
+    fun readPartnerOpenHours() =
+        sharedPreferences.getInt(PARTNER_OPEN_HOURS, 0)
+
+    fun writePartnerCloseHours(closeHours: Int){
+        sharedPreferences.edit()
+            .putInt(PARTNER_CLOSE_HOURS, closeHours)
+            .commit()
+    }
+
+    fun readPartnerCloseHours() =
+        sharedPreferences.getInt(PARTNER_CLOSE_HOURS, 0)
+
     fun readPartnerId() = sharedPreferences.getString(PARTNER_ID, "")
 
     companion object {
@@ -185,5 +203,8 @@ class SPrefsService @Inject constructor(
         const val MARKET_CATEGORY = "market_category"
 
         const val PARTNER_ID = "PARTNER_ID"
+
+        const val PARTNER_OPEN_HOURS = "PARTNER_OPEN_HOURS"
+        const val PARTNER_CLOSE_HOURS = "PARTNER_CLOSE_HOURS"
     }
 }

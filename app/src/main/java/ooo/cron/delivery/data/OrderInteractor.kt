@@ -56,4 +56,16 @@ class OrderInteractor @Inject constructor(
     fun getDeliveryCityId(): String {
         return prefsRepo.readDeliveryCity().id
     }
+
+    fun readAddress(): String{
+        return prefsRepo.readBuildingAddress()
+    }
+
+    fun getPartnerOpenHours(): Int{
+        return prefsRepo.readPartnerOpenHours()
+    }
+
+    fun getPartnerCloseHours(): Int{
+        return prefsRepo.readPartnerCloseHours()
+    }
 }

@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import ooo.cron.delivery.data.OrderInteractor
+import ooo.cron.delivery.data.network.SPrefsService
 import ooo.cron.delivery.data.network.models.Basket
 import ooo.cron.delivery.data.network.models.Basket.Companion.deserializeDishes
 import ooo.cron.delivery.data.network.models.PayData
@@ -44,6 +45,9 @@ class OrderViewModel @Inject constructor(
     val commentTextLiveData: LiveData<String> = _commentTextLivedata
     private val mutablePayVariantState: MutableLiveData<PaymentVariant> = MutableLiveData()
     val payVariantState: LiveData<PaymentVariant> get() = mutablePayVariantState
+
+    private val mutableDeliveryTime: MutableLiveData<String> = MutableLiveData()
+    val deliveryTime: LiveData<String> get() = mutableDeliveryTime
 
     init {
         Log.e("app", "inited")
@@ -153,6 +157,22 @@ class OrderViewModel @Inject constructor(
     //метод для вызова показа ошибки в экране корзины
     fun onPaymentFailed() {
         paymentStatus.postValue(false)
+    }
+
+    fun getAddress(): String{
+        return interactor.readAddress()
+    }
+
+    fun setDeliveryTime(time: String){
+        mutableDeliveryTime.postValue(time)
+    }
+
+    fun getPartnerOpenHours(): Int {
+        return interactor.getPartnerOpenHours()
+    }
+
+    fun getPartnerCloseHours(): Int{
+        return interactor.getPartnerCloseHours()
     }
 
     private fun Int.inCoins() =

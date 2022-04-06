@@ -24,6 +24,7 @@
     <string name="first_address_selection_error_message">К сожалению в городе %1$s пока нет нашей доставки. Выберите город из списка выше</string>
     <string name="first_address_selection_location_error_message">К сожалению ваш адрес не был определен, введите пожалуйста адрес вручную</string>
     <string name="first_address_selection_warning_message">К сожалению по данному адресу мы пока не можем доставить заказ. Но вы можете посмотреть наше приложение и заказать по другому адресу</string>
+    <string name="first_address_selection_write_house_number_message">Укажите номер дома</string>
     <string name="first_address_selection_info_description">Информационное сообщение</string>
     <string name="first_address_selection_find_location">Определить моё местоположение</string>
     <string name="first_address_selection_start_shopping">Перейти к покупкам</string>
@@ -96,7 +97,7 @@
     <string name="delivery_details_save_address_title">Сохранить адрес</string>
     <string name="delivery_details_phone_number_title">Номер телефона</string>
     <string name="delivery_details_comments_to_order_title">Комментарий к заказу</string>
-    <string name="delivery_details_delivery_time_title">Время доставки</string>
+    <string name="delivery_details_delivery_time_title">40-60 минут</string>
     <string name="delivery_details_soon_as_possible_title">Как можно скорее</string>
     <string name="delivery_details_in_time_title">Ко времени</string>
     <string name="delivery_details_title">Детали доставки</string>
@@ -321,4 +322,11 @@
     <string name="delivery_cost">Доставка %s₽</string>
     <string name="payment_result_cancel">Оплата отменена</string>
     <string name="google_pay_result_error">Что-то пошло не так</string>
+    
+    <!-- Choose delivery time pop-up -->
+    <string name="choose_delivery_time_pop_up_title">Время доставки</string>
+    <string name="choose_delivery_time_pop_up_choose_delivery_time_title">Выберите время:\n40 - 60 минут</string>
+    <string name="choose_delivery_time_pop_up_asap_title">Как можно скорее</string>
+    <string name="choose_delivery_time_pop_up_by_time_title">Ко времени</string>
+    <string name="choose_delivery_time_pop_up_btn_title">Готово</string>
 </resources>

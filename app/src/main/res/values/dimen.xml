@@ -48,4 +48,5 @@
     <!-- Image Slider -->
     <dimen name="space_26">26dp</dimen>
     <dimen name="space_42">42dp</dimen>
+    <dimen name="space_65">65dp</dimen>
 </resources>

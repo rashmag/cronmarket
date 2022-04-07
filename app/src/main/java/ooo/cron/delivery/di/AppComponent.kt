@@ -19,6 +19,7 @@ import ooo.cron.delivery.screens.splash_screen.SplashScreenComponent
 import javax.inject.Singleton
 import ooo.cron.delivery.di.screens.order_history_detail.OrderHistoryDetailComponent
 import ooo.cron.delivery.di.screens.order_history.OrderHistoryComponent
+import ooo.cron.delivery.screens.onboard_screen.OnboardComponent
 
 /**
  * Created by Ramazan Gadzhikadiev on 06.04.2021.
@@ -41,6 +42,7 @@ interface AppComponent {
     fun enterNameComponentBuilder(): EnterNameComponent.Builder
     fun partnersComponentBuilder(): PartnersComponent.Builder
     fun basketComponentBuilder(): BasketComponent.Builder
+    fun onboardComponentBuilder(): OnboardComponent.Builder
     fun orderingComponentBuilder(): OrderComponent.Builder
     fun deliveryDetailsComponentBuilder(): DeliveryDetailsComponent.Builder
     fun orderCostComponentBuilder(): OrderCostComponent.Builder

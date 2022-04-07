@@ -12,6 +12,7 @@ import ooo.cron.delivery.R
 import ooo.cron.delivery.screens.base.BaseActivity
 import ooo.cron.delivery.screens.first_address_selection_screen.FirstAddressSelectionActivity
 import ooo.cron.delivery.screens.main_screen.MainActivity
+import ooo.cron.delivery.screens.onboard_screen.OnboardActivity
 import javax.inject.Inject
 
 /*
@@ -84,5 +85,12 @@ class SplashScreenActivity : BaseActivity(), SplashScreenContract.View {
         positiveButton.isAllCaps = false
         positiveButton.updateTextColor(resources.getColor(R.color.errors_true))
         dialog.show()
+    }
+
+    override fun showOnboard() {
+        Handler(Looper.getMainLooper()).postDelayed({
+            startActivity(Intent(this, OnboardActivity::class.java))
+            finish()
+        }, 1000)
     }
 }

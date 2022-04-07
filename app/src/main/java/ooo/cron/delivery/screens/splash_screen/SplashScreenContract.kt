@@ -14,6 +14,8 @@ interface SplashScreenContract {
 
         fun showUpdateVersionDialog()
 
+        fun showOnboard()
+
         fun navigateFirstAddressScreen()
         fun navigateMainScreen()
         fun navigateGooglePlay()

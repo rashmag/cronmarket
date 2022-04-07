@@ -234,7 +234,6 @@ class OrderingActivity : BaseActivity(), OrderContract.View {
     override fun openPaymentScreen(paymentOptions: PaymentOptions) {
         TinkoffAcquiring(
             getString(R.string.tinkoff_terminal_key),
-            getString(R.string.tinkoff_terminal_password),
             getString(R.string.tinkoff_terminal_public_key)
         ).openPaymentScreen(
             this,

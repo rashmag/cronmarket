@@ -329,4 +329,8 @@
     <string name="choose_delivery_time_pop_up_asap_title">Как можно скорее</string>
     <string name="choose_delivery_time_pop_up_by_time_title">Ко времени</string>
     <string name="choose_delivery_time_pop_up_btn_title">Готово</string>
+
+    <string name="favorite">Избранное</string>
+    <string name="favorite_list_empty">Ваш список избранных заведений пуст</string>
+    <string name="favorite_list_empty_info">Кликайте по иконке сердечка на страницах ваших любимых мест, и вы всегда найдете их в списке избранных.</string>
 </resources>

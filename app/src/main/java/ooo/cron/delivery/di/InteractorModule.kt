@@ -7,6 +7,7 @@ import ooo.cron.delivery.data.BasketInteractor
 import ooo.cron.delivery.data.OrderInteractor
 import ooo.cron.delivery.data.PrefsRepository
 import ooo.cron.delivery.data.RestRepository
+import ooo.cron.delivery.data.network.AuthInteractor
 import javax.inject.Singleton
 
 /**

@@ -108,15 +108,6 @@ fun TextView.setDrawableStart(icon: Int){
     )
 }
 
-internal fun View.requestNewSize(
-    width: Int = layoutParams.width,
-    height: Int = layoutParams.height
-) {
-    layoutParams.width = width
-    layoutParams.height = height
-    layoutParams = layoutParams
-}
-
 fun ImageView.setTint(color: Int){
     DrawableCompat.setTint(
         DrawableCompat.wrap(this.drawable),

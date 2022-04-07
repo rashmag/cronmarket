@@ -4,10 +4,15 @@ import android.content.Context
 import android.content.SharedPreferences
 import dagger.Module
 import dagger.Provides
+import dagger.Reusable
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import ooo.cron.delivery.BuildConfig.BASE_URL
 import ooo.cron.delivery.data.DataManager
+import ooo.cron.delivery.data.PrefsRepository
+import ooo.cron.delivery.data.RestRepository
+import ooo.cron.delivery.data.network.AuthInteractor
+import ooo.cron.delivery.data.network.AuthInterceptor
 import ooo.cron.delivery.data.network.RestService
 import ooo.cron.delivery.data.network.SPrefsService
 import ooo.cron.delivery.data.network.errors.ApiErrorsUtils

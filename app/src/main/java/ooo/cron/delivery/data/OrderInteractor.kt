@@ -22,10 +22,8 @@ class OrderInteractor @Inject constructor(
         deliveryAtTime: String
     ) {
         val basket = prefsRepo.readBasket()
-        val token = prefsRepo.readToken()
-        if (basket == null || token == null) return
+        if (basket == null) return
         restRepo.sendOrder(
-            token.accessToken,
             basket.id,
             prefsRepo.readUserPhone(),
             comment,

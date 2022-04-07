@@ -14,19 +14,38 @@ import javax.inject.Inject
 class SPrefsService @Inject constructor(
     private val sharedPreferences: SharedPreferences
 ) {
-    fun writeChosenCity(city: City) =
+    fun writeChosenCity(city: City) {
         sharedPreferences.edit()
-            .putString(CITY_ID, city.id)
-            .putString(CITY_NAME, city.city)
-            .putString(CITY_KLADR_ID, city.kladrId)
-            .commit()
+            .putString(CITY, Gson().toJson(city).toString())
+            .apply()
+    }
 
-    fun readChosenCity() =
-        City(
-            sharedPreferences.getString(CITY_ID, "")!!,
-            sharedPreferences.getString(CITY_NAME, "")!!,
-            sharedPreferences.getString(CITY_KLADR_ID, "")!!
+    fun readChosenCity(): City? {
+        val city = sharedPreferences.getString(CITY, "")
+        if (city.isNullOrEmpty().not()) {
+            return Gson().fromJson(city, City::class.java)
+        }
+        val cityIdPrevious = sharedPreferences.getString(CITY_ID, "")
+        if (cityIdPrevious != null && cityIdPrevious.isEmpty()) {
+            return null
+        }
+        val cityNamePrevious = sharedPreferences.getString(CITY_NAME, "")
+        if (cityNamePrevious != null && cityNamePrevious.isEmpty()) {
+            return null
+        }
+        val cityKladrIdPrevious = sharedPreferences.getString(CITY_KLADR_ID, "")
+        if (cityKladrIdPrevious != null && cityKladrIdPrevious.isEmpty()) {
+            return null
+        }
+        val cityPrevious = City(
+            cityIdPrevious.toString(),
+            cityNamePrevious.toString(),
+            cityKladrIdPrevious.toString()
         )
+        writeChosenCity(cityPrevious)
+        return cityPrevious
+    }
+
 
     fun writeCurrentCityId(cityId: String) =
         sharedPreferences.edit()
@@ -46,17 +65,37 @@ class SPrefsService @Inject constructor(
 
     fun writeSelectedMarketCategory(category: MarketCategory) =
         sharedPreferences.edit()
-            .putInt(MARKET_CATEGORY_ID, category.id)
-            .putString(MARKET_CATEGORY_NAME, category.categoryName)
-            .putString(MARKET_CATEGORY_IMAGE, category.categoryImgUri)
-            .commit()
+            .putString(MARKET_CATEGORY, Gson().toJson(category).toString())
+            .apply()
 
-    fun readSelectedMarketCategory() =
-        MarketCategory(
-            sharedPreferences.getInt(MARKET_CATEGORY_ID, 1),
-            sharedPreferences.getString(MARKET_CATEGORY_NAME, "")!!,
-            sharedPreferences.getString(MARKET_CATEGORY_IMAGE, "")!!
-        )
+    fun readSelectedMarketCategory(): MarketCategory? {
+        val marketCategory = sharedPreferences.getString(MARKET_CATEGORY, "")
+        if (marketCategory.isNullOrEmpty().not()) {
+            return Gson().fromJson(
+                marketCategory,
+                MarketCategory::class.java)
+        }
+        val marketCategoryIdPrevious = sharedPreferences.getInt(MARKET_CATEGORY_ID, -1)
+        if (marketCategoryIdPrevious == -1) {
+            return null
+        }
+        val marketCategoryNamePrevious = sharedPreferences.getString(MARKET_CATEGORY_NAME, "")
+        if (marketCategoryNamePrevious != null && marketCategoryNamePrevious.isEmpty()) {
+            return null
+        }
+        val marketCategoryImagePrevious = sharedPreferences.getString(MARKET_CATEGORY_IMAGE, "")
+        if (marketCategoryImagePrevious != null && marketCategoryImagePrevious.isEmpty()) {
+            return null
+        }
+        val marketCategoryPrevious =
+            MarketCategory(
+                marketCategoryIdPrevious,
+                marketCategoryNamePrevious.toString(),
+                marketCategoryImagePrevious.toString()
+            )
+        writeSelectedMarketCategory(marketCategoryPrevious)
+        return marketCategoryPrevious
+    }
 
     fun writeBuildingAddress(address: String) =
         sharedPreferences.edit()
@@ -101,34 +140,54 @@ class SPrefsService @Inject constructor(
             .apply()
 
     fun readToken(): RefreshableToken? {
-        val tokenPreviousAccess = sharedPreferences.getString(ACCESS_TOKEN, "")
-        val tokenPreviousRefresh = sharedPreferences.getString(REFRESH_TOKEN, "")
         val token = sharedPreferences.getString(TOKEN, "")
-        return if (token != "")
-            Gson().fromJson(token, RefreshableToken::class.java)
-        else if (tokenPreviousAccess != "" && tokenPreviousRefresh != "") {
-            val tokenPrevious = RefreshableToken(
-                tokenPreviousAccess.toString(),
-                tokenPreviousRefresh.toString()
-            )
-            writeToken(tokenPrevious)
-            tokenPrevious
-        } else null
+        if (token.isNullOrEmpty().not()) {
+            return Gson().fromJson(token, RefreshableToken::class.java)
+        }
+        val tokenPreviousRefresh = sharedPreferences.getString(REFRESH_TOKEN, "")
+        if (tokenPreviousRefresh != null && tokenPreviousRefresh.isEmpty()) {
+            return null
+        }
+        val tokenPreviousAccess = sharedPreferences.getString(ACCESS_TOKEN, "")
+        if (tokenPreviousAccess != null && tokenPreviousAccess.isEmpty()) {
+            return null
+        }
+        val tokenPrevious = RefreshableToken(
+            tokenPreviousAccess.toString(),
+            tokenPreviousRefresh.toString()
+        )
+        writeToken(tokenPrevious)
+        return tokenPrevious
     }
 
-    fun removeToken() {
+    fun removeToken() =
         sharedPreferences.edit()
             .remove(TOKEN)
-            .remove(ACCESS_TOKEN)
-            .remove(REFRESH_TOKEN)
             .apply()
-    }
 
-    fun writePartnerId(id: String) {
+    fun writePartnerId(id: String){
         sharedPreferences.edit()
             .putString(PARTNER_ID, id)
             .commit()
     }
+
+    fun writePartnerOpenHours(openHours: Int){
+        sharedPreferences.edit()
+            .putInt(PARTNER_OPEN_HOURS, openHours)
+            .commit()
+    }
+
+    fun readPartnerOpenHours() =
+        sharedPreferences.getInt(PARTNER_OPEN_HOURS, 0)
+
+    fun writePartnerCloseHours(closeHours: Int){
+        sharedPreferences.edit()
+            .putInt(PARTNER_CLOSE_HOURS, closeHours)
+            .commit()
+    }
+
+    fun readPartnerCloseHours() =
+        sharedPreferences.getInt(PARTNER_CLOSE_HOURS, 0)
 
     fun readPartnerId() = sharedPreferences.getString(PARTNER_ID, "")
 
@@ -138,6 +197,8 @@ class SPrefsService @Inject constructor(
         const val CITY_ID = "CITY_ID"
         const val CITY_NAME = "CITY_NAME"
         const val CITY_KLADR_ID = "CITY_KLADR_ID"
+
+        const val CITY = "city"
 
         const val CURRENT_CITY_ID = "CURRENT_CITY_ID"
 
@@ -160,6 +221,11 @@ class SPrefsService @Inject constructor(
         const val MARKET_CATEGORY_NAME = "market_category_name"
         const val MARKET_CATEGORY_IMAGE = "market_category_image"
 
+        const val MARKET_CATEGORY = "market_category"
+
         const val PARTNER_ID = "PARTNER_ID"
+
+        const val PARTNER_OPEN_HOURS = "PARTNER_OPEN_HOURS"
+        const val PARTNER_CLOSE_HOURS = "PARTNER_CLOSE_HOURS"
     }
 }

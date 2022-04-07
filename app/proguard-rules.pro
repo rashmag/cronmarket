@@ -24,6 +24,12 @@
 
 -keep class ooo.cron.delivery.data.** { *; }
 
+-keep class ru.tinkoff.acquiring.sdk.localization.** { *; }
+
+-keep class ru.tinkoff.acquiring.sdk.requests.** { *; }
+
+-keep class ru.tinkoff.acquiring.sdk.models.** { *; }
+
 #-keep class retrofit2.** { *; }
 
 #-keep class okhttp3.** { *; }

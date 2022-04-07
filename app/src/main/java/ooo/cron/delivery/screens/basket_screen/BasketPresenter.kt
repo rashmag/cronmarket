@@ -203,7 +203,7 @@ class BasketPresenter @Inject constructor(
         }
 
         dataManager.writeBasket(basket!!)
-        view?.navigateMakeOrderScreen(basket!!)
+        //view?.navigateMakeOrderScreen(basket!!)
     }
 
     private fun deserializeDishes() =

@@ -62,7 +62,10 @@ class AppModule {
     @Provides
     @Singleton
     fun providePreferences(context: Context): SharedPreferences =
-        context.getSharedPreferences(ooo.cron.delivery.BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE)
+        context.getSharedPreferences(
+            ooo.cron.delivery.BuildConfig.APPLICATION_ID,
+            Context.MODE_PRIVATE
+        )
 
     @Provides
     @Singleton

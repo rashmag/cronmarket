@@ -140,7 +140,7 @@ class CategoryAdapter(
 
                     com.bumptech.glide.Glide.with(root)
                         .load(photo)
-                        .placeholder(R.drawable.placeholder_details)
+                        .placeholder(R.drawable.bg_basket_product_content)
                         .into(ivProduct)
                 }
             }

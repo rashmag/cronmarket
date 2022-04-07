@@ -1,9 +1,9 @@
 package ooo.cron.delivery.data
 
+import ooo.cron.delivery.data.network.RestService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.ResponseBody
-import ooo.cron.delivery.data.network.RestService
 import ooo.cron.delivery.data.network.SPrefsService
 import ooo.cron.delivery.data.network.models.*
 import ooo.cron.delivery.data.network.request.*
@@ -178,7 +178,7 @@ class DataManager @Inject constructor(
         sPrefsService.readCurrentCityPosition()
 
     fun readChosenCityId() =
-        sPrefsService.readChosenCity().id
+        sPrefsService.readChosenCity()?.id
 
     fun writeSelectedMarketCategory(category: MarketCategory) =
         sPrefsService.writeSelectedMarketCategory(category)
@@ -246,6 +246,20 @@ class DataManager @Inject constructor(
     suspend fun unlikePartner(partnerId: String): Response<ResponseBody> {
         return restService.unlikePartner(LikePartnerReq(partnerId = partnerId))
     }
+
+    fun writePartnerOpenHours(openHours: Int){
+        sPrefsService.writePartnerOpenHours(openHours)
+    }
+
+    fun readPartnerOpenHours() =
+        sPrefsService.readPartnerOpenHours()
+
+    fun writePartnerCloseTime(closeHours: Int){
+        sPrefsService.writePartnerCloseHours(closeHours)
+    }
+
+    fun readPartnerCloseHours() =
+        sPrefsService.readPartnerCloseHours()
 
     companion object {
         const val EMPTY_UUID = SPrefsService.EMPTY_UUID

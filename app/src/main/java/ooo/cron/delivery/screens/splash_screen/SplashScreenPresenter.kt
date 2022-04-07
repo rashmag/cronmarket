@@ -22,10 +22,10 @@ class SplashScreenPresenter @Inject constructor(
             withErrorsHandle(
                 {
                     if (dataManager.getStableVersion() == STABLE_API_VERSION) {
-                        if (dataManager.readChosenCity().id.isEmpty())
-                            view?.navigateFirstAddressScreen()
-                        else
+                        if (dataManager.readChosenCity()?.id != null)
                             view?.navigateMainScreen()
+                        else
+                            view?.navigateFirstAddressScreen()
                     } else {
                         view?.showUpdateVersionDialog()
                     }

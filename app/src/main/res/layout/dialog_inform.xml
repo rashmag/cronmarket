@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/dimen_24"
+    android:paddingTop="@dimen/dimen_24"
+    android:paddingEnd="@dimen/dimen_24"
+    android:paddingBottom="@dimen/dimen_24"
+    android:background="@drawable/bg_dialog_rounded">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_inform_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/grey90"
+        android:textSize="20sp"
+        android:drawablePadding="@dimen/dimen_8"
+        android:drawableStart="@drawable/ic_warning"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Заголовок" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_inform_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_12"
+        android:layout_marginStart="@dimen/dimen_24"
+        android:textColor="@color/grey90"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@id/tv_inform_title"
+        app:layout_constraintTop_toBottomOf="@id/tv_inform_title"
+        tools:text="lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_inform_accept"
+        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="22dp"
+        android:backgroundTint="@color/main_dark"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_inform_message"
+        tools:text="Понятно" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

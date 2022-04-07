@@ -46,13 +46,13 @@ class MainPresenter @Inject constructor(
     override fun onResumeView(isFromPartnerScreen: Boolean) {
         mainScope.launch {
             defineAddress()
-            if (currentChosenCity != dataManager.readChosenCity().id) {
-                currentChosenCity = dataManager.readChosenCity().id
-                loadMarketCategories(dataManager.readChosenCity().id)
+            if (currentChosenCity != dataManager.readChosenCity()?.id) {
+                currentChosenCity = dataManager.readChosenCity()?.id
+                currentChosenCity?.let { loadMarketCategories(it) }//todo нет обработки ошибки
                 showMarketCategories(marketCategories!!.first())
             }
 
-            dataManager.readToken()?.let { loadUser(it, isFromPartnerScreen) }
+            dataManager.readToken()?.let { loadUser(it, isFromPartnerScreen) } //todo нет обработки ошибки
 
             val basketId = dataManager.readUserBasketId()
 
@@ -77,10 +77,10 @@ class MainPresenter @Inject constructor(
                         view?.hideContinueLastSession()
                     } else{
                         if (dataManager.readCurrentCityId() == EMPTY_BECAUSE_FIRST_OPEN){
-                            dataManager.writeCurrentCityId(dataManager.readChosenCity().id)
+                            dataManager.readChosenCity()?.let { dataManager.writeCurrentCityId(it.id) } //todo нет обработки ошибки
                         }
 
-                        if (dataManager.readChosenCity().id == dataManager.readCurrentCityId()){
+                        if (dataManager.readChosenCity()?.id == dataManager.readCurrentCityId()){
                             view?.showContinueLastSession()
                         }else{
                             view?.hideContinueLastSession()
@@ -238,7 +238,7 @@ class MainPresenter @Inject constructor(
 
     private fun selectMarketCategory() {
         mainScope.launch {
-            if (dataManager.readChosenCity().id == user?.user?.lastDeliveryCityId) {
+            if (dataManager.readChosenCity()?.id == user?.user?.lastDeliveryCityId) {
                 val lastBoughtMarketCategoryPosition =
                     marketCategories!!.indexOfFirst { it.id == user?.user?.lastMarketCategoryId }
                 if (lastBoughtMarketCategoryPosition != -1)
@@ -247,7 +247,7 @@ class MainPresenter @Inject constructor(
         }
     }
 
-    override fun getMarketCategory(): MarketCategory {
+    override fun getMarketCategory(): MarketCategory? {
         return dataManager.readSelectedMarketCategory()
     }
 
@@ -258,11 +258,11 @@ class MainPresenter @Inject constructor(
     private fun loadSpecialOrders() {
         mainScope.launch {
             try {
-                val specialOffers = dataManager.getSpecialOffers(
-                    dataManager.readChosenCityId(),
-                    dataManager.readSelectedMarketCategory().id
-                )
-
+                val chosenCity = dataManager.readChosenCityId()
+                val selectedMarketCategory = dataManager.readSelectedMarketCategory()?.id
+                var specialOffers: List<Promotion> = listOf()
+                if (chosenCity != null && selectedMarketCategory != null)
+                    specialOffers = dataManager.getSpecialOffers(chosenCity,selectedMarketCategory)
                 if (specialOffers.isEmpty())
                     view?.hideSpecialOffers()
                 else {

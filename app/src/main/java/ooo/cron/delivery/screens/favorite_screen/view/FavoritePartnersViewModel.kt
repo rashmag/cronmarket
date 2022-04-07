@@ -21,18 +21,16 @@ class FavoritePartnersViewModel @Inject constructor(
     private val interactor: FavoritePartnersInteractor,
     private val dataManager: DataManager
 ): BaseViewModel() {
-
-    //получить избранных партнеров
-
     private val mutableFavPartners: MutableLiveData<FavoritePartners> = MutableLiveData()
     val favPartners : LiveData<FavoritePartners> get() = mutableFavPartners
 
     fun onStart() {
         viewModelScope.launch {
-            val data = interactor.getFavoritePartners(
-                cityId = dataManager.readChosenCityId()
-            )
-            data.process { mutableFavPartners.postValue(it)}
+            dataManager.readChosenCityId()?.let {
+                interactor.getFavoritePartners(
+                    cityId = it
+                )
+            }?.process { mutableFavPartners.postValue(it)}
         }
     }
 }

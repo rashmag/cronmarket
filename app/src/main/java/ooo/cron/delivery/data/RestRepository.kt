@@ -157,6 +157,4 @@ class RestRepository @Inject constructor(
             Gson().toJson(addingProduct)
         )
     }
-
-
 }

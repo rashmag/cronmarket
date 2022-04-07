@@ -1,6 +1,5 @@
 package ooo.cron.delivery.screens.partners_screen
 
-import android.util.Log
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -51,16 +50,17 @@ class PartnersPresenter @Inject constructor(
         return dataManager.readPartnerId() != view?.getPartnerId()
     }
 
-
     private fun Response<PartnersInfoRes>.handlePartnersInfo() {
         if (isSuccessful) {
             partner = body()!!
             view?.showPartnerInfo(partner)
-            analytics.trackOpenPartnersCard(
-                partnerName = partner.name,
-                categoryName = dataManager.readSelectedMarketCategory().categoryName,
-                phoneNumber = dataManager.readUserPhone().toString()
-            )
+            dataManager.readSelectedMarketCategory()?.let {
+                analytics.trackOpenPartnersCard(
+                    partnerName = partner.name,
+                    categoryName = it.categoryName,
+                    phoneNumber = dataManager.readUserPhone().toString()
+                )
+            }
         } else {
             view?.showAnyErrorScreen()
         }
@@ -136,10 +136,13 @@ class PartnersPresenter @Inject constructor(
                             .map { it.toInt() }
                     else listOf(23, 59, 59)
 
+                dataManager.writePartnerOpenHours(openTime[0])
+                dataManager.writePartnerCloseTime(closeTime[0])
+
                 view?.navigateBasket(
-                    openTime[0],
+                    openTime.first(),
                     openTime[1],
-                    closeTime[0],
+                    closeTime.first(),
                     closeTime[1],
                     basket
                 )
@@ -232,7 +235,11 @@ class PartnersPresenter @Inject constructor(
                             basketContent = deserializeDishes()
                             mergeBasketIntoProducts()
                             view?.showPartnerProducts(productCategoriesModel)
-                            dataManager.writeCurrentCityId(dataManager.readChosenCity().id)
+                            dataManager.readChosenCity()?.id?.let {
+                                dataManager.writeCurrentCityId(
+                                    it
+                                )
+                            }
                             view?.updateBasketPreview(
                                 basketContent?.sumBy { it.quantity } ?: 0,
                                 String.format("%.2f", basket!!.amount)
@@ -412,8 +419,6 @@ class PartnersPresenter @Inject constructor(
     private fun deserializeDishes() =
         Gson().fromJson(basket!!.content, Array<BasketDish>::class.java)
             .asList()
-
-
 
     private companion object {
         private const val EMPTY_BASKET = 0.0

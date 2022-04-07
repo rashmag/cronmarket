@@ -39,18 +39,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <FrameLayout
-                        android:id="@+id/image_container"
-                        android:layout_width="match_parent"
-                        android:layout_height="497dp"
-                        android:fitsSystemWindows="true"
-                        android:scaleType="centerCrop"
-                        app:layout_collapseMode="parallax"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                <FrameLayout
+                    android:id="@+id/image_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="497dp"
+                    android:fitsSystemWindows="true"
+                    android:scaleType="centerCrop"
+                    app:layout_collapseMode="parallax"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                    <ImageView
+                <ImageView
                         android:id="@+id/backdrop"
                         android:layout_width="match_parent"
                         android:layout_height="400dp"
@@ -96,7 +96,6 @@
                             android:layout_marginStart="@dimen/dimen_8"
                             android:layout_marginEnd="@dimen/dimen_8"
                             android:layout_marginBottom="@dimen/dimen_4"
-
                             android:textColor="@color/grey90"
                             android:textStyle="bold"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -272,13 +271,13 @@
 
 
     <FrameLayout
-        android:id="@+id/vg_partner_basket"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@drawable/button_continue_buy_corners"
-        android:layout_marginHorizontal="@dimen/dimen_16"
-        android:layout_marginVertical="@dimen/dimen_12"
-        android:visibility="gone">
+            android:id="@+id/vg_partner_basket"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginHorizontal="@dimen/dimen_16"
+            android:layout_marginVertical="@dimen/dimen_12"
+            android:background="@drawable/button_continue_buy_corners"
+            android:visibility="gone">
 
 
         <TextView
@@ -303,7 +302,7 @@
             android:layout_marginEnd="@dimen/dimen_24"
             android:textColor="@color/white"
             android:textSize="@dimen/text_middle_16"
-            tools:text="10900₽" />
+            tools:text="10900₽"/>
 
     </FrameLayout>
 

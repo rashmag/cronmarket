@@ -25,7 +25,7 @@ interface MainContract {
         fun removeMarketCategoriesProgress()
         fun showNotAuthorizedMessage()
         fun showLogOutDialog()
-        fun startMarketCategoryFragment(category: MarketCategory)
+        fun startMarketCategoryFragment(category: MarketCategory?)
         fun startFavoritePartnersFragment()
         fun startOrdersHistoryFragment()
         fun startContactsFragment()
@@ -54,7 +54,7 @@ interface MainContract {
         fun onLogInLogOutClick()
         fun onLogOutApplied()
         fun continueLastSessionCLick()
-        fun getMarketCategory(): MarketCategory
+        fun getMarketCategory(): MarketCategory?
         fun onStartMarketCategory()
         fun getUserLoggedStatus(): Boolean
     }

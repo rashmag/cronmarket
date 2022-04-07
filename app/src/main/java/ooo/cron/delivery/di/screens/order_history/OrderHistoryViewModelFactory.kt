@@ -9,13 +9,12 @@ import ooo.cron.delivery.screens.order_history_screen.domain.usecases.LoadOrderH
 import ooo.cron.delivery.screens.order_history_screen.presentation.OrderHistoryViewModel
 
 class OrderHistoryViewModelFactory @Inject constructor(
-    private val dataManager: DataManager,
     private val loadOrderHistoryUseCase: LoadOrderHistoryUseCase
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         require(modelClass == OrderHistoryViewModel::class.java)
-        return OrderHistoryViewModel(dataManager, loadOrderHistoryUseCase) as T
+        return OrderHistoryViewModel(loadOrderHistoryUseCase) as T
     }
 
     @OrderHistoryScope

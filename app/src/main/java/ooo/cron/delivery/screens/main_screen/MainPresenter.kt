@@ -52,7 +52,7 @@ class MainPresenter @Inject constructor(
                 showMarketCategories(marketCategories!!.first())
             }
 
-            loadUser(dataManager.readToken(), isFromPartnerScreen)
+            dataManager.readToken()?.let { loadUser(it, isFromPartnerScreen) }
 
             val basketId = dataManager.readUserBasketId()
 
@@ -100,7 +100,7 @@ class MainPresenter @Inject constructor(
     }
 
     override fun getUserLoggedStatus(): Boolean {
-        return dataManager.readToken().accessToken.isNotEmpty()
+        return dataManager.readToken()?.accessToken?.isNotEmpty() ?: false
     }
 
     override fun onMarketCategoryClicked(category: MarketCategory) {
@@ -130,15 +130,17 @@ class MainPresenter @Inject constructor(
 
     override fun onLogOutApplied() {
         val token = dataManager.readToken()
-        if (user != null && token.refreshToken.isNotEmpty()) {
-            mainScope.launch {
-                withErrorsHandle(
-                    { dataManager.logOut(LogOutReq(token.refreshToken)).handleLogOut() },
-                    { view?.showConnectionErrorScreen() },
-                    { view?.showAnyErrorScreen() }
-                )
+        if (token != null) {
+            if (user != null && token.refreshToken.isNotEmpty()) {
+                mainScope.launch {
+                    withErrorsHandle(
+                        { dataManager.logOut(LogOutReq(token.refreshToken)).handleLogOut() },
+                        { view?.showConnectionErrorScreen() },
+                        { view?.showAnyErrorScreen() }
+                    )
+                }
+                return
             }
-            return
         }
     }
 
@@ -158,7 +160,7 @@ class MainPresenter @Inject constructor(
     )
 
     private suspend fun loadUser(token: RefreshableToken, isFromPartnerScreen: Boolean) {
-        val response = dataManager.getUser("Bearer ${token.accessToken}")
+        val response = dataManager.getUser()
 
         if (response.isSuccessful) {
             updateUser(response, isFromPartnerScreen)
@@ -184,7 +186,7 @@ class MainPresenter @Inject constructor(
         if (isSuccessful) {
             dataManager.writeToken(body()!!)
 
-            val userResponse = dataManager.getUser("Bearer ${body()!!.accessToken}")
+            val userResponse = dataManager.getUser()
             if (userResponse.isSuccessful)
                 return updateUser(userResponse, isFromPartnerScreen)
         }

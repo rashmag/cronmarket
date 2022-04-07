@@ -34,9 +34,9 @@ class SliderAdapter(private val onClick: (slideModel: SlideModel) -> Unit) : Rec
     inner class SliderViewHolder(private val itemBinding: PagerRowBinding): RecyclerView.ViewHolder(itemBinding.root) {
 
         fun bind(model: SlideModel){
-            itemView.setOnClickListener {
-                onClick(model)
-            }
+//            itemView.setOnClickListener {
+//                onClick(model)
+//            }
             Glide.with(itemView.context)
                 .load(model.imageUrl)
                 .transform(CenterInside(), RoundedCorners(IMAGE_ROUND_CORNER))

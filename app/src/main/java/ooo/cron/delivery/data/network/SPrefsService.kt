@@ -21,21 +21,29 @@ class SPrefsService @Inject constructor(
     }
 
     fun readChosenCity(): City? {
-        val cityIdPrevious = sharedPreferences.getString(CITY_ID, "")
-        val cityNamePrevious = sharedPreferences.getString(CITY_NAME, "")
-        val cityKladrIdPrevious = sharedPreferences.getString(CITY_KLADR_ID, "")
         val city = sharedPreferences.getString(CITY, "")
-        return if (city != "")
-            Gson().fromJson(city, City::class.java)
-        else if (cityIdPrevious != "" && cityNamePrevious != "" && cityKladrIdPrevious != "") {
-            val cityPrevious = City(
-                cityIdPrevious.toString(),
-                cityNamePrevious.toString(),
-                cityKladrIdPrevious.toString()
-            )
-            writeChosenCity(cityPrevious)
-            return cityPrevious
-        }else null
+        if (city.isNullOrEmpty().not()) {
+            return Gson().fromJson(city, City::class.java)
+        }
+        val cityIdPrevious = sharedPreferences.getString(CITY_ID, "")
+        if (cityIdPrevious != null && cityIdPrevious.isEmpty()) {
+            return null
+        }
+        val cityNamePrevious = sharedPreferences.getString(CITY_NAME, "")
+        if (cityNamePrevious != null && cityNamePrevious.isEmpty()) {
+            return null
+        }
+        val cityKladrIdPrevious = sharedPreferences.getString(CITY_KLADR_ID, "")
+        if (cityKladrIdPrevious != null && cityKladrIdPrevious.isEmpty()) {
+            return null
+        }
+        val cityPrevious = City(
+            cityIdPrevious.toString(),
+            cityNamePrevious.toString(),
+            cityKladrIdPrevious.toString()
+        )
+        writeChosenCity(cityPrevious)
+        return cityPrevious
     }
 
 
@@ -61,24 +69,32 @@ class SPrefsService @Inject constructor(
             .apply()
 
     fun readSelectedMarketCategory(): MarketCategory? {
-        val marketCategoryIdPrevious = sharedPreferences.getInt(MARKET_CATEGORY_ID, -1)
-        val marketCategoryNamePrevious = sharedPreferences.getString(MARKET_CATEGORY_NAME, "")
-        val marketCategoryImagePrevious = sharedPreferences.getString(MARKET_CATEGORY_IMAGE, "")
         val marketCategory = sharedPreferences.getString(MARKET_CATEGORY, "")
-        return if (marketCategory != "")
-            Gson().fromJson(
+        if (marketCategory.isNullOrEmpty().not()) {
+            return Gson().fromJson(
                 marketCategory,
-                MarketCategory::class.java
-            ) else if (marketCategoryIdPrevious != -1 && marketCategoryImagePrevious != "" && marketCategoryNamePrevious != "") {
-            val marketCategoryPrevious =
-                MarketCategory(
-                    marketCategoryIdPrevious,
-                    marketCategoryNamePrevious.toString(),
-                    marketCategoryImagePrevious.toString()
-                )
-            writeSelectedMarketCategory(marketCategoryPrevious)
-            marketCategoryPrevious
-        } else null
+                MarketCategory::class.java)
+        }
+        val marketCategoryIdPrevious = sharedPreferences.getInt(MARKET_CATEGORY_ID, -1)
+        if (marketCategoryIdPrevious == -1) {
+            return null
+        }
+        val marketCategoryNamePrevious = sharedPreferences.getString(MARKET_CATEGORY_NAME, "")
+        if (marketCategoryNamePrevious != null && marketCategoryNamePrevious.isEmpty()) {
+            return null
+        }
+        val marketCategoryImagePrevious = sharedPreferences.getString(MARKET_CATEGORY_IMAGE, "")
+        if (marketCategoryImagePrevious != null && marketCategoryImagePrevious.isEmpty()) {
+            return null
+        }
+        val marketCategoryPrevious =
+            MarketCategory(
+                marketCategoryIdPrevious,
+                marketCategoryNamePrevious.toString(),
+                marketCategoryImagePrevious.toString()
+            )
+        writeSelectedMarketCategory(marketCategoryPrevious)
+        return marketCategoryPrevious
     }
 
     fun writeBuildingAddress(address: String) =
@@ -124,19 +140,24 @@ class SPrefsService @Inject constructor(
             .apply()
 
     fun readToken(): RefreshableToken? {
-        val tokenPreviousAccess = sharedPreferences.getString(ACCESS_TOKEN, "")
-        val tokenPreviousRefresh = sharedPreferences.getString(REFRESH_TOKEN, "")
         val token = sharedPreferences.getString(TOKEN, "")
-        return if (token != "")
-            Gson().fromJson(token, RefreshableToken::class.java)
-        else if (tokenPreviousAccess != "" && tokenPreviousRefresh != "") {
-            val tokenPrevious = RefreshableToken(
-                tokenPreviousAccess.toString(),
-                tokenPreviousRefresh.toString()
-            )
-            writeToken(tokenPrevious)
-            tokenPrevious
-        } else null
+        if (token.isNullOrEmpty().not()) {
+            return Gson().fromJson(token, RefreshableToken::class.java)
+        }
+        val tokenPreviousRefresh = sharedPreferences.getString(REFRESH_TOKEN, "")
+        if (tokenPreviousRefresh != null && tokenPreviousRefresh.isEmpty()) {
+            return null
+        }
+        val tokenPreviousAccess = sharedPreferences.getString(ACCESS_TOKEN, "")
+        if (tokenPreviousAccess != null && tokenPreviousAccess.isEmpty()) {
+            return null
+        }
+        val tokenPrevious = RefreshableToken(
+            tokenPreviousAccess.toString(),
+            tokenPreviousRefresh.toString()
+        )
+        writeToken(tokenPrevious)
+        return tokenPrevious
     }
 
     fun removeToken() =

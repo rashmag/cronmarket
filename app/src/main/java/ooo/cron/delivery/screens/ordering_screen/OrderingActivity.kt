@@ -40,7 +40,7 @@ class OrderingActivity : BaseActivity(), OrderContract.View {
 
     var isRequestParametersValid: Boolean = false
 
-    private var basketModel: Basket? = null
+    private var basketModel: Basket?= null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         basketModel = intent.getParcelableExtra(BASKET_MODEL)
@@ -232,11 +232,14 @@ class OrderingActivity : BaseActivity(), OrderContract.View {
         resources.getStringArray(R.array.payment_method_array)[CARD_PAYMENT_TYPE_INDEX]
 
     override fun openPaymentScreen(paymentOptions: PaymentOptions) {
-        TinkoffAcquiring(BuildConfig.tinkoff_terminal_key, BuildConfig.tinkoff_terminal_public_key
+        TinkoffAcquiring(
+            getString(R.string.tinkoff_terminal_key),
+            getString(R.string.tinkoff_terminal_password),
+            getString(R.string.tinkoff_terminal_public_key)
         ).openPaymentScreen(
-        this,
-        paymentOptions,
-        TINKOFF_PAYMENT_REQUEST_CODE
+            this,
+            paymentOptions,
+            TINKOFF_PAYMENT_REQUEST_CODE
         )
     }
 

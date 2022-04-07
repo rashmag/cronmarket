@@ -63,8 +63,14 @@ class CategoryAdapter(
                         ) {
                             quantityCount = product.inBasketQuantity + 1
 
-                            when (defineQuantityChangeStatus(quantityCount, product.inBasketQuantity)) {
-                                QuantityChangeStatus.INCREASED -> increaseProduct(product, quantityCount)
+                            when (defineQuantityChangeStatus(
+                                quantityCount,
+                                product.inBasketQuantity
+                            )) {
+                                QuantityChangeStatus.INCREASED -> increaseProduct(
+                                    product,
+                                    quantityCount
+                                )
                                 QuantityChangeStatus.NO_CHANGES -> updateCounter(quantityCount)
                                 else -> {
                                 }
@@ -82,8 +88,14 @@ class CategoryAdapter(
                             quantityCount = product.inBasketQuantity + 1
                             updateCounter(quantityCount)
 
-                            when (defineQuantityChangeStatus(quantityCount, product.inBasketQuantity)) {
-                                QuantityChangeStatus.INCREASED -> increaseProduct(product, quantityCount)
+                            when (defineQuantityChangeStatus(
+                                quantityCount,
+                                product.inBasketQuantity
+                            )) {
+                                QuantityChangeStatus.INCREASED -> increaseProduct(
+                                    product,
+                                    quantityCount
+                                )
                                 QuantityChangeStatus.DECREASED -> listener.onMinusClick(
                                     product,
                                     product.inBasketQuantity - quantityCount
@@ -101,7 +113,10 @@ class CategoryAdapter(
                         updateCounter(quantityCount)
 
                         when (defineQuantityChangeStatus(quantityCount, product.inBasketQuantity)) {
-                            QuantityChangeStatus.INCREASED -> increaseProduct(product, quantityCount)
+                            QuantityChangeStatus.INCREASED -> increaseProduct(
+                                product,
+                                quantityCount
+                            )
                             QuantityChangeStatus.DECREASED -> listener.onMinusClick(
                                 product,
                                 product.inBasketQuantity - quantityCount
@@ -157,7 +172,8 @@ class CategoryAdapter(
             return QuantityChangeStatus.NO_CHANGES
         }
 
-        private fun increaseProduct(product: PartnerProductsRes, currentQuantity: Int) {
+        private fun increaseProduct(product: PartnerProductsRes,
+                                    currentQuantity: Int) {
             if (product.additives.isEmpty() &&
                 product.requiredAdditiveGroups.isEmpty()
             )

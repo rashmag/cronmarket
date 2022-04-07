@@ -73,7 +73,7 @@ class AdapterBasket(
                 basketProductCounter.tvBasketCounterQuantity.text = item.quantity.toString()
                 tvBasketProductAmount.text = itemView.context.getString(
                     R.string.price,
-                    (item.cost * item.quantity).toString()
+                    (addAdditivePrice(item) * item.quantity).toString()
                 )
 
                 basketProductCounter.ivBasketCounterPlus.setOnClickListener {
@@ -84,6 +84,14 @@ class AdapterBasket(
                     minusClick(item, 1)
                 }
             }
+        }
+
+        fun addAdditivePrice(item:BasketDish):Int{
+            var price = item.cost
+            item.dishAdditives.forEach {
+                price += it.cost.toInt()
+            }
+            return price
         }
     }
 

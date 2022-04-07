@@ -1,16 +1,18 @@
 package ooo.cron.delivery.data
 
 import com.google.gson.Gson
+import okhttp3.ResponseBody
 import ooo.cron.delivery.data.network.RestService
-import ooo.cron.delivery.data.network.models.*
+import ooo.cron.delivery.data.network.models.Basket
+import ooo.cron.delivery.data.network.models.BasketDish
+import ooo.cron.delivery.data.network.models.BasketPersonsReq
+import ooo.cron.delivery.data.network.models.RemoveBasketItemReq
 import ooo.cron.delivery.data.network.request.BasketClearReq
 import ooo.cron.delivery.data.network.request.BasketEditorReq
 import ooo.cron.delivery.data.network.request.OrderReq
-import ooo.cron.delivery.utils.Error
-import ooo.cron.delivery.utils.NoConnection
-import ooo.cron.delivery.utils.Result
-import ooo.cron.delivery.utils.Success
+import ooo.cron.delivery.utils.*
 import retrofit2.HttpException
+import retrofit2.Response
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import javax.inject.Inject
@@ -39,7 +41,6 @@ class RestRepository @Inject constructor(
     }
 
     suspend fun sendOrder(
-        token: String,
         basketId: String,
         phone: String?,
         comment: String,
@@ -55,7 +56,7 @@ class RestRepository @Inject constructor(
 
     ) {
         restService.sendOrder(
-            token, OrderReq(
+            OrderReq(
                 basketId,
                 phone,
                 comment,
@@ -74,31 +75,51 @@ class RestRepository @Inject constructor(
 
     suspend fun increaseProductInBasket(editor: BasketEditorReq): Result<Basket> {
         val result = restService.increaseProductInBasket(editor)
-        return errorHandle(result)
+        return errorHandleResult(result)
     }
 
 
     suspend fun decreaseProductInBasket(editor: BasketEditorReq): Result<Basket> {
         val result = restService.decreaseProductInBasket(editor)
-        return errorHandle(result)
+        return errorHandleResult(result)
     }
 
     suspend fun editPersonsQuantity(persons: BasketPersonsReq): Result<Basket> {
         val result = restService.editPersonsCount(persons)
-        return errorHandle(result)
+        return errorHandleResult(result)
     }
 
     suspend fun clearBasket(basketClearReq: BasketClearReq): Result<Basket> {
         val result = restService.clearBasket(basketClearReq)
-        return errorHandle(result)
+        return errorHandleResult(result)
     }
 
     suspend fun removeBasketItem(removeBasketItem: RemoveBasketItemReq): Result<Basket> {
         val result = restService.removeProduct(removeBasketItem)
-        return errorHandle(result)
+        return errorHandleResult(result)
     }
 
-    private fun errorHandle(result: Basket): Result<Basket> {
+/*    suspend fun likePartner(partnerId:String): Response<ResponseBody> {
+        val response = restService.likePartner(partnerId)
+        return restService.likePartner(partnerId)
+    }
+
+    suspend fun unlikePartner(partnerId: String): Response<ResponseBody> {
+        val response = restService.unlikePartner(partnerId)
+        return errorHandleResponse(response)
+    }
+
+    private fun errorHandleResponse(response: Response<ResponseBody>): Response<ResponseBody> {
+            return try {
+                if (response.isSuccessful)
+                    response.body()
+            } catch (e: Exception) {
+                ErrorResponse(e,e.message)
+            }
+
+    }*/
+
+    private fun errorHandleResult(result: Basket): Result<Basket> {
         return try {
             Success(result)
         } catch (e: UnknownHostException) {

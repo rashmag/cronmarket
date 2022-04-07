@@ -23,7 +23,6 @@ class EnterNamePresenter @Inject constructor(
 
     override fun sentUserName() {
         dataManager.setUserName(
-            accessTokenParameter(),
             SetUserNameReq(view?.getUserName()!!)
         )
             .enqueue(object : Callback<Void> {
@@ -41,6 +40,4 @@ class EnterNamePresenter @Inject constructor(
             })
     }
 
-    private fun accessTokenParameter() =
-        "Bearer ${dataManager.readToken()?.accessToken}"
 }

@@ -23,14 +23,13 @@ class OrderHistoryDetailAdditiveAdapter :
     inner class OrderAdditiveViewHolder(val itemBinding: OrderAdditiveItemBinding) : RecyclerView.ViewHolder(itemBinding.root) {
 
         fun bind(model: OrderHistoryDetailAdditive){
-
             with(itemBinding){
-
                 additiveName.text = itemView.context.getString(
                     R.string.order_history_detail_screen_additive_plus,
                     model.name
                 )
-                additivePrice.text = model.cost.toString()
+                costOrderAddtitive.text = costOrderAddtitive.context.getString(
+                    R.string.partner_product_additive_price, model.cost)
             }
         }
     }

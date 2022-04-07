@@ -1,6 +1,5 @@
 package ooo.cron.delivery.screens.partners_screen
 
-import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
@@ -38,8 +37,11 @@ import ooo.cron.delivery.screens.base.BaseActivity
 import ooo.cron.delivery.screens.basket_screen.BasketActivity
 import ooo.cron.delivery.screens.first_address_selection_screen.FirstAddressSelectionActivity
 import ooo.cron.delivery.utils.CustomLayoutManager
-import ooo.cron.delivery.utils.ProductBottomSheetDialog
+import ooo.cron.delivery.screens.partners_screen.bottom_sheet_dialog.ProductBottomSheetDialog
 import ooo.cron.delivery.utils.enums.ReturningToScreenEnum
+import ooo.cron.delivery.utils.extensions.makeGone
+import ooo.cron.delivery.utils.extensions.makeVisible
+import ooo.cron.delivery.utils.extensions.orZero
 import ooo.cron.delivery.utils.extensions.setDrawableStart
 import ooo.cron.delivery.utils.extensions.startBottomAnimate
 import ooo.cron.delivery.utils.extensions.uiLazy
@@ -49,7 +51,8 @@ import ooo.cron.delivery.utils.extensions.uiLazy
  * Created by Muhammad on 02.05.2021
  */
 
-class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.OnProductClickListener {
+class PartnersActivity : BaseActivity(), PartnersContract.View,
+    CategoryAdapter.OnProductClickListener {
 
     @Inject
     lateinit var presenter: PartnersPresenter
@@ -112,6 +115,11 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
         setImageSize()
         onProductRecyclerViewScrollChanged()
         initPartnerRecyclerView()
+        checkUserLoggedStatus()
+    }
+
+    private fun checkUserLoggedStatus() {
+        binding.cbFavorite.isVisible = presenter.getUserLoggedStatus()
     }
 
     override fun onResume() {
@@ -182,13 +190,29 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
         return partnerId
     }
 
-    @SuppressLint("StringFormatMatches")
+    override fun showLikePartner() {
+        binding.cbFavorite.isChecked = true
+    }
+
+    override fun showUnlikePartner() {
+        binding.cbFavorite.isChecked = false
+    }
+
     override fun showPartnerInfo(partnerInfo: PartnersInfoRes) {
         presenter.getPartnerCategory()
         with(partnerInfo) {
             binding.run {
                 tvPartnersName.text = name
                 tvPartnersCategory.text = shortDescription
+                cbFavorite.isChecked = isFavorite
+                cbFavorite.setOnClickListener {
+                    if (cbFavorite.isChecked) {
+                        presenter.likePartner(partnerInfo.id)
+                    }
+                    else {
+                        presenter.unlikePartner(partnerInfo.id)
+                    }
+                }
 
                 // Типы доставок --Начало-------------------------------------------
 
@@ -206,16 +230,23 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
                         deliveryTypeTitle.setDrawableStart(R.drawable.ic_partner_delivers)
                     }
 
+                    val formatPrice = getString(R.string.price)
                     if (deliveryFrames.deliveryCosts.first().deliveryCost == deliveryFrames.deliveryCosts.last().deliveryCost) {
                         deliveryTypeTitle.text = getString(
                             R.string.partners_screen_delivery_type_title_first,
-                            deliveryFrames.deliveryCosts.last().deliveryCost
+                            String.format(
+                                formatPrice,
+                                deliveryFrames.deliveryCosts.last().deliveryCost
+                            )
                         )
                     } else {
                         deliveryTypeTitle.text = getString(
                             R.string.partners_screen_delivery_type_title,
                             deliveryFrames.deliveryCosts.last().deliveryCost,
-                            deliveryFrames.deliveryCosts.first().deliveryCost,
+                            String.format(
+                                formatPrice,
+                                deliveryFrames.deliveryCosts.first().deliveryCost
+                            ),
                         )
                     }
                 }
@@ -230,29 +261,32 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
                         .centerCrop()
                         .into(backdrop)
                 } else {
-
-                    binding.vgPartnerInfo.animate().alpha(0f).setDuration(600).start()
-
-
-                    val collapsingParams =
-                        appbar.layoutParams as CollapsingToolbarLayout.LayoutParams
-                    collapsingParams.collapseMode =
-                        CollapsingToolbarLayout.LayoutParams.COLLAPSE_MODE_OFF
-                    appbar.layoutParams = collapsingParams
-                    appbar.setExpanded(false)
-
-                    nestedScrollViewConfigured = true
-
-
-                    val appBarParams = CoordinatorLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
-                    appBarParams.height = LinearLayout.LayoutParams.WRAP_CONTENT
-
-                    appbar.layoutParams = appBarParams
+                    Glide.with(binding.root)
+                        .load(R.color.white)
+                        .centerCrop()
+                        .into(backdrop)
+//                    binding.vgPartnerInfo.animate().alpha(0f).setDuration(600).start()
+//
+//
+//                    val collapsingParams =
+//                        appbar.layoutParams as CollapsingToolbarLayout.LayoutParams
+//                    collapsingParams.collapseMode =
+//                        CollapsingToolbarLayout.LayoutParams.COLLAPSE_MODE_OFF
+//                    appbar.layoutParams = collapsingParams
+//                    appbar.setExpanded(false)
+//
+//                    nestedScrollViewConfigured = true
+//
+//
+//                    val appBarParams = CoordinatorLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+//                    appBarParams.height = LinearLayout.LayoutParams.WRAP_CONTENT
+//
+//                    appbar.layoutParams = appBarParams
                 }
             }
         }
         onBackButtonClick()
-        onInfoButtonClick(partnerInfo)
+//        onInfoButtonClick(partnerInfo)
         onRatingClick()
     }
 
@@ -447,7 +481,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
             product = product,
             onAddClick = presenter::plusClick,
             onMinusClick = presenter::minusClick,
-            quantity = if (product.inBasketQuantity == EMPTY_QUANTITY) NUMBER_SERVINGS_ON_BOTTOM_SHEET else product.inBasketQuantity
+            quantity = product.inBasketQuantity + 1
         ).show()
     }
 
@@ -471,7 +505,8 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
                 ).putExtra(
                     BasketActivity.BASKET_MODEL, basket
                 ).putExtra(
-                    BasketActivity.MIN_AMOUNT_ORDER, minOrderAmount)
+                    BasketActivity.MIN_AMOUNT_ORDER, minOrderAmount
+                )
         )
     }
 
@@ -489,37 +524,43 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
     override fun onMinusClick(product: PartnerProductsRes, quantity: Int) =
         presenter.minusClick(product, quantity)
 
+
     private fun setTitleVisibility() {
         var isShow = false
         var scrollRange = -1
 
-        binding.appbar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { barLayout, verticalOffset ->
-            if (scrollRange == -1) {
-                scrollRange = barLayout?.totalScrollRange!!
-            }
+        with(binding) {
+            appbar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { barLayout, verticalOffset ->
+                if (scrollRange == -1) {
+                    scrollRange = barLayout?.totalScrollRange.orZero()
+                }
 
 
-            if (scrollRange + verticalOffset < 150) {
-                binding.vgPartnerInfo.animate().alpha(0f).setDuration(0).start()
-            } else if (!isShow) {
-                binding.vgPartnerInfo.animate().alpha(1f).setDuration(600).start()
-            }
+                if (scrollRange + verticalOffset < 150) {
+                    vgPartnerInfo.animate().alpha(0f).setDuration(0).start()
+                    vgRating.makeGone()
+                } else if (isShow.not()) {
+                    vgPartnerInfo.animate().alpha(1f).setDuration(600).start()
+                    vgRating.makeVisible()
+                }
 
 
-            if (scrollRange + verticalOffset == 0) {
-                binding.tvTitle.text = binding.tvPartnersName.text
-                binding.tvTitle.animate().alpha(1f).setDuration(0).start()
-                isShow = true
-            } else if (isShow) {
-                binding.tvTitle.animate().alpha(0f).setDuration(600).start()
+                if (scrollRange + verticalOffset == 0) {
+                    tvTitle.text = tvPartnersName.text
+                    tvTitle.animate().alpha(1f).setDuration(0).start()
+                    isShow = true
+                } else if (isShow) {
+                    tvTitle.animate().alpha(0f).setDuration(600).start()
 
-                isShow = false
-            }
-
-            productsLayoutManager.setScrollEnabled(true)
-            println("scrollRange ${scrollRange + verticalOffset == 0}")
-        })
+                    isShow = false
+                }
+                productsLayoutManager.setScrollEnabled(true)
+                println("scrollRange ${scrollRange + verticalOffset == 0}")
+            })
+        }
     }
+
+
 
     private fun showCloseShopError() {
         val hours = if ((openHours?.div(10) ?: 0) > 0) openHours else "0$openHours"
@@ -542,6 +583,8 @@ class PartnersActivity : BaseActivity(), PartnersContract.View, CategoryAdapter.
             "${hours}:${minutes}"
         )
     }
+
+
 
     override fun onDestroy() {
         super.onDestroy()

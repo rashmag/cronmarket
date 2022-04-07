@@ -25,6 +25,7 @@ import ooo.cron.delivery.screens.about_service_screen.AboutServiceFragment
 import ooo.cron.delivery.screens.contacts_screen.ContactsFragment
 import ooo.cron.delivery.screens.first_address_selection_screen.FirstAddressSelectionActivity
 import ooo.cron.delivery.screens.login_screen.LoginActivity
+import ooo.cron.delivery.screens.favorite_screen.view.FavoritePartnersFragment
 import ooo.cron.delivery.screens.main_screen.special_offers_view.models.SlideModel
 import ooo.cron.delivery.screens.market_category_screen.MarketCategoryFragment
 import ooo.cron.delivery.screens.partners_screen.PartnersActivity
@@ -63,7 +64,9 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
     private val sliderAdapter by lazy(LazyThreadSafetyMode.NONE) {
-        SliderAdapter()
+        SliderAdapter{
+            presenter.onPartnerClickedBaner(it.partnerId)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -188,6 +191,10 @@ class MainActivity : BaseActivity(), MainContract.View {
         binding.vgMainContinueLastSession.startBottomAnimate(false)
     }
 
+    override fun hideContinueLastSessionMainMenu() {
+        binding.vgMainContinueLastSession.visibility = View.GONE
+    }
+
     override fun startMarketCategoryFragment(category: MarketCategory?) {
         setToolbarTitleVisibility(false, null)
         supportFragmentManager.beginTransaction().replace(
@@ -201,9 +208,18 @@ class MainActivity : BaseActivity(), MainContract.View {
             (binding.vgMainContent.layoutParams as CoordinatorLayout.LayoutParams).behavior =
                 ScrollingViewBehavior()
             binding.vgMainContent.requestLayout()
+            presenter.onCheckEmptyBasket()
         }
 
         presenter.onStartMarketCategory()
+    }
+
+    override fun startFavoritePartnersFragment() {
+        setToolbarTitleVisibility(true, getString(R.string.favorite))
+        supportFragmentManager.beginTransaction().replace(
+            R.id.container_main,
+            FavoritePartnersFragment()
+        ).commit()
     }
 
     override fun startOrdersHistoryFragment() {
@@ -254,6 +270,15 @@ class MainActivity : BaseActivity(), MainContract.View {
         TODO("Not yet implemented")
     }
 
+    override fun setPartnerClickedBaner(partnerId: String?) {
+        startActivityForResult(
+            Intent(this, PartnersActivity::class.java)
+                .apply {
+                    putExtra(EXTRA_PARTNER_ID, partnerId)
+                }, RESULT_CODE
+        )
+    }
+
     override fun navigateLoginActivity() {
         startActivity(Intent(this, LoginActivity::class.java))
     }
@@ -271,18 +296,14 @@ class MainActivity : BaseActivity(), MainContract.View {
 
     override fun showSpecialOffers(promotions: List<Promotion>) {
         with(binding) {
-            specialOffersTitle.makeVisible()
             imageSlider.makeVisible()
 
-            sliderAdapter.setData(promotions.map { SlideModel(it.imgUri) })
+            sliderAdapter.setData(promotions.map { SlideModel(it.imgUri, it.id, it.partnerId) })
         }
     }
 
     override fun hideSpecialOffers() {
-        with(binding) {
-            specialOffersTitle.makeGone()
-            imageSlider.makeGone()
-        }
+            binding.imageSlider.makeGone()
     }
 
     private fun initSliderRecycler() {
@@ -297,7 +318,8 @@ class MainActivity : BaseActivity(), MainContract.View {
         with(binding.imageSlider) {
             val sliderHandler = Handler()
             val sliderRunnable = Runnable {
-                val position = (layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
+                val position =
+                    (layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
                 if (position + 1 >= sliderAdapter.itemCount) {
                     smoothScrollToPosition(0)
                 } else {
@@ -314,8 +336,9 @@ class MainActivity : BaseActivity(), MainContract.View {
         }
     }
 
-    private fun checkUserLoggedStatus(){
+    private fun checkUserLoggedStatus() {
         binding.vgMainMenu.tvDrawerMenuItemsOrders.isVisible = presenter.getUserLoggedStatus()
+        binding.vgMainMenu.tvDrawerMenuFavoritePartners.isVisible = presenter.getUserLoggedStatus()
     }
 
     private fun injectDependencies() =
@@ -399,6 +422,7 @@ class MainActivity : BaseActivity(), MainContract.View {
             val menuItems = listOf(
                 vgMainMenu.tvDrawerMenuItemShops,
                 vgMainMenu.tvDrawerMenuItemsOrders,
+                vgMainMenu.tvDrawerMenuFavoritePartners,
                 vgMainMenu.tvDrawerMenuItemContacts,
                 vgMainMenu.tvDrawerMenuItemAboutUs,
                 vgMainMenu.tvDrawerMenuItemVacancies
@@ -415,6 +439,7 @@ class MainActivity : BaseActivity(), MainContract.View {
                             presenter.getMarketCategory()
                         )
                         vgMainMenu.tvDrawerMenuItemsOrders -> startOrdersHistoryFragment()
+                        vgMainMenu.tvDrawerMenuFavoritePartners -> startFavoritePartnersFragment()
                         vgMainMenu.tvDrawerMenuItemAboutUs -> startAboutServiceFragment()
                         vgMainMenu.tvDrawerMenuItemContacts -> startContactsFragment()
                         vgMainMenu.tvDrawerMenuItemVacancies -> startVacanciesFragment()
@@ -427,6 +452,17 @@ class MainActivity : BaseActivity(), MainContract.View {
 
     override fun showBasketAmount(basketAmount: String) {
         binding.tvBasketAmount.text = getString(R.string.main_btn_amount, basketAmount)
+    }
+
+    override fun showPartnerName(partnerName: String?) {
+        with(binding.tvBasketTitle) {
+            if (partnerName.isNullOrEmpty()) {
+                text = getString(R.string.basket_title)
+            } else {
+                text = partnerName
+                setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
+            }
+        }
     }
 
     private fun setToolbarTitleVisibility(isVisible: Boolean, title: String?) {
@@ -453,6 +489,8 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
     companion object {
+        const val RESULT_CODE = 1
+        const val EXTRA_PARTNER_ID = "partnerId"
         const val RETURNING_SCREEN_KEY = "RETURNING_SCREEN_KEY"
         private const val IMAGE_SLIDE_DELAY = 0L
         private const val IMAGE_SLIDE_PERIOD = 3000L

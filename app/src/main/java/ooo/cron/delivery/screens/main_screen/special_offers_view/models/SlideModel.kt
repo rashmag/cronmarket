@@ -13,9 +13,13 @@ class SlideModel {
     var imagePath: Int? = 0
     var title: String? = null
     var scaleType: ScaleTypes? = null
+    var id: String? = null
+    var partnerId: String? = null
 
-    constructor(imageUrl: String?, title: String? = null, scaleType: ScaleTypes?  = null) {
+    constructor(imageUrl: String?, id: String? = null, partnerId: String? = null, title: String? = null, scaleType: ScaleTypes?  = null) {
         this.imageUrl = imageUrl
+        this.id = id
+        this.partnerId = partnerId
         this.title = title
         this.scaleType = scaleType
     }

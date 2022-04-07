@@ -15,7 +15,6 @@ import retrofit2.Response
 import java.lang.Exception
 
 class OrderHistoryDetailViewModel @Inject constructor(
-    private val dataManager: DataManager,
     private val loadOrderHistoryDetailUseCase: LoadOrderHistoryDetailUseCase
 ) : ViewModel() {
 
@@ -34,7 +33,6 @@ class OrderHistoryDetailViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 _orderHistoryDetail.value = loadOrderHistoryDetailUseCase.invoke(
-                    token = "Bearer ${dataManager.readToken()?.accessToken}",
                     orderId = orderId
                 )
 

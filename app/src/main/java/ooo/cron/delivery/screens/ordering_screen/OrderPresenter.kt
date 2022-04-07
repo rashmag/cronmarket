@@ -172,7 +172,7 @@ class OrderPresenter @Inject constructor(
         val token = dataManager.readToken()
 
         if (token != null) {
-            if (code() == 401 && token.accessToken.isNotEmpty() && token.refreshToken.isNotEmpty()) {
+            if (code() == UNAUTHORIZED && token.accessToken.isNotEmpty() && token.refreshToken.isNotEmpty()) {
                 return dataManager.refreshToken(token)
                     .handleRefreshToken()
             }
@@ -192,7 +192,7 @@ class OrderPresenter @Inject constructor(
             return makeOrder(getOrderReq())
         }
 
-        if (code() == 400 || code() == 401) {
+        if (code() == BAD_REQUEST || code() == UNAUTHORIZED) {
             dataManager.removeToken()
         }
 
@@ -232,4 +232,9 @@ class OrderPresenter @Inject constructor(
 
     private fun Double.inCoins() =
         (this * 100).toLong()
+
+    companion object {
+        const val UNAUTHORIZED = 401
+        const val BAD_REQUEST = 400
+    }
 }

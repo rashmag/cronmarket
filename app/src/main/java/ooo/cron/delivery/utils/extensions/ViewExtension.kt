@@ -56,6 +56,15 @@ fun <T> uiLazy(operation: () -> T): Lazy<T> = lazy(LazyThreadSafetyMode.NONE) {
     operation()
 }
 
+internal fun View.requestNewSize(
+    width: Int = layoutParams.width,
+    height: Int = layoutParams.height
+) {
+    layoutParams.width = width
+    layoutParams.height = height
+    layoutParams = layoutParams
+}
+
 @RequiresApi(Build.VERSION_CODES.M)
 fun View.addRipple() = with(TypedValue()) {
     context.theme.resolveAttribute(android.R.attr.selectableItemBackground, this, true)

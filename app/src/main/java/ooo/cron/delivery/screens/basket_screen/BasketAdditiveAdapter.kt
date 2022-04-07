@@ -42,16 +42,20 @@ class BasketAdditiveAdapter : RecyclerView.Adapter<BasketAdditiveAdapter.Additiv
         override fun bind(item: BasketDishAdditive) {
             with(binding) {
                 if (item.cost == 0.0) {
-                    tvAdditiveBasketName.text = item.name
+                    tvAdditiveBasketName.text = root.context.getString(
+                        R.string.partner_product_additive_name,
+                        item.name
+                    )
                     return
                 }
+
                 tvAdditiveBasketName.text = root.context.getString(
                     R.string.partner_product_additive_name,
                     item.name
                 )
                 tvAdditiveBasketCost.text = root.context.getString(
                     R.string.partner_product_additive_price,
-                    item.cost
+                    item.cost.toInt()
                 )
             }
         }

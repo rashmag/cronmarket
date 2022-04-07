@@ -11,7 +11,7 @@ class OrderHistoryDetailRepositoryImpl @Inject constructor(
     private val api: RestService
 ) : OrderHistoryDetailRepository {
 
-    override suspend fun getOrderHistoryDetail(token: String, orderId: String): Response<OrderHistoryDetailNetModel> {
-        return api.getOrderHistoryDetail(token, orderId)
+    override suspend fun getOrderHistoryDetail(orderId: String): Response<OrderHistoryDetailNetModel> {
+        return api.getOrderHistoryDetail(orderId)
     }
 }

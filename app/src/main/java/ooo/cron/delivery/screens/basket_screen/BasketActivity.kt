@@ -59,6 +59,8 @@ class BasketActivity : BaseActivity(), PayClickCallback {
         const val PARTNER_CLOSE_MINUTES = "PARTNER_CLOSE_MINUTES"
         const val MIN_AMOUNT_ORDER = "MIN_AMOUNT_ORDER"
         const val BASKET_MODEL = "BASKET_MODEL"
+        const val EMPTY_TITLE = " "
+
         const val MARGIN_SPACING_VALUE_34 = 34
 
         const val ARG_ADDRESS = "ARG_ADDRESS"

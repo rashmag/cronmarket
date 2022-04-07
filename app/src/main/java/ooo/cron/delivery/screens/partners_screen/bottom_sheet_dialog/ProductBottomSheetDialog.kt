@@ -1,4 +1,4 @@
-package ooo.cron.delivery.utils
+package ooo.cron.delivery.screens.partners_screen.bottom_sheet_dialog
 
 import android.content.Context
 import android.os.Bundle
@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -19,15 +20,12 @@ import ooo.cron.delivery.data.network.models.BasketDishAdditive
 import ooo.cron.delivery.data.network.models.PartnerProductsRes
 import ooo.cron.delivery.data.network.models.RequireAdditiveModel
 import ooo.cron.delivery.databinding.DialogProductInfoBinding
-import ooo.cron.delivery.screens.partners_screen.AdditiveRecyclerAdapter
-import ooo.cron.delivery.screens.partners_screen.AdditivesAdapter
-import ooo.cron.delivery.screens.partners_screen.RequireAdditivesAdapter
+import ooo.cron.delivery.utils.itemdecoration.LineItemDicoration
 
 
 /*
  * Created by Muhammad on 17.05.2021
  */
-
 
 
 class ProductBottomSheetDialog(
@@ -47,7 +45,8 @@ class ProductBottomSheetDialog(
     BottomSheetDialog(
         mContext, R.style.BottomSheetDialogTheme
     ),
-    AdditivesAdapter.OnRequireAdditivesListener {
+    AdditivesAdapter.OnRequireAdditivesListener,
+    AdditiveRecyclerAdapter.onDopProductClickListener {
 
 
     private lateinit var binding: DialogProductInfoBinding
@@ -131,26 +130,38 @@ class ProductBottomSheetDialog(
             if (product.additives.isNotEmpty()) {
                 rvAdditives.apply {
                     layoutManager = LinearLayoutManager(context)
-                    adapter = AdditiveRecyclerAdapter(product.additives)
+                    addItemDecoration(LineItemDicoration(ContextCompat.getDrawable(mContext, R.drawable.line_gray)!!))
                 }
+                val additiveRecyclerAdapter = AdditiveRecyclerAdapter(product.additives)
+                additiveRecyclerAdapter.setListener(this@ProductBottomSheetDialog)
+                rvAdditives.adapter = additiveRecyclerAdapter
             } else {
                 vgAdditives.visibility = View.GONE
             }
 
             btnAdd.setOnClickListener {
-                val additives = if (rvRequireAdditives.adapter is RequireAdditivesAdapter)
-                    (rvRequireAdditives.adapter as RequireAdditivesAdapter).getCheckedAdditives() +
-                            if (rvAdditives.adapter is AdditiveRecyclerAdapter)
-                                (rvAdditives.adapter as AdditiveRecyclerAdapter)
-                                    .getCheckedAdditives()
-                            else listOf()
-                else listOf()
+                val adapterRequireAdditives = rvRequireAdditives.adapter
+                val adapterAdditives = rvAdditives.adapter
+                val additives = when {
+                    adapterRequireAdditives is RequireAdditivesAdapter -> {
+                        if (adapterAdditives is AdditiveRecyclerAdapter) {
+                            adapterRequireAdditives.getCheckedAdditives() + adapterAdditives.getCheckedAdditives()
+                        } else {
+                            adapterRequireAdditives.getCheckedAdditives()
+                        }
+                    }
+                    adapterAdditives is AdditiveRecyclerAdapter -> {
+                        adapterAdditives.getCheckedAdditives()
+                    }
+                    else -> emptyList()
+                }
 
-                if (quantity > product.inBasketQuantity) {
+                if (quantity >= product.inBasketQuantity) {
+                    var qua = quantity - product.inBasketQuantity
                     onAddClick(
                         product,
                         additives.map { BasketDishAdditive(it.id, it.name, it.cost.toDouble()) },
-                        quantity - product.inBasketQuantity
+                        qua
                     )
                 } else {
                     onMinusClick(
@@ -161,12 +172,14 @@ class ProductBottomSheetDialog(
                 dismiss()
             }
         }
+        binding.tvCost.text = product.cost.toString()
     }
 
     private fun initRequireAdditivesRecycler(requiredAdditiveGroups: ArrayList<RequireAdditiveModel>) {
         binding.rvRequireAdditives.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = RequireAdditivesAdapter(requiredAdditiveGroups, this@ProductBottomSheetDialog)
+            adapter = RequireAdditivesAdapter(requiredAdditiveGroups,
+                this@ProductBottomSheetDialog)
         }
     }
 
@@ -192,6 +205,16 @@ class ProductBottomSheetDialog(
             override fun onSlide(bottomSheet: View, slideOffset: Float) {}
 
         })
+    }
+
+    override fun setIncreasedPriceDopProduct(increasedPriceDopProduct: String) {
+        val price = binding.tvCost.text.toString().toInt().plus(increasedPriceDopProduct.toInt())
+        binding.tvCost.text = price.toString()
+    }
+
+    override fun setReducePriceDopProduct(reducePriceDopProduct: String) {
+        val price = binding.tvCost.text.toString().toInt().minus(reducePriceDopProduct.toInt())
+        binding.tvCost.text = price.toString()
     }
 
 }

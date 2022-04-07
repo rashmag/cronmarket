@@ -2,6 +2,7 @@ package ooo.cron.delivery.di
 
 import dagger.Module
 import dagger.Provides
+import dagger.Reusable
 import ooo.cron.delivery.data.BasketInteractor
 import ooo.cron.delivery.data.OrderInteractor
 import ooo.cron.delivery.data.PrefsRepository
@@ -30,4 +31,9 @@ class InteractorModule {
         prefsRepository: PrefsRepository
     ): BasketInteractor =
         BasketInteractor(restRepository, prefsRepository)
+    @Reusable
+    fun provideAuthInteractor(
+        prefsRepository: PrefsRepository
+    ): AuthInteractor =
+        AuthInteractor(prefsRepository)
 }

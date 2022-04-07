@@ -106,8 +106,10 @@ class BasketPresenter @Inject constructor(
                     val formatter = DecimalFormat("#.##").apply {
                         roundingMode = RoundingMode.CEILING
                     }
-
-                    view?.updateBasketAmount(formatter.format(basket!!.amount))
+                    if(basket!!.amount.toInt() == 0)
+                        view?.close()
+                    else
+                        view?.updateBasketAmount(formatter.format(basket?.amount))
                 },
                 {
                     view?.showConnectionErrorScreen()
@@ -156,6 +158,13 @@ class BasketPresenter @Inject constructor(
                 )
             )
             view?.updateBasket(deserializeDishes(), basket!!.cutleryCount)
+            val formatter = DecimalFormat("#.##").apply {
+                roundingMode = RoundingMode.CEILING
+            }
+            if(basket!!.amount.toInt() == 0)
+                view?.close()
+            else
+                view?.updateBasketAmount(formatter.format(basket?.amount))
         }
     }
 

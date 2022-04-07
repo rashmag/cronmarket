@@ -38,7 +38,11 @@ class MainPresenter @Inject constructor(
     override fun onCreateScreen() {
         analytics.trackOpenMainScreen(dataManager.readUserPhone().toString())
     }
-
+    override fun onCheckEmptyBasket() {
+        val basketId = dataManager.readUserBasketId()
+        if (basketId == DataManager.EMPTY_UUID)
+            view?.hideContinueLastSessionMainMenu()
+    }
     override fun onResumeView(isFromPartnerScreen: Boolean) {
         mainScope.launch {
             defineAddress()
@@ -81,14 +85,17 @@ class MainPresenter @Inject constructor(
                         }else{
                             view?.hideContinueLastSession()
                         }
+                        val partnerInfo = partnerInfoResponse.body()
 
+                        view?.showPartnerName(partnerInfo?.name.toString())
                         view?.shouldLastBasketSessionBeVisible(true)
                         view?.showBasketAmount((basket?.amount?.toInt()).toString())
                     }
 
                     return@launch
                 }
-            }
+            }else
+                view?.hideContinueLastSession()
         }
     }
 
@@ -102,12 +109,16 @@ class MainPresenter @Inject constructor(
     }
 
     override fun onClickAddress() {
-            view?.navigateFirstAddressSelection()
+        view?.navigateFirstAddressSelection()
     }
 
     override fun onProfileClick() {
         if (user == null)
             view?.navigateLoginActivity()
+    }
+
+    override fun onPartnerClickedBaner(partnerId: String?) {
+        view?.setPartnerClickedBaner(partnerId)
     }
 
     override fun onLogInLogOutClick() {
@@ -149,7 +160,7 @@ class MainPresenter @Inject constructor(
     )
 
     private suspend fun loadUser(token: RefreshableToken, isFromPartnerScreen: Boolean) {
-        val response = dataManager.getUser("Bearer ${token.accessToken}")
+        val response = dataManager.getUser()
 
         if (response.isSuccessful) {
             updateUser(response, isFromPartnerScreen)
@@ -175,7 +186,7 @@ class MainPresenter @Inject constructor(
         if (isSuccessful) {
             dataManager.writeToken(body()!!)
 
-            val userResponse = dataManager.getUser("Bearer ${body()!!.accessToken}")
+            val userResponse = dataManager.getUser()
             if (userResponse.isSuccessful)
                 return updateUser(userResponse, isFromPartnerScreen)
         }

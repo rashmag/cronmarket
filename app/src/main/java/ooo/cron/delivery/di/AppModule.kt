@@ -8,10 +8,6 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import ooo.cron.delivery.BuildConfig.BASE_URL
 import ooo.cron.delivery.data.DataManager
-import ooo.cron.delivery.data.OrderInteractor
-import ooo.cron.delivery.data.PrefsRepository
-import ooo.cron.delivery.data.RestRepository
-import ooo.cron.delivery.data.BasketInteractor
 import ooo.cron.delivery.data.network.RestService
 import ooo.cron.delivery.data.network.SPrefsService
 import ooo.cron.delivery.data.network.errors.ApiErrorsUtils
@@ -33,9 +29,15 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient =
+    fun provideAuthInterceptor(interactor: AuthInteractor): AuthInterceptor =
+        AuthInterceptor(interactor)
+
+    @Provides
+    @Singleton
+    fun provideOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor, authInterceptor: AuthInterceptor): OkHttpClient =
         OkHttpClient.Builder()
             .addInterceptor(httpLoggingInterceptor)
+            .addInterceptor(authInterceptor)
             .build()
 
     @Provides
@@ -81,7 +83,7 @@ class AppModule {
         RestRepository(restService)
 
     @Provides
-    @Singleton
+    @Reusable
     fun provideApiErrorUtils(): ApiErrorsUtils {
         return ApiErrorsUtils()
     }

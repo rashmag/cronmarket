@@ -1,5 +1,6 @@
 package ooo.cron.delivery.screens.main_screen
 
+import android.util.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
@@ -117,8 +118,12 @@ class MainPresenter @Inject constructor(
             view?.navigateLoginActivity()
     }
 
-    override fun onPartnerClickedBaner(partnerId: String?) {
-        view?.setPartnerClickedBaner(partnerId)
+    override fun onPartnerClickedBaner(partnerId: String) {
+        mainScope.launch {
+            val partnerInfoResponse = dataManager.getPartnersInfo(partnerId)
+            val partnerInfo = partnerInfoResponse.body()
+            view?.setPartnerClickedBaner(partnerInfo)
+        }
     }
 
     override fun onLogInLogOutClick() {

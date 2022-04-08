@@ -1,6 +1,7 @@
 package ooo.cron.delivery.screens.main_screen
 
 import ooo.cron.delivery.data.network.models.MarketCategory
+import ooo.cron.delivery.data.network.models.PartnersInfoRes
 import ooo.cron.delivery.data.network.models.Promotion
 import ooo.cron.delivery.data.network.models.User
 import ooo.cron.delivery.screens.base_mvp.MvpPresenter
@@ -31,7 +32,7 @@ interface MainContract {
         fun reopenMainScreen()
         fun navigateFirstAddressSelection()
         fun navigateAddressSelection()
-        fun setPartnerClickedBaner(partnerId: String?)
+        fun setPartnerClickedBaner(partnersInfoRes: PartnersInfoRes?)
         fun navigateLoginActivity()
         fun navigatePartnerScreen(partnerId: String)
         fun startAboutServiceFragment()
@@ -48,7 +49,7 @@ interface MainContract {
         fun onMarketCategoryClicked(category: MarketCategory)
         fun onClickAddress()
         fun onProfileClick()
-        fun onPartnerClickedBaner(partnerId: String?)
+        fun onPartnerClickedBaner(partnerId: String)
         fun onCheckEmptyBasket()
         fun onLogInLogOutClick()
         fun onLogOutApplied()

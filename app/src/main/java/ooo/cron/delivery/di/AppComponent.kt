@@ -19,7 +19,7 @@ import ooo.cron.delivery.screens.splash_screen.SplashScreenComponent
 import javax.inject.Singleton
 import ooo.cron.delivery.di.screens.order_history_detail.OrderHistoryDetailComponent
 import ooo.cron.delivery.di.screens.order_history.OrderHistoryComponent
-import ooo.cron.delivery.screens.onboard_screen.OnboardComponent
+import ooo.cron.delivery.di.screens.onboard.OnboardComponent
 
 /**
  * Created by Ramazan Gadzhikadiev on 06.04.2021.

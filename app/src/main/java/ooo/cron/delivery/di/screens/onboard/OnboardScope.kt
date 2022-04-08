@@ -1,4 +1,4 @@
-package ooo.cron.delivery.screens.onboard_screen
+package ooo.cron.delivery.di.screens.onboard
 
 import javax.inject.Scope
 

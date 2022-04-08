@@ -12,7 +12,7 @@ import ooo.cron.delivery.R
 import ooo.cron.delivery.screens.base.BaseActivity
 import ooo.cron.delivery.screens.first_address_selection_screen.FirstAddressSelectionActivity
 import ooo.cron.delivery.screens.main_screen.MainActivity
-import ooo.cron.delivery.screens.onboard_screen.OnboardActivity
+import ooo.cron.delivery.screens.onboard_screen.presentation.OnboardActivity
 import javax.inject.Inject
 
 /*

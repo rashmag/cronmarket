@@ -30,7 +30,7 @@ class SplashScreenPresenter @Inject constructor(
                             view?.showOnboard()
                             dataManager.writeFirstOpenApp()
                         }else{
-                            analytics.onboardComponentBuilder(R.string.skip_onboard.toString())
+                            analytics.trackOpenOnboardScreen(R.string.skip_onboard.toString())
                             if (dataManager.readChosenCity().id.isEmpty())
                                 view?.navigateFirstAddressScreen()
                             else

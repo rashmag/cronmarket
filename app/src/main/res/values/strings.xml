@@ -310,12 +310,12 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_delivery_one">Быстрая доставка</string>
-    <string name="description_delivery_one">Заказ приедет к вам за час, а может быть и \nраньше</string>
+    <string name="sub_title_delivery_one">Заказ приедет к вам за час, а может быть и \nраньше</string>
     <string name="next_btn_onboard">Далее</string>
     <string name="status_delivery">Статус заказа</string>
-    <string name="description_status_delivery">Следите за заказом в режиме реального времени</string>
+    <string name="sub_title_status_delivery">Следите за заказом в режиме реального времени</string>
     <string name="pay_title_onboard">Удобная оплата</string>
-    <string name="description_pay_onboard">Оплатить заказ можно онлайн или наличными при получении</string>
+    <string name="sub_title_pay_onboard">Оплатить заказ можно онлайн или наличными при получении</string>
     <string name="institution_title_onboard">Лучшие заведения в вашем \nгороде</string>
     <string name="institution_description_onboard">В приложении более 60 партнеров из 6 городов</string>
 </resources>

@@ -10,6 +10,6 @@ class OnboardPresenter @Inject constructor(
     private val analytics: BaseAnalytics
 ) : BaseMvpPresenter<OnboardContact.View>(), OnboardContact.Presenter {
     override fun sendMessageOnboardCompleted() {
-        analytics.onboardComponentBuilder(R.string.completed_onboard.toString())
+        analytics.trackOpenOnboardScreen(R.string.completed_onboard.toString())
     }
 }

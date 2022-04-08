@@ -1,30 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@drawable/back_onboard_four"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
-    tools:context=".screens.onboard_screen.fragments.FourFragment">
-
-
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/backOnboard"
+    tools:background="@drawable/back_onboard_one"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <ImageView
-        android:id="@+id/institution_img_onboard"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/imgOnboard"
+        android:layout_width="328dp"
+        android:layout_height="237dp"
         android:layout_marginTop="152dp"
-        android:src="@drawable/best_institution_onboard"
+        tools:src="@drawable/delivery_onboard"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/title_four_onboard"
+        android:id="@+id/titleOnboard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:fontFamily="@font/roboto_regular"
-        android:text="@string/institution_title_onboard"
+        android:fontFamily="@font/sf_pro_text_regular"
+        android:text="@string/pay_title_onboard"
         android:textColor="@color/white"
         android:textFontWeight="700"
         android:textSize="20sp"
@@ -32,22 +30,21 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/institution_img_onboard"
+        app:layout_constraintTop_toBottomOf="@id/imgOnboard"
         tools:targetApi="p" />
 
     <TextView
-        android:id="@+id/description_four_onboard"
+        android:id="@+id/subTitleOnboard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/institution_description_onboard"
+        android:layout_marginTop="5dp"
+        android:text="@string/sub_title_pay_onboard"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textFontWeight="500"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title_four_onboard"
+        app:layout_constraintTop_toBottomOf="@id/titleOnboard"
         tools:targetApi="p" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Parcelable
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
@@ -66,7 +65,7 @@ class MainActivity : BaseActivity(), MainContract.View {
 
     private val sliderAdapter by lazy(LazyThreadSafetyMode.NONE) {
         SliderAdapter{
-                presenter.onPartnerClickedBaner(it.partnerId?:"")
+                presenter.onPartnerClickedBaner(it.partnerId.orEmpty())
         }
     }
 

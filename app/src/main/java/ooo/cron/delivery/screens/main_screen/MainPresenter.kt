@@ -1,6 +1,5 @@
 package ooo.cron.delivery.screens.main_screen
 
-import android.util.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch

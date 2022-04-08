@@ -210,8 +210,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
                 cbFavorite.setOnClickListener {
                     if (cbFavorite.isChecked) {
                         presenter.likePartner(partnerInfo.id)
-                    }
-                    else {
+                    } else {
                         presenter.unlikePartner(partnerInfo.id)
                     }
                 }
@@ -232,34 +231,42 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
                         deliveryTypeTitle.setDrawableStart(R.drawable.ic_partner_delivers)
                     }
 
+                    val formatPrice = getString(R.string.price)
                     if (deliveryFrames.deliveryCosts.first().deliveryCost == deliveryFrames.deliveryCosts.last().deliveryCost) {
                         deliveryTypeTitle.text = getString(
                             R.string.partners_screen_delivery_type_title_first,
+                            String.format(
+                                formatPrice,
+                                deliveryFrames.deliveryCosts.last().deliveryCost
+                            ),
                             deliveryFrames.deliveryCosts.last().deliveryCost
                         )
                     } else {
                         deliveryTypeTitle.text = getString(
                             R.string.partners_screen_delivery_type_title,
                             deliveryFrames.deliveryCosts.last().deliveryCost,
+                            String.format(
+                                formatPrice,
+                                deliveryFrames.deliveryCosts.first().deliveryCost
+                            ),
                             deliveryFrames.deliveryCosts.first().deliveryCost
                         )
                     }
-                }
 
-                // Типы доставок --Конец-------------------------------------------
+                    // Типы доставок --Конец-------------------------------------------
 
-                minOrderAmount = minAmountOrder
+                    minOrderAmount = minAmountOrder
 
-                if (partnerCardImg != null) {
-                    Glide.with(binding.root)
-                        .load(partnerInfo.partnerCardImg)
-                        .centerCrop()
-                        .into(backdrop)
-                } else {
-                    Glide.with(binding.root)
-                        .load(R.color.white)
-                        .centerCrop()
-                        .into(backdrop)
+                    if (partnerCardImg != null) {
+                        Glide.with(binding.root)
+                            .load(partnerInfo.partnerCardImg)
+                            .centerCrop()
+                            .into(backdrop)
+                    } else {
+                        Glide.with(binding.root)
+                            .load(R.color.white)
+                            .centerCrop()
+                            .into(backdrop)
 //                    binding.vgPartnerInfo.animate().alpha(0f).setDuration(600).start()
 //
 //
@@ -277,12 +284,13 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
 //                    appBarParams.height = LinearLayout.LayoutParams.WRAP_CONTENT
 //
 //                    appbar.layoutParams = appBarParams
+                    }
                 }
             }
-        }
-        onBackButtonClick()
+            onBackButtonClick()
 //        onInfoButtonClick(partnerInfo)
-        onRatingClick()
+            onRatingClick()
+        }
     }
 
     private fun openDeliveryTypeBottomSheet() {
@@ -556,7 +564,6 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
     }
 
 
-
     private fun showCloseShopError() {
         val hours = if ((openHours?.div(10) ?: 0) > 0) openHours else "0$openHours"
         val minutes = if ((openMinutes?.div(10) ?: 0) > 0) openMinutes else "0$openMinutes"
@@ -578,7 +585,6 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
             "${hours}:${minutes}"
         )
     }
-
 
 
     override fun onDestroy() {

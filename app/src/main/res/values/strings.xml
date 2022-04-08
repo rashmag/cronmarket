@@ -286,8 +286,8 @@
 
     <!-- Partners screen -->
     <string name="partners_screen_error_close_shop_text">Заведение в данный момент закрыто\n Откроется в 11:00</string>
-    <string name="partners_screen_delivery_type_title_first">Доставка %s₽</string>
-    <string name="partners_screen_delivery_type_title">Доставка от %s-%s₽</string>
+    <string name="partners_screen_delivery_type_title_first">Доставка %s</string>
+    <string name="partners_screen_delivery_type_title">Доставка от %s-%s</string>
     <string name="partners_screen_delivery_from_title">Заказ от %s₽</string>
     <string name="partners_screen_delivery_from_title_second">Заказ от %s до %s</string>
     <string name="partners_screen_delivery_type_price">%s₽</string>

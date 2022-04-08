@@ -1,5 +1,6 @@
 package ooo.cron.delivery.screens.partners_screen
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
@@ -198,6 +199,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         binding.cbFavorite.isChecked = false
     }
 
+    @SuppressLint("StringFormatMatches")
     override fun showPartnerInfo(partnerInfo: PartnersInfoRes) {
         presenter.getPartnerCategory()
         with(partnerInfo) {
@@ -230,23 +232,16 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
                         deliveryTypeTitle.setDrawableStart(R.drawable.ic_partner_delivers)
                     }
 
-                    val formatPrice = getString(R.string.price)
                     if (deliveryFrames.deliveryCosts.first().deliveryCost == deliveryFrames.deliveryCosts.last().deliveryCost) {
                         deliveryTypeTitle.text = getString(
                             R.string.partners_screen_delivery_type_title_first,
-                            String.format(
-                                formatPrice,
-                                deliveryFrames.deliveryCosts.last().deliveryCost
-                            )
+                            deliveryFrames.deliveryCosts.last().deliveryCost
                         )
                     } else {
                         deliveryTypeTitle.text = getString(
                             R.string.partners_screen_delivery_type_title,
                             deliveryFrames.deliveryCosts.last().deliveryCost,
-                            String.format(
-                                formatPrice,
-                                deliveryFrames.deliveryCosts.first().deliveryCost
-                            ),
+                            deliveryFrames.deliveryCosts.first().deliveryCost
                         )
                     }
                 }

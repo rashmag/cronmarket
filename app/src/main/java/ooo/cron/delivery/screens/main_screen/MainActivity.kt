@@ -18,6 +18,7 @@ import nl.psdcompany.duonavigationdrawer.widgets.DuoDrawerToggle
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.MarketCategory
+import ooo.cron.delivery.data.network.models.PartnersInfoRes
 import ooo.cron.delivery.data.network.models.Promotion
 import ooo.cron.delivery.databinding.ActivityMainBinding
 import ooo.cron.delivery.screens.base.BaseActivity
@@ -65,7 +66,7 @@ class MainActivity : BaseActivity(), MainContract.View {
 
     private val sliderAdapter by lazy(LazyThreadSafetyMode.NONE) {
         SliderAdapter{
-            presenter.onPartnerClickedBaner(it.partnerId)
+                presenter.onPartnerClickedBaner(it.partnerId.orEmpty())
         }
     }
 
@@ -270,11 +271,14 @@ class MainActivity : BaseActivity(), MainContract.View {
         TODO("Not yet implemented")
     }
 
-    override fun setPartnerClickedBaner(partnerId: String?) {
+    override fun setPartnerClickedBaner(partnersInfoRes: PartnersInfoRes?) {
         startActivityForResult(
             Intent(this, PartnersActivity::class.java)
                 .apply {
-                    putExtra(EXTRA_PARTNER_ID, partnerId)
+                    putExtra(EXTRA_PARTNER_ID, partnersInfoRes?.id)
+                    putExtra(EXTRA_IS_OPEN, partnersInfoRes?.map()?.isOpen())
+                    putExtra(EXTRA_OPEN_HOURS, partnersInfoRes?.map()?.openTime()?.get(HOURS))
+                    putExtra(EXTRA_OPEN_MINUTES, partnersInfoRes?.map()?.openTime()?.get(MINUTES))
                 }, RESULT_CODE
         )
     }
@@ -491,9 +495,14 @@ class MainActivity : BaseActivity(), MainContract.View {
     companion object {
         const val RESULT_CODE = 1
         const val EXTRA_PARTNER_ID = "partnerId"
+        const val EXTRA_IS_OPEN = "is_open"
+        const val EXTRA_OPEN_HOURS = "open_hours"
+        const val EXTRA_OPEN_MINUTES = "open_minutes"
         const val RETURNING_SCREEN_KEY = "RETURNING_SCREEN_KEY"
         private const val IMAGE_SLIDE_DELAY = 0L
         private const val IMAGE_SLIDE_PERIOD = 3000L
         private const val FIRST_IMAGE = 0
+        const val HOURS = 0
+        const val MINUTES = 1
     }
 }

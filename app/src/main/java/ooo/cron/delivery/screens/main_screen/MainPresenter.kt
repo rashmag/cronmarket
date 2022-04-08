@@ -117,8 +117,12 @@ class MainPresenter @Inject constructor(
             view?.navigateLoginActivity()
     }
 
-    override fun onPartnerClickedBaner(partnerId: String?) {
-        view?.setPartnerClickedBaner(partnerId)
+    override fun onPartnerClickedBaner(partnerId: String) {
+        mainScope.launch {
+            val partnerInfoResponse = dataManager.getPartnersInfo(partnerId)
+            val partnerInfo = partnerInfoResponse.body()
+            view?.setPartnerClickedBaner(partnerInfo)
+        }
     }
 
     override fun onLogInLogOutClick() {

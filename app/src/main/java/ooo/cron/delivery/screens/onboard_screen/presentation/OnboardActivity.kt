@@ -1,8 +1,10 @@
-package ooo.cron.delivery.screens.onboard_screen
+package ooo.cron.delivery.screens.onboard_screen.presentation
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import kotlinx.android.synthetic.main.activity_onboard.*
 import ooo.cron.delivery.App
@@ -10,14 +12,16 @@ import ooo.cron.delivery.R
 import ooo.cron.delivery.screens.base.BaseActivity
 import ooo.cron.delivery.screens.first_address_selection_screen.FirstAddressSelectionActivity
 import ooo.cron.delivery.screens.onboard_screen.adapter.ViewPagerAdapter
-import ooo.cron.delivery.screens.onboard_screen.model.OnboardingModel
+import ooo.cron.delivery.data.network.models.OnboardingModel
 import javax.inject.Inject
+import javax.inject.Named
 
-class OnboardActivity : BaseActivity(),OnboardContact.View {
+class OnboardActivity : BaseActivity(){
 
     @Inject
-    protected lateinit var presenter: OnboardContact.Presenter
-
+    @Named("Onboard")
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private val viewModel by viewModels<OnboardViewModel> { viewModelFactory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -25,8 +29,6 @@ class OnboardActivity : BaseActivity(),OnboardContact.View {
             .inflater(layoutInflater)
             .build()
             .inject(this)
-
-        presenter.attachView(this)
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_onboard)
@@ -42,6 +44,7 @@ class OnboardActivity : BaseActivity(),OnboardContact.View {
         if (view_pager_onboard.currentItem != 3) {
             view_pager_onboard.currentItem += 1
         } else {
+            viewModel.sendMessageInAnalytics(getString(R.string.completed_onboard))
             startActivity(Intent(this, FirstAddressSelectionActivity::class.java))
             finish()
         }
@@ -62,10 +65,7 @@ class OnboardActivity : BaseActivity(),OnboardContact.View {
                     ONE_FRAGMENT -> btn_next_onboard.text = "Далее"
                     TWO_FRAGMENT -> btn_next_onboard.text = "Продолжайте"
                     THREE_FRAGMENT -> btn_next_onboard.text = "Что ещё?"
-                    FOUR_FRAGMENT -> {
-                        btn_next_onboard.text = "Отлично!"
-                        presenter.sendMessageOnboardCompleted()
-                    }
+                    FOUR_FRAGMENT -> btn_next_onboard.text = "Отлично!"
                     else -> btn_next_onboard.text = "Далее"
                 }
             }

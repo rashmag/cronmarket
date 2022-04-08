@@ -6,7 +6,7 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import ooo.cron.delivery.databinding.OnboardItemBinding
-import ooo.cron.delivery.screens.onboard_screen.model.OnboardingModel
+import ooo.cron.delivery.data.network.models.OnboardingModel
 
 
 class ViewPagerAdapter(private val listOnboard:ArrayList<OnboardingModel>)

@@ -38,6 +38,9 @@
         <activity android:name=".screens.ordering_screen.OrderingActivity"
             android:windowSoftInputMode="adjustPan"/>
 
+        <activity android:name=".screens.onboard_screen.presentation.OnboardActivity"
+            android:windowSoftInputMode="adjustPan"/>
+
         <activity android:name=".screens.splash_screen.SplashScreenActivity"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>

@@ -12,6 +12,7 @@ import ooo.cron.delivery.R
 import ooo.cron.delivery.screens.base.BaseActivity
 import ooo.cron.delivery.screens.first_address_selection_screen.FirstAddressSelectionActivity
 import ooo.cron.delivery.screens.main_screen.MainActivity
+import ooo.cron.delivery.screens.onboard_screen.presentation.OnboardActivity
 import javax.inject.Inject
 
 /*
@@ -48,14 +49,14 @@ class SplashScreenActivity : BaseActivity(), SplashScreenContract.View {
         Handler(Looper.getMainLooper()).postDelayed({
             startActivity(Intent(this, FirstAddressSelectionActivity::class.java))
             finish()
-        }, 1000)
+        }, SECOND)
     }
 
     override fun navigateMainScreen() {
         Handler(Looper.getMainLooper()).postDelayed({
             startActivity(Intent(this, MainActivity::class.java))
             finish()
-        }, 1000)
+        }, SECOND)
     }
 
     override fun navigateGooglePlay() {
@@ -84,5 +85,16 @@ class SplashScreenActivity : BaseActivity(), SplashScreenContract.View {
         positiveButton.isAllCaps = false
         positiveButton.updateTextColor(resources.getColor(R.color.errors_true))
         dialog.show()
+    }
+
+    override fun showOnboard() {
+        Handler(Looper.getMainLooper()).postDelayed({
+            startActivity(Intent(this, OnboardActivity::class.java))
+            finish()
+        }, SECOND)
+    }
+
+    companion object{
+        const val SECOND:Long = 1000
     }
 }

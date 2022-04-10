@@ -113,6 +113,15 @@ class SPrefsService @Inject constructor(
     fun readUserPhone() =
         sharedPreferences.getString(USER_PHONE, "")
 
+    fun writeFirstOpenApp(){
+        sharedPreferences.edit()
+            .putBoolean(FIRST_OPEN_APP,false)
+            .apply()
+    }
+
+    fun readFirstOpenApp() = sharedPreferences
+        .getBoolean(FIRST_OPEN_APP,true)
+
     fun writeBasket(basket: Basket) {
         sharedPreferences.edit()
             .putString(BASKET, Gson().toJson(basket).toString())
@@ -211,6 +220,8 @@ class SPrefsService @Inject constructor(
         const val BASKET = "basket"
 
         const val USER_BASKET = "user_basket"
+
+        const val FIRST_OPEN_APP = "first_open_app"
 
         const val ACCESS_TOKEN = "access_token"
         const val REFRESH_TOKEN = "refresh_token"

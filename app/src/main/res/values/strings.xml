@@ -32,10 +32,16 @@
     <string name="first_address_selection_access_location_permission_description">Доступ к местоположению пользователя необходим для определения адреса доставки</string>
     <string name="first_address_selection_access_location_permission_ok">Ок</string>
 
-    <string name="main_special_offers_title"><font color="#212529" >Акции от </font><font color="#FF4C30">Cron</font><font color="#212529">Market</font></string>
+    <string name="skip_onboard">Пропуск онбординга</string>
+    <string name="completed_onboard">Пропуск онбординга</string>
+    <string name="main_special_offers_title"><font color="#212529">Акции от </font><font color="#FF4C30">Cron</font><font color="#212529">Market</font></string>
     <string name="main_address_incorrect">Укажите адрес доставки</string>
     <string name="main_search">Поиск</string>
     <string name="main_btn_amount">%s ₽</string>
+    <string name="onboard_one_slide">Далее</string>
+    <string name="onboard_two_slide">Продолжайте</string>
+    <string name="onboard_three_slide">Что ещё?</string>
+    <string name="onboard_four_slide">Отлично!</string>
 
     <string name="market_category_special_offers">Акции от CronДоставки</string>
     <string name="market_category_all_tags">Все заведения</string>
@@ -129,7 +135,6 @@
 
     <string name="version_update_title">У нас появилось много\nнового и интересного!\nПожалуйста, обновите приложение.</string>
     <string name="attention_title">Внимание</string>
-
 
 
     <string name="enter_phone_privacy_policy_text">Настоящая Политика конфиденциальности персональных данных (далее – Политика конфиденциальности), действует в отношении всей информации, которую собирает общество с ограниченной ответственностью «КРОН» (далее — Исполнитель) в лице мобильного приложения «CronДоставка» (далее – Мобильное приложение), которую может получить о Пользователе во время использования им Мобильного приложения.
@@ -333,4 +338,15 @@
     <string name="favorite">Избранное</string>
     <string name="favorite_list_empty">Ваш список избранных заведений пуст</string>
     <string name="favorite_list_empty_info">Кликайте по иконке сердечка на страницах ваших любимых мест, и вы всегда найдете их в списке избранных.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_delivery_one">Быстрая доставка</string>
+    <string name="sub_title_delivery_one">Заказ приедет к вам за час, а может быть и \nраньше</string>
+    <string name="next_btn_onboard">Далее</string>
+    <string name="status_delivery">Статус заказа</string>
+    <string name="sub_title_status_delivery">Следите за заказом в режиме реального времени</string>
+    <string name="pay_title_onboard">Удобная оплата</string>
+    <string name="sub_title_pay_onboard">Оплатить заказ можно онлайн или наличными при получении</string>
+    <string name="institution_title_onboard">Лучшие заведения в вашем \nгороде</string>
+    <string name="institution_description_onboard">В приложении более 60 партнеров из 6 городов</string>
 </resources>

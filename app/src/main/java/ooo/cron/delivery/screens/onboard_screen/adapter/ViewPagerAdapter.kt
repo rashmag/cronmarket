@@ -9,8 +9,13 @@ import ooo.cron.delivery.databinding.OnboardItemBinding
 import ooo.cron.delivery.data.network.models.OnboardingModel
 
 
-class ViewPagerAdapter(private val listOnboard:ArrayList<OnboardingModel>)
-    : RecyclerView.Adapter<ViewPagerAdapter.MyViewHolder>() {
+class ViewPagerAdapter : RecyclerView.Adapter<ViewPagerAdapter.MyViewHolder>() {
+    private var listOnboard:ArrayList<OnboardingModel> = arrayListOf()
+
+    fun setData(listOnboardModel: ArrayList<OnboardingModel>){
+        listOnboard = listOnboardModel
+        notifyDataSetChanged()
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder =
         MyViewHolder(OnboardItemBinding.inflate(LayoutInflater.from(parent.context),
             parent,false))
@@ -18,8 +23,7 @@ class ViewPagerAdapter(private val listOnboard:ArrayList<OnboardingModel>)
     override fun getItemCount(): Int = listOnboard.size
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val model = listOnboard[position]
-        holder.bind(model)
+        holder.bind(listOnboard[position])
     }
     inner class MyViewHolder(val binding: OnboardItemBinding) :
         RecyclerView.ViewHolder(binding.root) {

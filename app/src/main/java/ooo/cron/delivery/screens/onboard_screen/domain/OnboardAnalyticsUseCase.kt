@@ -3,9 +3,9 @@ package ooo.cron.delivery.screens.onboard_screen.domain
 import javax.inject.Inject
 
 class OnboardAnalyticsUseCase @Inject constructor(
-    private val onboardAnalyticsRep: OnboardAnalyticsRep
+    private val onboardAnalyticsRepository: OnboardAnalyticsRepository
 ) {
     suspend fun sendMessageInAnalytics(message:String){
-        onboardAnalyticsRep.sendMessageInAnalutics(message)
+        onboardAnalyticsRepository.sendMessageInAnalutics(message)
     }
 }

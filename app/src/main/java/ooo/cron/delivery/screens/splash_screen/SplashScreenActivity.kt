@@ -49,14 +49,14 @@ class SplashScreenActivity : BaseActivity(), SplashScreenContract.View {
         Handler(Looper.getMainLooper()).postDelayed({
             startActivity(Intent(this, FirstAddressSelectionActivity::class.java))
             finish()
-        }, 1000)
+        }, SECOND)
     }
 
     override fun navigateMainScreen() {
         Handler(Looper.getMainLooper()).postDelayed({
             startActivity(Intent(this, MainActivity::class.java))
             finish()
-        }, 1000)
+        }, SECOND)
     }
 
     override fun navigateGooglePlay() {
@@ -91,6 +91,10 @@ class SplashScreenActivity : BaseActivity(), SplashScreenContract.View {
         Handler(Looper.getMainLooper()).postDelayed({
             startActivity(Intent(this, OnboardActivity::class.java))
             finish()
-        }, 1000)
+        }, SECOND)
+    }
+
+    companion object{
+        const val SECOND:Long = 1000
     }
 }

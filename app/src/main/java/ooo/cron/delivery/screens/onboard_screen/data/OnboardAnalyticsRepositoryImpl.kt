@@ -1,13 +1,12 @@
 package ooo.cron.delivery.screens.onboard_screen.data
 
-import android.util.Log
 import ooo.cron.delivery.analytics.BaseAnalytics
-import ooo.cron.delivery.screens.onboard_screen.domain.OnboardAnalyticsRep
+import ooo.cron.delivery.screens.onboard_screen.domain.OnboardAnalyticsRepository
 import javax.inject.Inject
 
-class OnboardAnalyticsRepImpl @Inject constructor(
+class OnboardAnalyticsRepositoryImpl @Inject constructor(
     private val analytics: BaseAnalytics
-) : OnboardAnalyticsRep {
+) : OnboardAnalyticsRepository {
     override suspend fun sendMessageInAnalutics(message: String) {
         analytics.trackOpenOnboardScreen(message)
     }

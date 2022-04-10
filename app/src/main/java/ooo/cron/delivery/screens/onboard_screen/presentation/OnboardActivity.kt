@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import kotlinx.android.synthetic.main.activity_onboard.*
+import kotlinx.android.synthetic.main.fragment_order_history_detail.*
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
 import ooo.cron.delivery.screens.base.BaseActivity
@@ -55,18 +56,20 @@ class OnboardActivity : BaseActivity(){
     }
 
     private fun setViewPager() {
-        view_pager_onboard.adapter = ViewPagerAdapter(setDataInOnboardModel())
+        val viewPagerAdapter = ViewPagerAdapter()
+        view_pager_onboard.adapter = viewPagerAdapter
+        viewPagerAdapter.setData(setDataInOnboardModel())
         view_pager_onboard.currentItem = 0
 
         view_pager_onboard.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 page_indicator_view.setSelected(position)
                 when (position) {
-                    ONE_FRAGMENT -> btn_next_onboard.text = "Далее"
-                    TWO_FRAGMENT -> btn_next_onboard.text = "Продолжайте"
-                    THREE_FRAGMENT -> btn_next_onboard.text = "Что ещё?"
-                    FOUR_FRAGMENT -> btn_next_onboard.text = "Отлично!"
-                    else -> btn_next_onboard.text = "Далее"
+                    ONE_FRAGMENT -> btn_next_onboard.text = getString(R.string.onboard_one_slide)
+                    TWO_FRAGMENT -> btn_next_onboard.text = getString(R.string.onboard_two_slide)
+                    THREE_FRAGMENT -> btn_next_onboard.text = getString(R.string.onboard_three_slide)
+                    FOUR_FRAGMENT -> btn_next_onboard.text = getString(R.string.onboard_four_slide)
+                    else -> btn_next_onboard.text = getString(R.string.onboard_one_slide)
                 }
             }
         })

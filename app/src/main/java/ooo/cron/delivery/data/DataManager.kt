@@ -72,9 +72,9 @@ class DataManager @Inject constructor(
             restService.getPartnersByTag(cityId, marketCategoryId, tagId, offset)
         }
 
-    suspend fun getUser(token: String) =
+    suspend fun getUser() =
         withContext(Dispatchers.IO) {
-            restService.getUser(token)
+            restService.getUser()
         }
 
     suspend fun refreshToken(token: RefreshableToken) =
@@ -94,8 +94,8 @@ class DataManager @Inject constructor(
         restService.getPartnerProducts(partnerId)
     }
 
-    suspend fun sendOrder(token: String, orderReq: OrderReq) = withContext(Dispatchers.IO) {
-        restService.sendOrder(token, orderReq)
+    suspend fun sendOrder(orderReq: OrderReq) = withContext(Dispatchers.IO) {
+        restService.sendOrder(orderReq)
     }
 
     fun sentCode(sentCodeReq: SentCodeReq): Call<Void> {
@@ -106,8 +106,8 @@ class DataManager @Inject constructor(
         return restService.sentConfirmCode(confirmCodeReq)
     }
 
-    fun setUserName(token: String, userName: SetUserNameReq): Call<Void> {
-        return restService.setUserName(token, userName)
+    fun setUserName(userName: SetUserNameReq): Call<Void> {
+        return restService.setUserName(userName)
     }
 
     suspend fun logOut(refreshToken: LogOutReq): Response<ResponseBody> =
@@ -119,10 +119,6 @@ class DataManager @Inject constructor(
     suspend fun getBasket(basketId: String): Response<Basket> =
         restService.getBasket(basketId)
 
-    suspend fun increaseProductInBasket(token: String, editor: BasketEditorReq) =
-        withContext(Dispatchers.IO) {
-            restService.increaseProductInBasket(token, editor)
-        }
 
     suspend fun increaseProductInBasket(editor: BasketEditorReq) =
         withContext(Dispatchers.IO) {
@@ -191,7 +187,7 @@ class DataManager @Inject constructor(
         sPrefsService.readCurrentCityPosition()
 
     fun readChosenCityId() =
-        sPrefsService.readChosenCity().id
+        sPrefsService.readChosenCity()?.id
 
     fun writeSelectedMarketCategory(category: MarketCategory) =
         sPrefsService.writeSelectedMarketCategory(category)
@@ -251,6 +247,28 @@ class DataManager @Inject constructor(
     }
 
     fun readPartnerId() = sPrefsService.readPartnerId()
+
+    suspend fun likePartner(partnerId: String): Response<ResponseBody> {
+        return restService.likePartner( LikePartnerReq(partnerId = partnerId))
+    }
+
+    suspend fun unlikePartner(partnerId: String): Response<ResponseBody> {
+        return restService.unlikePartner(LikePartnerReq(partnerId = partnerId))
+    }
+
+    fun writePartnerOpenHours(openHours: Int){
+        sPrefsService.writePartnerOpenHours(openHours)
+    }
+
+    fun readPartnerOpenHours() =
+        sPrefsService.readPartnerOpenHours()
+
+    fun writePartnerCloseTime(closeHours: Int){
+        sPrefsService.writePartnerCloseHours(closeHours)
+    }
+
+    fun readPartnerCloseHours() =
+        sPrefsService.readPartnerCloseHours()
 
     companion object {
         const val EMPTY_UUID = SPrefsService.EMPTY_UUID

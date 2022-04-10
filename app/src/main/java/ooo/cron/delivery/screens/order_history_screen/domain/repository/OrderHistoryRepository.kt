@@ -5,5 +5,5 @@ import retrofit2.Response
 
 interface OrderHistoryRepository {
 
-    suspend fun loadOrderHistory(token: String): Response<List<OrderHistoryNetModel>>?
+    suspend fun loadOrderHistory(): Response<List<OrderHistoryNetModel>>?
 }

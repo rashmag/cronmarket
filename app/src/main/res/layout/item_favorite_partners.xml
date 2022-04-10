@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/dimen_16"
+    android:layout_marginEnd="@dimen/dimen_16"
+    android:layout_marginTop="@dimen/dimen_8"
+    android:layout_marginBottom="@dimen/dimen_8"
+    app:cardElevation="0dp"
+    app:cardCornerRadius="@dimen/dimen_8">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/dimen_8">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@id/iv_market_category_partner"
+            android:layout_width="0dp"
+            android:layout_height="172dp"
+            android:contentDescription="@string/market_category_partner_image_description"
+            android:scaleType="centerCrop"
+            app:shapeAppearance="@style/CircleImageView"
+            android:layout_margin="@dimen/dimen_8"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@id/iv_market_category_partner_logo"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="@dimen/dimen_20"
+            android:layout_marginTop="@dimen/dimen_12"
+            android:layout_marginBottom="@dimen/dimen_12"
+            android:layout_marginEnd="@dimen/dimen_8"
+            app:layout_constraintTop_toTopOf="@id/tv_market_category_partner_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/tv_market_category_partner_title"
+            app:shapeAppearance="@style/CircleImageLogo" />
+
+        <TextView
+            android:id="@id/tv_market_category_partner_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_8"
+            android:layout_marginTop="@dimen/dimen_16"
+            android:layout_marginEnd="@dimen/dimen_40"
+            android:layout_marginBottom="@dimen/dimen_16"
+            android:ellipsize="end"
+            android:paddingVertical="@dimen/dimen_4"
+            android:maxLines="2"
+            android:textColor="@color/grey90"
+            android:textSize="@dimen/text_middle_16"
+            android:textStyle="bold"
+            android:gravity="center|start"
+            app:layout_constraintEnd_toStartOf="@id/iv_market_category_partner_logo"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_market_category_partner"
+
+            tools:text="Breakfast and coffee " />
+
+        <TextView
+            android:id="@id/tv_market_category_partner_short_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_8"
+            android:layout_marginEnd="@dimen/dimen_8"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:visibility="gone"
+            android:textColor="@color/grey50"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_market_category_partner_title"
+            tools:text="Кофейня" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@id/tv_market_category_partner_rating"
+            android:orientation="horizontal"
+            android:layout_marginStart="@dimen/dimen_8"
+            android:layout_marginTop="@dimen/dimen_8"
+            android:layout_gravity="center"
+            android:text="@string/market_category_partner_common_rating"
+            android:textColor="@color/grey50"
+            android:textSize="@dimen/text_min_12"
+            android:textStyle="bold"
+            android:padding="@dimen/dimen_8"
+            android:drawablePadding="@dimen/dimen_4"
+            android:drawableLeft="@drawable/ic_market_category_partner_rating_new"
+            android:background="@drawable/bg_market_category_partner_rating"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_market_category_partner_short_description">
+
+        </androidx.appcompat.widget.AppCompatTextView>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@id/tv_market_category_partner_price"
+            android:background="@drawable/bg_market_category_partner_price"
+            android:orientation="horizontal"
+            android:layout_marginStart="@dimen/dimen_12"
+            android:padding="@dimen/dimen_8"
+            android:textColor="@color/grey50"
+            android:textSize="@dimen/text_min_12"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            tools:text="от 500 Р."
+            android:drawablePadding="@dimen/dimen_4"
+            android:drawableLeft="@drawable/ic_market_category_partner_min_price"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintBottom_toBottomOf="@id/tv_market_category_partner_rating"
+            app:layout_constraintStart_toEndOf="@id/tv_market_category_partner_rating"
+            app:layout_constraintTop_toTopOf="@id/tv_market_category_partner_rating" >
+
+        </androidx.appcompat.widget.AppCompatTextView>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@id/tv_market_category_partner_delivery"
+            android:background="@drawable/bg_market_category_partner_price"
+            android:orientation="horizontal"
+            android:layout_marginStart="@dimen/dimen_12"
+            android:textColor="@color/grey50"
+            android:textSize="@dimen/text_min_12"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            tools:text="от 2000 Р."
+            android:padding="@dimen/dimen_8"
+            android:drawablePadding="@dimen/dimen_4"
+            android:drawableLeft="@drawable/ic_market_category_partner_min_delivery"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintBottom_toBottomOf="@id/tv_market_category_partner_price"
+            app:layout_constraintStart_toEndOf="@id/tv_market_category_partner_price"
+            app:layout_constraintTop_toTopOf="@id/tv_market_category_partner_price" >
+        </androidx.appcompat.widget.AppCompatTextView>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_closed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_12"
+            android:background="@drawable/bg_closed_partner_message"
+            android:paddingStart="@dimen/dimen_12"
+            android:paddingTop="@dimen/dimen_4"
+            android:paddingEnd="@dimen/dimen_12"
+            android:paddingBottom="@dimen/dimen_4"
+            android:textColor="@color/false_color"
+            android:textSize="@dimen/text_min_12"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/partner_closed" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

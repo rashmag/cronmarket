@@ -65,6 +65,7 @@ class SwipeHelper(context: Context,
     override fun getSwipeThreshold(viewHolder: RecyclerView.ViewHolder): Float {
         if (swipeDirection == Direction.TO_LEFT)
             return 0.01f
+
         return 0.99f
     }
 

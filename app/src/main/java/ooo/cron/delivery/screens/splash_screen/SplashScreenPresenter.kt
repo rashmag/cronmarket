@@ -1,10 +1,8 @@
 package ooo.cron.delivery.screens.splash_screen
 
-import android.util.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import ooo.cron.delivery.R
-import ooo.cron.delivery.analytics.Analytics
 import ooo.cron.delivery.analytics.BaseAnalytics
 import ooo.cron.delivery.data.DataManager
 import ooo.cron.delivery.screens.base_mvp.BaseMvpPresenter
@@ -31,10 +29,10 @@ class SplashScreenPresenter @Inject constructor(
                             dataManager.writeFirstOpenApp()
                         }else{
                             analytics.trackOpenOnboardScreen(R.string.skip_onboard.toString())
-                            if (dataManager.readChosenCity().id.isEmpty())
-                                view?.navigateFirstAddressScreen()
-                            else
+                            if (dataManager.readChosenCity()?.id != null)
                                 view?.navigateMainScreen()
+                            else
+                                view?.navigateFirstAddressScreen()
                         }
                     } else {
                         view?.showUpdateVersionDialog()

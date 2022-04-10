@@ -3,6 +3,7 @@ package ooo.cron.delivery.screens.partners_screen
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import okhttp3.ResponseBody
 import ooo.cron.delivery.data.DataManager
 import ooo.cron.delivery.data.network.models.*
 import ooo.cron.delivery.data.network.request.BasketClearReq
@@ -13,6 +14,7 @@ import java.util.*
 import javax.inject.Inject
 import ooo.cron.delivery.analytics.BaseAnalytics
 import ooo.cron.delivery.utils.extensions.orZero
+import java.lang.Exception
 
 /*
  * Created by Muhammad on 05.05.2021
@@ -37,7 +39,8 @@ class PartnersPresenter @Inject constructor(
     override fun getPartnerInfo() {
         mainScope.launch {
             withErrorsHandle(
-                { dataManager.getPartnersInfo(view?.getPartnerId()!!).handlePartnersInfo() },
+                { dataManager.getPartnersInfo(
+                    view?.getPartnerId()!!).handlePartnersInfo() },
                 { view?.showConnectionErrorScreen() },
                 { view?.showAnyErrorScreen() })
         }
@@ -47,16 +50,17 @@ class PartnersPresenter @Inject constructor(
         return dataManager.readPartnerId() != view?.getPartnerId()
     }
 
-
     private fun Response<PartnersInfoRes>.handlePartnersInfo() {
         if (isSuccessful) {
             partner = body()!!
             view?.showPartnerInfo(partner)
-            analytics.trackOpenPartnersCard(
-                partnerName = partner.name,
-                categoryName = dataManager.readSelectedMarketCategory().categoryName,
-                phoneNumber = dataManager.readUserPhone().toString()
-            )
+            dataManager.readSelectedMarketCategory()?.let {
+                analytics.trackOpenPartnersCard(
+                    partnerName = partner.name,
+                    categoryName = it.categoryName,
+                    phoneNumber = dataManager.readUserPhone().toString()
+                )
+            }
         } else {
             view?.showAnyErrorScreen()
         }
@@ -132,10 +136,13 @@ class PartnersPresenter @Inject constructor(
                             .map { it.toInt() }
                     else listOf(23, 59, 59)
 
+                dataManager.writePartnerOpenHours(openTime[0])
+                dataManager.writePartnerCloseTime(closeTime[0])
+
                 view?.navigateBasket(
-                    openTime[0],
+                    openTime.first(),
                     openTime[1],
-                    closeTime[0],
+                    closeTime.first(),
                     closeTime[1],
                     basket
                 )
@@ -228,7 +235,11 @@ class PartnersPresenter @Inject constructor(
                             basketContent = deserializeDishes()
                             mergeBasketIntoProducts()
                             view?.showPartnerProducts(productCategoriesModel)
-                            dataManager.writeCurrentCityId(dataManager.readChosenCity().id)
+                            dataManager.readChosenCity()?.id?.let {
+                                dataManager.writeCurrentCityId(
+                                    it
+                                )
+                            }
                             view?.updateBasketPreview(
                                 basketContent?.sumBy { it.quantity } ?: 0,
                                 String.format("%.2f", basket!!.amount)
@@ -242,6 +253,48 @@ class PartnersPresenter @Inject constructor(
 
             increaseProductInBasket(product, additives, quantity)
         }
+    }
+
+    override fun likePartner(partnerId: String) {
+        mainScope.launch {
+            withErrorsHandle(
+                {
+                    dataManager.likePartner(
+                        partnerId = partnerId
+                    )
+                        .handleLikeResponse()
+                },
+                { view?.showConnectionErrorScreen() },
+                { view?.showAnyErrorScreen() }
+            )
+        }
+    }
+
+    override fun getUserLoggedStatus(): Boolean {
+        return dataManager.readToken()?.accessToken?.isNotEmpty() ?: false
+    }
+
+    private fun Response<ResponseBody>.handleLikeResponse() {
+        if (isSuccessful) {
+            view?.showLikePartner()
+        } else view?.showAnyErrorScreen()
+    }
+
+
+    override fun unlikePartner(partnerId: String) {
+        mainScope.launch {
+            withErrorsHandle(
+                { dataManager.unlikePartner(partnerId = partnerId).handleUnlikeResponse() },
+                { view?.showConnectionErrorScreen() },
+                { view?.showAnyErrorScreen() }
+            )
+        }
+    }
+
+    private fun Response<ResponseBody>.handleUnlikeResponse() {
+        if (isSuccessful) {
+            view?.showUnlikePartner()
+        } else view?.showAnyErrorScreen()
     }
 
     private suspend fun increaseProductInBasket(
@@ -282,12 +335,14 @@ class PartnersPresenter @Inject constructor(
 
         withErrorsHandle(
             {
-                val accessToken = dataManager.readToken().accessToken
-                basket = if (accessToken.isNotEmpty())
+/*                val accessToken = dataManager.readToken().accessToken
+*//*                basket = if (accessToken.isNotEmpty())
                     dataManager.increaseProductInBasket("Bearer $accessToken", basketEditor)
-                else
-                    dataManager.increaseProductInBasket(basketEditor)
-                dataManager.writeUserBasketId(basket!!.id)
+                else*/
+                basket = dataManager.increaseProductInBasket(basketEditor)
+                basket.let { it?.let { it1 ->
+                    dataManager.writeUserBasketId(it1.id) }
+                }
                 basketContent = deserializeDishes()
                 mergeBasketIntoProducts()
                 view?.showPartnerProducts(productCategoriesModel)

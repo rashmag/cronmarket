@@ -64,7 +64,7 @@ class ConfirmPhonePresenter @Inject constructor(
                         mainScope.launch {
 
                             dataManager.writeToken(response.body()!!)
-                            val userResponse = dataManager.getUser("Bearer ${response.body()!!.accessToken}")
+                            val userResponse = dataManager.getUser()
                             if (userResponse.isSuccessful) {
                                 dataManager.writeUserBasketId(
                                     userResponse.body()?.basket?.id ?: DataManager.EMPTY_UUID

@@ -140,7 +140,7 @@ class FirstAddressSelectionPresenter @Inject constructor(
                 withErrorsHandle(
                     { dataManager.getSuggestAddress(it.kladrId, addressPart).handleAddressesWhenTyping() },
                     { view?.showConnectionErrorScreen() },
-                    { view?.showAnyErrorScreen() }
+                    { view?.showWriteHouseNumberMessage() }
                 )
             }
         }
@@ -167,28 +167,30 @@ class FirstAddressSelectionPresenter @Inject constructor(
         if (isSuccessful && body().isNullOrEmpty().not()) {
             cities = body()!!
             view?.showCities(cities)
-            view?.showUserSavedAddress(dataManager.readBuildingAddress().orEmpty())
-            lastSelectedCity = dataManager.readChosenCity().city
+            dataManager.readChosenCity()?.let {
+                lastSelectedCity = it.city
+            }
             view?.removeCitiesProgress()
             view?.showStartShopping()
-        } else
+        } else {
             view?.showAnyErrorScreen()
+        }
     }
 
     // Вставка предложенного города, при поиске своего местоположения
     private suspend fun Response<List<SuggestAddress>>.handleAddresses() {
         if (isSuccessful && body().isNullOrEmpty().not()) {
-                suggestedAddresses = body()?.weedOutNullAddresses() ?: listOf()
-                if (suggestedAddresses.isNotEmpty()) {
+            suggestedAddresses = body()?.weedOutNullAddresses() ?: listOf()
+            if (suggestedAddresses.isNotEmpty()) {
 
-                    suggestedAddresses.forEach {
-                        view?.setFoundCity(it.city)
-                        delay(DELAY_FOR_SEARCH_ADDRESS)
-                        view?.setFoundAddress(it.streetWithType.plus(" " + it.house))
-                    }
-                } else {
-                    view?.showWarningMessage()
+                suggestedAddresses.forEach {
+                    view?.setFoundCity(it.city)
+                    delay(DELAY_FOR_SEARCH_ADDRESS)
+                    view?.setFoundAddress(it.toString())
                 }
+            } else {
+                view?.showWarningMessage()
+            }
         } else {
             view?.showLocationNotFoundMessage()
         }
@@ -197,25 +199,26 @@ class FirstAddressSelectionPresenter @Inject constructor(
     // Отображение предложенных адресов, при вводе текста
     private fun Response<List<SuggestAddress>>.handleAddressesWhenTyping() {
         if (isSuccessful && body().isNullOrEmpty().not()) {
-                suggestedAddresses = body()?.weedOutNullAddresses() ?: listOf()
+            suggestedAddresses = body()?.weedOutNullAddresses() ?: listOf()
 
-                if (suggestedAddresses.isNotEmpty()) {
-                    view?.showAddressesPopup(suggestedAddresses)
-                }else{
-                    view?.showWarningMessage()
-                }
-            }else
-                view?.showLocationNotFoundMessage()
+            if (suggestedAddresses.isNotEmpty()) {
+                view?.showAddressesPopup(suggestedAddresses)
+            } else {
+                view?.showWarningMessage()
+            }
+        } else
+            view?.showLocationNotFoundMessage()
 
         view?.let {
-            if (it.getAddress().isValidAddress()) {
+            if (it.getAddress().isValidAddress() && it.getAddress().isValidAddressWithHouse()) {
                 it.showSuccessMessage()
-            } else if (it.getAddress().isNotEmpty())
+            } else {
                 it.showWarningMessage()
+            }
         }
     }
 
-    override suspend fun checkingFirstLaunch() = dataManager.readChosenCity().city != ""
+    override suspend fun checkingFirstLaunch() = dataManager.readChosenCity()?.city != ""
 
     override fun writeCurrentCityPosition(position: Int) = dataManager.writeCurrentCityPosition(position)
     override fun getCurrentCityPosition() = dataManager.readCurrentCityPosition()
@@ -235,7 +238,11 @@ class FirstAddressSelectionPresenter @Inject constructor(
         dataManager.writeChosenCity(selectedCity!!)
         view?.let {
             if (it.getAddress().isValidAddress()) {
-                dataManager.writeBuildingAddress(it.getAddress())
+                if (it.getAddress().isValidAddressWithHouse()) {
+                    dataManager.writeBuildingAddress(it.getAddress())
+                } else {
+                    view?.showWarningMessage()
+                }
             } else {
                 addressScope.launch {
                     dataManager.writeBuildingAddress(
@@ -254,6 +261,11 @@ class FirstAddressSelectionPresenter @Inject constructor(
     private fun String.isValidAddress() =
         suggestedAddresses.firstOrNull { address ->
             contains(address.streetWithType)
+        } != null
+
+    private fun String.isValidAddressWithHouse() =
+        suggestedAddresses.firstOrNull {
+            contains(it.streetWithType) && contains(it.house)
         } != null
 
     companion object {

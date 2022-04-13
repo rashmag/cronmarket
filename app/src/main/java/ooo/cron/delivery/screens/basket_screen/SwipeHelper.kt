@@ -17,15 +17,17 @@ import java.util.LinkedList
  * Created by Ramazan Gadzhikadiev on 17.05.2021.
  */
 
-class SwipeHelper(context: Context,
-                  val onRemoveClicked: (viewHolder: RecyclerView.ViewHolder?) -> Unit
-) : ItemTouchHelper.SimpleCallback(ItemTouchHelper.ACTION_STATE_IDLE,
+class SwipeHelper(
+    context: Context,
+    val onRemoveClicked: (viewHolder: RecyclerView.ViewHolder?) -> Unit
+) : ItemTouchHelper.SimpleCallback(
+    ItemTouchHelper.ACTION_STATE_IDLE,
     ItemTouchHelper.LEFT
 ) {
     private var isAnotherItem = false
     private var saveTop = 0
     private var saveBottom = 0
-    private var recyclerViewMain:RecyclerView? = null
+    private var recyclerViewMain: RecyclerView? = null
     private var swipedPosition = -1
     private var swipedPositionScroll = -1
     private var isDelete = true
@@ -72,13 +74,14 @@ class SwipeHelper(context: Context,
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         val position = viewHolder.position
-        if(isDelete) isDelete = false
-        if(swipedPositionScroll == position) {
+        if (isDelete) isDelete = false
+        if (swipedPositionScroll == position) {
             swipedPositionScroll = -1
         }
         if (swipedPosition != position) {
             swipedPosition = position
         }
+        lastDx = 0.0f
     }
 
     private fun recoverSwipedItem() {
@@ -107,16 +110,11 @@ class SwipeHelper(context: Context,
                 delta = itemView.marginStart + itemView.width / 5
 
             if (lastDx < dX) {
-                if(lastDx < dX){
-                    swipeDirection = Direction.TO_RIGHT
-                }
-                lastDx = dX
+                swipeDirection = Direction.TO_RIGHT
             } else {
-                if(lastDx > dX){
-                    swipeDirection =  Direction.TO_LEFT
-                }
-                lastDx = dX
+                swipeDirection = Direction.TO_LEFT
             }
+            lastDx = dX
 
             background.setBounds(
                 itemView.right - delta!! -
@@ -142,18 +140,18 @@ class SwipeHelper(context: Context,
                 newDx = -delta!!.toFloat()
             }
 
-            if(saveTop != itemView.top || saveBottom != itemView.bottom){
+            if (saveTop != itemView.top || saveBottom != itemView.bottom) {
                 saveTop = itemView.top
                 saveBottom = itemView.bottom
                 isAnotherItem = true
-            }else{
+            } else {
                 isAnotherItem = false
             }
             recyclerView.setOnTouchListener { v, event ->
                 val x = event.x
                 val y = event.y
-                if(isAnotherItem){
-                    if(!isDelete) isDelete = true
+                if (isAnotherItem) {
+                    if (!isDelete) isDelete = true
                     if (swipedPositionScroll != position) {
                         recoverQueue.add(swipedPosition)
                         swipedPositionScroll = position
@@ -168,9 +166,9 @@ class SwipeHelper(context: Context,
                             y < itemView.bottom &&
                             dX < 0.0f
                         ) {
-                            if(!isDelete){
+                            if (!isDelete) {
                                 onRemoveClicked(viewHolder)
-                                swipedPositionScroll = position-1
+                                swipedPositionScroll = position - 1
                                 isDelete = true
                             }
                         }

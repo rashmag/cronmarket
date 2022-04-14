@@ -163,27 +163,27 @@
                         app:layout_constraintTop_toBottomOf="@id/tv_partners_name"
                         tools:text="Кофейня" />
 
-                    <TextView
-                        android:id="@+id/tv_close_shop_error"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen_16"
-                        android:layout_marginTop="@dimen/dimen_24"
-                        android:layout_marginEnd="@dimen/dimen_16"
-                        android:layout_marginBottom="@dimen/dimen_16"
-                        android:background="@drawable/error_background_close_partners"
-                        android:paddingHorizontal="@dimen/dimen_12"
-                        android:paddingVertical="@dimen/dimen_4"
-                        android:text="@string/partners_screen_error_close_shop_text"
-                        android:textColor="@color/errors"
-                        android:textSize="@dimen/text_middle_16"
-                        android:visibility="gone"
-                        android:gravity="center"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/vg_rating"
-                        tools:visibility="visible" />
+<!--                    <TextView-->
+<!--                        android:id="@+id/tv_close_shop_error"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginStart="@dimen/dimen_16"-->
+<!--                        android:layout_marginTop="@dimen/dimen_24"-->
+<!--                        android:layout_marginEnd="@dimen/dimen_16"-->
+<!--                        android:layout_marginBottom="@dimen/dimen_16"-->
+<!--                        android:background="@drawable/error_background_close_partners"-->
+<!--                        android:paddingHorizontal="@dimen/dimen_12"-->
+<!--                        android:paddingVertical="@dimen/dimen_4"-->
+<!--                        android:text="@string/partners_screen_error_close_shop_text"-->
+<!--                        android:textColor="@color/errors"-->
+<!--                        android:textSize="@dimen/text_middle_16"-->
+<!--                        android:visibility="gone"-->
+<!--                        android:gravity="center"-->
+<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                        app:layout_constraintEnd_toEndOf="parent"-->
+<!--                        app:layout_constraintStart_toStartOf="parent"-->
+<!--                        app:layout_constraintTop_toBottomOf="@+id/vg_rating"-->
+<!--                        tools:visibility="visible" />-->
 
                     <ImageView
                         android:id="@+id/iv_info"
@@ -306,25 +306,25 @@
 
     </FrameLayout>
 
-    <LinearLayout
-        android:id="@+id/scrolled_error_container"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_gravity="bottom|center_horizontal"
-        android:visibility="gone"
-        tools:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+<!--    <LinearLayout-->
+<!--        android:id="@+id/scrolled_error_container"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="40dp"-->
+<!--        android:layout_gravity="bottom|center_horizontal"-->
+<!--        android:visibility="gone"-->
+<!--        tools:visibility="visible"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent">-->
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvScrollShopError"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/false_light"
-            android:gravity="center"
-            android:text="@string/partners_screen_error_close_shop_text"
-            android:textColor="@color/errors" />
+<!--        <androidx.appcompat.widget.AppCompatTextView-->
+<!--            android:id="@+id/tvScrollShopError"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:background="@color/false_light"-->
+<!--            android:gravity="center"-->
+<!--            android:text="@string/partners_screen_error_close_shop_text"-->
+<!--            android:textColor="@color/errors" />-->
 
-    </LinearLayout>
+<!--    </LinearLayout>-->
 
 </LinearLayout>

@@ -85,7 +85,7 @@ class OrderDeliveryTimeBottomSheet : BottomSheetDialogFragment() {
         var minuteNow = 0
 
         val partnerOpenTime = viewModel.getPartnerOpenHours()
-        val partnerCloseTime = viewModel.getPartnerCloseHours() - 1
+        val partnerCloseTime = viewModel.getPartnerCloseHours()
 
         isPartnerClosed = false
 
@@ -133,8 +133,10 @@ class OrderDeliveryTimeBottomSheet : BottomSheetDialogFragment() {
             val zeroMinute = if (minuteNow < 10) ZERO_TIME else EMPTY
 
             // Добавление доступного времени доставки
-            if (hourNow > partnerOpenTime) {
+            if (hourNow > partnerOpenTime - 1 && hourNow <= partnerCloseTime) {
                 arrayTimeToday.add("$zeroHour$hourNow:$zeroMinute$minuteNow")
+            }else{
+                hourNow = partnerOpenTime - 1
             }
 
             minuteNow += MINUTE_STEP
@@ -144,8 +146,8 @@ class OrderDeliveryTimeBottomSheet : BottomSheetDialogFragment() {
                 hourNow++
             }
 
-            // Для того, чтобы в конце вставлялось Н-р не 20:50, а 21:00 (если партнер закрывается в 22:00)
-            if(hourNow == partnerCloseTime && minuteNow == 0){
+            // Для того, чтобы в конце вставлялось Н-р не 21:50, а 22:00 (если партнер закрывается в 22:00)
+            if (hourNow == partnerCloseTime && minuteNow == 0) {
                 arrayTimeToday.add("$hourNow:$ZERO_TIME$ZERO_TIME")
             }
 
@@ -203,7 +205,7 @@ class OrderDeliveryTimeBottomSheet : BottomSheetDialogFragment() {
         }
     }
 
-    private fun addClickForDoneBtn(time: String?= "") {
+    private fun addClickForDoneBtn(time: String? = "") {
         with(binding) {
 
             btnDone.setOnClickListener {

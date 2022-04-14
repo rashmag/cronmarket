@@ -68,11 +68,7 @@ class MainPresenter @Inject constructor(
 
                     val partnerInfoResponse = dataManager.getPartnersInfo(basketPartnerId)
 
-                    val partnerIsOpen = partnerInfoResponse.body()
-                        ?.map()
-                        ?.isOpen() ?: false
-
-                    if (partnerIsOpen.not() || basket?.amount?.toInt() == EMPTY_BASKET_COUNT) {
+                    if (basket?.amount?.toInt() == EMPTY_BASKET_COUNT) {
                         view?.shouldLastBasketSessionBeVisible(false)
                         view?.hideContinueLastSession()
                     } else{

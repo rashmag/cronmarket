@@ -104,16 +104,16 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
                 scrollRange = super.scrollVerticallyBy(dy, recycler, state)
                 overScroll = dy - scrollRange
 
-                if (overScroll < 0) binding.scrolledErrorContainer.visibility = View.GONE
-                else showBottomCloseShopError()
+//                if (overScroll < 0) binding.scrolledErrorContainer.visibility = View.GONE
+//                else showBottomCloseShopError()
 
                 return scrollRange
             }
         }
 
         setTitleVisibility()
-        showCloseShopError()
-        setImageSize()
+//        showCloseShopError()
+//        setImageSize()
         onProductRecyclerViewScrollChanged()
         initPartnerRecyclerView()
         checkUserLoggedStatus()
@@ -128,20 +128,20 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         presenter.getPartnerInfo()
     }
 
-    private fun setImageSize() {
-        if (!isOpen) {
-
-            val dimensionInDp =
-                TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP, HEADER_IMAGE_SIZE_WHEN_PARTNER_CLOSE, resources.displayMetrics
-                ).toInt()
-
-            binding.imageContainer.apply {
-                layoutParams.height = dimensionInDp
-                requestLayout()
-            }
-        }
-    }
+//    private fun setImageSize() {
+//        if (!isOpen) {
+//
+//            val dimensionInDp =
+//                TypedValue.applyDimension(
+//                    TypedValue.COMPLEX_UNIT_DIP, HEADER_IMAGE_SIZE_WHEN_PARTNER_CLOSE, resources.displayMetrics
+//                ).toInt()
+//
+//            binding.imageContainer.apply {
+//                layoutParams.height = dimensionInDp
+//                requestLayout()
+//            }
+//        }
+//    }
 
     private fun initPartnerRecyclerView() {
         productsAdapter = PartnerProductAdapter(isOpen)
@@ -437,7 +437,6 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
             vgPartnerBasket.run {
                 startBottomAnimate(
                     quantity > 0 &&
-                            isOpen &&
                             presenter.checkPartnerId().not()
                 )
             }
@@ -564,27 +563,27 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
     }
 
 
-    private fun showCloseShopError() {
-        val hours = if ((openHours?.div(10) ?: 0) > 0) openHours else "0$openHours"
-        val minutes = if ((openMinutes?.div(10) ?: 0) > 0) openMinutes else "0$openMinutes"
-
-        binding.tvCloseShopError.isVisible = isOpen == false
-        binding.tvCloseShopError.text = binding.root.context.getString(
-            R.string.partner_closed,
-            "${hours}:${minutes}"
-        )
-    }
-
-    private fun showBottomCloseShopError() {
-        val hours = if ((openHours?.div(10) ?: 0) > 0) openHours else "0$openHours"
-        val minutes = if ((openMinutes?.div(10) ?: 0) > 0) openMinutes else "0$openMinutes"
-
-        binding.scrolledErrorContainer.startBottomAnimate(isOpen == false)
-        binding.tvScrollShopError.text = binding.root.context.getString(
-            R.string.partner_closed,
-            "${hours}:${minutes}"
-        )
-    }
+//    private fun showCloseShopError() {
+//        val hours = if ((openHours?.div(10) ?: 0) > 0) openHours else "0$openHours"
+//        val minutes = if ((openMinutes?.div(10) ?: 0) > 0) openMinutes else "0$openMinutes"
+//
+//        binding.tvCloseShopError.isVisible = isOpen == false
+//        binding.tvCloseShopError.text = binding.root.context.getString(
+//            R.string.partner_closed,
+//            "${hours}:${minutes}"
+//        )
+//    }
+//
+//    private fun showBottomCloseShopError() {
+//        val hours = if ((openHours?.div(10) ?: 0) > 0) openHours else "0$openHours"
+//        val minutes = if ((openMinutes?.div(10) ?: 0) > 0) openMinutes else "0$openMinutes"
+//
+//        binding.scrolledErrorContainer.startBottomAnimate(isOpen == false)
+//        binding.tvScrollShopError.text = binding.root.context.getString(
+//            R.string.partner_closed,
+//            "${hours}:${minutes}"
+//        )
+//    }
 
 
     override fun onDestroy() {

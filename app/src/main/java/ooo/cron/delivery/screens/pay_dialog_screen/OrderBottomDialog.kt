@@ -332,7 +332,7 @@ class OrderBottomDialog : BottomSheetDialogFragment() {
     private fun addClickForChooseDeliveryTimeContainer() {
         with(binding) {
             contDeliveryTime.setOnClickListener {
-//                OrderDeliveryTimeBottomSheet().show(parentFragmentManager, "")
+                OrderDeliveryTimeBottomSheet().show(parentFragmentManager, "")
             }
         }
     }

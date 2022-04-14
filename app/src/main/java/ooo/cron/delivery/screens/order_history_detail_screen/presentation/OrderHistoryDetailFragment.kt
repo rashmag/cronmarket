@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import javax.inject.Inject
@@ -15,6 +16,7 @@ import ooo.cron.delivery.data.network.models.OrderHistoryDetailDish
 import ooo.cron.delivery.data.network.models.OrderHistoryDetailNetModel
 import ooo.cron.delivery.databinding.FragmentOrderHistoryDetailBinding
 import ooo.cron.delivery.screens.base.BaseFragment
+import ooo.cron.delivery.screens.main_screen.MainViewModel
 import ooo.cron.delivery.screens.order_history_screen.presentation.OrderHistoryFragment
 import ooo.cron.delivery.utils.extensions.makeGone
 import ooo.cron.delivery.utils.extensions.makeInvisible
@@ -31,6 +33,8 @@ class OrderHistoryDetailFragment : BaseFragment() {
 
     private var _binding: FragmentOrderHistoryDetailBinding? = null
     private val binding get() = _binding!!
+
+    private val viewModelMain: MainViewModel by activityViewModels()
 
     @Inject
     @Named("Detail")
@@ -62,10 +66,19 @@ class OrderHistoryDetailFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.backImg.setOnClickListener {
+            onVisible(VISIBLE)
+            viewModelMain.onReplaceFragment()
+        }
         viewModel.getOrderHistoryDetail(orderId)
         setupViewModel()
         initAdapter()
+        onVisible(GONE)
         onBackPressed()
+    }
+
+    fun onVisible(isVisible: Boolean){
+        viewModelMain.onVisibleToolbar(isVisible)
     }
 
     private fun setupViewModel() {
@@ -203,6 +216,7 @@ class OrderHistoryDetailFragment : BaseFragment() {
             .onBackPressedDispatcher
             .addCallback(this, object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
+                    onVisible(VISIBLE)
 
                     childFragmentManager.beginTransaction().setCustomAnimations(
                         R.anim.enter_from_right,
@@ -214,6 +228,8 @@ class OrderHistoryDetailFragment : BaseFragment() {
                         .commit()
 
                     with(binding) {
+                        backImg.makeGone()
+                        partnerName.makeGone()
                         allContainer.makeGone()
                         totalPriceContainer.makeGone()
                     }
@@ -243,5 +259,7 @@ class OrderHistoryDetailFragment : BaseFragment() {
 
         private const val ACTIVE_STATE = 50
         private const val DONE_STATE = 100
+        private const val VISIBLE = true
+        private const val GONE = false
     }
 }

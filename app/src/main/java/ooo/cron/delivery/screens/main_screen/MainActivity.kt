@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -49,6 +50,7 @@ class MainActivity : BaseActivity(), MainContract.View {
 
     private var shouldLastBasketSessionBeVisible = false
     private var isFromPartnerScreen = false
+    private val viewModel: MainViewModel by viewModels()
 
     private var swipeTimer: Timer? = null
     private var sliderPosition = 0
@@ -63,7 +65,7 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
     private val sliderAdapter by lazy(LazyThreadSafetyMode.NONE) {
-        SliderAdapter{
+        SliderAdapter {
             presenter.onPartnerClickedBaner(it.partnerId)
         }
     }
@@ -74,11 +76,31 @@ class MainActivity : BaseActivity(), MainContract.View {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         configureAppBar()
+        onVisibleToolbar()
         configureNavigationDrawer()
         configureMarketCategoriesList()
         setContinueLastSessionClickListener()
         initSliderRecycler()
+
         presenter.onCreateScreen()
+
+
+    }
+
+    private fun onVisibleToolbar() {
+        viewModel.visibleTB.observe(this, androidx.lifecycle.Observer {
+            if (it)
+                binding.tbMain.makeVisible()
+            else
+                binding.tbMain.makeGone()
+        })
+
+        viewModel.replaceFragment.observe(this, androidx.lifecycle.Observer {
+            supportFragmentManager.beginTransaction().replace(
+                R.id.container_main,
+                OrderHistoryFragment()
+            ).commit()
+        })
     }
 
     private fun configureMarketCategoriesList() {
@@ -294,7 +316,7 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
     override fun hideSpecialOffers() {
-            binding.imageSlider.makeGone()
+        binding.imageSlider.makeGone()
     }
 
     private fun initSliderRecycler() {

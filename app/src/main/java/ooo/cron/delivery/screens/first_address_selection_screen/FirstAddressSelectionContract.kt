@@ -48,6 +48,7 @@ interface FirstAddressSelectionContract {
         fun showWarningMessage()
         fun showLocationNotFoundMessage()
         fun showSuccessMessage()
+        fun showWriteHouseNumberMessage()
 
         fun showAnyErrorScreen()
         fun showConnectionErrorScreen()

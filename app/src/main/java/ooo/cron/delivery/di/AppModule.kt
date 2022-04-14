@@ -4,10 +4,15 @@ import android.content.Context
 import android.content.SharedPreferences
 import dagger.Module
 import dagger.Provides
+import dagger.Reusable
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import ooo.cron.delivery.BuildConfig.BASE_URL
 import ooo.cron.delivery.data.DataManager
+import ooo.cron.delivery.data.PrefsRepository
+import ooo.cron.delivery.data.RestRepository
+import ooo.cron.delivery.data.network.AuthInteractor
+import ooo.cron.delivery.data.network.AuthInterceptor
 import ooo.cron.delivery.data.network.RestService
 import ooo.cron.delivery.data.network.SPrefsService
 import ooo.cron.delivery.data.network.errors.ApiErrorsUtils
@@ -29,9 +34,15 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient =
+    fun provideAuthInterceptor(interactor: AuthInteractor): AuthInterceptor =
+        AuthInterceptor(interactor)
+
+    @Provides
+    @Singleton
+    fun provideOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor, authInterceptor: AuthInterceptor): OkHttpClient =
         OkHttpClient.Builder()
             .addInterceptor(httpLoggingInterceptor)
+            .addInterceptor(authInterceptor)
             .build()
 
     @Provides
@@ -51,7 +62,10 @@ class AppModule {
     @Provides
     @Singleton
     fun providePreferences(context: Context): SharedPreferences =
-        context.getSharedPreferences(ooo.cron.delivery.BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE)
+        context.getSharedPreferences(
+            ooo.cron.delivery.BuildConfig.APPLICATION_ID,
+            Context.MODE_PRIVATE
+        )
 
     @Provides
     @Singleton
@@ -60,11 +74,21 @@ class AppModule {
 
     @Provides
     @Singleton
+    fun provideOrderPrefsRepository(sharedPreferences: SharedPreferences) =
+        PrefsRepository(sharedPreferences)
+
+    @Provides
+    @Singleton
     fun provideDataManager(restService: RestService, sPrefsService: SPrefsService) =
         DataManager(restService, sPrefsService)
 
     @Provides
     @Singleton
+    fun provideOrderRestRepository(restService: RestService) =
+        RestRepository(restService)
+
+    @Provides
+    @Reusable
     fun provideApiErrorUtils(): ApiErrorsUtils {
         return ApiErrorsUtils()
     }

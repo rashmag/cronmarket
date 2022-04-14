@@ -1,5 +1,6 @@
 package ooo.cron.delivery.screens.partners_screen
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
@@ -115,6 +116,11 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         setImageSize()
         onProductRecyclerViewScrollChanged()
         initPartnerRecyclerView()
+        checkUserLoggedStatus()
+    }
+
+    private fun checkUserLoggedStatus() {
+        binding.cbFavorite.isVisible = presenter.getUserLoggedStatus()
     }
 
     override fun onResume() {
@@ -185,12 +191,29 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
         return partnerId
     }
 
+    override fun showLikePartner() {
+        binding.cbFavorite.isChecked = true
+    }
+
+    override fun showUnlikePartner() {
+        binding.cbFavorite.isChecked = false
+    }
+
+    @SuppressLint("StringFormatMatches")
     override fun showPartnerInfo(partnerInfo: PartnersInfoRes) {
         presenter.getPartnerCategory()
         with(partnerInfo) {
             binding.run {
                 tvPartnersName.text = name
                 tvPartnersCategory.text = shortDescription
+                cbFavorite.isChecked = isFavorite
+                cbFavorite.setOnClickListener {
+                    if (cbFavorite.isChecked) {
+                        presenter.likePartner(partnerInfo.id)
+                    } else {
+                        presenter.unlikePartner(partnerInfo.id)
+                    }
+                }
 
                 // Типы доставок --Начало-------------------------------------------
 
@@ -215,7 +238,8 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
                             String.format(
                                 formatPrice,
                                 deliveryFrames.deliveryCosts.last().deliveryCost
-                            )
+                            ),
+                            deliveryFrames.deliveryCosts.last().deliveryCost
                         )
                     } else {
                         deliveryTypeTitle.text = getString(
@@ -225,24 +249,24 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
                                 formatPrice,
                                 deliveryFrames.deliveryCosts.first().deliveryCost
                             ),
+                            deliveryFrames.deliveryCosts.first().deliveryCost
                         )
                     }
-                }
 
-                // Типы доставок --Конец-------------------------------------------
+                    // Типы доставок --Конец-------------------------------------------
 
-                minOrderAmount = minAmountOrder
+                    minOrderAmount = minAmountOrder
 
-                if (partnerCardImg != null) {
-                    Glide.with(binding.root)
-                        .load(partnerInfo.partnerCardImg)
-                        .centerCrop()
-                        .into(backdrop)
-                } else {
-                    Glide.with(binding.root)
-                        .load(R.color.white)
-                        .centerCrop()
-                        .into(backdrop)
+                    if (partnerCardImg != null) {
+                        Glide.with(binding.root)
+                            .load(partnerInfo.partnerCardImg)
+                            .centerCrop()
+                            .into(backdrop)
+                    } else {
+                        Glide.with(binding.root)
+                            .load(R.color.white)
+                            .centerCrop()
+                            .into(backdrop)
 //                    binding.vgPartnerInfo.animate().alpha(0f).setDuration(600).start()
 //
 //
@@ -260,12 +284,13 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
 //                    appBarParams.height = LinearLayout.LayoutParams.WRAP_CONTENT
 //
 //                    appbar.layoutParams = appBarParams
+                    }
                 }
             }
-        }
-        onBackButtonClick()
+            onBackButtonClick()
 //        onInfoButtonClick(partnerInfo)
-        onRatingClick()
+            onRatingClick()
+        }
     }
 
     private fun openDeliveryTypeBottomSheet() {
@@ -502,6 +527,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
     override fun onMinusClick(product: PartnerProductsRes, quantity: Int) =
         presenter.minusClick(product, quantity)
 
+
     private fun setTitleVisibility() {
         var isShow = false
         var scrollRange = -1
@@ -531,12 +557,12 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
 
                     isShow = false
                 }
-
                 productsLayoutManager.setScrollEnabled(true)
                 println("scrollRange ${scrollRange + verticalOffset == 0}")
             })
         }
     }
+
 
     private fun showCloseShopError() {
         val hours = if ((openHours?.div(10) ?: 0) > 0) openHours else "0$openHours"
@@ -559,6 +585,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
             "${hours}:${minutes}"
         )
     }
+
 
     override fun onDestroy() {
         super.onDestroy()

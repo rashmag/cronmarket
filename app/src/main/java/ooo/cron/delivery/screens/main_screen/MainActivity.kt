@@ -19,6 +19,7 @@ import nl.psdcompany.duonavigationdrawer.widgets.DuoDrawerToggle
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
 import ooo.cron.delivery.data.network.models.MarketCategory
+import ooo.cron.delivery.data.network.models.PartnersInfoRes
 import ooo.cron.delivery.data.network.models.Promotion
 import ooo.cron.delivery.databinding.ActivityMainBinding
 import ooo.cron.delivery.screens.base.BaseActivity
@@ -26,6 +27,7 @@ import ooo.cron.delivery.screens.about_service_screen.AboutServiceFragment
 import ooo.cron.delivery.screens.contacts_screen.ContactsFragment
 import ooo.cron.delivery.screens.first_address_selection_screen.FirstAddressSelectionActivity
 import ooo.cron.delivery.screens.login_screen.LoginActivity
+import ooo.cron.delivery.screens.favorite_screen.view.FavoritePartnersFragment
 import ooo.cron.delivery.screens.main_screen.special_offers_view.models.SlideModel
 import ooo.cron.delivery.screens.market_category_screen.MarketCategoryFragment
 import ooo.cron.delivery.screens.partners_screen.PartnersActivity
@@ -141,7 +143,7 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
     override fun showSavedAddress(address: String) {
-        with(binding.tvMainUserAddress) {
+        with(binding.tvMainUserAddress){
             if (address.isNotEmpty()) {
                 setBackgroundResource(R.drawable.bg_main_address_correct)
                 text = address
@@ -216,7 +218,7 @@ class MainActivity : BaseActivity(), MainContract.View {
         binding.vgMainContinueLastSession.visibility = View.GONE
     }
 
-    override fun startMarketCategoryFragment(category: MarketCategory) {
+    override fun startMarketCategoryFragment(category: MarketCategory?) {
         setToolbarTitleVisibility(false, null)
         supportFragmentManager.beginTransaction().replace(
             R.id.container_main,
@@ -233,6 +235,14 @@ class MainActivity : BaseActivity(), MainContract.View {
         }
 
         presenter.onStartMarketCategory()
+    }
+
+    override fun startFavoritePartnersFragment() {
+        setToolbarTitleVisibility(true, getString(R.string.favorite))
+        supportFragmentManager.beginTransaction().replace(
+            R.id.container_main,
+            FavoritePartnersFragment()
+        ).commit()
     }
 
     override fun startOrdersHistoryFragment() {
@@ -283,11 +293,14 @@ class MainActivity : BaseActivity(), MainContract.View {
         TODO("Not yet implemented")
     }
 
-    override fun setPartnerClickedBaner(partnerId: String?) {
+    override fun setPartnerClickedBaner(partnersInfoRes: PartnersInfoRes?) {
         startActivityForResult(
             Intent(this, PartnersActivity::class.java)
                 .apply {
-                    putExtra(EXTRA_PARTNER_ID, partnerId)
+                    putExtra(EXTRA_PARTNER_ID, partnersInfoRes?.id)
+                    putExtra(EXTRA_IS_OPEN, partnersInfoRes?.map()?.isOpen())
+                    putExtra(EXTRA_OPEN_HOURS, partnersInfoRes?.map()?.openTime()?.get(HOURS))
+                    putExtra(EXTRA_OPEN_MINUTES, partnersInfoRes?.map()?.openTime()?.get(MINUTES))
                 }, RESULT_CODE
         )
     }
@@ -351,6 +364,7 @@ class MainActivity : BaseActivity(), MainContract.View {
 
     private fun checkUserLoggedStatus() {
         binding.vgMainMenu.tvDrawerMenuItemsOrders.isVisible = presenter.getUserLoggedStatus()
+        binding.vgMainMenu.tvDrawerMenuFavoritePartners.isVisible = presenter.getUserLoggedStatus()
     }
 
     private fun injectDependencies() =
@@ -411,18 +425,20 @@ class MainActivity : BaseActivity(), MainContract.View {
         }
     }
 
-    private fun marketCategoryArguments(category: MarketCategory) = Bundle().apply {
+    private fun marketCategoryArguments(category: MarketCategory?) = Bundle().apply {
         putString(
             MarketCategoryFragment.ARGUMENT_MARKET_CATEGORY_NAME,
-            category.categoryName
+            category?.categoryName
         )
-        putInt(
-            MarketCategoryFragment.ARGUMENT_MARKET_CATEGORY_ID,
-            category.id
-        )
+        category?.id?.let {
+            putInt(
+                MarketCategoryFragment.ARGUMENT_MARKET_CATEGORY_ID,
+                it
+            )
+        }
         putString(
             MarketCategoryFragment.ARGUMENT_MARKET_CATEGORY_IMAGE,
-            category.categoryImgUri
+            category?.categoryImgUri
         )
     }
 
@@ -432,6 +448,7 @@ class MainActivity : BaseActivity(), MainContract.View {
             val menuItems = listOf(
                 vgMainMenu.tvDrawerMenuItemShops,
                 vgMainMenu.tvDrawerMenuItemsOrders,
+                vgMainMenu.tvDrawerMenuFavoritePartners,
                 vgMainMenu.tvDrawerMenuItemContacts,
                 vgMainMenu.tvDrawerMenuItemAboutUs,
                 vgMainMenu.tvDrawerMenuItemVacancies
@@ -448,6 +465,7 @@ class MainActivity : BaseActivity(), MainContract.View {
                             presenter.getMarketCategory()
                         )
                         vgMainMenu.tvDrawerMenuItemsOrders -> startOrdersHistoryFragment()
+                        vgMainMenu.tvDrawerMenuFavoritePartners -> startFavoritePartnersFragment()
                         vgMainMenu.tvDrawerMenuItemAboutUs -> startAboutServiceFragment()
                         vgMainMenu.tvDrawerMenuItemContacts -> startContactsFragment()
                         vgMainMenu.tvDrawerMenuItemVacancies -> startVacanciesFragment()
@@ -499,9 +517,14 @@ class MainActivity : BaseActivity(), MainContract.View {
     companion object {
         const val RESULT_CODE = 1
         const val EXTRA_PARTNER_ID = "partnerId"
+        const val EXTRA_IS_OPEN = "is_open"
+        const val EXTRA_OPEN_HOURS = "open_hours"
+        const val EXTRA_OPEN_MINUTES = "open_minutes"
         const val RETURNING_SCREEN_KEY = "RETURNING_SCREEN_KEY"
         private const val IMAGE_SLIDE_DELAY = 0L
         private const val IMAGE_SLIDE_PERIOD = 3000L
         private const val FIRST_IMAGE = 0
+        const val HOURS = 0
+        const val MINUTES = 1
     }
 }

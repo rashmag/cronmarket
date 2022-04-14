@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_bottom_sheet_dialog">
+
+    <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/input_address_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/dimen_24"
+            android:layout_marginVertical="@dimen/dimen_24"
+            android:text="@string/choose_delivery_time_pop_up_title"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_middle_18"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/btn_asap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_16"
+            android:layout_marginTop="@dimen/dimen_24"
+            android:paddingHorizontal="@dimen/dimen_16"
+            android:paddingVertical="@dimen/dimen_12"
+            android:text="@string/choose_delivery_time_pop_up_asap_title"
+            android:background="@drawable/bg_market_category_tag_not_selected_item"
+            android:textColor="@color/orange_ff4c30"
+            android:textSize="@dimen/text_middle_18"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/input_address_title" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/btn_by_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_24"
+            android:paddingHorizontal="@dimen/dimen_16"
+            android:paddingVertical="@dimen/dimen_12"
+            android:textSize="@dimen/text_middle_18"
+            android:text="@string/choose_delivery_time_pop_up_by_time_title"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btn_asap"
+            app:layout_constraintTop_toBottomOf="@+id/input_address_title" />
+
+    <LinearLayout
+            android:id="@+id/choose_delivery_time_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_market_category_tag_not_selected_item"
+            android:orientation="vertical"
+            android:layout_marginHorizontal="@dimen/dimen_16"
+            android:layout_marginTop="@dimen/dimen_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_asap">
+
+        <LinearLayout
+                android:id="@+id/default_time_container"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/dimen_24"
+                    android:src="@drawable/hourglass_image" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/dimen_16"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_middle_18"
+                    android:text="@string/choose_delivery_time_pop_up_choose_delivery_time_title" />
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/scroll_time_container"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:gravity="center"
+                android:visibility="gone"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/dimen_32"
+                android:paddingBottom="@dimen/dimen_28"
+                app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerDeliveryTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="165dp"
+                    android:clipToPadding="false"
+                    android:overScrollMode="never"
+                    android:orientation="vertical"
+                    android:paddingTop="@dimen/space_42"
+                    android:paddingBottom="@dimen/space_65" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/btn_done"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/dimen_24"
+            android:layout_marginVertical="@dimen/dimen_16"
+            android:layout_marginTop="@dimen/dimen_16"
+            android:background="@drawable/button_continue_buy_corners"
+            android:gravity="center"
+            android:paddingVertical="@dimen/dimen_12"
+            android:text="@string/choose_delivery_time_pop_up_btn_title"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_middle_16"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/choose_delivery_time_container"
+            tools:ignore="MissingConstraints" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

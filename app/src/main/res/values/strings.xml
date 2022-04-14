@@ -24,6 +24,7 @@
     <string name="first_address_selection_error_message">К сожалению в городе %1$s пока нет нашей доставки. Выберите город из списка выше</string>
     <string name="first_address_selection_location_error_message">К сожалению ваш адрес не был определен, введите пожалуйста адрес вручную</string>
     <string name="first_address_selection_warning_message">К сожалению по данному адресу мы пока не можем доставить заказ. Но вы можете посмотреть наше приложение и заказать по другому адресу</string>
+    <string name="first_address_selection_write_house_number_message">Укажите номер дома</string>
     <string name="first_address_selection_info_description">Информационное сообщение</string>
     <string name="first_address_selection_find_location">Определить моё местоположение</string>
     <string name="first_address_selection_start_shopping">Перейти к покупкам</string>
@@ -96,7 +97,7 @@
     <string name="delivery_details_save_address_title">Сохранить адрес</string>
     <string name="delivery_details_phone_number_title">Номер телефона</string>
     <string name="delivery_details_comments_to_order_title">Комментарий к заказу</string>
-    <string name="delivery_details_delivery_time_title">Время доставки</string>
+    <string name="delivery_details_delivery_time_title">40-60 минут</string>
     <string name="delivery_details_soon_as_possible_title">Как можно скорее</string>
     <string name="delivery_details_in_time_title">Ко времени</string>
     <string name="delivery_details_title">Детали доставки</string>
@@ -237,7 +238,8 @@
     <string name="accept_warning_message">Нельзя заказать товары из разных заведений. Подтверждая вы удалите все товары из корзины.</string>
     <string name="accept">Подтвердить</string>
     <string name="cancel">Отмена</string>
-    <string name="order_repeat_title">Повторить</string>
+    <string name="order_pay_fail_title">Вернуться к оплате</string>
+    <string name="order_pay_success_title">Вернуться на главную</string>
     <string name="basket_make_order">Оформить заказ</string>
     <string name="price">%1$s₽</string>
     <string name="rate_delivery_price">Стоимость доставки\nпо тарифу</string>
@@ -277,16 +279,15 @@
     <string name="tinkoff_terminal_public_key">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAv5yse9ka3ZQE0feuGtemYv3IqOlLck8zHUM7lTr0za6lXTszRSXfUO7jMb+L5C7e2QNFs+7sIX2OQJ6a+HG8kr+jwJ4tS3cVsWtd9NXpsU40PE4MeNr5RqiNXjcDxA+L4OsEm/BlyFOEOh2epGyYUd5/iO3OiQFRNicomT2saQYAeqIwuELPs1XpLk9HLx5qPbm8fRrQhjeUD5TLO8b+4yCnObe8vy/BMUwBfq+ieWADIjwWCMp2KTpMGLz48qnaD9kdrYJ0iyHqzb2mkDhdIzkim24A3lWoYitJCBrrB2xM05sm9+OdCI1f7nPNJbl5URHobSwR94IRGT7CJcUjvwIDAQAB</string>
     <string name="partner_closed">Заведение в данный момент закрыто\nОткроется в %1$s</string>
     <string name="enter_address">Введите адрес</string>
+    <string name="cron_delivery_title">Доставка с CronMarket</string>
+    <string name="order_cash_payment">Оплатить</string>
 
     <string name="left">LEFT</string>
 
     <!-- Partners screen -->
     <string name="partners_screen_error_close_shop_text">Заведение в данный момент закрыто\n Откроется в 11:00</string>
-    <string name="order_comment">Комментарий к заказу</string>
-    <string name="bank_cart">Карта</string>
-    <string name="cash">Наличные</string>
     <string name="partners_screen_delivery_type_title_first">Доставка %s</string>
-    <string name="partners_screen_delivery_type_title">Доставка от %d-%s</string>
+    <string name="partners_screen_delivery_type_title">Доставка от %s-%s</string>
     <string name="partners_screen_delivery_from_title">Заказ от %s₽</string>
     <string name="partners_screen_delivery_from_title_second">Заказ от %s до %s</string>
     <string name="partners_screen_delivery_type_price">%s₽</string>
@@ -306,4 +307,30 @@
 
     <!-- Orders history detail -->
     <string name="order_history_detail_screen_additive_plus">+ %s</string>
+
+    <!-- Payment dialog -->
+    <string name="order_comment">Комментарий к заказу</string>
+    <string name="bank_cart">Карта</string>
+    <string name="cash">Наличные</string>
+    <string name="save">Сохранить</string>
+    <string name="comment">Комментарий</string>
+    <string name="enter_a_comment_for_the_order">Введите комментарий к заказу</string>
+    <string name="order_inform_attention">Внимание</string>
+    <string name="order_inform_delivery_cost_message">Доставка оплачивается отдельно</string>
+    <string name="order_no_payment_inform_message">Необходимо выбрать способ оплаты</string>
+    <string name="order_inform_attention_btn">Понятно</string>
+    <string name="delivery_cost">Доставка %s₽</string>
+    <string name="payment_result_cancel">Оплата отменена</string>
+    <string name="google_pay_result_error">Что-то пошло не так</string>
+
+    <!-- Choose delivery time pop-up -->
+    <string name="choose_delivery_time_pop_up_title">Время доставки</string>
+    <string name="choose_delivery_time_pop_up_choose_delivery_time_title">Выберите время:\n40 - 60 минут</string>
+    <string name="choose_delivery_time_pop_up_asap_title">Как можно скорее</string>
+    <string name="choose_delivery_time_pop_up_by_time_title">Ко времени</string>
+    <string name="choose_delivery_time_pop_up_btn_title">Готово</string>
+
+    <string name="favorite">Избранное</string>
+    <string name="favorite_list_empty">Ваш список избранных заведений пуст</string>
+    <string name="favorite_list_empty_info">Кликайте по иконке сердечка на страницах ваших любимых мест, и вы всегда найдете их в списке избранных.</string>
 </resources>

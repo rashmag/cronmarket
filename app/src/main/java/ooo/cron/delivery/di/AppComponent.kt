@@ -3,6 +3,7 @@ package ooo.cron.delivery.di
 import android.content.Context
 import dagger.BindsInstance
 import dagger.Component
+import ooo.cron.delivery.di.screens.favorite_partners.FavoritePartnersComponent
 import ooo.cron.delivery.screens.base_error_screen.BaseErrorComponent
 import ooo.cron.delivery.screens.basket_screen.BasketComponent
 import ooo.cron.delivery.screens.first_address_selection_screen.FirstAddressSelectionComponent
@@ -15,6 +16,7 @@ import ooo.cron.delivery.screens.ordering_screen.OrderComponent
 import ooo.cron.delivery.screens.ordering_screen.delivery_details_fragment.DeliveryDetailsComponent
 import ooo.cron.delivery.screens.ordering_screen.order_cost_fragment.OrderCostComponent
 import ooo.cron.delivery.screens.partners_screen.PartnersComponent
+import ooo.cron.delivery.screens.payment_status_screen.PaymentStatusComponent
 import ooo.cron.delivery.screens.splash_screen.SplashScreenComponent
 import javax.inject.Singleton
 import ooo.cron.delivery.di.screens.order_history_detail.OrderHistoryDetailComponent
@@ -27,7 +29,8 @@ import ooo.cron.delivery.di.screens.order_history.OrderHistoryComponent
 @Singleton
 @Component(modules = [
     AppModule::class,
-    AnalyticsModule::class
+    AnalyticsModule::class,
+    InteractorModule::class
 ])
 interface AppComponent {
 
@@ -44,8 +47,11 @@ interface AppComponent {
     fun orderingComponentBuilder(): OrderComponent.Builder
     fun deliveryDetailsComponentBuilder(): DeliveryDetailsComponent.Builder
     fun orderCostComponentBuilder(): OrderCostComponent.Builder
+    fun orderComponentBuilder(): ooo.cron.delivery.screens.pay_dialog_screen.OrderComponent.Builder
+    fun paymentStatusComponentBuilder(): PaymentStatusComponent.Builder
     fun orderHistoryComponentBuilder(): OrderHistoryComponent.Builder
     fun orderHistoryDetailComponentBuilder(): OrderHistoryDetailComponent.Builder
+    fun favoritePartnersComponentBuilder(): FavoritePartnersComponent.Builder
 
     @Component.Builder
     interface Builder {

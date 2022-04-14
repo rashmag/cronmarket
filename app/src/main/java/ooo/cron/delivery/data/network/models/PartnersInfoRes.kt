@@ -20,7 +20,8 @@ data class PartnersInfoRes(
     var feedbackCount: Int,
     var marketCategoryId: Int,
     val schedule: Schedule,
-    val deliveryFrames: List<DeliveryFrames> ?= null
+    val deliveryFrames: List<DeliveryFrames> ?= null,
+    val isFavorite: Boolean
 ) {
 
     fun map() = Partner(
@@ -35,6 +36,7 @@ data class PartnersInfoRes(
         minAmountDelivery = minAmountDelivery?.toDouble(),
         minAmountOrder = minAmountOrder.toDouble(),
         rating = rating,
-        schedule = schedule
+        schedule = schedule,
+        isFavorite = isFavorite
     )
 }

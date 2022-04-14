@@ -68,7 +68,7 @@ class MainActivity : BaseActivity(), MainContract.View {
 
     private val sliderAdapter by lazy(LazyThreadSafetyMode.NONE) {
         SliderAdapter {
-            presenter.onPartnerClickedBaner(it.partnerId)
+            presenter.onPartnerClickedBaner(it.partnerId.orEmpty())
         }
     }
 

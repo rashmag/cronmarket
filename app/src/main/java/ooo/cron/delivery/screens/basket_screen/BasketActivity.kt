@@ -28,6 +28,7 @@ class BasketActivity : BaseActivity(), PayClickCallback {
         val basketModel = intent.getParcelableExtra<Basket>(BASKET_MODEL)
         orderAmount = intent.getIntExtra(MIN_AMOUNT_ORDER, 0)
         val address = intent.getParcelableExtra<ReturningToScreenEnum>(ARG_ADDRESS)
+        val isOpen = intent.getBooleanExtra(IS_OPEN, false)
 
         App.appComponent.basketComponentBuilder()
             .bindInflater(layoutInflater)
@@ -37,7 +38,7 @@ class BasketActivity : BaseActivity(), PayClickCallback {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        openRootFragment(BasketFragment.newInstance(orderAmount, address?.name))
+        openRootFragment(BasketFragment.newInstance(orderAmount, address?.name, isOpen))
     }
 
     fun openRootFragment(fragment: Fragment) {
@@ -58,6 +59,7 @@ class BasketActivity : BaseActivity(), PayClickCallback {
         const val PARTNER_CLOSE_HOURS = "PARTNER_CLOSE_HOURS"
         const val PARTNER_CLOSE_MINUTES = "PARTNER_CLOSE_MINUTES"
         const val MIN_AMOUNT_ORDER = "MIN_AMOUNT_ORDER"
+        const val IS_OPEN = "IS_OPEN"
         const val BASKET_MODEL = "BASKET_MODEL"
         const val EMPTY_TITLE = " "
 

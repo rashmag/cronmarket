@@ -21,8 +21,7 @@ import ooo.cron.delivery.utils.section_recycler_view.SectionRecyclerViewHolder
 
 class CategoryAdapter(
     private val productCategoryModel: List<PartnerProductsRes>,
-    private val listener: OnProductClickListener,
-    private val isOpen: Boolean
+    private val listener: OnProductClickListener
 ) :
     RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
 
@@ -203,7 +202,7 @@ class CategoryAdapter(
 
 }
 
-class PartnerProductAdapter(private val isOpen: Boolean) :
+class PartnerProductAdapter :
     SectionRecyclerViewAdapter<PartnerProductAdapter.ViewHolder, ProductCategoryModel>() {
 
     private var productCategoryModel = arrayListOf<ProductCategoryModel>()
@@ -229,7 +228,7 @@ class PartnerProductAdapter(private val isOpen: Boolean) :
 
         override fun bindSectionListAdapter(recyclerView: RecyclerView, position: Int) {
             recyclerView.adapter =
-                CategoryAdapter(productCategoryModel[position].productList, listener, isOpen)
+                CategoryAdapter(productCategoryModel[position].productList, listener)
         }
     }
 }

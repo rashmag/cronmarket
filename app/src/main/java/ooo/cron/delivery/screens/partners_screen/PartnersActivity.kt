@@ -144,7 +144,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
 //    }
 
     private fun initPartnerRecyclerView() {
-        productsAdapter = PartnerProductAdapter(isOpen)
+        productsAdapter = PartnerProductAdapter()
         productsAdapter.setProductClickListener(this)
         binding.rvProduct.apply {
             layoutManager = productsLayoutManager
@@ -509,6 +509,7 @@ class PartnersActivity : BaseActivity(), PartnersContract.View,
                 ).putExtra(
                     BasketActivity.MIN_AMOUNT_ORDER, minOrderAmount
                 )
+                .putExtra(BasketActivity.IS_OPEN, isOpen)
         )
     }
 

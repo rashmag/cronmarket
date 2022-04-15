@@ -62,6 +62,10 @@ class OrderBottomDialog : BottomSheetDialogFragment() {
 
     private var isDeliveryInKhas: Boolean? = null
 
+    private val partnerIsOpen: Boolean by uiLazy {
+        requireArguments().getBoolean(IS_OPEN)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         injectDependencies()
@@ -132,6 +136,10 @@ class OrderBottomDialog : BottomSheetDialogFragment() {
                 }
             }
 
+            if(partnerIsOpen.not()){
+                openOrderDeliveryTimeBottomSheet()
+            }
+
             setAddress()
 
             viewModel.paymentStatus.observe(viewLifecycleOwner) {
@@ -187,7 +195,11 @@ class OrderBottomDialog : BottomSheetDialogFragment() {
             }
 
             viewModel.deliveryTime.observe(viewLifecycleOwner) { chosenTime ->
-                tvDeliveryTime.text = chosenTime
+                if(chosenTime == getString(R.string.delivery_details_delivery_time_title)){
+                    tvDeliveryTime.text = chosenTime
+                }else{
+                    tvDeliveryTime.text = getString(R.string.delivery_details_delivery_chosen_time_title, chosenTime)
+                }
             }
         }
         addClickForChooseAddressContainer()
@@ -332,15 +344,26 @@ class OrderBottomDialog : BottomSheetDialogFragment() {
     private fun addClickForChooseDeliveryTimeContainer() {
         with(binding) {
             contDeliveryTime.setOnClickListener {
-                OrderDeliveryTimeBottomSheet().show(parentFragmentManager, "")
+                openOrderDeliveryTimeBottomSheet()
             }
         }
     }
 
+    private fun openOrderDeliveryTimeBottomSheet(){
+        OrderDeliveryTimeBottomSheet.newInstance(isOpen = partnerIsOpen).show(parentFragmentManager, "")
+    }
+
     companion object {
+        private const val EMPTY_FIELD = ""
+
         const val GOOGLE_PAY_REQUEST_CODE = 3
         const val TINKOFF_PAYMENT_REQUEST_CODE = 1
+        private const val IS_OPEN = "IS_OPEN"
 
         const val RETURNING_SCREEN_KEY = "RETURNING_SCREEN_KEY"
+
+        fun newInstance(isOpen: Boolean) = OrderBottomDialog().withArgs {
+            putBoolean(IS_OPEN, isOpen)
+        }
     }
 }

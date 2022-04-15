@@ -1,6 +1,7 @@
 package ooo.cron.delivery.screens.pay_dialog_screen
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,9 +14,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
 import ooo.cron.delivery.databinding.PopUpChooseDeliveryTimeBinding
-import ooo.cron.delivery.utils.extensions.uiLazy
-import ooo.cron.delivery.utils.extensions.orZero
-import ooo.cron.delivery.utils.extensions.setCustomTextColor
+import ooo.cron.delivery.utils.extensions.*
 import ooo.cron.delivery.utils.extensions.makeGone
 import ooo.cron.delivery.utils.extensions.makeVisible
 import java.time.ZonedDateTime
@@ -38,6 +37,20 @@ class OrderDeliveryTimeBottomSheet : BottomSheetDialogFragment() {
 
     private var isPartnerClosed = false
 
+    private val arrayTimeToday = arrayListOf<String>()
+
+    private var currentTime: ZonedDateTime? = null
+
+    var hourNow = -1
+    var minuteNow = 0
+
+    private var partnerOpenTime = 0
+    private var partnerCloseTime = 0
+
+    private val partnerIsOpen: Boolean by uiLazy {
+        requireArguments().getBoolean(IS_OPEN)
+    }
+
     private val adapterDeliveryTime by uiLazy {
         AdapterDeliveryTime { chosenTime ->
             addClickForDoneBtn(chosenTime)
@@ -47,6 +60,11 @@ class OrderDeliveryTimeBottomSheet : BottomSheetDialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         injectDependencies()
         super.onCreate(savedInstanceState)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            currentTime = ZonedDateTime.now()
+            hourNow = currentTime?.hour.orZero()
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -57,7 +75,10 @@ class OrderDeliveryTimeBottomSheet : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        addClicksForDeliveryTypesBtn()
+        partnerOpenTime = viewModel.getPartnerOpenHours()
+        partnerCloseTime = viewModel.getPartnerCloseHours()
+
+        checkBtnDeliveryTypeAvailable()
         initDeliveryTimeAdapter()
         initDeliveryTimeRecyclerScrollListener()
         addClickForDoneBtn()
@@ -78,22 +99,13 @@ class OrderDeliveryTimeBottomSheet : BottomSheetDialogFragment() {
     @SuppressLint("NewApi")
     private fun getTimeToday(): ArrayList<String> {
 
-        val arrayTimeToday = arrayListOf<String>()
-
-        val currentTime = ZonedDateTime.now()
-        var hourNow = currentTime.hour
-        var minuteNow = 0
-
-        val partnerOpenTime = viewModel.getPartnerOpenHours()
-        val partnerCloseTime = viewModel.getPartnerCloseHours()
-
         isPartnerClosed = false
 
         // Проверка текущих минут
         // Один из примеров
         // Если сейчас 13:12 -> то заказать можно будет на 14:20 (т.е на час позже)
 
-        when (currentTime.minute) {
+        when (currentTime?.minute) {
             0 -> {
                 minuteNow = 0
                 hourNow++
@@ -133,9 +145,13 @@ class OrderDeliveryTimeBottomSheet : BottomSheetDialogFragment() {
             val zeroMinute = if (minuteNow < 10) ZERO_TIME else EMPTY
 
             // Добавление доступного времени доставки
+            // Если текущее время > времени открытия && текущее время <= времени закрытия (т.е доступное время доставки),
+            // то мы добавляем время в слайдер
+            // Иначе, у нас будет время, когда партнер, в этом случае показываем время открытия партнера
+            // Н-р Если сейчас 24:00 (партнер закрыт, то в слайдере увидим 18:00 и т.д (время открытого партнера))
             if (hourNow > partnerOpenTime - 1 && hourNow <= partnerCloseTime) {
                 arrayTimeToday.add("$zeroHour$hourNow:$zeroMinute$minuteNow")
-            }else{
+            } else {
                 hourNow = partnerOpenTime - 1
             }
 
@@ -219,6 +235,57 @@ class OrderDeliveryTimeBottomSheet : BottomSheetDialogFragment() {
         }
     }
 
+    private fun checkBtnDeliveryTypeAvailable() {
+        if (partnerIsOpen) {
+            if (hourNow >= partnerCloseTime - 1) {
+                enableBtnAsap()
+                disableBtnByTime()
+            } else {
+                addClicksForDeliveryTypesBtn()
+            }
+        } else {
+            if (hourNow >= partnerCloseTime - 1) {
+                enableBtnAsap()
+            } else {
+                disableBtnAsap()
+                enableBtnByTime()
+            }
+        }
+    }
+
+    private fun enableBtnAsap() {
+
+        with(binding) {
+            btnAsap.setBackgroundResource(R.drawable.bg_market_category_tag_not_selected_item)
+            btnAsap.setCustomTextColor(R.color.orange_ff4c30)
+            defaultTimeContainer.makeVisible()
+        }
+    }
+
+    private fun disableBtnAsap() {
+        with(binding) {
+            btnAsap.setBackgroundResource(R.drawable.btn_delivery_type_not_selected)
+            btnAsap.setCustomTextColor(R.color.black)
+            defaultTimeContainer.makeGone()
+        }
+    }
+
+    private fun enableBtnByTime() {
+        with(binding) {
+            btnByTime.setBackgroundResource(R.drawable.bg_market_category_tag_not_selected_item)
+            btnByTime.setCustomTextColor(R.color.orange_ff4c30)
+            scrollTimeContainer.makeVisible()
+        }
+    }
+
+    private fun disableBtnByTime() {
+        with(binding) {
+            btnByTime.setBackgroundResource(R.drawable.btn_delivery_type_not_selected)
+            btnByTime.setCustomTextColor(R.color.black)
+            scrollTimeContainer.makeGone()
+        }
+    }
+
     private fun injectDependencies() {
         App.appComponent.orderComponentBuilder()
             .buildInstance(layoutInflater)
@@ -230,5 +297,11 @@ class OrderDeliveryTimeBottomSheet : BottomSheetDialogFragment() {
         private const val MINUTE_STEP = 10
         private const val ZERO_TIME = "0"
         private const val EMPTY = ""
+
+        private const val IS_OPEN = "IS_OPEN"
+
+        fun newInstance(isOpen: Boolean) = OrderDeliveryTimeBottomSheet().withArgs {
+            putBoolean(IS_OPEN, isOpen)
+        }
     }
 }

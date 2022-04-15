@@ -238,18 +238,24 @@ class OrderDeliveryTimeBottomSheet : BottomSheetDialogFragment() {
     private fun checkBtnDeliveryTypeAvailable() {
         if (partnerIsOpen) {
             if (hourNow >= partnerCloseTime - 1) {
-                enableBtnAsap()
-                disableBtnByTime()
+                if (hourNow < partnerCloseTime) {
+                    enableBtnAsap()
+                    disableBtnByTime()
+                } else {
+                    disableBtnAsap()
+                    enableBtnByTime()
+                }
             } else {
-                addClicksForDeliveryTypesBtn()
+                if (hourNow > partnerOpenTime) {
+                    addClicksForDeliveryTypesBtn()
+                } else {
+                    disableBtnAsap()
+                    enableBtnByTime()
+                }
             }
         } else {
-            if (hourNow >= partnerCloseTime - 1) {
-                enableBtnAsap()
-            } else {
-                disableBtnAsap()
-                enableBtnByTime()
-            }
+            disableBtnAsap()
+            enableBtnByTime()
         }
     }
 

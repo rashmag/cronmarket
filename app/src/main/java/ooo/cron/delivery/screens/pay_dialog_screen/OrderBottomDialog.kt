@@ -66,6 +66,10 @@ class OrderBottomDialog : BottomSheetDialogFragment() {
         requireArguments().getBoolean(IS_OPEN)
     }
 
+    private val showDeliveryTimePopUp: Boolean by uiLazy {
+        requireArguments().getBoolean(SHOW_DELIVERY_TIME_POP_UP, false)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         injectDependencies()
@@ -136,7 +140,7 @@ class OrderBottomDialog : BottomSheetDialogFragment() {
                 }
             }
 
-            if(partnerIsOpen.not()){
+            if(showDeliveryTimePopUp && partnerIsOpen.not()){
                 openOrderDeliveryTimeBottomSheet()
             }
 
@@ -354,16 +358,20 @@ class OrderBottomDialog : BottomSheetDialogFragment() {
     }
 
     companion object {
-        private const val EMPTY_FIELD = ""
-
         const val GOOGLE_PAY_REQUEST_CODE = 3
         const val TINKOFF_PAYMENT_REQUEST_CODE = 1
+
         private const val IS_OPEN = "IS_OPEN"
+        private const val SHOW_DELIVERY_TIME_POP_UP = "SHOW_DELIVERY_TIME_POP_UP"
 
         const val RETURNING_SCREEN_KEY = "RETURNING_SCREEN_KEY"
 
-        fun newInstance(isOpen: Boolean) = OrderBottomDialog().withArgs {
+        fun newInstance(
+            isOpen: Boolean,
+            showDeliveryTimePopUp: Boolean
+        ) = OrderBottomDialog().withArgs {
             putBoolean(IS_OPEN, isOpen)
+            putBoolean(SHOW_DELIVERY_TIME_POP_UP, showDeliveryTimePopUp)
         }
     }
 }

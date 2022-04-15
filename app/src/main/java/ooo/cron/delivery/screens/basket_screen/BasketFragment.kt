@@ -226,7 +226,12 @@ class BasketFragment : BaseMVVMFragment() {
     }
 
     private fun showMakeOrderBottomDialog() {
-        showBottomDialog(OrderBottomDialog.newInstance(isOpen))
+        // Если мы вернулись с экрана "Выбор города", то на поп-апе оплаты не показывай вначале "Выбор времени доставки"
+        if(address?.isNotEmpty() == true){
+            showBottomDialog(OrderBottomDialog.newInstance(isOpen, false))
+        }else{
+            showBottomDialog(OrderBottomDialog.newInstance(isOpen, true))
+        }
     }
 
     //Метод для показа любого боттом диалога

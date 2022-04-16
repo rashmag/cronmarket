@@ -141,7 +141,7 @@ class OrderBottomDialog : BottomSheetDialogFragment() {
             }
 
             if(showDeliveryTimePopUp && partnerIsOpen.not()){
-                openOrderDeliveryTimeBottomSheet()
+                openOrderDeliveryTimeBottomSheet(partnerIsOpen)
             }
 
             setAddress()
@@ -348,13 +348,17 @@ class OrderBottomDialog : BottomSheetDialogFragment() {
     private fun addClickForChooseDeliveryTimeContainer() {
         with(binding) {
             contDeliveryTime.setOnClickListener {
-                openOrderDeliveryTimeBottomSheet()
+                if(showDeliveryTimePopUp.not()){
+                    openOrderDeliveryTimeBottomSheet(true)
+                }else{
+                    openOrderDeliveryTimeBottomSheet(partnerIsOpen)
+                }
             }
         }
     }
 
-    private fun openOrderDeliveryTimeBottomSheet(){
-        OrderDeliveryTimeBottomSheet.newInstance(isOpen = partnerIsOpen).show(parentFragmentManager, "")
+    private fun openOrderDeliveryTimeBottomSheet(isOpen: Boolean){
+        OrderDeliveryTimeBottomSheet.newInstance(isOpen = isOpen).show(parentFragmentManager, "")
     }
 
     companion object {

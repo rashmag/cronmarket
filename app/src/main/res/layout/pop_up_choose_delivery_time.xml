@@ -107,6 +107,7 @@
                     android:clipToPadding="false"
                     android:overScrollMode="never"
                     android:orientation="vertical"
+                    tools:listitem="@layout/delivery_time_item"
                     android:paddingTop="@dimen/space_42"
                     android:paddingBottom="@dimen/space_65" />
 

@@ -34,6 +34,7 @@ class AdapterDeliveryTime(
 
     fun updateSelectedItem(item: Int) {
         selectedItem = item
+        notifyDataSetChanged()
     }
 
     override fun getItemCount() = deliveryTimes.size

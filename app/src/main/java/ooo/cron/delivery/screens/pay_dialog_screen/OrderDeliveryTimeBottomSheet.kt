@@ -183,9 +183,8 @@ class OrderDeliveryTimeBottomSheet : BottomSheetDialogFragment() {
 
                 val parentPos = deliveryTimeLayoutManager?.findLastCompletelyVisibleItemPosition()
 
-                if (parentPos != adapterDeliveryTime.selectedItem && parentPos != -1) {
+                if (parentPos != adapterDeliveryTime.selectedItem && parentPos != NOT_SELECTED_ITEM) {
                     adapterDeliveryTime.updateSelectedItem(parentPos.orZero())
-                    adapterDeliveryTime.notifyDataSetChanged()
                 }
             }
         })
@@ -193,37 +192,20 @@ class OrderDeliveryTimeBottomSheet : BottomSheetDialogFragment() {
 
     private fun addClicksForDeliveryTypesBtn() {
         with(binding) {
-            btnAsap.apply {
-                setOnClickListener {
-                    setBackgroundResource(R.drawable.bg_market_category_tag_not_selected_item)
-                    setCustomTextColor(R.color.orange_ff4c30)
-
-                    btnByTime.setBackgroundResource(R.drawable.btn_delivery_type_not_selected)
-                    btnByTime.setCustomTextColor(R.color.black)
-
-                    defaultTimeContainer.makeVisible()
-                    scrollTimeContainer.makeGone()
-                }
+            btnAsap.setOnClickListener {
+                enableBtnAsap()
+                disableBtnByTime()
             }
 
-            btnByTime.apply {
-                setOnClickListener {
-                    setBackgroundResource(R.drawable.bg_market_category_tag_not_selected_item)
-                    setCustomTextColor(R.color.orange_ff4c30)
-
-                    btnAsap.setBackgroundResource(R.drawable.btn_delivery_type_not_selected)
-                    btnAsap.setCustomTextColor(R.color.black)
-
-                    defaultTimeContainer.makeGone()
-                    scrollTimeContainer.makeVisible()
-                }
+            btnByTime.setOnClickListener {
+                enableBtnByTime()
+                disableBtnAsap()
             }
         }
     }
 
     private fun addClickForDoneBtn(time: String? = "") {
         with(binding) {
-
             btnDone.setOnClickListener {
                 if (time?.isEmpty() == true) {
                     viewModel.setDeliveryTime(getString(R.string.delivery_details_delivery_time_title))
@@ -303,6 +285,7 @@ class OrderDeliveryTimeBottomSheet : BottomSheetDialogFragment() {
         private const val MINUTE_STEP = 10
         private const val ZERO_TIME = "0"
         private const val EMPTY = ""
+        private const val NOT_SELECTED_ITEM = -1
 
         private const val IS_OPEN = "IS_OPEN"
 

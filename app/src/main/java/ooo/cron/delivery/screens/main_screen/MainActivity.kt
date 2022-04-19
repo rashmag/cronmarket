@@ -470,6 +470,7 @@ class MainActivity : BaseActivity(), MainContract.View {
                         vgMainMenu.tvDrawerMenuItemContacts -> startContactsFragment()
                         vgMainMenu.tvDrawerMenuItemVacancies -> startVacanciesFragment()
                     }
+                    binding.drawerMain.closeDrawer()
                     onClick(clickedView)
                 }
             }

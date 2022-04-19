@@ -9,7 +9,6 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import ooo.cron.delivery.data.OrderInteractor
-import ooo.cron.delivery.data.network.SPrefsService
 import ooo.cron.delivery.data.network.models.Basket
 import ooo.cron.delivery.data.network.models.Basket.Companion.deserializeDishes
 import ooo.cron.delivery.data.network.models.PayData
@@ -63,7 +62,7 @@ class OrderViewModel @Inject constructor(
     fun onPayClicked() {
         when (payVariantState.value) {
             is CardVariant -> onCardPaySelected()
-            is CashVariant -> onPaymentSuccess() // никуда лезть не надо, сразу же подтверждаем заказ и отправляем запрос на сервер
+            is CashVariant -> onOrderSended()
             is GPayVariant -> onGooglePaySelected()
             else -> callingPayInfoDialog.call()
         }
@@ -78,18 +77,20 @@ class OrderViewModel @Inject constructor(
     }
 
     fun onGooglePayResultSuccess(token: String) {
-        googlePayData.postValue(Pair(getOrderInfo() ,token))
+        googlePayData.postValue(Pair(getOrderInfo(), token))
     }
 
     private fun getOrderInfo(): PayData {
         val phone = interactor.getPhone().toString()
         val basket = interactor.getBasket()
         val payData = basket?.let {
-            PayData(amountSum = it.amount + it.deliveryCost, receipt = Receipt(
-                ArrayList(receiptsItems(it)),
-                "cron.devsystems@gmail.com",
-                Taxation.USN_INCOME
-            ), phone = phone)
+            PayData(
+                amountSum = it.amount + it.deliveryCost, receipt = Receipt(
+                    ArrayList(receiptsItems(it)),
+                    "cron.devsystems@gmail.com",
+                    Taxation.USN_INCOME
+                ), phone = phone
+            )
         }
         return payData as PayData
     }
@@ -140,23 +141,27 @@ class OrderViewModel @Inject constructor(
     //метод для POST-запроса на отправку заказа после оплаты(если картой или GPay)/выбора налички
     //TODO обработать ошибку отсутствия интернета при успешной оплате и отправке POST-запроса
 
-    fun onPaymentSuccess() {
+    fun onOrderSended() {
         viewModelScope.launch {
             val paymentMethod = if (payVariantState.value == CashVariant) 1 else 2
             val comment = commentTextLiveData.value.toString()
             val basket = interactor.getBasket()
-            basket?.let {
-                val basketClearReq = interactor.getBasketClearReq(it)
-                interactor.clearBasket(basketClearReq)
+            val order = basket?.let {
+                interactor.sendOrder(
+                    it.id,
+                    paymentMethod = paymentMethod,
+                    comment = comment,
+                    address = getAddress(),
+                    deliverAtTime = if (deliveryTime.value.isNullOrEmpty()) null else deliveryTime.value
+                )
             }
-            interactor.sendOrder(
-                paymentMethod = paymentMethod,
-                comment = comment,
-                address = getAddress(),
-                deliveryAtTime = deliveryTime.value.orEmpty()
-            )
+            //нужен рефакторинг
+            if (order != null) {
+                if (order.isSuccessful) {
+                    paymentStatus.postValue(true)
+                } else onPaymentFailed()
+            }
         }
-        paymentStatus.postValue(true)
     }
 
     //метод для вызова показа ошибки в экране корзины
@@ -164,11 +169,11 @@ class OrderViewModel @Inject constructor(
         paymentStatus.postValue(false)
     }
 
-    fun getAddress(): String{
+    fun getAddress(): String {
         return interactor.readAddress()
     }
 
-    fun setDeliveryTime(time: String){
+    fun setDeliveryTime(time: String) {
         mutableDeliveryTime.postValue(time)
     }
 
@@ -176,7 +181,7 @@ class OrderViewModel @Inject constructor(
         return interactor.getPartnerOpenHours()
     }
 
-    fun getPartnerCloseHours(): Int{
+    fun getPartnerCloseHours(): Int {
         return interactor.getPartnerCloseHours()
     }
 

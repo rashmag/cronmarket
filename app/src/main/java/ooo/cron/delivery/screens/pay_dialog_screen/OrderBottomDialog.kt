@@ -1,5 +1,6 @@
 package ooo.cron.delivery.screens.pay_dialog_screen
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
@@ -122,6 +123,7 @@ class OrderBottomDialog : BottomSheetDialogFragment() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         AcquiringSdk.isDeveloperMode = BuildConfig.DEBUG
@@ -196,6 +198,13 @@ class OrderBottomDialog : BottomSheetDialogFragment() {
 
             btnGpayOrder.setOnClickListener {
                 viewModel.onPayClicked()
+            }
+
+            if(partnerIsOpen.not()){
+                tvDeliveryTime.text = getString(
+                    R.string.order_bottom_dialog_open_time_title,
+                    "${viewModel.getPartnerOpenHours()}:$ZERO_SYMBOL$ZERO_SYMBOL"
+                )
             }
 
             viewModel.deliveryTime.observe(viewLifecycleOwner) { chosenTime ->
@@ -364,6 +373,7 @@ class OrderBottomDialog : BottomSheetDialogFragment() {
     companion object {
         const val GOOGLE_PAY_REQUEST_CODE = 3
         const val TINKOFF_PAYMENT_REQUEST_CODE = 1
+        private const val ZERO_SYMBOL = 0
 
         private const val IS_OPEN = "IS_OPEN"
         private const val SHOW_DELIVERY_TIME_POP_UP = "SHOW_DELIVERY_TIME_POP_UP"

@@ -111,6 +111,8 @@
     <string name="order_costs_title">Стоимость заказа</string>
     <string name="delivery_details_choose_delivery_time_title">Выберите время доставки</string>
 
+    <string name="order_bottom_dialog_open_time_title">Откроется в %s</string>
+
     <string name="order_cost_payment_method_title">Способ оплаты</string>
     <string name="order_cost_promo_code_title">Промокод</string>
     <string name="order_cost_enter_promo_code_title">Введите промокод</string>
@@ -283,7 +285,7 @@
     <string name="tinkoff_terminal_key">1616764866032DEMO</string>
     <string name="tinkoff_terminal_password">37qcj6mk92hv5r8b</string>
     <string name="tinkoff_terminal_public_key">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAv5yse9ka3ZQE0feuGtemYv3IqOlLck8zHUM7lTr0za6lXTszRSXfUO7jMb+L5C7e2QNFs+7sIX2OQJ6a+HG8kr+jwJ4tS3cVsWtd9NXpsU40PE4MeNr5RqiNXjcDxA+L4OsEm/BlyFOEOh2epGyYUd5/iO3OiQFRNicomT2saQYAeqIwuELPs1XpLk9HLx5qPbm8fRrQhjeUD5TLO8b+4yCnObe8vy/BMUwBfq+ieWADIjwWCMp2KTpMGLz48qnaD9kdrYJ0iyHqzb2mkDhdIzkim24A3lWoYitJCBrrB2xM05sm9+OdCI1f7nPNJbl5URHobSwR94IRGT7CJcUjvwIDAQAB</string>
-    <string name="partner_closed">Заведение в данный момент закрыто\nОткроется в %1$s</string>
+    <string name="partner_closed">Доставить к %1$s</string>
     <string name="enter_address">Введите адрес</string>
     <string name="cron_delivery_title">Доставка с CronMarket</string>
     <string name="order_cash_payment">Оплатить</string>

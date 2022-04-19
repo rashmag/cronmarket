@@ -93,7 +93,9 @@ class BasketViewModel @Inject constructor(
         }
     }
 
-    fun onMakeOrderClicked(minAmount: Int, amount: Int) {
+    fun onMakeOrderClicked(minAmount: Int, amount: Double) {
+        if (interactor.getToken()?.refreshToken == null)
+                navigationAuth.call()
         if(minAmount > amount){
             showingOrderFromDialog.call()
         }else{

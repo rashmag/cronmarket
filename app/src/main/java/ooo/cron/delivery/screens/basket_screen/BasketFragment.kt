@@ -92,7 +92,7 @@ class BasketFragment : BaseMVVMFragment() {
         )
     }
     private var basket: Basket? = null
-    private var amount: Int = 0
+    private var amount: Double = 0.0
     private var isRestaurant: Int? = null
 
     private val address: String? by uiLazy {
@@ -152,6 +152,7 @@ class BasketFragment : BaseMVVMFragment() {
             val formatter = DecimalFormat("#.##").apply {
                 roundingMode = RoundingMode.CEILING
             }
+            amount = it.first.amount
             updateBasketAmount(formatter.format(it.first.amount+it.first.deliveryCost), it.first.deliveryCost.toInt().toString())
         }
 
@@ -251,7 +252,6 @@ class BasketFragment : BaseMVVMFragment() {
 
     private fun updateBasketAmount(price: String, deliveryCost: String) {
         binding.tvBasketAmount.text = getString(R.string.price, price)
-        amount = price.toInt()
         binding.tvBasketAmount.startBottomAnimate(true)
         binding.tvBasketDeliveryCost.text = getString(R.string.delivery_cost, deliveryCost)
     }

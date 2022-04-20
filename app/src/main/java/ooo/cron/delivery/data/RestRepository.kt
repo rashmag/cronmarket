@@ -49,13 +49,13 @@ class RestRepository @Inject constructor(
         entrance: String?,
         floor: String?,
         flat: String?,
-        deliveryAtTime: String?,
+        deliverAtTime: String?,
         saveAddress: Boolean?,
-        discount: Int?,
+        discount: Int,
         paymentMethod: Int
 
-    ) {
-        restService.sendOrder(
+    ):Response<ResponseBody> {
+        return restService.sendOrder(
             OrderReq(
                 basketId,
                 phone,
@@ -65,7 +65,7 @@ class RestRepository @Inject constructor(
                 entrance,
                 floor,
                 flat,
-                deliveryAtTime,
+                deliverAtTime,
                 saveAddress,
                 discount,
                 paymentMethod

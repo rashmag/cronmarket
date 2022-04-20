@@ -93,20 +93,17 @@ class BasketViewModel @Inject constructor(
         }
     }
 
-    fun onMakeOrderClicked(orderAmount: Int) {
+    fun onMakeOrderClicked(minAmount: Int, amount: Double) {
         if (interactor.getToken()?.refreshToken == null)
-            navigationAuth.call()
-
-        viewModelScope.launch(handler) {
-            val basket = interactor.getBasketId()?.let { interactor.getBasket(it) }
-            if (basket?.process { (it.amount ?: 0.0) < orderAmount } as Boolean) {
-                showingOrderFromDialog.call()
+                navigationAuth.call()
+        if(minAmount > amount){
+            showingOrderFromDialog.call()
+        }else{
+            mutableBasket.value?.let {
+                interactor.writeBasket(it.first)
             }
+            showingMakeOrderDialog.call()
         }
-        mutableBasket.value?.let {
-            interactor.writeBasket(it.first)
-        }
-        showingMakeOrderDialog.call()
     }
 
     fun onAdapterInited() {

@@ -2,7 +2,6 @@ package ooo.cron.delivery.screens.pay_dialog_screen
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.Gravity
@@ -29,7 +28,6 @@ import ooo.cron.delivery.utils.enums.ReturningToScreenEnum
 import ooo.cron.delivery.utils.extensions.*
 import ooo.cron.delivery.utils.extensions.makeGone
 import ooo.cron.delivery.utils.extensions.makeVisible
-import ru.tinkoff.acquiring.sdk.AcquiringSdk
 import ru.tinkoff.acquiring.sdk.TinkoffAcquiring
 import ru.tinkoff.acquiring.sdk.TinkoffAcquiring.Companion.RESULT_ERROR
 import ru.tinkoff.acquiring.sdk.models.AsdkState
@@ -88,7 +86,7 @@ class OrderBottomDialog : BottomSheetDialogFragment() {
 
     private fun handlePaymentResult(resultCode: Int, data: Intent?) {
         when (resultCode) {
-            Activity.RESULT_OK -> viewModel.onPaymentSuccess()
+            Activity.RESULT_OK -> viewModel.onOrderSended()
             Activity.RESULT_CANCELED -> Toast.makeText(
                 requireContext(),
                 getString(R.string.payment_result_cancel),
@@ -116,8 +114,6 @@ class OrderBottomDialog : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        AcquiringSdk.isDeveloperMode = BuildConfig.DEBUG
-        AcquiringSdk.isDebug = BuildConfig.DEBUG
         viewModel.onViewCreated()
         with(binding) {
 
@@ -141,7 +137,7 @@ class OrderBottomDialog : BottomSheetDialogFragment() {
                 showInformDialog(R.string.order_no_payment_inform_message)
             }
             viewModel.payVariantState.observe(viewLifecycleOwner) {
-                btnOrder.text = getString(R.string.order_cash_payment)
+                btnOrder.text = if (it is CashVariant) getString(R.string.order_title) else getString(R.string.order_card_payment)
                 btnOrder.setBackgroundResource(R.drawable.bg_btn_order)
                 btnGpayOrder.isVisible = it is GPayVariant
                 btnOrder.isVisible = it !is GPayVariant

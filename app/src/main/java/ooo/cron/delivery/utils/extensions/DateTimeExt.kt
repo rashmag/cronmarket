@@ -145,7 +145,7 @@ fun LocalTime.timeBetweenIterator(
     var nextTime = when {
         isOpenNow -> currentTime.timeRoundMinutes(periodValue).plusHours(1)
         else -> {
-            val beforeTime = (startAt.minute - currentTime.minute).absoluteValue
+            val beforeTime = unit.between(currentTime, startAt).absoluteValue
             if (beforeTime < 60) {
                 currentTime.timeRoundMinutes(periodValue).plusHours(1)
             } else {

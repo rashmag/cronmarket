@@ -6,19 +6,21 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import java.time.LocalTime
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import ooo.cron.delivery.data.OrderInteractor
-import ooo.cron.delivery.data.network.SPrefsService
 import ooo.cron.delivery.data.network.models.Basket
 import ooo.cron.delivery.data.network.models.Basket.Companion.deserializeDishes
 import ooo.cron.delivery.data.network.models.PayData
 import ooo.cron.delivery.utils.SingleLiveEvent
+import ooo.cron.delivery.utils.extensions.formatShortTime
+import ooo.cron.delivery.utils.extensions.timeBetweenIterator
 import ru.tinkoff.acquiring.sdk.models.Item
 import ru.tinkoff.acquiring.sdk.models.Receipt
 import ru.tinkoff.acquiring.sdk.models.enums.Tax
 import ru.tinkoff.acquiring.sdk.models.enums.Taxation
-import javax.inject.Inject
 
 /**
  * Created by Maya Nasrueva on 14.12.2021
@@ -178,6 +180,18 @@ class OrderViewModel @Inject constructor(
 
     fun getPartnerCloseHours(): Int{
         return interactor.getPartnerCloseHours()
+    }
+
+    fun generateDeliveryTimeInterval(): List<String> {
+
+        val openTime = interactor.getPartnerOpenTime() ?: return arrayListOf()
+        val closeTime = interactor.getPartnerCloseTime() ?: return arrayListOf()
+        val arrayTimeToday: ArrayList<LocalTime> = openTime.timeBetweenIterator(
+            endAt = closeTime,
+            periodValue = 10
+        )
+
+        return arrayTimeToday.map { it.formatShortTime() }
     }
 
     private fun Int.inCoins() =

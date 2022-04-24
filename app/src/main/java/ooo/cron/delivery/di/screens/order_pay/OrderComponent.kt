@@ -1,8 +1,11 @@
-package ooo.cron.delivery.screens.pay_dialog_screen
+package ooo.cron.delivery.di.screens.order_pay
 
 import android.view.LayoutInflater
 import dagger.BindsInstance
 import dagger.Subcomponent
+import ooo.cron.delivery.screens.pay_dialog_screen.OrderBottomDialog
+import ooo.cron.delivery.screens.pay_dialog_screen.OrderCommentBottomDialog
+import ooo.cron.delivery.screens.pay_dialog_screen.OrderDeliveryTimeBottomSheet
 
 /**
  * Created by Maya Nasrueva on 14.12.2021

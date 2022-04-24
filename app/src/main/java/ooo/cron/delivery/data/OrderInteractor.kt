@@ -1,9 +1,13 @@
 package ooo.cron.delivery.data
 
+import java.time.LocalTime
+import java.time.ZonedDateTime
 import ooo.cron.delivery.data.network.models.Basket
 import ooo.cron.delivery.data.network.request.BasketClearReq
 import ooo.cron.delivery.utils.Result
 import javax.inject.Inject
+import ooo.cron.delivery.data.local.PreferenceStorage
+import ooo.cron.delivery.utils.extensions.parseTime
 
 /**
  * Created by Maya Nasrueva on 09.01.2022
@@ -11,7 +15,8 @@ import javax.inject.Inject
 
 class OrderInteractor @Inject constructor(
     private val restRepo: RestRepository,
-    private val prefsRepo: PrefsRepository
+    private val prefsRepo: PrefsRepository,
+    private val prefs: PreferenceStorage
 ) {
     //suspend fun getBasket() = restRepo.getBasket(prefsRepo.readBasket().id)
 
@@ -70,5 +75,13 @@ class OrderInteractor @Inject constructor(
 
     fun getPartnerCloseHours(): Int{
         return prefsRepo.readPartnerCloseHours()
+    }
+
+    fun getPartnerOpenTime(): LocalTime? {
+        return prefs.partnerOpenTime?.parseTime()
+    }
+
+    fun getPartnerCloseTime(): LocalTime? {
+        return prefs.partnerCloseTime?.parseTime()
     }
 }

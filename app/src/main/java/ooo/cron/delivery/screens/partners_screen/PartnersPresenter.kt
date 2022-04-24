@@ -14,7 +14,7 @@ import java.util.*
 import javax.inject.Inject
 import ooo.cron.delivery.analytics.BaseAnalytics
 import ooo.cron.delivery.utils.extensions.orZero
-import java.lang.Exception
+import ooo.cron.delivery.data.local.PreferenceStorage
 
 /*
  * Created by Muhammad on 05.05.2021
@@ -24,7 +24,8 @@ import java.lang.Exception
 class PartnersPresenter @Inject constructor(
     private val dataManager: DataManager,
     private val mainScope: CoroutineScope,
-    private val analytics: BaseAnalytics
+    private val analytics: BaseAnalytics,
+    private val prefs: PreferenceStorage
 ) :
     BaseMvpPresenter<PartnersContract.View>(), PartnersContract.Presenter {
 
@@ -138,6 +139,9 @@ class PartnersPresenter @Inject constructor(
 
                 dataManager.writePartnerOpenHours(openTime[0])
                 dataManager.writePartnerCloseTime(closeTime[0])
+
+                prefs.partnerOpenTime = schedule.begin
+                prefs.partnerCloseTime = schedule.end
 
                 view?.navigateBasket(
                     openTime.first(),

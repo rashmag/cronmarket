@@ -5,7 +5,7 @@ apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 31
-    buildToolsVersion "30.0.0"
+    buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "ooo.cron.delivery"
@@ -32,6 +32,8 @@ android {
     }
 
     compileOptions {
+        // Flag to enable support for the new language APIs
+        setCoreLibraryDesugaringEnabled(true)
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -153,4 +155,7 @@ dependencies {
 
     // AppMetrica SDK.
     implementation 'com.yandex.android:mobmetricalib:4.1.1'
+
+    // Java 8+ API desugaring support
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
 }

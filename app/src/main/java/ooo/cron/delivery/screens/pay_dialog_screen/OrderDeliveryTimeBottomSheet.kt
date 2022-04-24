@@ -1,7 +1,6 @@
 package ooo.cron.delivery.screens.pay_dialog_screen
 
 import android.annotation.SuppressLint
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,15 +10,18 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import java.time.ZonedDateTime
+import javax.inject.Inject
 import ooo.cron.delivery.App
 import ooo.cron.delivery.R
 import ooo.cron.delivery.databinding.PopUpChooseDeliveryTimeBinding
-import ooo.cron.delivery.utils.extensions.*
+import ooo.cron.delivery.di.screens.order_pay.OrderViewModelFactory
 import ooo.cron.delivery.utils.extensions.makeGone
 import ooo.cron.delivery.utils.extensions.makeVisible
-import java.time.ZonedDateTime
-import javax.inject.Inject
-import kotlin.collections.ArrayList
+import ooo.cron.delivery.utils.extensions.orZero
+import ooo.cron.delivery.utils.extensions.setCustomTextColor
+import ooo.cron.delivery.utils.extensions.uiLazy
+import ooo.cron.delivery.utils.extensions.withArgs
 
 class OrderDeliveryTimeBottomSheet : BottomSheetDialogFragment() {
 
@@ -61,10 +63,8 @@ class OrderDeliveryTimeBottomSheet : BottomSheetDialogFragment() {
         injectDependencies()
         super.onCreate(savedInstanceState)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            currentTime = ZonedDateTime.now()
-            hourNow = currentTime?.hour.orZero()
-        }
+        currentTime = ZonedDateTime.now()
+        hourNow = currentTime?.hour.orZero()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -91,7 +91,7 @@ class OrderDeliveryTimeBottomSheet : BottomSheetDialogFragment() {
             deliveryTimeLayoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
             layoutManager = deliveryTimeLayoutManager
             adapter = adapterDeliveryTime
-            adapterDeliveryTime.setTime(getTimeToday())
+            adapterDeliveryTime.setTime(viewModel.generateDeliveryTimeInterval())
         }
     }
 

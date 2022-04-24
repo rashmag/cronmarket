@@ -11,6 +11,7 @@ import ooo.cron.delivery.App
 import ooo.cron.delivery.R
 import ooo.cron.delivery.databinding.FragmentCommentBinding
 import javax.inject.Inject
+import ooo.cron.delivery.di.screens.order_pay.OrderViewModelFactory
 
 class OrderCommentBottomDialog() : BottomSheetDialogFragment() {
 

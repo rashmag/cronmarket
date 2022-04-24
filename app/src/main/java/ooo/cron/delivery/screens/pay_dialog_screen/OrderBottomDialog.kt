@@ -3,7 +3,6 @@ package ooo.cron.delivery.screens.pay_dialog_screen
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.Gravity
@@ -41,6 +40,7 @@ import ru.tinkoff.acquiring.sdk.payment.PaymentState
 import ru.tinkoff.acquiring.sdk.utils.GooglePayHelper
 import ru.tinkoff.acquiring.sdk.utils.Money
 import javax.inject.Inject
+import ooo.cron.delivery.di.screens.order_pay.OrderViewModelFactory
 
 /**
  * Created by Maya Nasrueva on 14.12.2021

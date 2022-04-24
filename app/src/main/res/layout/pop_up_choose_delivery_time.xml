@@ -81,6 +81,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginStart="@dimen/dimen_16"
+                    android:fontFamily="@font/sf_pro_text_semibold"
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_middle_18"
                     android:text="@string/choose_delivery_time_pop_up_choose_delivery_time_title" />

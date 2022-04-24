@@ -1,4 +1,4 @@
-package ooo.cron.delivery.screens.pay_dialog_screen
+package ooo.cron.delivery.di.screens.order_pay
 
 import javax.inject.Scope
 

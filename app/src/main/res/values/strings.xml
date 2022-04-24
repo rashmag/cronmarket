@@ -333,7 +333,7 @@
 
     <!-- Choose delivery time pop-up -->
     <string name="choose_delivery_time_pop_up_title">Время доставки</string>
-    <string name="choose_delivery_time_pop_up_choose_delivery_time_title">Выберите время:\n40 - 60 минут</string>
+    <string name="choose_delivery_time_pop_up_choose_delivery_time_title">Время доставки:\n40 – 60 минут</string>
     <string name="choose_delivery_time_pop_up_asap_title">Как можно скорее</string>
     <string name="choose_delivery_time_pop_up_by_time_title">Ко времени</string>
     <string name="choose_delivery_time_pop_up_btn_title">Готово</string>

@@ -1,13 +1,9 @@
 package ooo.cron.delivery.data
 
-import java.time.LocalTime
-import java.time.ZonedDateTime
 import ooo.cron.delivery.data.network.models.Basket
 import ooo.cron.delivery.data.network.request.BasketClearReq
 import ooo.cron.delivery.utils.Result
 import javax.inject.Inject
-import ooo.cron.delivery.data.local.PreferenceStorage
-import ooo.cron.delivery.utils.extensions.parseTime
 
 /**
  * Created by Maya Nasrueva on 09.01.2022
@@ -18,30 +14,28 @@ class OrderInteractor @Inject constructor(
     private val prefsRepo: PrefsRepository,
     private val prefs: PreferenceStorage
 ) {
-    //suspend fun getBasket() = restRepo.getBasket(prefsRepo.readBasket().id)
 
     suspend fun sendOrder(
+        basketId:String,
         paymentMethod: Int,
         comment: String,
         address: String,
-        deliveryAtTime: String
-    ) {
-        val basket = prefsRepo.readBasket()
-        if (basket == null) return
-        restRepo.sendOrder(
-            basket.id,
-            prefsRepo.readUserPhone(),
-            comment,
-            prefsRepo.readDeliveryCity().id,
-            address = address,
-            entrance = null,
-            floor = null,
-            flat = null,
-            deliveryAtTime = deliveryAtTime,
-            saveAddress = null,
-            discount = null,
-            paymentMethod
-        )
+        deliverAtTime: String?
+    ): Response<ResponseBody> {
+            return restRepo.sendOrder(
+                basketId = basketId,
+                prefsRepo.readUserPhone(),
+                comment,
+                prefsRepo.readDeliveryCity().id,
+                address = address,
+                entrance = "",
+                floor = "",
+                flat = "",
+                deliverAtTime = deliverAtTime,
+                saveAddress = true,
+                discount = 0,
+                paymentMethod
+            )
     }
 
     suspend fun clearBasket(basketClearReq: BasketClearReq): Result<Basket> {

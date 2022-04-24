@@ -43,6 +43,7 @@ class MainPresenter @Inject constructor(
         if (basketId == DataManager.EMPTY_UUID)
             view?.hideContinueLastSessionMainMenu()
     }
+
     override fun onResumeView(isFromPartnerScreen: Boolean) {
         mainScope.launch {
             defineAddress()
@@ -248,6 +249,7 @@ class MainPresenter @Inject constructor(
     }
 
     override fun getMarketCategory(): MarketCategory? {
+        dataManager.writeSelectedMarketCategory(marketCategories!!.first())
         return dataManager.readSelectedMarketCategory()
     }
 

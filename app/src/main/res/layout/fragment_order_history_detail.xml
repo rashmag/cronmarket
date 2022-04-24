@@ -1,266 +1,275 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/back_img"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="10dp"
+        android:src="@drawable/ic_arrow_back_circle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/partner_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dimen_6"
+        app:layout_constraintBottom_toBottomOf="@id/back_img"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_middle_16"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/back_img"
+        app:layout_constraintTop_toTopOf="@id/back_img"
+        tools:text="Теремок" />
 
     <FrameLayout
         android:id="@+id/order_history_detail_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/back_img">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="138dp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/all_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/partner_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dimen_38"
-                android:layout_marginTop="@dimen/dimen_16"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="Теремок"
-                android:textSize="@dimen/text_middle_16"
-                android:textColor="@color/black"
-                android:textStyle="bold"/>
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/order_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/partner_name"
-                tools:text="17.03.21 11:50"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_middle_16"
-                android:layout_marginTop="@dimen/dimen_8"
-                android:layout_marginStart="@dimen/dimen_38"/>
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/order_delivery_to"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="Доставка к 15:00"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_middle_16"
-                android:visibility="gone"
-                android:layout_marginTop="46dp"
-                android:layout_marginEnd="34dp"/>
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/order_address"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/order_date"
-                tools:text="г. Махачкала, ул. Гаджикадиева, д 43, п. 1, эт. 5"
-                android:textSize="@dimen/text_min_12"
-                android:drawableStart="@drawable/ic_location_order_history"
-                android:drawablePadding="@dimen/dimen_10"
-                android:layout_marginStart="@dimen/dimen_38"
-                android:layout_marginTop="@dimen/dimen_8" />
-
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/stepper_container"
+                android:id="@+id/all_container"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen_24"
-                android:visibility="gone"
-                tools:visibility="visible"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/order_address">
+                android:layout_height="match_parent">
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/indicator_moderation"
-                    android:layout_width="12dp"
-                    android:layout_height="12dp"
-                    android:layout_marginStart="62dp"
-                    android:layout_marginTop="2dp"
-                    android:background="@drawable/circle_indicator_inactive"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ProgressBar
-                    android:id="@+id/progress_moderation"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="80dp"
-                    android:progressTint="@color/orange_ff8b00"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toEndOf="@+id/indicator_moderation"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/indicator_process"
-                    android:layout_width="12dp"
-                    android:layout_height="12dp"
-                    android:layout_marginTop="2dp"
-                    android:background="@drawable/circle_indicator_inactive"
-                    app:layout_constraintStart_toEndOf="@+id/progress_moderation"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ProgressBar
-                    android:id="@+id/progress_process"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:progressTint="@color/orange_ff8b00"
-                    app:layout_constraintStart_toEndOf="@+id/indicator_process"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/indicator_way"
-                    android:layout_width="12dp"
-                    android:layout_height="12dp"
-                    android:layout_marginTop="2dp"
-                    android:background="@drawable/circle_indicator_inactive"
-                    app:layout_constraintStart_toEndOf="@+id/progress_process"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ProgressBar
-                    android:id="@+id/progress_way"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:progressTint="@color/orange_ff8b00"
-                    app:layout_constraintStart_toEndOf="@+id/indicator_way"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/indicator_done"
-                    android:layout_width="12dp"
-                    android:layout_height="12dp"
-                    android:layout_marginTop="2dp"
-                    android:background="@drawable/circle_indicator_inactive"
-                    app:layout_constraintStart_toEndOf="@+id/progress_way"
-                    app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/title_moderation"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimen_6"
-                    android:layout_marginStart="36dp"
-                    android:text="@string/order_history_screen_moderation_title"
-                    android:textSize="@dimen/text_min_12"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/indicator_moderation" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/title_process"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimen_6"
-                    android:layout_marginEnd="@dimen/dimen_28"
-                    android:text="@string/order_history_screen_process_title"
-                    android:textSize="@dimen/text_min_12"
-                    app:layout_constraintEnd_toStartOf="@id/indicator_way"
-                    app:layout_constraintStart_toEndOf="@+id/title_moderation"
-                    app:layout_constraintTop_toBottomOf="@+id/indicator_process" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/title_way"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimen_6"
-                    android:text="@string/order_history_screen_way_title"
-                    android:textSize="@dimen/text_min_12"
-                    app:layout_constraintEnd_toStartOf="@+id/title_done"
-                    app:layout_constraintStart_toEndOf="@+id/title_process"
-                    app:layout_constraintTop_toBottomOf="@+id/indicator_way" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/title_done"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimen_6"
-                    android:layout_marginEnd="36dp"
-                    android:text="@string/order_history_screen_done_title"
-                    android:textSize="@dimen/text_min_12"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/indicator_done" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <LinearLayout
-                android:id="@+id/order_cancelled_container"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:visibility="gone"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/order_address">
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/order_status"
+                    android:id="@+id/order_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dimen_38"
-                    android:layout_marginTop="@dimen/dimen_24"
-                    android:background="@drawable/order_status_background_cancelled"
-                    android:fontFamily="@font/sf_pro_text_semibold"
-                    android:paddingHorizontal="@dimen/dimen_8"
-                    android:paddingVertical="@dimen/dimen_4"
-                    android:text="@string/order_history_screen_cancelled_title"
-                    android:textColor="@color/red_bf2600"
-                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_middle_16"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/order_address" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="17.03.21 11:50" />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/order_cancelled_text"
-                    android:layout_width="220dp"
+                    android:id="@+id/order_delivery_to"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dimen_8"
-                    android:layout_marginTop="@dimen/dimen_16"
-                    android:layout_marginBottom="@dimen/dimen_10"
-                    android:maxLines="2"
+                    android:layout_marginTop="46dp"
+                    android:layout_marginEnd="34dp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_middle_16"
                     android:visibility="gone"
-                    app:layout_constraintStart_toEndOf="@+id/order_status"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Доставка к 15:00" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/order_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_38"
+                    android:layout_marginTop="@dimen/dimen_8"
+                    android:drawableStart="@drawable/ic_location_order_history"
+                    android:drawablePadding="@dimen/dimen_10"
+                    android:textSize="@dimen/text_min_12"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/order_date"
+                    tools:text="г. Махачкала, ул. Гаджикадиева, д 43, п. 1, эт. 5" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/stepper_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_24"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/order_address"
-                    tools:text="Причина указанная модератором, длинна текста 2 строки, не больше." />
+                    tools:visibility="visible">
 
-            </LinearLayout>
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/indicator_moderation"
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:layout_marginStart="62dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@drawable/circle_indicator_inactive"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-            <View
-                android:id="@+id/view"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_marginHorizontal="@dimen/dimen_38"
-                android:layout_marginTop="@dimen/dimen_16"
-                android:background="@color/grey30"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/stepper_container" />
+                    <ProgressBar
+                        android:id="@+id/progress_moderation"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:progressTint="@color/orange_ff8b00"
+                        app:layout_constraintStart_toEndOf="@+id/indicator_moderation"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_order_history_detail"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:overScrollMode="never"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view" />
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/indicator_process"
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@drawable/circle_indicator_inactive"
+                        app:layout_constraintStart_toEndOf="@+id/progress_moderation"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                    <ProgressBar
+                        android:id="@+id/progress_process"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:progressTint="@color/orange_ff8b00"
+                        app:layout_constraintStart_toEndOf="@+id/indicator_process"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/indicator_way"
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@drawable/circle_indicator_inactive"
+                        app:layout_constraintStart_toEndOf="@+id/progress_process"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ProgressBar
+                        android:id="@+id/progress_way"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:progressTint="@color/orange_ff8b00"
+                        app:layout_constraintStart_toEndOf="@+id/indicator_way"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/indicator_done"
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@drawable/circle_indicator_inactive"
+                        app:layout_constraintStart_toEndOf="@+id/progress_way"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/title_moderation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="36dp"
+                        android:layout_marginTop="@dimen/dimen_6"
+                        android:text="@string/order_history_screen_moderation_title"
+                        android:textSize="@dimen/text_min_12"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/indicator_moderation" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/title_process"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_6"
+                        android:layout_marginEnd="@dimen/dimen_28"
+                        android:text="@string/order_history_screen_process_title"
+                        android:textSize="@dimen/text_min_12"
+                        app:layout_constraintEnd_toStartOf="@id/indicator_way"
+                        app:layout_constraintStart_toEndOf="@+id/title_moderation"
+                        app:layout_constraintTop_toBottomOf="@+id/indicator_process" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/title_way"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_6"
+                        android:text="@string/order_history_screen_way_title"
+                        android:textSize="@dimen/text_min_12"
+                        app:layout_constraintEnd_toStartOf="@+id/title_done"
+                        app:layout_constraintStart_toEndOf="@+id/title_process"
+                        app:layout_constraintTop_toBottomOf="@+id/indicator_way" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/title_done"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_6"
+                        android:layout_marginEnd="36dp"
+                        android:text="@string/order_history_screen_done_title"
+                        android:textSize="@dimen/text_min_12"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/indicator_done" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <LinearLayout
+                    android:id="@+id/order_cancelled_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/order_address">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/order_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_38"
+                        android:layout_marginTop="@dimen/dimen_24"
+                        android:background="@drawable/order_status_background_cancelled"
+                        android:fontFamily="@font/sf_pro_text_semibold"
+                        android:paddingHorizontal="@dimen/dimen_8"
+                        android:paddingVertical="@dimen/dimen_4"
+                        android:text="@string/order_history_screen_cancelled_title"
+                        android:textColor="@color/red_bf2600"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/order_address" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/order_cancelled_text"
+                        android:layout_width="220dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_8"
+                        android:layout_marginTop="@dimen/dimen_16"
+                        android:layout_marginBottom="@dimen/dimen_10"
+                        android:maxLines="2"
+                        android:visibility="gone"
+                        app:layout_constraintStart_toEndOf="@+id/order_status"
+                        app:layout_constraintTop_toBottomOf="@+id/order_address"
+                        tools:text="Причина указанная модератором, длинна текста 2 строки, не больше." />
+
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/view"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginHorizontal="@dimen/dimen_38"
+                    android:layout_marginTop="@dimen/dimen_16"
+                    android:background="@color/grey30"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/stepper_container" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_order_history_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:overScrollMode="never"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.core.widget.NestedScrollView>
 
@@ -268,10 +277,10 @@
             android:id="@+id/total_price_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="@dimen/dimen_38"
+            android:layout_gravity="bottom"
             android:background="@color/grey2"
             android:orientation="vertical"
-            android:layout_gravity="bottom"
+            android:paddingHorizontal="@dimen/dimen_38"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">

@@ -4,15 +4,15 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 31
-    buildToolsVersion "30.0.3"
+    compileSdkVersion 32
+    buildToolsVersion "30.0.0"
 
     defaultConfig {
         applicationId "ooo.cron.delivery"
         minSdkVersion 21
-        targetSdkVersion 31
-        versionCode 41
-        versionName "4.1.7"
+        targetSdkVersion 32
+        versionCode 43
+        versionName "4.1.9"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 

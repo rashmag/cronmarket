@@ -95,6 +95,7 @@ class BasketFragment : BaseMVVMFragment() {
         )
     }
     private var basket: Basket? = null
+    private var amount: Double = 0.0
     private var isRestaurant: Int? = null
 
     private val address: String? by uiLazy {
@@ -145,7 +146,8 @@ class BasketFragment : BaseMVVMFragment() {
             showClearBasketDialog()
         }
         binding.btnBasketOrder.setOnClickListener {
-            baseViewModel.onMakeOrderClicked(arguments?.getInt(MIN_ORDER_AMOUNT_FLAG).orZero())
+            baseViewModel.onMakeOrderClicked(arguments?.getInt(MIN_ORDER_AMOUNT_FLAG).orZero(),
+                amount)
         }
         initAdapter()
 
@@ -157,6 +159,7 @@ class BasketFragment : BaseMVVMFragment() {
             val formatter = DecimalFormat("#.##").apply {
                 roundingMode = RoundingMode.CEILING
             }
+            amount = it.first.amount
             updateBasketAmount(formatter.format(it.first.amount+it.first.deliveryCost), it.first.deliveryCost.toInt().toString())
         }
 

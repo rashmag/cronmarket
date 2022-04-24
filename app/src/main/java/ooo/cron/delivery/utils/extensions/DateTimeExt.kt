@@ -9,7 +9,7 @@ import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import java.util.concurrent.TimeUnit
-import kotlin.math.min
+import kotlin.math.absoluteValue
 
 /**
  * удобрый метод чтобы мокнуть его в тестах
@@ -128,12 +128,32 @@ fun LocalTime.timeBetweenIterator(
     unit: ChronoUnit = ChronoUnit.MINUTES
 ): ArrayList<LocalTime> {
 
+    val startAt = this
     val currentTime = currentLocalTime()
-    var nextTime = when {
-        currentTime.isAfter(this) && currentTime.isBefore(endAt) -> currentTime.timeRoundMinutes(periodValue)
-        endAt.isBefore(this) && currentTime.isBefore(endAt) -> currentTime.timeRoundMinutes(periodValue)
-        else -> this
+    val isCloseAtNextDay = startAt > endAt
+
+    val midnight = LocalTime.of(0, 0)
+    val endOfDay = LocalTime.of(23, 59)
+
+    val isOpenNow = when {
+        startAt == endAt -> true
+        isCloseAtNextDay && (currentTime in startAt..endOfDay || currentTime in midnight..endAt) -> true
+        currentTime in startAt..endAt -> true
+        else -> false
     }
+
+    var nextTime = when {
+        isOpenNow -> currentTime.timeRoundMinutes(periodValue).plusHours(1)
+        else -> {
+            val beforeTime = (startAt.minute - currentTime.minute).absoluteValue
+            if (beforeTime < 60) {
+                currentTime.timeRoundMinutes(periodValue).plusHours(1)
+            } else {
+                startAt
+            }
+        }
+    }
+
     val list = arrayListOf(nextTime)
 
     while (nextTime != endAt) {

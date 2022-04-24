@@ -186,10 +186,7 @@ class OrderViewModel @Inject constructor(
 
         val openTime = interactor.getPartnerOpenTime() ?: return arrayListOf()
         val closeTime = interactor.getPartnerCloseTime() ?: return arrayListOf()
-        val arrayTimeToday: ArrayList<LocalTime> = openTime.timeBetweenIterator(
-            endAt = closeTime,
-            periodValue = 10
-        )
+        val arrayTimeToday: ArrayList<LocalTime> = openTime.timeBetweenIterator(endAt = closeTime)
 
         return arrayTimeToday.map { it.formatShortTime() }
     }

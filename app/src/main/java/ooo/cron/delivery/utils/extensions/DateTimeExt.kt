@@ -123,6 +123,7 @@ fun String.parseTime(): LocalTime {
  * @return возвращает массив дат в промежутке с указанным интервалом
  */
 fun LocalTime.timeBetweenIterator(
+    openTime: LocalTime,
     endAt: LocalTime,
     periodValue: Long,
     unit: ChronoUnit = ChronoUnit.MINUTES
@@ -135,6 +136,11 @@ fun LocalTime.timeBetweenIterator(
         else -> this
     }
     val list = arrayListOf(nextTime)
+
+    // Если партнер открыт, то доступное время доставки на час позже Н-р(сейчас 13:20, доступное - 14:20)
+    if(currentTime > openTime && currentTime < endAt) {
+        list[0] = nextTime.plusHours(1)
+    }
 
     while (nextTime != endAt) {
         nextTime = nextTime.plus(periodValue, unit)

@@ -172,7 +172,7 @@ fun LocalTime.timeBetweenIterator(
      * @param nextTime - начальное время
      * @param endAt - время закрытия
      */
-    while (nextTime != endAt) {
+    while (nextTime != endAt.timeRoundMinutes(periodValue)) {
         nextTime = nextTime.plus(periodValue, unit)
         list.add(nextTime)
     }

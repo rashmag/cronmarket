@@ -9,7 +9,7 @@ import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import java.util.concurrent.TimeUnit
-import kotlin.math.min
+import kotlin.math.absoluteValue
 
 /**
  * удобрый метод чтобы мокнуть его в тестах
@@ -121,27 +121,57 @@ fun String.parseTime(): LocalTime {
 
 /**
  * @return возвращает массив дат в промежутке с указанным интервалом
+ * @param endAt - дата закрытия
+ * @param periodValue - интервал между временными отрезками
+ * @param unit - единицы измерения (на перспективу), сейчас по дефолту "минуты"
  */
 fun LocalTime.timeBetweenIterator(
-    openTime: LocalTime,
     endAt: LocalTime,
-    periodValue: Long,
+    periodValue: Long = 10,
     unit: ChronoUnit = ChronoUnit.MINUTES
 ): ArrayList<LocalTime> {
 
+    val startAt = this
     val currentTime = currentLocalTime()
-    var nextTime = when {
-        currentTime.isAfter(this) && currentTime.isBefore(endAt) -> currentTime.timeRoundMinutes(periodValue)
-        endAt.isBefore(this) && currentTime.isBefore(endAt) -> currentTime.timeRoundMinutes(periodValue)
-        else -> this
+    val isCloseAtNextDay = startAt > endAt // проверка на случай, если время закрытия на след. день (например в 03:00)
+
+    val midnight = LocalTime.of(0, 0)
+    val endOfDay = LocalTime.of(23, 59)
+
+    /** проверяем открыто ли заведение сейчас */
+    val isOpenNow = when {
+        // для круглосуточных заведений
+        startAt == endAt -> true
+        // попадает в промежуток (например с 10:00 до 03:00)
+        isCloseAtNextDay && (currentTime in startAt..endOfDay || currentTime in midnight..endAt) -> true
+        // попадает в промежуток (например с 10:00 до 22:00)
+        currentTime in startAt..endAt -> true
+        else -> false // закрыто
     }
+
+    /** задаем начальное время */
+    var nextTime = when {
+        // если открыто, то берем текущее время, округляем минуты и добавляем +1 час
+        isOpenNow -> currentTime.timeRoundMinutes(periodValue).plusHours(1)
+        else -> {
+            val beforeTime = unit.between(currentTime, startAt).absoluteValue
+            if (beforeTime < 60) {
+                // если до открытия меньше часа, то округляем минуты и прибавляем +1 час
+                currentTime.timeRoundMinutes(periodValue).plusHours(1)
+            } else {
+                // иначе берем просто время открытия
+                startAt
+            }
+        }
+    }
+
     val list = arrayListOf(nextTime)
 
-    // Если партнер открыт, то доступное время доставки на час позже Н-р(сейчас 13:20, доступное - 14:20)
-    if(currentTime > openTime && currentTime < endAt) {
-        list[0] = nextTime.plusHours(1)
-    }
-
+    /**
+     * заполняем массив от начального времени до времени закрытия с заданным интервалом
+     * @param nextTime - начальное время
+     * @param endAt - время закрытия
+     */
     while (nextTime != endAt) {
         nextTime = nextTime.plus(periodValue, unit)
         list.add(nextTime)
@@ -150,6 +180,10 @@ fun LocalTime.timeBetweenIterator(
     return list
 }
 
+/**
+ * @return округляет минуты - например. если интервал = 10 и время 10:12, то округляем до 10:20
+ * @param periodValue - значения интервала (сейчас по дефолту 10)
+ */
 fun LocalTime.timeRoundMinutes(periodValue: Long): LocalTime {
     val minute = this.minute
     return if (minute % periodValue == 0L) this
